@@ -3,12 +3,12 @@ import React from 'react';
 import { Switch, Route } from 'react-router';
 import App from './containers/App';
 import HomePage from './containers/HomePage';
-import Onboarding from './containers/OnboardingPage';
+import NewWallet from './containers/NewWalletPage';
 
 export default () => (
   <App>
     <Switch>
-    	<Route path="/onboarding" component={Onboarding} />
+    	<Route path="/new" component={NewWallet} />
       <Route path="/" component={HomePage} />
     </Switch>
   </App>

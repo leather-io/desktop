@@ -1,7 +1,6 @@
 .container {
-  position: absolute;
-  top: 30%;
-  left: 10px;
+  position: relative;
+  margin: 20px;
   text-align: center;
 }
 

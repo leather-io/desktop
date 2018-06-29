@@ -5,6 +5,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.css';
 import * as WalletActions from '../actions/wallet'
+import DefaultView from './Default'
+import SeedView from './Seed'
+import ConfirmView from './Confirm'
+import CompleteView from './Complete'
 
 type Props = {};
 
@@ -20,18 +24,83 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(WalletActions, dispatch);
 }
 
+const VIEWS = {
+  DEFAULT: 0,
+  SEED: 1,
+  CONFIRM: 2,
+  COMPLETE: 3,
+}
+
 class Onboarding extends Component<Props> {
   props: Props;
 
-  render() {
-    const {
-      generateNewSeed
-    } = this.props;
+  constructor(props) {
+    super(props)
 
+    this.state = {
+      view: VIEWS.DEFAULT,
+      error: null
+    }
+  }
+
+  changeView = (view) => {
+    this.setState({
+      view: view
+    })
+  }
+
+  generateNewSeed = () => {
+    this.props.generateNewSeed()
+    this.changeView(VIEWS.SEED)
+  }
+
+  showConfirmView = () => {
+    this.changeView(VIEWS.CONFIRM)
+  }
+
+  confirmSeed = (confirmSeed) => {
+    if (confirmSeed === this.props.seed) {
+      this.changeView(VIEWS.COMPLETE)
+    } else {
+      this.setState({
+        error: 'The seed phrase you entered did not match!'
+      })
+    }
+  }
+
+  renderView(view) {
+    switch(view) {
+      case VIEWS.DEFAULT:
+        return <DefaultView
+                generateNewSeed={this.generateNewSeed}
+               />;
+      case VIEWS.SEED:
+        return <SeedView
+                seed={this.props.seed}
+                next={this.showConfirmView}
+                back={() => this.changeView(VIEWS.DEFAULT)}
+               />;
+      case VIEWS.CONFIRM:
+        return <ConfirmView
+                error={this.state.error}
+                next={this.confirmSeed}
+                back={() => this.changeView(VIEWS.SEED)}
+               />;
+      case VIEWS.COMPLETE:
+        return <CompleteView />;
+      default:
+        return <DefaultView />;
+    }
+  }
+
+  render() {
     return (
       <div>
         <div className={styles.container} data-tid="container">
           <h2>New Wallet</h2>
+          {this.renderView(this.state.view)}
+
+          {/*
           <button className={styles.btn} onClick={generateNewSeed} data-tclass="btn">
             Generate New Seed
           </button>
@@ -64,8 +133,7 @@ class Onboarding extends Component<Props> {
               {this.props.publicKey}
             </span>
             </div>
-          }
-          <br/><Link to="/">Back</Link><br/>
+          }*/}
         </div>
       </div>
     );

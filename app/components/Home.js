@@ -15,9 +15,9 @@ export default class Home extends Component<Props> {
         <div className={styles.container} data-tid="container">
           <h2>Stacks Wallet</h2>
           <div>
-            <Button to="/new" primary={true}>New Wallet</Button>
-            <Button to="/new" primary>Use Hardware Wallet</Button>
-            <Button to="/new" primary>Use Multi-signature Wallet</Button>
+            <Button to="/new">New Wallet</Button>
+            <Button to="/hardware">Use Hardware Wallet</Button>
+            <Button to="/multisig">Use Multi-signature Wallet</Button>
           </div>
         </div>
       </div>

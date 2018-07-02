@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Home.css';
 
 type Props = {};
 
@@ -11,7 +10,8 @@ export default class CompleteView extends Component<Props> {
   render() {
 
     const { 
-      seed 
+      address,
+      payload
     } = this.props
 
     return (
@@ -19,6 +19,10 @@ export default class CompleteView extends Component<Props> {
         <div>
           <p>
             Complete
+          </p>
+          <p>
+            Address: {address}<br/>
+            Verification Code: {payload}
           </p>
         </div>
       </div>

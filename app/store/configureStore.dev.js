@@ -9,7 +9,8 @@ import type { walletStateType } from '../reducers/wallet';
 
 const history = createHashHistory();
 
-const configureStore = (initialState?: walletStateType) => {
+const configureStore = (initialState?: { wallet: walletStateType }) => {
+
   // Redux Configuration
   const middleware = [];
   const enhancers = [];

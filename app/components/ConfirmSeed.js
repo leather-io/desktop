@@ -5,7 +5,7 @@ import styles from './Home.css';
 
 type Props = {};
 
-export default class ConfirmView extends Component<Props> {
+export default class ConfirmSeed extends Component<Props> {
   props: Props;
 
   constructor(props) {

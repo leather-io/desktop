@@ -5,13 +5,20 @@ import styles from './Home.css';
 
 type Props = {};
 
-export default class DefaultView extends Component<Props> {
+export default class NewSeedView extends Component<Props> {
   props: Props;
 
   render() {
+
+    const {
+      name
+    } = this.props
+
     return (
       <div>
-        <button className={styles.btn} onClick={this.props.generateNewSeed}>
+        Name:
+        <input type="text" name="name" value={name} onChange={this.props.handleNameChange} />
+        <button className={styles.btn} onClick={() => this.props.generateNewSeed(name)}>
           Generate New Seed
         </button>
         <br/><Link to="/">Back</Link><br/>

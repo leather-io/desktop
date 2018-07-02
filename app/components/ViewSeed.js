@@ -5,7 +5,7 @@ import styles from './Home.css';
 
 type Props = {};
 
-export default class SeedView extends Component<Props> {
+export default class ViewSeedView extends Component<Props> {
   props: Props;
 
   render() {

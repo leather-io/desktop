@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as WalletActions from '../actions/wallet'
-import HardwareView from '../components/Hardware'
+import MultiSigView from '../components/MultiSig'
 import CompleteView from '../components/Complete'
 
 type Props = {};
@@ -27,7 +27,7 @@ const VIEWS = {
   COMPLETE: 1,
 }
 
-class HardwareWalletPage extends Component<Props> {
+class MultiSigWalletPage extends Component<Props> {
   props: Props;
 
   constructor(props) {
@@ -36,6 +36,8 @@ class HardwareWalletPage extends Component<Props> {
     this.state = {
       view: VIEWS.DEFAULT,
       name: '',
+      signaturesRequired: 0,
+      publicKeys: ['', ''],
       error: null
     }
   }
@@ -46,23 +48,38 @@ class HardwareWalletPage extends Component<Props> {
     })
   }
 
+  handlePubKeyChange = (event, index) => {
+    var newPublicKeys = this.state.publicKeys
+    newPublicKeys[index] = event.target.value
+    this.setState({
+      publicKeys: newPublicKeys
+    })
+  }
+
+  handleSignaturesRequiredChange = (event) => {
+    this.setState({
+      signaturesRequired: parseInt(event.target.value)
+    })
+  }
+
+  addPublicKey = () => {
+    var newPublicKeys = this.state.publicKeys
+    newPublicKeys.push('')
+    this.setState({
+      publicKeys: newPublicKeys
+    })
+  }
+
   changeView = (view) => {
     this.setState({
       view: view
     })
   }
 
-  getTrezorAddress = () => {
-  	this.props.updateName(name)
-  		.then(() => this.props.getTrezorAddr())
-  		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-  		.then(() => this.changeView(VIEWS.COMPLETE))
-  }
-
-  getLedgerAddress = () => {
-  	this.props.updateName(name)
-  		.then(() => this.props.getLedgerAddr())
-  		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
+  makeMultiSig = () => {
+    this.props.updateName(name)
+      .then(() => this.props.makeMultiSig(this.state.publicKeys, this.state.signaturesRequired))
+  		.then(({address, payload}) => this.props.generateMultiSigPayload(address, payload))
   		.then(() => this.changeView(VIEWS.COMPLETE))
   }
 
@@ -84,11 +101,14 @@ class HardwareWalletPage extends Component<Props> {
   renderView(view) {
     switch(view) {
       case VIEWS.DEFAULT:
-        return <HardwareView
+        return <MultiSigView
         				name={this.state.name}
         				handleNameChange={this.handleNameChange}
-                getTrezorAddress={this.getTrezorAddress}
-                getLedgerAddress={this.getLedgerAddress}
+                publicKeys={this.state.publicKeys}
+                handlePubKeyChange={this.handlePubKeyChange}
+                handleSignaturesRequiredChange={this.handleSignaturesRequiredChange}
+                addPublicKey={this.addPublicKey}
+                next={this.makeMultiSig}
                />;
       case VIEWS.COMPLETE:
         return <CompleteView
@@ -104,7 +124,7 @@ class HardwareWalletPage extends Component<Props> {
     return (
       <div>
         <div>
-          <h2>Hardware Wallet</h2>
+          <h2>Multi-signature Wallet</h2>
           {this.renderView(this.state.view)}
         </div>
       </div>
@@ -112,4 +132,4 @@ class HardwareWalletPage extends Component<Props> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HardwareWalletPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MultiSigWalletPage);

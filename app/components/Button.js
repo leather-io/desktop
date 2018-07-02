@@ -76,41 +76,36 @@ const StyledButton = styled.button`
     }
   }
 
-  ${({ primary }) =>
-    primary &&
-    css`
-      border: 0 !important;
-      background: linear-gradient(97.35deg, #251b4f 0%, #684892 173.24%);
-      box-shadow: 1px 3px 11px rgba(89, 58, 121, 0.28);
-      ${Label} {
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      }
-      &::before {
-        background: linear-gradient(109.46deg, #504482 0%, #8c66bd 171.9%);
-      }
-      &:after {
-        background: linear-gradient(109.46deg, #1d1740 0%, #664b8a 171.9%);
-      }
-      &:hover,
-      &:focus {
-        box-shadow: 1px 3px 11px rgba(89, 58, 121, 0.5);
+  border: 0 !important;
+  background: linear-gradient(97.35deg, #251b4f 0%, #684892 173.24%);
+  box-shadow: 1px 3px 11px rgba(89, 58, 121, 0.28);
+  ${Label} {
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  &::before {
+    background: linear-gradient(109.46deg, #504482 0%, #8c66bd 171.9%);
+  }
+  &:after {
+    background: linear-gradient(109.46deg, #1d1740 0%, #664b8a 171.9%);
+  }
+  &:hover,
+  &:focus {
+    box-shadow: 1px 3px 11px rgba(89, 58, 121, 0.5);
 
-        &::before {
-          opacity: 1;
-        }
-      }
+    &::before {
+      opacity: 1;
+    }
+  }
 
-      &:active {
-        box-shadow: 1px 1px 4px rgba(89, 58, 121, 0.32);
-        transform: translateY(2px);
-        &:after {
-          background: linear-gradient(109.46deg, #1d1740 0%, #664b8a 171.9%);
-          opacity: 1;
-        }
-      }
-    `};
-
+  &:active {
+    box-shadow: 1px 1px 4px rgba(89, 58, 121, 0.32);
+    transform: translateY(2px);
+    &:after {
+      background: linear-gradient(109.46deg, #1d1740 0%, #664b8a 171.9%);
+      opacity: 1;
+    }
+  }
 `
 
 StyledButton.Div = StyledButton.withComponent('div')

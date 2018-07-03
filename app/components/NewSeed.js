@@ -1,9 +1,13 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Home.css';
+import PropTypes from 'prop-types';
 
-type Props = {};
+type Props = {
+  name: PropTypes.string,
+  handleNameChange: PropTypes.func,
+  generateNewSeed: PropTypes.func
+};
 
 export default class NewSeedView extends Component<Props> {
   props: Props;
@@ -18,10 +22,10 @@ export default class NewSeedView extends Component<Props> {
       <div>
         Name:
         <input type="text" name="name" value={name} onChange={this.props.handleNameChange} />
-        <button className={styles.btn} onClick={() => this.props.generateNewSeed(name)}>
+        <button onClick={() => this.props.generateNewSeed(name)}>
           Generate New Seed
         </button>
-        <br/><Link to="/">Back</Link><br/>
+        <br /><Link to="/">Back</Link><br />
       </div>
     );
   }

@@ -201,10 +201,9 @@
   },
   "dependencies": {
     "@ledgerhq/hw-app-btc": "^4.15.0",
-    "@ledgerhq/hw-transport-node-hid": "^4.16.0",
-    "bip32": "^0.1.0",
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^3.3.2",
+    "c32check": "0.0.6",
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
     "elliptic": "^6.4.0",

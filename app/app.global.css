@@ -4,19 +4,25 @@
  */
 @import "~font-awesome/css/font-awesome.css";
 
+html {
+  height: 100%;
+}
+
 body {
   position: relative;
-  color: #000;
-  background-color: #fff;
+  color: #fff;
+  height: 100%;
   font-family: Helvetica, Helvetica Neue, serif;
   font-size: 10px;
+  background: linear-gradient(97.35deg, #251b4f 0%, #684892 173.24%); 
+  background-repeat: no-repeat;
 }
 
 h2 {
   margin: 0;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #000;
+  font-size: 3rem;
+  font-weight: normal;
+  color: #fff;
 }
 
 p {
@@ -28,7 +34,7 @@ li {
 }
 
 a {
-  color: #000;
+  color: #fff;
   opacity: 0.75;
   text-decoration: none;
 }

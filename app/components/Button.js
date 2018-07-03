@@ -5,7 +5,7 @@ const Label = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
   transition: 0.08s all ease-in-out;
   user-select: none;
@@ -20,9 +20,8 @@ const Label = styled.div`
 
 const StyledButton = styled.button`
   ${({ height }) =>
-    height &&
+    height && 
     css`
-      border-radius: ${height}px;
       min-height: ${height}px;
     `};
 
@@ -53,7 +52,6 @@ const StyledButton = styled.button`
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 48px;
     content: '';
     pointer-events: none;
     opacity: 0;
@@ -77,8 +75,6 @@ const StyledButton = styled.button`
   }
 
   border: 0 !important;
-  background: linear-gradient(97.35deg, #251b4f 0%, #684892 173.24%);
-  box-shadow: 1px 3px 11px rgba(89, 58, 121, 0.28);
   ${Label} {
     color: #ffffff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -112,4 +108,4 @@ StyledButton.Div = StyledButton.withComponent('div')
 StyledButton.Link = StyledButton.withComponent(Link)
 StyledButton.Label = Label
 
-export { StyledButton }
+export default StyledButton

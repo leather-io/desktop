@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as WalletActions from '../actions/wallet'
 import HardwareView from '../components/Hardware'
+import HardwareSelectView from '../components/HardwareSelect'
 import CompleteView from '../components/Complete'
+import PageWrapper from '../containers/PageWrapper'
+import { remote } from 'electron'
 
 type Props = {};
 
@@ -23,8 +26,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 const VIEWS = {
-  HARDWARE: 0,
-  COMPLETE: 1,
+  DEFAULT: 0,
+  SELECT: 1,
+  COMPLETE: 2,
 }
 
 class HardwareWalletPage extends Component<Props> {
@@ -66,10 +70,6 @@ class HardwareWalletPage extends Component<Props> {
   		.then(() => this.changeView(VIEWS.COMPLETE))
   }
 
-  showConfirmView = () => {
-    this.changeView(VIEWS.CONFIRM)
-  }
-
   confirmSeed = (confirmSeed) => {
     if (confirmSeed === this.props.seed) {
     	this.props.generatePayload(this.props.name, this.props.publicKey)
@@ -87,6 +87,10 @@ class HardwareWalletPage extends Component<Props> {
         return <HardwareView
         				name={this.state.name}
         				handleNameChange={this.handleNameChange}
+                next={() => this.changeView(VIEWS.SELECT)}
+               />;
+      case VIEWS.SELECT:
+        return <HardwareSelectView
                 getTrezorAddress={this.getTrezorAddress}
                 getLedgerAddress={this.getLedgerAddress}
                />;
@@ -102,12 +106,9 @@ class HardwareWalletPage extends Component<Props> {
 
   render() {
     return (
-      <div>
-        <div>
-          <h2>Hardware Wallet</h2>
-          {this.renderView(this.state.view)}
-        </div>
-      </div>
+      <PageWrapper title="Hardware Wallet">
+        {this.renderView(this.state.view)}
+      </PageWrapper>
     );
   }
 }

@@ -13,9 +13,10 @@ body {
   color: #fff;
   height: 100%;
   font-family: Helvetica, Helvetica Neue, serif;
-  font-size: 10px;
+  font-size: 16px;
   background: linear-gradient(97.35deg, #251b4f 0%, #684892 173.24%); 
   background-repeat: no-repeat;
+  margin: 0;
 }
 
 h2 {
@@ -26,7 +27,7 @@ h2 {
 }
 
 p {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 li {

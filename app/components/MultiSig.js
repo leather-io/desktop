@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Home.css';
 
 type Props = {};
 
@@ -30,10 +29,10 @@ export default class MultiSigView extends Component<Props> {
           <textarea key={index} value={publicKeys[index]} onChange={(e) => handlePubKeyChange(e, index)}>
           </textarea>
         )}
-        <button className={styles.btn} onClick={addPublicKey}>
+        <button onClick={addPublicKey}>
           Add Public Key
         </button>
-        <button className={styles.btn} onClick={next}>
+        <button onClick={next}>
           Next
         </button>
         <br/><Link to="/">Back</Link><br/>

@@ -8,6 +8,8 @@ import NewSeedView from '../components/NewSeed'
 import ViewSeedView from '../components/ViewSeed'
 import ConfirmSeedView from '../components/ConfirmSeed'
 import CompleteView from '../components/Complete'
+import PageWrapper from '../containers/PageWrapper'
+import { remote } from 'electron'
 
 type Props = {};
 
@@ -78,6 +80,11 @@ class NewWalletPage extends Component<Props> {
     }
   }
 
+  exit = () => {
+  	const currentWindow = remote.getCurrentWindow()
+  	currentWindow.close()
+  }
+
   renderView(view) {
     switch(view) {
       case VIEWS.DEFAULT:
@@ -102,6 +109,7 @@ class NewWalletPage extends Component<Props> {
         return <CompleteView 
                 address={this.props.address}
                 payload={this.props.payload}
+                next={this.exit}
         			 />;
       default:
         return <NewSeedView />;
@@ -110,10 +118,9 @@ class NewWalletPage extends Component<Props> {
 
   render() {
     return (
-      <div>
-        <h2>New Wallet</h2>
+      <PageWrapper title="New Wallet">
         {this.renderView(this.state.view)}
-      </div>
+      </PageWrapper>
     );
   }
 }

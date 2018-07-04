@@ -1,7 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Home.css';
+import ActionButtons from '../containers/ActionButtons'
+import Button from '../containers/Button'
+import Input from '../containers/Input'
 
 type Props = {};
 
@@ -37,23 +39,14 @@ export default class ConfirmSeed extends Component<Props> {
       <div>
         <div>
           <p>
-            Confirm that you have written down your seed by re-entering it in the box below.
+            Confirm that you have written down your seed by re-entering it below.
           </p>
-          <textarea value={seedConfirm} onChange={this.handleChange}>
-            
-          </textarea>
+          <Input type="textarea" name="name" value={seedConfirm} onChange={this.handleChange} />        
           {error && <p>{error}</p>}
-          <br/>
-          <button 
-            className={styles.btn} 
-            onClick={() => this.props.next(seedConfirm)}>
-            Confirm
-          </button>
-          <button 
-            className={styles.btn} 
-            onClick={this.props.back}>
-            Back
-          </button>
+          <ActionButtons>
+            <Button onClick={this.props.back}>Back</Button>
+            <Button onClick={() => this.props.next(seedConfirm)}>Confirm</Button>
+          </ActionButtons>
         </div>
       </div>
     );

@@ -30,6 +30,7 @@ const StyledButton = styled.button`
   justify-content: center;
   position: relative;
   transform: translate3d(0, 0, 0);
+  flex-grow: 1;
 
   ${({ padding }) =>
     padding
@@ -95,8 +96,6 @@ const StyledButton = styled.button`
   }
 
   &:active {
-    box-shadow: 1px 1px 4px rgba(89, 58, 121, 0.32);
-    transform: translateY(2px);
     &:after {
       background: linear-gradient(109.46deg, #1d1740 0%, #664b8a 171.9%);
       opacity: 1;

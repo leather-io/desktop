@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Home.css';
+import ActionButtons from '../containers/ActionButtons'
+import Button from '../containers/Button'
 
 type Props = {};
 
@@ -18,23 +19,16 @@ export default class ViewSeedView extends Component<Props> {
       <div>
         {seed && 
           <div>
-          <p>
-            Write down your seed:
-          </p>
-          <span className={styles.seed}>
-            {seed}
-          </span>
-          <br/>
-          <button 
-            className={styles.btn} 
-            onClick={this.props.next}>
-            I wrote it down
-          </button>
-          <button 
-            className={styles.btn} 
-            onClick={this.props.back}>
-            Back
-          </button>
+            <p>
+              Write down your seed
+            </p>
+            <span>
+              {seed}
+            </span>
+            <ActionButtons>
+              <Button onClick={this.props.back}>Back</Button>
+              <Button onClick={this.props.next}>Next</Button>
+            </ActionButtons>
           </div>
         }
       </div>

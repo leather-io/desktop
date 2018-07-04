@@ -7,7 +7,7 @@ import Input from '../containers/Input'
 
 type Props = {};
 
-export default class HardwareView extends Component<Props> {
+export default class HardwareSelectView extends Component<Props> {
   props: Props;
 
   render() {
@@ -17,16 +17,14 @@ export default class HardwareView extends Component<Props> {
 
     return (
       <div>
-        <Input 
-          label="Your name or company name" 
-          smallText="This information will be used for verification."
-          type="text" name="name" 
-          value={name} 
-          onChange={this.props.handleNameChange} 
-        />
+        <Button onClick={this.props.getTrezorAddress}>
+          Get address from Trezor
+        </Button>
+        <Button onClick={this.props.getLedgerAddress}>
+          Get address from Ledger
+        </Button>
         <ActionButtons>
           <Button to="/">Back</Button>
-          <Button onClick={() => this.props.next()}>Next</Button>
         </ActionButtons>
       </div>
     );

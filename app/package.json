@@ -15,7 +15,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^4.16.0",
     "bip32": "^0.1.0"
   }
 }

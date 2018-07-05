@@ -126,7 +126,7 @@ class NewWalletPage extends Component<Props> {
                 next={this.exit}
         			 />;
       default:
-        return <NewSeedView />;
+        return <div></div>;
     }
   }
 

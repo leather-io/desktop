@@ -122,7 +122,7 @@ class HardwareWalletPage extends Component<Props> {
                 next={this.exit}
                />;
       default:
-        return <HardwareView />;
+        return <div></div>;
     }
   }
 

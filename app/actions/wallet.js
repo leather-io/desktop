@@ -120,7 +120,7 @@ export function getTrezorAddr() {
           reject()
         }
       })
-  }) 
+  })
 }
 
 export function getLedgerAddr() {
@@ -132,8 +132,8 @@ export function getLedgerAddr() {
       .then((publicKey) => {
         var ecPair = btc.ECPair.fromPublicKeyBuffer(Buffer.from(publicKey, 'hex'))
         ecPair.compressed = true
-        var publicKey = ecPair.getPublicKeyBuffer()
-        var btcAddress = getAddressFromChildPubKey(publicKey)
+        var pkBuffer = ecPair.getPublicKeyBuffer()
+        var btcAddress = getAddressFromChildPubKey(pkBuffer)
         const address = b58ToC32(btcAddress)
         dispatch(updatePubKey(address, publicKey))
         resolve()
@@ -164,7 +164,7 @@ export function makeMultiSig(publicKeys: Array<string>, signaturesRequired: numb
 
 	  const btcAddress = btc.address.toBase58Check(scriptHash, 5)
 		const address = b58ToC32(btcAddress)
-		
+
 	  dispatch(updateAddress(address))
 	  resolve({ address, payload: redeemScript.toString('hex') })
 	})

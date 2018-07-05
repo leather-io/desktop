@@ -24,7 +24,7 @@ export default class HardwareSelectView extends Component<Props> {
           Get address from Ledger
         </Button>
         <ActionButtons>
-          <Button to="/">Back</Button>
+          <Button onClick={this.props.back}>Back</Button>
         </ActionButtons>
       </div>
     );

@@ -20,7 +20,8 @@ export default class HardwareView extends Component<Props> {
         <Input 
           label="Your name or company name" 
           smallText="This information will be used for verification."
-          type="text" name="name" 
+          type="text" 
+          name="name" 
           value={name} 
           onChange={this.props.handleNameChange} 
         />

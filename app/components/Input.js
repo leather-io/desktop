@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const StyledInput = styled.div`
   padding: 5px;
@@ -22,7 +22,15 @@ const TextBox = styled.input`
 `
 const TextArea = styled.textarea`
 	color: #fff;
-	height: 88px;
+  ${({ height }) =>
+    height ? 
+    css`
+      height: ${height}px;
+    ` : 
+    css`
+    	height: 88px;
+    `
+  };
 	font-size: 18px;
 	background-color: rgba(255, 255, 255, 0.2);
 	border: 1px solid rgba(255, 255, 255, 0.35);
@@ -33,9 +41,15 @@ const SmallText = styled.p`
 	font-size: 14px;
 `
 
+const ErrorText = styled.p`
+	font-size: 14px;
+	color: #e52f2a;
+`
+
 StyledInput.Label = Label
 StyledInput.TextBox = TextBox
 StyledInput.TextArea = TextArea
 StyledInput.SmallText = SmallText
+StyledInput.ErrorText = ErrorText
 
 export default StyledInput

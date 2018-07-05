@@ -7,18 +7,18 @@ import Button from '../containers/Button'
 import Input from '../containers/Input'
 
 type Props = {
-  name: PropTypes.string,
-  handleNameChange: PropTypes.func,
-  generateNewSeed: PropTypes.func
+  // name: PropTypes.string,
+  // handleNameChange: PropTypes.func,
 };
 
-export default class NewSeedView extends Component<Props> {
+export default class NameInputView extends Component<Props> {
   props: Props;
 
   render() {
 
     const {
-      name
+      name,
+      error
     } = this.props
 
     return (
@@ -28,11 +28,12 @@ export default class NewSeedView extends Component<Props> {
           smallText="This information will be used for verification."
           type="text" name="name" 
           value={name} 
+          error={error}
           onChange={this.props.handleNameChange} 
         />
         <ActionButtons>
           <Button to="/">Back</Button>
-          <Button onClick={() => this.props.generateNewSeed(name)}>Next</Button>
+          <Button onClick={this.props.next}>Next</Button>
         </ActionButtons>
       </div>
     );

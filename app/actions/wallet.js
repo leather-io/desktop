@@ -24,6 +24,7 @@ export const USE_HARDWARE_WALLET = 'USE_HARDWARE_WALLET'
 export const SET_ADDRESS = 'SET_ADDRESS'
 export const SET_HARDWARE_ERROR = 'SET_HARDWARE_ERROR'
 export const SET_PAYLOAD = 'SET_PAYLOAD'
+export const ERASE_SEED = 'ERASE_SEED'
 
 export function updateName(name: string) {
 	return (dispatch) => new Promise((resolve) => {
@@ -41,6 +42,12 @@ export function updateSeed(seed: string, address: string, publicKey: string) {
     address,
     publicKey
   };
+}
+
+export function eraseSeed() {
+	return {
+		type: ERASE_SEED
+	}
 }
 
 export function updatePubKey(address: string, publicKey: string) {

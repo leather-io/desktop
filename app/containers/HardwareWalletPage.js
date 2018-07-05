@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as WalletActions from '../actions/wallet'
-import HardwareView from '../components/Hardware'
+import NameInput from '../components/NameInput'
 import HardwareSelectView from '../components/HardwareSelect'
 import CompleteView from '../components/Complete'
 import PageWrapper from '../containers/PageWrapper'
@@ -40,7 +40,7 @@ class HardwareWalletPage extends Component<Props> {
     this.state = {
       view: VIEWS.DEFAULT,
       name: '',
-      error: null
+      nameError: ''
     }
   }
 
@@ -56,16 +56,29 @@ class HardwareWalletPage extends Component<Props> {
     })
   }
 
+  showHardwareSelectView = () => {
+    const name = this.state.name
+    if (name.length === 0) {
+      this.setState({
+        nameError: 'You must enter a name.'
+      })
+    } else {
+      this.setState({
+        nameError: ''
+      })
+      this.props.updateName(name)
+        .then(() => this.changeView(VIEWS.SELECT))
+    }
+  }
+
   getTrezorAddress = () => {
-  	this.props.updateName(name)
-  		.then(() => this.props.getTrezorAddr())
+    this.props.getTrezorAddr()
   		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
   		.then(() => this.changeView(VIEWS.COMPLETE))
   }
 
   getLedgerAddress = () => {
-  	this.props.updateName(name)
-  		.then(() => this.props.getLedgerAddr())
+    this.props.getLedgerAddr()
   		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
   		.then(() => this.changeView(VIEWS.COMPLETE))
   }
@@ -81,23 +94,32 @@ class HardwareWalletPage extends Component<Props> {
     }
   }
 
+  exit = () => {
+    this.props.eraseSeed()
+    const currentWindow = remote.getCurrentWindow()
+    currentWindow.close()
+  }
+
   renderView(view) {
     switch(view) {
       case VIEWS.DEFAULT:
-        return <HardwareView
+        return <NameInput
         				name={this.state.name}
+                error={this.state.nameError}
         				handleNameChange={this.handleNameChange}
-                next={() => this.changeView(VIEWS.SELECT)}
+                next={this.showHardwareSelectView}
                />;
       case VIEWS.SELECT:
         return <HardwareSelectView
                 getTrezorAddress={this.getTrezorAddress}
                 getLedgerAddress={this.getLedgerAddress}
+                back={() => this.changeView(VIEWS.DEFAULT)}
                />;
       case VIEWS.COMPLETE:
         return <CompleteView
                 address={this.props.address}
                 payload={this.props.payload}
+                next={this.exit}
                />;
       default:
         return <HardwareView />;

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import StyledInput from '../components/Input';
 
-const renderInput = (type, name, value, onChange) => {
+const renderInput = (type, name, value, onChange, height) => {
 	if (type === 'textarea') {
 		return <StyledInput.TextArea name={name} value={value} onChange={onChange} />
 	} else {
@@ -17,12 +17,15 @@ const Input = ({
   name,
   value,
   smallText,
+  error,
+  height,
   onChange
 }) => {
   return (
     <StyledInput>
       <StyledInput.Label>{label}</StyledInput.Label>
-      {renderInput(type, name, value, onChange)}
+      {error && error.length > 0 && <StyledInput.ErrorText>{error}</StyledInput.ErrorText>}
+      {renderInput(type, name, value, onChange, height)}
       <StyledInput.SmallText>{smallText}</StyledInput.SmallText>
     </StyledInput>
   )

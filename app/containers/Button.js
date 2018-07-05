@@ -7,14 +7,18 @@ const Button = ({
   label,
   children,
   type,
+  small,
   height = 44,
   to,
   ...rest
 }) => {
 
   const ButtonComponent = props => {
+    
     if (to) {
       return <StyledButton.Link {...props} />
+    } else if (small) {
+      return <StyledButton.Small {...props} />
     } else if (type) {
       return <StyledButton {...props} type={type} />
     } else {
@@ -24,7 +28,11 @@ const Button = ({
 
   return (
     <ButtonComponent {...rest} height={height} to={to}>
-      <StyledButton.Label>{children}</StyledButton.Label>
+      { small ? 
+        <StyledButton.SmallLabel>{children}</StyledButton.SmallLabel>  
+        :
+        <StyledButton.Label>{children}</StyledButton.Label>
+      }
     </ButtonComponent>
   )
 

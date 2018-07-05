@@ -41,8 +41,13 @@ export default class ConfirmSeed extends Component<Props> {
           <p>
             Confirm that you have written down your seed by re-entering it below.
           </p>
-          <Input type="textarea" name="name" value={seedConfirm} onChange={this.handleChange} />        
-          {error && <p>{error}</p>}
+          <Input 
+            type="textarea" 
+            name="name" 
+            value={seedConfirm} 
+            error={error} 
+            onChange={this.handleChange} 
+          />        
           <ActionButtons>
             <Button onClick={this.props.back}>Back</Button>
             <Button onClick={() => this.props.next(seedConfirm)}>Confirm</Button>

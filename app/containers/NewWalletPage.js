@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as WalletActions from '../actions/wallet'
-import NewSeedView from '../components/NewSeed'
+import NameInputView from '../components/NameInput'
 import ViewSeedView from '../components/ViewSeed'
 import ConfirmSeedView from '../components/ConfirmSeed'
 import CompleteView from '../components/Complete'
@@ -43,7 +43,9 @@ class NewWalletPage extends Component<Props> {
     this.state = {
       view: VIEWS.DEFAULT,
       name: '',
-      error: null
+      nameError: '',
+      confirmError: ''
+
     }
   }
 
@@ -59,10 +61,20 @@ class NewWalletPage extends Component<Props> {
     })
   }
 
-  generateNewSeedWithName = (name) => {
-  	this.props.updateName(name)
-  		.then(() => this.props.generateNewSeed())
-  		.then(() => this.changeView(VIEWS.SEED))
+  generateNewSeedWithName = () => {
+  	const name = this.state.name
+    if (name.length === 0) {
+      this.setState({
+        nameError: 'You must enter a name.'
+      })
+    } else {
+      this.setState({
+        nameError: ''
+      })
+	  	this.props.updateName(name)
+	  		.then(() => this.props.generateNewSeed())
+	  		.then(() => this.changeView(VIEWS.SEED))
+    }
   }
 
   showConfirmView = () => {
@@ -75,12 +87,13 @@ class NewWalletPage extends Component<Props> {
     		.then(() => this.changeView(VIEWS.COMPLETE))
     } else {
       this.setState({
-        error: 'The seed phrase you entered did not match!'
+        confirmError: 'The seed phrase you entered did not match!'
       })
     }
   }
 
   exit = () => {
+  	this.props.eraseSeed()
   	const currentWindow = remote.getCurrentWindow()
   	currentWindow.close()
   }
@@ -88,10 +101,11 @@ class NewWalletPage extends Component<Props> {
   renderView(view) {
     switch(view) {
       case VIEWS.DEFAULT:
-        return <NewSeedView
+        return <NameInputView
         				name={this.state.name}
+        				error={this.state.nameError}
         				handleNameChange={this.handleNameChange}
-                generateNewSeed={this.generateNewSeedWithName}
+                next={this.generateNewSeedWithName}
                />;
       case VIEWS.SEED:
         return <ViewSeedView
@@ -101,7 +115,7 @@ class NewWalletPage extends Component<Props> {
                />;
       case VIEWS.CONFIRM:
         return <ConfirmSeedView
-                error={this.state.error}
+                error={this.state.confirmError}
                 next={this.confirmSeed}
                 back={() => this.changeView(VIEWS.SEED)}
                />;

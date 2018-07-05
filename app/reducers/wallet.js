@@ -6,7 +6,8 @@ import {
 	SET_ADDRESS,
 	USE_HARDWARE_WALLET,
 	SET_HARDWARE_ERROR,
-	SET_PAYLOAD
+	SET_PAYLOAD,
+  ERASE_SEED
 } from '../actions/wallet';
 
 export type walletStateType = {
@@ -72,6 +73,11 @@ export default function wallet(state = initialState, action: actionType) {
     		...state, 
     		payload: action.payload
     	}
+    case ERASE_SEED:
+      return {
+        ...state,
+        seed: '',
+      }
     default:
       return state;
   }

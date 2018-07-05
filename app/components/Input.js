@@ -4,6 +4,7 @@ const StyledInput = styled.div`
   padding: 5px;
   display: flex;
  	flex-direction: column;
+ 	text-align: left;
 `
 
 const Label = styled.span`

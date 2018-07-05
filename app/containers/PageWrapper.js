@@ -2,9 +2,10 @@
 import React, { Component } from 'react';
 import StyledPageWrapper from '../components/PageWrapper'
 
-const PageWrapper = ({ title, children }) => {
+const PageWrapper = ({ title, children, icon, ...rest }) => {
   return (
-    <StyledPageWrapper>
+    <StyledPageWrapper {...rest}>
+    	{icon && <StyledPageWrapper.Icon src={icon}/>}
       <StyledPageWrapper.Title>{title}</StyledPageWrapper.Title>
       {children}
     </StyledPageWrapper>

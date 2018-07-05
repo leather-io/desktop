@@ -21,7 +21,7 @@ export default class Signatures extends Component<Props> {
     return (
       <div>
         <Input 
-          label="Number of signatures required" 
+          label="Enter the number of signatures required" 
           type="text" 
           name="signatures" 
           error={error}

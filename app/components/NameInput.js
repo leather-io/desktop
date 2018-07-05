@@ -24,8 +24,8 @@ export default class NameInputView extends Component<Props> {
     return (
       <div>
         <Input 
-          label="Your name or company name" 
-          smallText="This information will be used for verification."
+          label="Enter your name or company name" 
+          smallText="This information will be used for verification purposes."
           type="text" name="name" 
           value={name} 
           error={error}

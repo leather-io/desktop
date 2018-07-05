@@ -214,7 +214,7 @@ class MultiSigWalletPage extends Component<Props> {
 
   render() {
     return (
-      <PageWrapper title="Multi-signature Wallet">
+      <PageWrapper title="Multi-Signature Wallet">
         {this.renderView(this.state.view)}
       </PageWrapper>
     );

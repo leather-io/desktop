@@ -193,7 +193,6 @@
   },
   "dependencies": {
     "@ledgerhq/hw-app-btc": "^4.15.0",
-    "@ledgerhq/hw-transport-node-hid": "^4.16.0",
     "babel-runtime": "^6.26.0",
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^3.3.2",

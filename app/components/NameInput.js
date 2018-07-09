@@ -25,11 +25,12 @@ export default class NameInputView extends Component<Props> {
       <div>
         <Input 
           label="Enter your name or company name" 
-          smallText="This information will be used for verification purposes."
+          smallText="This information will be used to verify your allocation."
           type="text" name="name" 
           value={name} 
           error={error}
           onChange={this.props.handleNameChange} 
+          onReturn={this.props.next}
         />
         <ActionButtons>
           <Button to="/">Back</Button>

@@ -35,6 +35,7 @@ export default class PubKeysView extends Component<Props> {
               value={publicKeys[index]} 
               error={publicKeyErrors[index]}
               onChange={(e) => handlePubKeyChange(e, index)} 
+              onReturn={() => {}}
             />        
           )}
           <Button onClick={addPublicKey} small>

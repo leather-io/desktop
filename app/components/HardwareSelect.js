@@ -17,10 +17,16 @@ export default class HardwareSelectView extends Component<Props> {
 
     return (
       <div>
-        <Button onClick={this.props.getTrezorAddress}>
+        <Button 
+          onClick={this.props.getTrezorAddress}
+          height={68} 
+          margin={'0 0 1px 0'}>
           Get address from Trezor
         </Button>
-        <Button onClick={this.props.getLedgerAddress}>
+        <Button 
+          onClick={this.props.getLedgerAddress}
+          height={68} 
+          margin={'0 0 1px 0'}>
           Get address from Ledger
         </Button>
         <ActionButtons>

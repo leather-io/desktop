@@ -82,7 +82,7 @@ class NewWalletPage extends Component<Props> {
   }
 
   confirmSeed = (confirmSeed) => {
-    if (confirmSeed === this.props.seed) {
+    if (confirmSeed.trim() === this.props.seed) {
     	this.props.generatePayload(this.props.name, this.props.publicKey)
     		.then(() => this.changeView(VIEWS.COMPLETE))
     } else {

@@ -27,6 +27,7 @@ export default class Signatures extends Component<Props> {
           error={error}
           value={signaturesRequired} 
           onChange={handleSignaturesRequiredChange} 
+          onReturn={next}
         />
         <ActionButtons>
           <Button onClick={this.props.back}>Back</Button>

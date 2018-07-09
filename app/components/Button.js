@@ -48,6 +48,7 @@ const StyledButton = styled.button`
   justify-content: center;
   position: relative;
   transform: translate3d(0, 0, 0);  
+  background-color: rgba(255,255,255,0.1);
 
   ${({ padding }) =>
     padding
@@ -56,9 +57,16 @@ const StyledButton = styled.button`
         `
       : css`
           padding: 12px 30px;
-        `};
-  transition: 0.15s ease-in-out;
+    `};
 
+  ${({ margin }) =>
+    margin
+      && css`
+          margin: ${margin};
+        `
+      };
+
+  transition: 0.15s ease-in-out;
   &:hover {
     cursor: pointer;
   }
@@ -92,7 +100,10 @@ const StyledButton = styled.button`
     }
   }
 
-  border: 0 !important;
+  border: 0;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(0,0,0,0.15);
+
   ${Label} {
     color: #ffffff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -128,7 +139,7 @@ const StyledSmallButton = styled.button`
   position: relative;
   transform: translate3d(0, 0, 0); 
   width: auto;
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.1);
 
   ${({ padding }) =>
     padding

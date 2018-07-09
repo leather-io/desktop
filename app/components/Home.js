@@ -17,9 +17,9 @@ export default class Home extends Component<Props> {
         <Input.SmallText>
           Choose one of the following options to setup your Stacks wallet.
         </Input.SmallText>
-        <Button to="/new">Create New Wallet</Button>
-        <Button to="/hardware">Use a Hardware Wallet</Button>
-        <Button to="/multisig">Create Multi-Signature Wallet</Button>
+        <Button to="/new" height={68} margin={'0 0 1px 0'}>Create New Wallet</Button>
+        <Button to="/hardware" height={68} margin={'0 0 1px 0'}>Use a Hardware Wallet</Button>
+        <Button to="/multisig" height={68}>Create Multi-Signature Wallet</Button>
       </PageWrapper>
     );
   }

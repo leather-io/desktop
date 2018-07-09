@@ -8,7 +8,7 @@ const Blob = styled.div`
   padding:12px;
   background-color: rgba(255,255,255,0.1);
   max-height: 180px;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   ${({ fontSize }) =>
   fontSize ? 

@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import * as WalletActions from '../actions/wallet'
 import NameInput from '../components/NameInput'
 import HardwareSelectView from '../components/HardwareSelect'
+import TrezorView from '../components/Trezor'
+import LedgerView from '../components/Ledger'
 import CompleteView from '../components/Complete'
 import PageWrapper from '../containers/PageWrapper'
 import { remote } from 'electron'
@@ -28,7 +30,9 @@ function mapDispatchToProps(dispatch) {
 const VIEWS = {
   DEFAULT: 0,
   SELECT: 1,
-  COMPLETE: 2,
+  TREZOR: 2,
+  LEDGER: 3,
+  COMPLETE: 4
 }
 
 class HardwareWalletPage extends Component<Props> {
@@ -40,7 +44,8 @@ class HardwareWalletPage extends Component<Props> {
     this.state = {
       view: VIEWS.DEFAULT,
       name: '',
-      nameError: ''
+      nameError: '',
+      hardwareError: ''
     }
   }
 
@@ -72,15 +77,31 @@ class HardwareWalletPage extends Component<Props> {
   }
 
   getTrezorAddress = () => {
+    this.setState({
+      hardwareError: '',
+    })
     this.props.getTrezorAddr()
   		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
   		.then(() => this.changeView(VIEWS.COMPLETE))
+      .catch(() => {
+        this.setState({
+          hardwareError: 'There was an error retrieving the public key from your Trezor.'
+        })
+      })
   }
 
   getLedgerAddress = () => {
+    this.setState({
+      hardwareError: '',
+    })
     this.props.getLedgerAddr()
   		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
   		.then(() => this.changeView(VIEWS.COMPLETE))
+      .catch(() => {
+        this.setState({
+          hardwareError: 'There was an error retrieving the public key from your Trezor.'
+        })
+      })
   }
 
   confirmSeed = (confirmSeed) => {
@@ -111,9 +132,21 @@ class HardwareWalletPage extends Component<Props> {
                />;
       case VIEWS.SELECT:
         return <HardwareSelectView
-                getTrezorAddress={this.getTrezorAddress}
-                getLedgerAddress={this.getLedgerAddress}
+                getTrezorAddress={() => this.changeView(VIEWS.TREZOR)}
+                getLedgerAddress={() => this.changeView(VIEWS.LEDGER)}
                 back={() => this.changeView(VIEWS.DEFAULT)}
+               />;
+      case VIEWS.TREZOR:
+        return <TrezorView
+                getTrezorAddress={this.getTrezorAddress}
+                error={this.state.hardwareError}
+                back={() => this.changeView(VIEWS.SELECT)}
+               />;
+      case VIEWS.LEDGER:
+        return <LedgerView
+                getLedgerAddress={this.getLedgerAddress}
+                error={this.state.hardwareError}
+                back={() => this.changeView(VIEWS.SELECT)}
                />;
       case VIEWS.COMPLETE:
         return <CompleteView

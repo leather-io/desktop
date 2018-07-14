@@ -13,7 +13,7 @@ export default class Home extends Component<Props> {
 
   render() {
     return (
-      <PageWrapper title="Stacks Wallet" icon={iconImage} topPadding={135} center>
+      <PageWrapper title="Stacks Wallet" icon={iconImage} topPadding={105} center>
         <Input.SmallText>
           Choose one of the following options to setup your Stacks wallet.
         </Input.SmallText>
@@ -32,8 +32,14 @@ export default class Home extends Component<Props> {
         </Button>
         <Button 
           to="/multisig" 
-          height={68}>
+          height={68}
+          margin={'0 0 1px 0'}>
           Create Multi-Signature Wallet
+        </Button>
+        <Button 
+          to="/restore" 
+          height={68}>
+          Restore from Seed Phrase
         </Button>
       </PageWrapper>
     );

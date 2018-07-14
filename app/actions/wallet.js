@@ -82,6 +82,26 @@ export function updatePayload(payload) {
 export function generateNewSeed() {
 	const entropy = crypto.randomBytes(32)
 	const seedPhrase = bip39.entropyToMnemonic(entropy)
+
+	const { btcAddress, publicKey } = getBtcAddress(seedPhrase)
+
+	const address = b58ToC32(btcAddress)
+
+	return dispatch => {
+		dispatch(updateSeed(seedPhrase, address, publicKey))
+	}
+}
+
+export function restoreFromSeed(seedPhrase) {
+	return (dispatch) => new Promise((resolve) => {
+		const { btcAddress, publicKey } = getBtcAddress(seedPhrase)
+		const address = b58ToC32(btcAddress)
+
+		resolve(dispatch(updateSeed(seedPhrase, address, publicKey)))
+	})
+}
+
+export function getBtcAddress(seedPhrase) {
 	const seed = bip39.mnemonicToSeed(seedPhrase)
 
 	const master = bip32.fromSeed(seed)
@@ -96,12 +116,9 @@ export function generateNewSeed() {
 	var pk160 = RIPEMD160.digest()
 
 	const btcAddress = btc.address.toBase58Check(pk160.slice(0, 20), 0)
-	const address = b58ToC32(btcAddress)
 	const publicKey = child.publicKey.toString('hex')
 
-	return dispatch => {
-		dispatch(updateSeed(seedPhrase, address, publicKey))
-	}
+	return { btcAddress, publicKey }
 }
 
 export function getTrezorAddr() {

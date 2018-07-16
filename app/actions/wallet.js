@@ -5,9 +5,9 @@ import crypto from 'crypto'
 import btc from 'bitcoinjs-lib'
 import Transport from '@ledgerhq/hw-transport-node-hid'
 import AppBtc  from '@ledgerhq/hw-app-btc'
+import { c32address, versions } from 'c32check'
 import TrezorConnect from '../../trezor/trezor'
 import { encryptECIES } from '../utils/encryption'
-import { b58ToC32 } from 'c32check'
 
 export const WALLET_TYPE = {
 	NORMAL: 'NORMAL',
@@ -83,9 +83,7 @@ export function generateNewSeed() {
 	const entropy = crypto.randomBytes(32)
 	const seedPhrase = bip39.entropyToMnemonic(entropy)
 
-	const { btcAddress, publicKey } = getBtcAddress(seedPhrase)
-
-	const address = b58ToC32(btcAddress)
+	const { address, publicKey } = getBtcAddress(seedPhrase)
 
 	return dispatch => {
 		dispatch(updateSeed(seedPhrase, address, publicKey))
@@ -94,8 +92,7 @@ export function generateNewSeed() {
 
 export function restoreFromSeed(seedPhrase) {
 	return (dispatch) => new Promise((resolve) => {
-		const { btcAddress, publicKey } = getBtcAddress(seedPhrase)
-		const address = b58ToC32(btcAddress)
+		const { address, publicKey } = getBtcAddress(seedPhrase)
 
 		resolve(dispatch(updateSeed(seedPhrase, address, publicKey)))
 	})
@@ -115,7 +112,8 @@ export function getBtcAddress(seedPhrase) {
 	RIPEMD160.update(pk256)
 	var pk160 = RIPEMD160.digest()
 
-	const btcAddress = btc.address.toBase58Check(pk160.slice(0, 20), 0)
+  const address = c32address(versions.mainnet.p2pkh,
+                               pk160.slice(0, 20).toString('hex'))
 	const publicKey = child.publicKey.toString('hex')
 
 	return { btcAddress, publicKey }
@@ -127,8 +125,7 @@ export function getTrezorAddr() {
       TrezorConnect.getXPubKey(path, function (result) {
         if (result.success) {
           const child = bip32.fromBase58(result.xpubkey)
-          const btcAddress = getAddressFromChildPubKey(child.publicKey)
-          const address = b58ToC32(btcAddress)
+          const address = getAddressFromChildPubKey(child.publicKey)
           dispatch(updatePubKey(address, child.publicKey.toString('hex')))
           resolve()
         } else {
@@ -150,13 +147,11 @@ export function getLedgerAddr() {
         var ecPair = btc.ECPair.fromPublicKeyBuffer(Buffer.from(publicKey, 'hex'))
         ecPair.compressed = true
         var pkBuffer = ecPair.getPublicKeyBuffer()
-        var btcAddress = getAddressFromChildPubKey(pkBuffer)
-        const address = b58ToC32(btcAddress)
+        const address = getAddressFromChildPubKey(pkBuffer)
         dispatch(updatePubKey(address, publicKey))
         resolve()
       })
       .catch((err) => {
-        console.log(err)
         const error = 'Failed to get address from Ledger'
         dispatch(updateHardwareError(error))
         reject()
@@ -179,8 +174,8 @@ export function makeMultiSig(publicKeys: Array<string>, signaturesRequired: numb
 	    btc.crypto.hash160(redeemScript))
 	  const scriptHash = btc.script.compile(scriptPubKey).slice(2, 22)
 
-	  const btcAddress = btc.address.toBase58Check(scriptHash, 5)
-		const address = b58ToC32(btcAddress)
+	  const address = c32address(versions.mainnet.p2sh,
+                                 scriptHash.toString('hex'))
 
 	  dispatch(updateAddress(address))
 	  resolve({ address, payload: redeemScript.toString('hex') })
@@ -229,6 +224,7 @@ function getAddressFromChildPubKey(child) {
   RIPEMD160.update(pk256)
   var pk160 = RIPEMD160.digest()
 
-  var address = btc.address.toBase58Check(pk160, 0)
+  const address = c32address(versions.mainnet.p2pkh,
+                             pk160.slice(0, 20).toString('hex'))
   return address
 }

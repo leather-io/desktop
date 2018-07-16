@@ -12,6 +12,7 @@
  */
 import { app, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
+import path from 'path'
 
 let mainWindow = null;
 
@@ -25,7 +26,7 @@ if (
   process.env.DEBUG_PROD === 'true'
 ) {
   require('electron-debug')();
-  const path = require('path');
+  // const path = require('path');
   const p = path.join(__dirname, '..', 'app', 'node_modules');
   require('module').globalPaths.push(p);
 }
@@ -60,10 +61,16 @@ app.on('ready', async () => {
     await installExtensions();
   }
 
+  const nodeIntegrationEnabled = process.env.NODE_ENV === 'development'
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 550,
-    height: 760
+    height: 760,
+    webPreferences: {
+      nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);

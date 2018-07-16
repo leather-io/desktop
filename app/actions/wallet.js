@@ -116,7 +116,7 @@ export function getBtcAddress(seedPhrase) {
                                pk160.slice(0, 20).toString('hex'))
 	const publicKey = child.publicKey.toString('hex')
 
-	return { btcAddress, publicKey }
+	return { address, publicKey }
 }
 
 export function getTrezorAddr() {

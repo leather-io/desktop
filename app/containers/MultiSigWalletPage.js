@@ -66,7 +66,7 @@ class MultiSigWalletPage extends Component<Props> {
   }
 
   handleSignaturesRequiredChange = (event) => {
-    if(this.isInt(event.target.value)) {
+    if(this.isInt(event.target.value) && event.target.value <= 20) {
       var signaturesRequired = parseInt(event.target.value)
       var publicKeys = []
       var publicKeyErrors = []
@@ -111,7 +111,7 @@ class MultiSigWalletPage extends Component<Props> {
     const signaturesRequired = this.state.signaturesRequired
     if (signaturesRequired < 2) {
       this.setState({
-        signaturesRequiredError: 'Number of signatures required must be greater than 2.'
+        signaturesRequiredError: 'Number of signatures required must be greater than 1.'
       })
     } else {
       this.setState({

@@ -9,6 +9,7 @@ import ViewSeedView from '../components/ViewSeed'
 import RestoreSeedView from '../components/RestoreSeed'
 import CompleteView from '../components/Complete'
 import PageWrapper from '../containers/PageWrapper'
+import bip39 from 'bip39'
 import { remote } from 'electron'
 
 type Props = {};
@@ -83,15 +84,27 @@ class RestorePage extends Component<Props> {
   }
 
   restore = () => {
-    this.props.restoreFromSeed(this.state.seed)
-      .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-      .then(() => this.changeView(VIEWS.COMPLETE))
-      .catch((error) => {
-        console.log(error)
-        this.setState({
-          seedError: 'Failed to restore from the seed phrase you entered!'
-        })
+    if (this.state.seed.length == 0) {
+      this.setState({
+        seedError: 'Please enter your seed phrase.'
       })
+    } else {
+      if (bip39.validateMnemonic(this.state.seed)) {
+        this.props.restoreFromSeed(this.state.seed)
+          .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
+          .then(() => this.changeView(VIEWS.COMPLETE))
+          .catch((error) => {
+            console.log(error)
+            this.setState({
+              seedError: 'Failed to restore from the seed phrase you entered!'
+            })
+          })
+      } else {
+        this.setState({
+          seedError: 'Please enter a valid seed phrase.'
+        })
+      }
+    }
   }
 
   exit = () => {

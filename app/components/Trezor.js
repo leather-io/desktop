@@ -21,10 +21,13 @@ export default class Trezor extends Component<Props> {
       <div>
         {error && <StyledInput.ErrorText>{error}</StyledInput.ErrorText>}
         <p>
-          1. Connect your Trezor to your computer via USB.
+          1. Make sure you have Trezor Bridge installed on your computer.
         </p>
         <p>
-          2. Click the Next button.
+          2. Connect your Trezor to your computer via USB.
+        </p>
+        <p>
+          3. Click the Next button.
         </p>
         <ActionButtons>
           <Button onClick={this.props.back}>Back</Button>

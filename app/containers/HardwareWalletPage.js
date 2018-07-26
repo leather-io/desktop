@@ -63,7 +63,7 @@ class HardwareWalletPage extends Component<Props> {
 
   showHardwareSelectView = () => {
     const name = this.state.name
-    if (name.length === 0) {
+    if (name.trim().length === 0) {
       this.setState({
         nameError: 'You must enter a name.'
       })

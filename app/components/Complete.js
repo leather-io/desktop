@@ -17,6 +17,8 @@ export default class CompleteView extends Component<Props> {
     this.state = {
       addressCopyButtonText: 'Copy',
       payloadCopyButtonText: 'Copy',
+      showPublicKey: false,
+      publicKeyToggleButtonLabel: 'Show Public Key'
     }
   }
 
@@ -44,11 +46,20 @@ export default class CompleteView extends Component<Props> {
     }, 2000)
   }
 
+  togglePublicKey = () => {
+    var label = !this.state.showPublicKey ? 'Show Stacks Address' : 'Show Public Key'
+    this.setState({
+      showPublicKey: !this.state.showPublicKey,
+      publicKeyToggleButtonLabel: label
+    })
+  }
+
   render() {
 
     const { 
       address,
-      payload
+      payload,
+      publicKey
     } = this.props
 
     return (
@@ -56,13 +67,33 @@ export default class CompleteView extends Component<Props> {
         <p>
           You're almost done! To complete the process, return to the Coinlist web page and paste the following information into the corresponding fields.
         </p>
-        <p>Your Stacks Address:</p>
-        <Blob>
-          {address}
-        </Blob>
-        <CopyToClipboard text={address}>
-          <Button onClick={this.addressCopied} height={25} small>{this.state.addressCopyButtonText}</Button>
+
+        { !this.state.showPublicKey ? 
+          <div>
+            <p>Your Stacks Address:</p>
+            <Blob>
+              {address}
+            </Blob>
+          </div>
+          :
+          <div>
+            <p>Your Public Key:</p>
+            <Blob>
+              {publicKey}
+            </Blob>
+          </div>
+        }
+
+        <CopyToClipboard text={this.state.showPublicKey ? publicKey : address}>
+          <Button onClick={this.addressCopied} height={25} small>
+            {this.state.addressCopyButtonText}
+          </Button>
         </CopyToClipboard>
+        &nbsp;
+        <Button onClick={this.togglePublicKey} height={25} small>
+          {this.state.publicKeyToggleButtonLabel}
+        </Button>
+
         <p>Verification Code:</p>
         <Blob>
           {payload}

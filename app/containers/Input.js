@@ -8,6 +8,7 @@ const renderInput = (type, name, value, onChange, onReturn, height) => {
 		return <StyledInput.TextArea 
       name={name} 
       value={value} 
+      maxLength={512}
       onChange={onChange} 
     />
 	} else {
@@ -15,6 +16,7 @@ const renderInput = (type, name, value, onChange, onReturn, height) => {
       type="text" 
       name={name} 
       value={value} 
+      maxLength={512}
       onChange={onChange} 
       onKeyUp={(e) => {
         if (e.key === 'Enter') {

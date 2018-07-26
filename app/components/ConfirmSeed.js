@@ -47,6 +47,7 @@ export default class ConfirmSeed extends Component<Props> {
             value={seedConfirm} 
             error={error} 
             onChange={this.handleChange} 
+            onPaste={(e) => e.preventDefault()}
           />        
           <ActionButtons>
             <Button onClick={this.props.back}>Back</Button>

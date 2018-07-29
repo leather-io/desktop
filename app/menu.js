@@ -21,7 +21,12 @@ export default class MenuBuilder {
       : this.buildDefaultTemplate();
 
     const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
+
+    if (process.platform === 'darwin') {
+      Menu.setApplicationMenu(menu);
+    } else {
+      Menu.setApplicationMenu(null);
+    }
 
     return menu;
   }
@@ -100,10 +105,6 @@ export default class MenuBuilder {
       {
         label: '&File',
         submenu: [
-          {
-            label: '&Open',
-            accelerator: 'Ctrl+O'
-          },
           {
             label: '&Close',
             accelerator: 'Ctrl+W',

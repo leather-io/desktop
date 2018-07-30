@@ -148,7 +148,7 @@ export function getLedgerAddr() {
         ecPair.compressed = true
         var pkBuffer = ecPair.getPublicKeyBuffer()
         const address = getAddressFromChildPubKey(pkBuffer)
-        dispatch(updatePubKey(address, publicKey))
+        dispatch(updatePubKey(address, pkBuffer.toString('hex')))
         resolve()
       })
       .catch((err) => {

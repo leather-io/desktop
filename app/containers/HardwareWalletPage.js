@@ -99,7 +99,7 @@ class HardwareWalletPage extends Component<Props> {
   		.then(() => this.changeView(VIEWS.COMPLETE))
       .catch(() => {
         this.setState({
-          hardwareError: 'There was an error retrieving the public key from your Trezor.'
+          hardwareError: 'There was an error retrieving the public key from your Ledger.'
         })
       })
   }

@@ -31,11 +31,11 @@ export default class ViewSeedView extends Component<Props> {
             <Blob fontSize={16}>
               {seed}
             </Blob>
+            <Warning>Warning: You will lose access to your Stacks if you do not write this down!</Warning>
             <Input.SmallText>
               Your seed phrase gives you access to your Stacks. Make sure to keep this information in a safe place.
               For best practices on storing your seed phrase please refer to the <a href="https://www.blockstack.org" target='_blank'>Investor FAQ</a>.
             </Input.SmallText>
-            <Warning>Warning: You will lose access to your Stacks if you do not write this down!</Warning>
             <ActionButtons>
               <Button onClick={this.props.back}>Back</Button>
               <Button onClick={this.props.next}>Next</Button>

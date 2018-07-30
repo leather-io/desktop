@@ -121,6 +121,7 @@ const StyledButton = styled.button`
     &::before {
       opacity: 1;
     }
+    text-decoration: none;
   }
 
   &:active {
@@ -128,7 +129,10 @@ const StyledButton = styled.button`
       background: linear-gradient(109.46deg, #1d1740 0%, #664b8a 171.9%);
       opacity: 1;
     }
+    text-decoration: none;
   }
+
+  text-decoration: none;
 `
 
 const StyledSmallButton = styled.button`

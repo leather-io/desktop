@@ -36,12 +36,11 @@ li {
 
 a {
   color: #fff;
-  opacity: 0.75;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 a:hover {
   opacity: 1;
-  text-decoration: none;
+  text-decoration: underline;
   cursor: pointer;
 }

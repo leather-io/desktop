@@ -20,6 +20,8 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-renderer',
 
+  optimization: { minimize: false },
+
   entry: './app/index',
 
   output: {
@@ -173,8 +175,16 @@ export default merge.smart(baseConfig, {
       sourceMap: true,
       uglifyOptions: {
         mangle: {
-          reserved: ['Array','BigInteger','Boolean','ECPair','Function','Number','Point']
-        }  
+          reserved: [
+            'Array',
+            'BigInteger',
+            'Boolean',
+            'ECPair',
+            'Function',
+            'Number',
+            'Point'
+          ]
+        }
       }
     }),
 

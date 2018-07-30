@@ -28,7 +28,12 @@ export default merge.smart(baseConfig, {
   plugins: [
     new UglifyJSPlugin({
       parallel: true,
-      sourceMap: true
+      sourceMap: true,
+      uglifyOptions: {
+        mangle: {
+          reserved: ['Array','BigInteger','Boolean','ECPair','Function','Number','Point']
+        }  
+      },
     }),
 
     new BundleAnalyzerPlugin({

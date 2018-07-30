@@ -170,7 +170,12 @@ export default merge.smart(baseConfig, {
 
     new UglifyJSPlugin({
       parallel: true,
-      sourceMap: true
+      sourceMap: true,
+      uglifyOptions: {
+        mangle: {
+          reserved: ['Array','BigInteger','Boolean','ECPair','Function','Number','Point']
+        }  
+      }
     }),
 
     new ExtractTextPlugin('style.css'),

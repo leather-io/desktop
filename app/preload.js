@@ -19,6 +19,10 @@ window.require = function(module) {
 	} else if (module==='electron') {
 		var remote = require('electron').remote
 		return { remote }
+	} else if (module==='@ledgerhq/hw-transport-node-hid') {
+		return require('@ledgerhq/hw-transport-node-hid')
+	} else if (module==='@ledgerhq/hw-app-btc') {
+		return require('@ledgerhq/hw-app-btc')
 	}
 }
 window.nodeBuffer = Buffer;

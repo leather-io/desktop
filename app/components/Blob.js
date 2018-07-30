@@ -9,6 +9,7 @@ const Blob = styled.div`
   background-color: rgba(255,255,255,0.1);
   max-height: 180px;
   overflow-y: auto;
+  word-spacing: 4px;
 
   ${({ fontSize }) =>
   fontSize ? 

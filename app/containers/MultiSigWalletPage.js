@@ -144,6 +144,9 @@ class MultiSigWalletPage extends Component<Props> {
       if(publicKeys[i].length == 0) {
         publicKeyErrors[i] = 'Invalid public key'
         errors = true
+      } else if (!this.isCompressedPubKey(publicKeys[i])) {
+        publicKeyErrors[i] = 'Uncompressed public keys are not accepted'
+        errors = true
       } else {
         publicKeyErrors[i] = ''
       }
@@ -163,9 +166,11 @@ class MultiSigWalletPage extends Component<Props> {
     return !errors
   }
 
-  hasDuplicatePubKeys(pubKeys) {
+  hasDuplicatePubKeys = (pubKeys) => {
     return !(pubKeys.length === new Set(pubKeys).size)
   }
+ 
+  isCompressedPubKey = (pubKey) => pubKey.startsWith('02') || pubKey.startsWith('03')
 
   makeMultiSig = () => {
     if(this.verifyPublicKeys()) {

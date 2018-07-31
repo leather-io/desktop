@@ -45,7 +45,8 @@ class HardwareWalletPage extends Component<Props> {
       view: VIEWS.DEFAULT,
       name: '',
       nameError: '',
-      hardwareError: ''
+      hardwareError: '',
+      processing: false
     }
   }
 
@@ -79,13 +80,20 @@ class HardwareWalletPage extends Component<Props> {
   getTrezorAddress = () => {
     this.setState({
       hardwareError: '',
+      processing: true
     })
     this.props.getTrezorAddr()
   		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-  		.then(() => this.changeView(VIEWS.COMPLETE))
+  		.then(() => {
+        this.changeView(VIEWS.COMPLETE)
+        this.setState({
+          processing: false
+        })
+      })
       .catch(() => {
         this.setState({
-          hardwareError: 'There was an error retrieving the public key from your Trezor.'
+          hardwareError: 'There was an error retrieving the public key from your Trezor.',
+          processing: false
         })
       })
   }
@@ -93,13 +101,20 @@ class HardwareWalletPage extends Component<Props> {
   getLedgerAddress = () => {
     this.setState({
       hardwareError: '',
+      processing: true
     })
     this.props.getLedgerAddr()
   		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-  		.then(() => this.changeView(VIEWS.COMPLETE))
+  		.then(() => {
+        this.changeView(VIEWS.COMPLETE)
+        this.setState({
+          processing: false
+        })
+      })
       .catch(() => {
         this.setState({
-          hardwareError: 'There was an error retrieving the public key from your Ledger.'
+          hardwareError: 'There was an error retrieving the public key from your Ledger.',
+          processing: false
         })
       })
   }
@@ -139,12 +154,14 @@ class HardwareWalletPage extends Component<Props> {
       case VIEWS.TREZOR:
         return <TrezorView
                 getTrezorAddress={this.getTrezorAddress}
+                processing={this.state.processing}
                 error={this.state.hardwareError}
                 back={() => this.changeView(VIEWS.SELECT)}
                />;
       case VIEWS.LEDGER:
         return <LedgerView
                 getLedgerAddress={this.getLedgerAddress}
+                processing={this.state.processing}
                 error={this.state.hardwareError}
                 back={() => this.changeView(VIEWS.SELECT)}
                />;

@@ -14,6 +14,7 @@ export default class Ledger extends Component<Props> {
 
     const { 
       getLedgerAddress,
+      processing,
       error
     } = this.props
 
@@ -37,7 +38,7 @@ export default class Ledger extends Component<Props> {
         </p>
         <ActionButtons>
           <Button onClick={this.props.back}>Back</Button>
-          <Button onClick={this.props.getLedgerAddress}>Next</Button>
+          <Button onClick={this.props.getLedgerAddress} disabled={processing}>{processing ? 'Processing...' : 'Next'}</Button>
         </ActionButtons>
       </div>
     );

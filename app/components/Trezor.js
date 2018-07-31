@@ -14,6 +14,7 @@ export default class Trezor extends Component<Props> {
 
     const { 
       getTrezorAddress,
+      processing,
       error
     } = this.props
 
@@ -31,7 +32,7 @@ export default class Trezor extends Component<Props> {
         </p>
         <ActionButtons>
           <Button onClick={this.props.back}>Back</Button>
-          <Button onClick={this.props.getTrezorAddress}>Next</Button>
+          <Button onClick={this.props.getTrezorAddress} disabled={processing}>{processing ? 'Processing...' : 'Next'}</Button>
         </ActionButtons>
       </div>
     );

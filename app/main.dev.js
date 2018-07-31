@@ -82,8 +82,10 @@ app.on('ready', async () => {
   });
 
   mainWindow.webContents.on('new-window', function(event, url){
-     event.preventDefault();
-     shell.openExternal(url);
+    if (!url.startsWith('https://connect.trezor.io')) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
   });
 
   mainWindow.on('closed', () => {

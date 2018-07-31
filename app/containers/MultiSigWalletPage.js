@@ -148,10 +148,23 @@ class MultiSigWalletPage extends Component<Props> {
         publicKeyErrors[i] = ''
       }
     }
+
     this.setState({
       publicKeyErrors
     })
+
+    if (this.hasDuplicatePubKeys(publicKeys)) {
+      errors = true
+      this.setState({
+        error: 'One or more of your public keys are duplicates.'
+      })
+    }
+
     return !errors
+  }
+
+  hasDuplicatePubKeys(pubKeys) {
+    return !(pubKeys.length === new Set(pubKeys).size)
   }
 
   makeMultiSig = () => {

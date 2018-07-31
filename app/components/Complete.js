@@ -90,9 +90,11 @@ export default class CompleteView extends Component<Props> {
           </Button>
         </CopyToClipboard>
         &nbsp;
-        <Button onClick={this.togglePublicKey} height={25} small>
-          {this.state.publicKeyToggleButtonLabel}
-        </Button>
+        {publicKey &&
+          <Button onClick={this.togglePublicKey} height={25} small>
+            {this.state.publicKeyToggleButtonLabel}
+          </Button>
+        }
 
         <p>Verification Code:</p>
         <Blob>

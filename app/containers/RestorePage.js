@@ -134,6 +134,7 @@ class RestorePage extends Component<Props> {
         return <CompleteView 
                 address={this.props.address}
                 payload={this.props.payload}
+                publicKey={this.props.publicKey}
                 next={this.exit}
         			 />;
       default:

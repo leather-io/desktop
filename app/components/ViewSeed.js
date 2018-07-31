@@ -34,7 +34,7 @@ export default class ViewSeedView extends Component<Props> {
             <Warning>Warning: You will lose access to your Stacks if you do not write this down!</Warning>
             <Input.SmallText>
               Your seed phrase gives you access to your Stacks. Make sure to keep this information in a safe place.
-              For best practices on storing your seed phrase please refer to the <a href="https://www.blockstack.org" target='_blank'>Investor FAQ</a>.
+              For best practices on storing your seed phrase please refer to the <a href="https://www.stackstoken.com/stacks-investor-faq/#what-is-my-seed-phrase-and-why-is-it-important" target='_blank'>Investor FAQ</a>.
             </Input.SmallText>
             <ActionButtons>
               <Button onClick={this.props.back}>Back</Button>

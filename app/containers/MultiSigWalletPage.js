@@ -195,7 +195,7 @@ class MultiSigWalletPage extends Component<Props> {
   makeMultiSig = () => {
     if(this.verifyPublicKeys()) {
       this.props.makeMultiSig(this.state.publicKeys, this.state.signaturesRequired)
-        .then(({address, payload}) => this.props.generateMultiSigPayload(address, payload))
+        .then(({payload}) => this.props.generateMultiSigPayload(this.state.name, payload))
         .then(() => this.changeView(VIEWS.COMPLETE))
         .catch((error) => {
           this.setState({

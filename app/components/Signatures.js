@@ -14,7 +14,10 @@ export default class Signatures extends Component<Props> {
     const {
       handleSignaturesRequiredChange,
       signaturesRequired,
-      error,
+      signaturesRequiredError,
+      handleSignaturesChange,
+      signatures,
+      signaturesError,
       next
     } = this.props
 
@@ -24,9 +27,17 @@ export default class Signatures extends Component<Props> {
           label="Enter the number of signatures required" 
           type="text" 
           name="signatures" 
-          error={error}
+          error={signaturesRequiredError}
           value={signaturesRequired} 
           onChange={handleSignaturesRequiredChange} 
+        />
+        <Input 
+          label="Enter the total number of signatures" 
+          type="text" 
+          name="total-signatures" 
+          error={signaturesError}
+          value={signatures} 
+          onChange={handleSignaturesChange} 
           onReturn={next}
         />
         <ActionButtons>

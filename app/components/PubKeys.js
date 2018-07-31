@@ -38,11 +38,6 @@ export default class PubKeysView extends Component<Props> {
               onReturn={() => {}}
             />        
           )}
-          {publicKeys.length < 20 &&
-            <Button onClick={addPublicKey} small>
-              Add a Public Key
-            </Button>
-          }
         </Scroll>
         <ActionButtons>
           <Button onClick={this.props.back}>Back</Button>

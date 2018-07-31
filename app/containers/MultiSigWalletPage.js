@@ -43,10 +43,12 @@ class MultiSigWalletPage extends Component<Props> {
       view: VIEWS.DEFAULT,
       name: '',
       signaturesRequired: '',
+      signatures: '',
       publicKeys: ['', ''],
       publicKeyErrors: ['', ''],
       nameError: '',
       signaturesRequiredError: '',
+      signaturesError: '',
       error: '',
     }
   }
@@ -68,20 +70,33 @@ class MultiSigWalletPage extends Component<Props> {
   handleSignaturesRequiredChange = (event) => {
     if(this.isInt(event.target.value) && event.target.value <= 20) {
       var signaturesRequired = parseInt(event.target.value)
+      this.setState({
+        signaturesRequired: parseInt(event.target.value),
+      })
+    } else if (event.target.value == '') {
+      this.setState({
+        signaturesRequired: ''
+      })
+    }
+  }
+
+  handleSignaturesChange = (event) => {
+    if(this.isInt(event.target.value) && event.target.value <= 20) {
+      var signatures = parseInt(event.target.value)
       var publicKeys = []
       var publicKeyErrors = []
-      for (var x=0; x < signaturesRequired; x++) {
+      for (var x=0; x < signatures; x++) {
         publicKeys.push('')
         publicKeyErrors.push('')
       }
       this.setState({
-        signaturesRequired: parseInt(event.target.value),
+        signatures: parseInt(event.target.value),
         publicKeys,
         publicKeyErrors
       })
     } else if (event.target.value == '') {
       this.setState({
-        signaturesRequired: ''
+        signatures: ''
       })
     }
   }
@@ -109,9 +124,14 @@ class MultiSigWalletPage extends Component<Props> {
 
   showPubKeysView = () => {
     const signaturesRequired = this.state.signaturesRequired
+    const signatures = this.state.signatures
     if (signaturesRequired < 2) {
       this.setState({
-        signaturesRequiredError: 'Number of signatures required must be greater than 1.'
+        signaturesRequiredError: 'Number of required signatures must be greater than 1.'
+      })
+    } else if (signaturesRequired > signatures) {
+      this.setState({
+        signaturesRequiredError: 'Number of required signatures is greater than total number of signatures.'
       })
     } else {
       this.setState({
@@ -203,8 +223,11 @@ class MultiSigWalletPage extends Component<Props> {
       case VIEWS.SIGNATURES:
         return <SignaturesView
                 signaturesRequired={this.state.signaturesRequired}
-                error={this.state.signaturesRequiredError}
+                signaturesRequiredError={this.state.signaturesRequiredError}
                 handleSignaturesRequiredChange={this.handleSignaturesRequiredChange}
+                signatures={this.state.signatures}
+                signaturesError={this.state.signaturesError}
+                handleSignaturesChange={this.handleSignaturesChange}
                 next={this.showPubKeysView}
                 back={() => this.changeView(VIEWS.DEFAULT)}
                />;
@@ -213,8 +236,6 @@ class MultiSigWalletPage extends Component<Props> {
                 publicKeys={this.state.publicKeys}
                 publicKeyErrors={this.state.publicKeyErrors}
                 handlePubKeyChange={this.handlePubKeyChange}
-                handleSignaturesRequiredChange={this.handleSignaturesRequiredChange}
-                addPublicKey={this.addPublicKey}
                 error={this.state.error}
                 next={this.makeMultiSig}
                 back={() => this.changeView(VIEWS.SIGNATURES)}

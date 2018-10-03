@@ -26,22 +26,16 @@
       {
         const scripts = [];
 
-        // Dynamically insert the DLL script in development env in the
-        // renderer process
-        // if (process.env.NODE_ENV === 'development') {
-          // scripts.push('../dll/renderer.dev.dll.js');
-        // }
+        // Dev
+          // Dynamically insert the DLL script in development env in the
+          // renderer process
+          scripts.push('../dll/renderer.dev.dll.js');
 
-        // Dynamically insert the bundled app script in the renderer process
-        // const port = 1212;
-        // scripts.push(
-        //   (process.env.HOT)
-        //     ? 'http://localhost:' + port + '/dist/renderer.dev.js'
-        //     : './dist/renderer.prod.js'
-        // );
+          // Dynamically insert the bundled app script in the renderer process
+          scripts.push('http://localhost:1212/dist/renderer.dev.js');
 
-        // scripts.push('http://localhost:' + port + '/dist/renderer.dev.js');
-        scripts.push('./dist/renderer.prod.js');
+        // Prod
+          // scripts.push('./dist/renderer.prod.js');
 
         document.write(
           scripts

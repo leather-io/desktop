@@ -17,3 +17,7 @@ export function getPrivateKeyAddress(network: Object, privateKey: string | Trans
 export function sumUTXOs(utxos: Array<UTXO>) {
   return utxos.reduce((agg, x) => agg + x.value, 0);
 }
+
+export function microToStacks(microStacks) {
+  return microStacks / 1 / Math.pow(10,6)
+}

@@ -19,6 +19,18 @@ export default class Home extends Component<Props> {
         </Input.SmallText>
         <br/>
         <Button 
+          to="/hardware" 
+          height={68} 
+          margin={'0 0 1px 0'}>
+          I have a hardware device
+        </Button>
+        <Button 
+          to="/restore" 
+          height={68} 
+          margin={'0 0 1px 0'}>
+          I have a seed phrase
+        </Button>
+{/*       <Button 
           to="/new" 
           height={68} 
           margin={'0 0 1px 0'}>
@@ -38,9 +50,15 @@ export default class Home extends Component<Props> {
         </Button>
         <Button 
           to="/restore" 
-          height={68}>
+          height={68}
+          margin={'0 0 1px 0'}>
           Restore from Seed Phrase
         </Button>
+        <Button 
+          to="/test" 
+          height={68}>
+          Test
+        </Button>*/}
       </PageWrapper>
     );
   }

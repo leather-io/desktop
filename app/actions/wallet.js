@@ -3,11 +3,16 @@ import bip39 from 'bip39'
 import bip32 from 'bip32'
 import crypto from 'crypto'
 import btc from 'bitcoinjs-lib'
+import bigi from 'bigi'
+import { network, transactions, config} from 'blockstack'
 import Transport from '@ledgerhq/hw-transport-node-hid'
 import AppBtc  from '@ledgerhq/hw-app-btc'
-import { c32address, versions } from 'c32check'
+import { c32address, c32ToB58, versions } from 'c32check'
+// import TrezorConnect from 'trezor-connect'
 import TrezorConnect from '../../trezor/trezor'
 import { encryptECIES } from '../utils/encryption'
+import { getPrivateKeyAddress, sumUTXOs } from '../utils/utils'
+import { TrezorSigner, configureTestnet } from '../../blockstack-trezor'
 
 export const WALLET_TYPE = {
 	NORMAL: 'NORMAL',
@@ -17,11 +22,14 @@ export const WALLET_TYPE = {
 
 const BSKPK = '03956cd9ba758cb7be56d0f8d52476673814d8dbb3c1a728d73a36b3b9268f9cba'
 const path = `m/44'/5757'/0'/0/0`
+const coreNodeURI = 'http://testnet.blockstack.org:16268'
+const testnetCoreNodeURI = 'http://testnet.blockstack.org:16268'
 
 export const SET_NAME = 'SET_NAME'
 export const CREATE_NEW_SEED = 'NEW_SEED'
 export const USE_HARDWARE_WALLET = 'USE_HARDWARE_WALLET'
 export const SET_ADDRESS = 'SET_ADDRESS'
+export const UPDATE_BALANCE = 'UPDATE_BALANCE'
 export const SET_HARDWARE_ERROR = 'SET_HARDWARE_ERROR'
 export const SET_PAYLOAD = 'SET_PAYLOAD'
 export const ERASE_SEED = 'ERASE_SEED'
@@ -65,6 +73,13 @@ export function updateAddress(address: string) {
   };
 }
 
+export function updateBalance(stacksBalance: number) {
+	return {
+		type: UPDATE_BALANCE,
+		stacksBalance
+	}
+}
+
 export function updateHardwareError(error: string) {
   return {
     type: SET_HARDWARE_ERROR,
@@ -88,6 +103,13 @@ export function generateNewSeed() {
 	return dispatch => {
 		dispatch(updateSeed(seedPhrase, address, publicKey))
 	}
+}
+
+export function restoreWatchOnly(address) {
+	return (dispatch) => new Promise((resolve) => {
+		// Do some validation
+		resolve(dispatch(updateAddress(address)))
+	})
 }
 
 export function restoreFromSeed(seedPhrase) {
@@ -126,6 +148,7 @@ export function getTrezorAddr() {
         if (result.success) {
           const child = bip32.fromBase58(result.xpubkey)
           const address = getAddressFromChildPubKey(child.publicKey)
+          console.log(address)
           dispatch(updatePubKey(address, child.publicKey.toString('hex')))
           resolve()
         } else {
@@ -209,6 +232,56 @@ export function generateMultiSigPayload(name: string, redeemScript: string) {
 
 		dispatch(updatePayload(b64Payload))
 		resolve(b64Payload)
+	})
+}
+
+export function getStacksBalance(address) {
+	return (dispatch) => new Promise((resolve, reject) => {
+		fetch(`${coreNodeURI}/v1/accounts/${address}/STACKS/status`)
+			.then(resp => resp.json())
+			.then(resp => {
+				const balance = resp.credit_value - resp.debit_value
+				console.log(balance)
+				dispatch(updateBalance(balance))
+			})
+
+    // const jsonData = { rawtx: transaction }
+    // return fetch(`${this.apiUrl}/tx/send`,
+    //              {
+    //                method: 'POST',
+    //                headers: { 'Content-Type': 'application/json' },
+    //                body: JSON.stringify(jsonData)
+    //              })
+    //   .then(resp => resp.json())
+	})
+}
+
+// export function sendTokens(network: Object, address: string, amount: string) {
+export function sendTokens(address: string, amount: string) {
+	return (dispatch) => new Promise((resolve, reject) => {
+	  const recipientAddress = c32ToB58(address) // 'mu7LeUmSDaUwsVXn17xq3AbjwF5b3DSpCU'
+	  const tokenType = "STACKS"
+	  const tokenAmount = bigi.fromByteArrayUnsigned(amount) //bigi.fromByteArrayUnsigned(amount)
+	  // const privateKey = key
+	  const memo = ""
+
+	  const senderAddress = 'mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc'
+
+
+
+	  configureTestnet()
+
+	  const signer = new TrezorSigner(path, senderAddress)
+
+	  const txPromise = transactions.makeTokenTransfer(
+	    recipientAddress, tokenType, tokenAmount, memo, signer);
+
+    return txPromise.then((tx) => {
+      return config.network.broadcastTransaction(tx);
+    })
+
+
+
 	})
 }
 

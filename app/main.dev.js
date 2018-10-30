@@ -61,7 +61,7 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 550,
+    width: 950,
     height: 760,
     webPreferences: {
       nodeIntegration: false,
@@ -81,12 +81,14 @@ app.on('ready', async () => {
     mainWindow.focus();
   });
 
-  mainWindow.webContents.on('new-window', function(event, url){
-    if (!url.startsWith('https://connect.trezor.io')) {
-      event.preventDefault();
-      shell.openExternal(url);
-    }
-  });
+  // mainWindow.webContents.on('new-window', function(event, url){
+    // console.log(url)
+    // shell.openExternal(url);
+    // if (!url.startsWith('https://connect.trezor.io')) {
+      // event.preventDefault();
+      // shell.openExternal(url);
+    // }
+  // });
 
   mainWindow.on('closed', () => {
     mainWindow = null;

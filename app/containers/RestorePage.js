@@ -30,8 +30,7 @@ function mapDispatchToProps(dispatch) {
 
 const VIEWS = {
   DEFAULT: 0,
-  SEED: 1,
-  COMPLETE: 2,
+  COMPLETE: 1,
 }
 
 class RestorePage extends Component<Props> {
@@ -42,23 +41,15 @@ class RestorePage extends Component<Props> {
 
     this.state = {
       view: VIEWS.DEFAULT,
-      name: '',
-      seed: '',
-      nameError: '',
-      seedError: ''
+      address: '',
+      addressError: ''
 
     }
   }
 
-  handleNameChange = (event) => {
+  handleAddressPubKeyChange = (event) => {
     this.setState({
-      name: event.target.value
-    })
-  }
-
-  handleSeedChange = (event) => {
-    this.setState({
-      seed: event.target.value
+      address: event.target.value
     })
   }
 
@@ -68,74 +59,36 @@ class RestorePage extends Component<Props> {
     })
   }
 
-  nextWithName = () => {
-  	const name = this.state.name
-    if (name.trim().length === 0) {
-      this.setState({
-        nameError: 'You must enter a name.'
-      })
-    } else {
-      this.setState({
-        nameError: ''
-      })
-	  	this.props.updateName(name)
-	  		.then(() => this.changeView(VIEWS.SEED))
-    }
-  }
-
   restore = () => {
-    if (this.state.seed.length == 0) {
+    if (this.state.address.length == 0) {
       this.setState({
-        seedError: 'Please enter your seed phrase.'
+        addressError: 'Please enter an address or public key.'
       })
     } else {
-      if (bip39.validateMnemonic(this.state.seed)) {
-        this.props.restoreFromSeed(this.state.seed)
-          .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-          .then(() => this.changeView(VIEWS.COMPLETE))
-          .catch((error) => {
-            console.log(error)
-            this.setState({
-              seedError: 'Failed to restore from the seed phrase you entered!'
-            })
+      this.props.restoreWatchOnly(this.state.address)
+        .then(() => this.changeView(VIEWS.COMPLETE))
+        .catch((error) => {
+          console.log(error)
+          this.setState({
+            addressError: 'Failed to restore from the address you entered!'
           })
-      } else {
-        this.setState({
-          seedError: 'Please enter a valid seed phrase.'
         })
-      }
     }
-  }
-
-  exit = () => {
-  	this.props.eraseSeed()
-  	const currentWindow = remote.getCurrentWindow()
-  	currentWindow.close()
   }
 
   renderView(view) {
     switch(view) {
       case VIEWS.DEFAULT:
-        return <NameInputView
-        				name={this.state.name}
-        				error={this.state.nameError}
-        				handleNameChange={this.handleNameChange}
-                next={this.nextWithName}
-               />;
-      case VIEWS.SEED:
         return <RestoreSeedView
-                error={this.state.seedError}
-                seed={this.state.seed}
-                handleChange={this.handleSeedChange}
+                error={this.state.addressError}
+                address={this.state.address}
+                handleChange={this.handleAddressPubKeyChange}
                 next={this.restore}
-                back={() => this.changeView(VIEWS.DEFAULT)}
                />;
       case VIEWS.COMPLETE:
         return <CompleteView 
                 address={this.props.address}
-                payload={this.props.payload}
                 publicKey={this.props.publicKey}
-                next={this.exit}
         			 />;
       default:
         return <div></div>;

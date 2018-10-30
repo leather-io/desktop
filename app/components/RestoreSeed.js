@@ -17,28 +17,30 @@ export default class RestoreSeed extends Component<Props> {
   render() {
 
     const { 
-      seed,
+      address,
       error,
       handleChange,
-      next,
-      back
+      next
     } = this.props
 
     return (
       <div>
         <div>
           <p>
-            Enter your seed phrase to restore your wallet.
+            For your security, at this time you can only create a watch-only wallet if you do not have a hardware wallet device.
+          </p>
+          <p>
+            Enter your Stacks address or public key to continue.
           </p>
           <Input 
             type="textarea" 
-            name="seed" 
-            value={seed} 
+            name="address" 
+            value={address} 
             error={error} 
             onChange={handleChange} 
           />        
           <ActionButtons>
-            <Button onClick={back}>Back</Button>
+            <Button to="/">Back</Button>
             <Button onClick={next}>Restore</Button>
           </ActionButtons>
         </div>

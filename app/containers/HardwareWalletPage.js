@@ -28,11 +28,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 const VIEWS = {
-  DEFAULT: 0,
-  SELECT: 1,
-  TREZOR: 2,
-  LEDGER: 3,
-  COMPLETE: 4
+  SELECT: 0,
+  TREZOR: 1,
+  LEDGER: 2,
+  COMPLETE: 3
 }
 
 class HardwareWalletPage extends Component<Props> {
@@ -42,7 +41,7 @@ class HardwareWalletPage extends Component<Props> {
     super(props)
 
     this.state = {
-      view: VIEWS.DEFAULT,
+      view: VIEWS.SELECT,
       name: '',
       nameError: '',
       hardwareError: '',
@@ -83,19 +82,19 @@ class HardwareWalletPage extends Component<Props> {
       processing: true
     })
     this.props.getTrezorAddr()
-  		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
+  		// .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
   		.then(() => {
         this.changeView(VIEWS.COMPLETE)
         this.setState({
           processing: false
         })
       })
-      .catch(() => {
-        this.setState({
-          hardwareError: 'There was an error retrieving the public key from your Trezor.',
-          processing: false
-        })
-      })
+      // .catch(() => {
+      //   this.setState({
+      //     hardwareError: 'There was an error retrieving the public key from your Trezor.',
+      //     processing: false
+      //   })
+      // })
   }
 
   getLedgerAddress = () => {
@@ -138,18 +137,10 @@ class HardwareWalletPage extends Component<Props> {
 
   renderView(view) {
     switch(view) {
-      case VIEWS.DEFAULT:
-        return <NameInput
-        				name={this.state.name}
-                error={this.state.nameError}
-        				handleNameChange={this.handleNameChange}
-                next={this.showHardwareSelectView}
-               />;
       case VIEWS.SELECT:
         return <HardwareSelectView
                 getTrezorAddress={() => this.changeView(VIEWS.TREZOR)}
                 getLedgerAddress={() => this.changeView(VIEWS.LEDGER)}
-                back={() => this.changeView(VIEWS.DEFAULT)}
                />;
       case VIEWS.TREZOR:
         return <TrezorView
@@ -179,7 +170,7 @@ class HardwareWalletPage extends Component<Props> {
 
   render() {
     return (
-      <PageWrapper title="Hardware Wallet">
+      <PageWrapper title="New Wallet">
         {this.renderView(this.state.view)}
       </PageWrapper>
     );

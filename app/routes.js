@@ -7,10 +7,14 @@ import NewWallet from './containers/NewWalletPage';
 import HardwareWallet from './containers/HardwareWalletPage';
 import MultiSigWallet from './containers/MultiSigWalletPage';
 import Restore from './containers/RestorePage';
+import Send from './containers/SendPage';
+import Dashboard from './containers/DashboardPage';
 
 export default () => (
   <App>
     <Switch>
+    	<Route path="/send" component={Send} />
+      <Route path="/dashboard" component={Dashboard} />
     	<Route path="/new" component={NewWallet} />
     	<Route path="/hardware" component={HardwareWallet} />
     	<Route path="/multisig" component={MultiSigWallet} />

@@ -195,8 +195,8 @@
   "dependencies": {
     "@ledgerhq/hw-app-btc": "^4.15.0",
     "babel-runtime": "^6.26.0",
+    "bigi": "^1.4.2",
     "bip39": "^2.5.0",
-    "bitcoinjs-lib": "^3.3.2",
     "c32check": "0.0.6",
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",

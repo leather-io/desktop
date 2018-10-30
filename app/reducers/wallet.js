@@ -4,6 +4,7 @@ import {
 	SET_NAME,
 	CREATE_NEW_SEED,
 	SET_ADDRESS,
+  UPDATE_BALANCE,
 	USE_HARDWARE_WALLET,
 	SET_HARDWARE_ERROR,
 	SET_PAYLOAD,
@@ -16,6 +17,8 @@ export type walletStateType = {
 		+walletType: string,
 		+seed: string,
 	  +address: string,
+    +stacksBalance: string,
+    +btcBalance: string,
 	  +publicKey: string,
 	  +error: string,
 	  +payload: string
@@ -31,6 +34,8 @@ export const initialState = {
 	walletType: null,
   seed: null,
   address: null,
+  stacksBalance: null,
+  btcBalance: null,
   publicKey: null,
   error: null,
   payload: null
@@ -56,6 +61,12 @@ export default function wallet(state = initialState, action: actionType) {
     		...state,
     		address: action.address
     	}
+    case UPDATE_BALANCE:
+      return {
+        ...state,
+        stacksBalance: action.stacksBalance,
+        btcBalance: action.btcBalance
+      }
     case USE_HARDWARE_WALLET:
       return { 
       	...state, 

@@ -65,7 +65,7 @@ export default class CompleteView extends Component<Props> {
     return (
       <div>
         <p>
-          You're almost done! To complete the process, return to the Coinlist web page and paste the following information into the corresponding fields.
+          Wallet setup complete
         </p>
 
         { !this.state.showPublicKey ? 
@@ -84,27 +84,14 @@ export default class CompleteView extends Component<Props> {
           </div>
         }
 
-        <CopyToClipboard text={this.state.showPublicKey ? publicKey : address}>
-          <Button onClick={this.addressCopied} height={25} small>
-            {this.state.addressCopyButtonText}
-          </Button>
-        </CopyToClipboard>
-        &nbsp;
-        {publicKey &&
-          <Button onClick={this.togglePublicKey} height={25} small>
-            {this.state.publicKeyToggleButtonLabel}
-          </Button>
-        }
 
-        <p>Verification Code:</p>
-        <Blob>
-          {payload}
-        </Blob>
-        <CopyToClipboard text={payload}>
-          <Button onClick={this.payloadCopied} height={25} small>{this.state.payloadCopyButtonText}</Button>
-        </CopyToClipboard>  
+{/*          <Button onClick={() => this.props.next()} height={25} small>
+            Finish
+          </Button>*/}
+
+
         <ActionButtons>
-          <Button onClick={() => this.props.next()}>Finish & Exit</Button>
+          <Button to="/dashboard">Finish</Button>
         </ActionButtons>
       </div>
     );

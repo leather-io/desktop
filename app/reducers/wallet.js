@@ -9,6 +9,7 @@ import {
 	USE_HARDWARE_WALLET,
 	SET_HARDWARE_ERROR,
 	SET_PAYLOAD,
+  ERASE_DATA,
   ERASE_SEED
 } from '../actions/wallet';
 
@@ -93,6 +94,8 @@ export default function wallet(state = initialState, action: actionType) {
     		...state, 
     		payload: action.payload
     	}
+    case ERASE_DATA:
+      return initialState
     case ERASE_SEED:
       return {
         ...state,

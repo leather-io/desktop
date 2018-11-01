@@ -22,7 +22,8 @@ export default class Dashboard extends Component<Props> {
       address,
       stacksBalance,
       btcBalance,
-      refresh
+      refresh,
+      logout
     } = this.props
 
     return (
@@ -35,6 +36,7 @@ export default class Dashboard extends Component<Props> {
           {/*{btcBalance} Bitcoin*/}
         </div>
         <Button onClick={refresh}>Refresh</Button>
+        <Button onClick={logout}>Sign Out</Button>
         <br/><br/>
 {/*        <Button to="/send" height={25} small>
           Send

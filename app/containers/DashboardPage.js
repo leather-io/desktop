@@ -58,6 +58,11 @@ class SendPage extends Component<Props> {
     this.props.getStacksBalance(this.props.address)
   }
 
+  logout = () => {
+    console.log('test')
+    this.props.eraseData()
+  }
+
   renderView(view) {
     switch(view) {
       case VIEWS.DEFAULT:
@@ -65,6 +70,7 @@ class SendPage extends Component<Props> {
         				address={this.props.address}
                 stacksBalance={this.props.stacksBalance}
                 refresh={this.updateBalance}
+                logout={this.logout}
                 btcBalance={1000}
                />;
       default:

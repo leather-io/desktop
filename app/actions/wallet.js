@@ -33,6 +33,7 @@ export const SET_ADDRESS = 'SET_ADDRESS'
 export const UPDATE_BALANCE = 'UPDATE_BALANCE'
 export const SET_HARDWARE_ERROR = 'SET_HARDWARE_ERROR'
 export const SET_PAYLOAD = 'SET_PAYLOAD'
+export const ERASE_DATA = 'ERASE_DATA'
 export const ERASE_SEED = 'ERASE_SEED'
 
 export function createWallet(address:string) {
@@ -58,6 +59,12 @@ export function updateSeed(seed: string, address: string, publicKey: string) {
     address,
     publicKey
   };
+}
+
+export function eraseData() {
+	return {
+		type: ERASE_DATA
+	}
 }
 
 export function eraseSeed() {

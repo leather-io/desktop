@@ -25,6 +25,7 @@ const path = `m/44'/5757'/0'/0/0`
 const coreNodeURI = 'http://testnet.blockstack.org:16268'
 const testnetCoreNodeURI = 'http://testnet.blockstack.org:16268'
 
+export const CREATE_WALLET = 'CREATE_WALLET'
 export const SET_NAME = 'SET_NAME'
 export const CREATE_NEW_SEED = 'NEW_SEED'
 export const USE_HARDWARE_WALLET = 'USE_HARDWARE_WALLET'
@@ -33,6 +34,13 @@ export const UPDATE_BALANCE = 'UPDATE_BALANCE'
 export const SET_HARDWARE_ERROR = 'SET_HARDWARE_ERROR'
 export const SET_PAYLOAD = 'SET_PAYLOAD'
 export const ERASE_SEED = 'ERASE_SEED'
+
+export function createWallet(address:string) {
+	return {
+		type: CREATE_WALLET,
+		address
+	}
+}
 
 export function updateName(name: string) {
 	return (dispatch) => new Promise((resolve) => {
@@ -105,10 +113,9 @@ export function generateNewSeed() {
 	}
 }
 
-export function restoreWatchOnly(address) {
-	return (dispatch) => new Promise((resolve) => {
-		// Do some validation
-		resolve(dispatch(updateAddress(address)))
+export function setupWallet(address) {
+	return dispatch => new Promise((resolve) => {
+		resolve(dispatch(createWallet(address)))
 	})
 }
 
@@ -148,9 +155,8 @@ export function getTrezorAddr() {
         if (result.success) {
           const child = bip32.fromBase58(result.xpubkey)
           const address = getAddressFromChildPubKey(child.publicKey)
-          console.log(address)
-          dispatch(updatePubKey(address, child.publicKey.toString('hex')))
-          resolve()
+          // dispatch(updatePubKey(address, child.publicKey.toString('hex')))
+          resolve(address)
         } else {
           const error = 'Failed to get address from Trezor'
           dispatch(updateHardwareError(error))

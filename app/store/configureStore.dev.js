@@ -3,11 +3,21 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
+import { persistStore, persistReducer } from 'redux-persist';
+import createElectronStorage from 'redux-persist-electron-storage';
 import rootReducer from '../reducers';
 import * as walletActions from '../actions/wallet';
 import type { walletStateType } from '../reducers/wallet';
 
 const history = createHashHistory();
+
+const persistConfig = {
+  key: 'wallet',
+  storage: createElectronStorage(),
+  blacklist: ['router']
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const configureStore = (initialState?: { wallet: walletStateType }) => {
 
@@ -54,7 +64,10 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
   const enhancer = composeEnhancers(...enhancers);
 
   // Create Store
-  const store = createStore(rootReducer, initialState, enhancer);
+  // const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(persistedReducer, initialState, enhancer);
+
+  const persistor = persistStore(store)
 
   if (module.hot) {
     module.hot.accept(
@@ -63,7 +76,7 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
     );
   }
 
-  return store;
+  return { store, persistor };
 };
 
 export default { configureStore, history };

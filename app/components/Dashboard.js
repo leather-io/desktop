@@ -21,7 +21,8 @@ export default class Dashboard extends Component<Props> {
     const { 
       address,
       stacksBalance,
-      btcBalance
+      btcBalance,
+      refresh
     } = this.props
 
     return (
@@ -33,6 +34,7 @@ export default class Dashboard extends Component<Props> {
           <h2>{microToStacks(stacksBalance)} Stacks</h2>
           {/*{btcBalance} Bitcoin*/}
         </div>
+        <Button onClick={refresh}>Refresh</Button>
         <br/><br/>
 {/*        <Button to="/send" height={25} small>
           Send

@@ -64,7 +64,7 @@ app.on('ready', async () => {
     width: 950,
     height: 760,
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js')
     }
   });

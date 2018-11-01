@@ -64,6 +64,7 @@ class SendPage extends Component<Props> {
         return <Dashboard
         				address={this.props.address}
                 stacksBalance={this.props.stacksBalance}
+                refresh={this.updateBalance}
                 btcBalance={1000}
                />;
       default:

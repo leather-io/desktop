@@ -65,7 +65,7 @@ class RestorePage extends Component<Props> {
         addressError: 'Please enter an address or public key.'
       })
     } else {
-      this.props.restoreWatchOnly(this.state.address)
+      this.props.setupWallet(this.state.address)
         .then(() => this.changeView(VIEWS.COMPLETE))
         .catch((error) => {
           console.log(error)

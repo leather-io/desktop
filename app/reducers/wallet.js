@@ -1,6 +1,7 @@
 // @flow
 import { 
 	WALLET_TYPE,
+  CREATE_WALLET,
 	SET_NAME,
 	CREATE_NEW_SEED,
 	SET_ADDRESS,
@@ -14,6 +15,7 @@ import {
 export type walletStateType = {
 	wallet: {
 		name: string,
+    +created: bool,
 		+walletType: string,
 		+seed: string,
 	  +address: string,
@@ -31,6 +33,7 @@ type actionType = {
 
 export const initialState = {
 	name: null,
+  created: false,
 	walletType: null,
   seed: null,
   address: null,
@@ -43,6 +46,12 @@ export const initialState = {
 
 export default function wallet(state = initialState, action: actionType) {
   switch (action.type) {
+    case CREATE_WALLET:
+      return {
+        ...state,
+        address: action.address,
+        created: true
+      }
   	case SET_NAME:
   		return { 
   			...state, 

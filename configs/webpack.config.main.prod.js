@@ -7,7 +7,7 @@ import merge from 'webpack-merge';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './webpack.config.base';
-import CheckNodeEnv from './internals/scripts/CheckNodeEnv';
+import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 
 CheckNodeEnv('production');
 
@@ -32,7 +32,7 @@ export default merge.smart(baseConfig, {
       uglifyOptions: {
         mangle: {
           reserved: ['Array','BigInteger','Boolean','ECPair','Function','Number','Point']
-        }  
+        }
       },
     }),
 

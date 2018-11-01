@@ -15,7 +15,7 @@ import merge from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import baseConfig from './webpack.config.base';
-import CheckNodeEnv from './internals/scripts/CheckNodeEnv';
+import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 
 CheckNodeEnv('development');
 
@@ -48,9 +48,10 @@ export default merge.smart(baseConfig, {
 
   entry: [
     'react-hot-loader/patch',
+    'regenerator-runtime/runtime',
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
-    path.join(__dirname, 'app/index.js')
+    require.resolve('../app/index')
   ],
 
   output: {
@@ -67,14 +68,6 @@ export default merge.smart(baseConfig, {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            plugins: [
-              // Here, we include babel plugins that are only required for the
-              // renderer process. The 'transform-*' plugins must be included
-              // before react-hot-loader/babel
-              'transform-class-properties',
-              'transform-es2015-classes',
-              'react-hot-loader/babel'
-            ]
           }
         }
       },

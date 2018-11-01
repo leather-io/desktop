@@ -7,6 +7,8 @@ import { theme, Flex } from "blockstack-ui";
 import Routes from "../routes";
 
 const GlobalStyles = createGlobalStyle`
+
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,600,700');
 html {
   height: 100%;
 }

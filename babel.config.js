@@ -33,6 +33,7 @@ module.exports = api => {
     plugins: [
       require("@babel/plugin-transform-regenerator"),
       require("@babel/plugin-transform-runtime"),
+      [require("babel-plugin-styled-components"), { displayName: true }],
       // Stage 0
       require("@babel/plugin-proposal-function-bind"),
 

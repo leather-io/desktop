@@ -1,58 +1,51 @@
 // @flow
-import React, { Component } from 'react';
-import Home from '../components/Home';
-import Terms from '../components/Terms';
-import { remote } from 'electron'
+import React, { Component } from "react";
+import { remote } from "electron";
+import Home from "../components/Home";
+import Terms from "../components/Terms";
 
 type Props = {};
 
 const VIEWS = {
   DEFAULT: 0,
-  TERMS: 1,
-}
+  TERMS: 1
+};
 
 export default class HomePage extends Component<Props> {
   props: Props;
 
-  constructor(props) {
-    super(props)
+  state = {
+    view: global.termsAccepted ? VIEWS.DEFAULT : VIEWS.TERMS
+  };
 
-    this.state = {
-      view: global.termsAccepted ? VIEWS.DEFAULT : VIEWS.TERMS
-    }
-  }
-
-  changeView = (view) => {
+  changeView = view => {
     this.setState({
-      view: view
-    })
-  }
+      view
+    });
+  };
 
   handleAccept = () => {
-  	global.termsAccepted = true
-  	this.changeView(VIEWS.DEFAULT)
-  }
+    global.termsAccepted = true;
+    this.changeView(VIEWS.DEFAULT);
+  };
 
   handleQuit = () => {
-  	const currentWindow = remote.getCurrentWindow()
-  	currentWindow.close()
-  }
+    const currentWindow = remote.getCurrentWindow();
+    currentWindow.close();
+  };
 
   renderView(view) {
-    switch(view) {
+    switch (view) {
       case VIEWS.TERMS:
-        return <Terms 
-        					quit={this.handleQuit}
-        					next={this.handleAccept}
-        				/>;
+        return <Terms quit={this.handleQuit} next={this.handleAccept} />;
       case VIEWS.DEFAULT:
         return <Home />;
       default:
-        return <div></div>;
+        return <div />;
     }
   }
 
   render() {
-  	return this.renderView(this.state.view)
+    return this.renderView(this.state.view);
   }
 }

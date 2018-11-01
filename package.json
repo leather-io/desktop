@@ -22,7 +22,6 @@
     "package-win": "npm run build && build --win --x64",
     "postinstall": "node -r babel-register internals/scripts/CheckNativeDep.js && npm run flow-typed && npm run build-dll && electron-builder install-app-deps && node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.js'",
-    "precommit": "lint-staged",
     "prestart": "npm run build",
     "start": "cross-env NODE_ENV=production electron ./app/",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r babel-register ./app/main.dev.js",
@@ -33,13 +32,6 @@
     "test-watch": "npm test -- --watch"
   },
   "browserslist": "electron 1.6",
-  "lint-staged": {
-    "*.js": [
-      "cross-env NODE_ENV=development eslint --cache --format=node_modules/eslint-formatter-pretty",
-      "prettier --ignore-path .eslintignore --single-quote --write",
-      "git add"
-    ]
-  },
   "build": {
     "productName": "Stacks Wallet",
     "appId": "org.blockstack.stacks-wallet",
@@ -197,15 +189,17 @@
     "babel-runtime": "^6.26.0",
     "bigi": "^1.4.2",
     "bip39": "^2.5.0",
+    "blockstack-ui": "0.0.37",
     "c32check": "0.0.6",
+    "core-js": "^2.5.7",
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
     "elliptic": "^6.4.0",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
-    "react": "^16.4.0",
+    "react": "^16.6.0",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.6.0",
     "react-hot-loader": "^4.2.0",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
@@ -214,7 +208,7 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
     "source-map-support": "^0.5.6",
-    "styled-components": "^3.3.3",
+    "styled-components": "^4.0.3",
     "trezor-connect": "^5.0.17"
   },
   "devEngines": {

@@ -25,6 +25,14 @@ const path = `m/44'/5757'/0'/0/0`
 const coreNodeURI = 'http://testnet.blockstack.org:16268'
 const testnetCoreNodeURI = 'http://testnet.blockstack.org:16268'
 
+const TESTNET_ADDRESS_PREFIX = {
+  wif: 0x6F,
+  bip32: {
+    public: 0x043587cf,
+    private: 0x04358394
+  }
+}
+
 export const CREATE_WALLET = 'CREATE_WALLET'
 export const SET_NAME = 'SET_NAME'
 export const CREATE_NEW_SEED = 'NEW_SEED'
@@ -157,19 +165,18 @@ export function getBtcAddress(seedPhrase) {
 
 export function getTrezorAddr() {
   return (dispatch) => new Promise((resolve, reject) => {
-    TrezorConnect.setCurrency('BTC')
-      TrezorConnect.getXPubKey(path, function (result) {
-        if (result.success) {
-          const child = bip32.fromBase58(result.xpubkey)
-          const address = getAddressFromChildPubKey(child.publicKey)
-          // dispatch(updatePubKey(address, child.publicKey.toString('hex')))
-          resolve(address)
-        } else {
-          const error = 'Failed to get address from Trezor'
-          dispatch(updateHardwareError(error))
-          reject()
-        }
-      })
+    TrezorConnect.setCurrency('TEST')
+    TrezorConnect.getXPubKey(path, function (result) {
+      if (result.success) {
+        const child = bip32.fromBase58(result.xpubkey, TESTNET_ADDRESS_PREFIX)
+        const address = getAddressFromChildPubKey(child.publicKey, versions.testnet.p2pkh)
+        resolve(address)
+      } else {
+        const error = 'Failed to get address from Trezor'
+        dispatch(updateHardwareError(error))
+        reject()
+      }
+    })
   })
 }
 
@@ -254,51 +261,34 @@ export function getStacksBalance(address) {
 			.then(resp => resp.json())
 			.then(resp => {
 				const balance = resp.credit_value - resp.debit_value
-				console.log(balance)
 				dispatch(updateBalance(balance))
 			})
-
-    // const jsonData = { rawtx: transaction }
-    // return fetch(`${this.apiUrl}/tx/send`,
-    //              {
-    //                method: 'POST',
-    //                headers: { 'Content-Type': 'application/json' },
-    //                body: JSON.stringify(jsonData)
-    //              })
-    //   .then(resp => resp.json())
 	})
 }
 
 // export function sendTokens(network: Object, address: string, amount: string) {
-export function sendTokens(address: string, amount: string) {
+export function sendTokens(senderAddress: string, recipientAddress: string, amount: string) {
 	return (dispatch) => new Promise((resolve, reject) => {
-	  const recipientAddress = c32ToB58(address) // 'mu7LeUmSDaUwsVXn17xq3AbjwF5b3DSpCU'
+		const senderBtcAddress = c32ToB58(senderAddress)
+	  const recipientBtcAddress = c32ToB58(recipientAddress) 
 	  const tokenType = "STACKS"
-	  const tokenAmount = bigi.fromByteArrayUnsigned(amount) //bigi.fromByteArrayUnsigned(amount)
-	  // const privateKey = key
+	  const tokenAmount = bigi.fromByteArrayUnsigned(amount)
 	  const memo = ""
-
-	  const senderAddress = 'mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc'
-
-
 
 	  configureTestnet()
 
-	  const signer = new TrezorSigner(path, senderAddress)
+	  const signer = new TrezorSigner(path, senderBtcAddress)
 
 	  const txPromise = transactions.makeTokenTransfer(
-	    recipientAddress, tokenType, tokenAmount, memo, signer);
+	    recipientBtcAddress, tokenType, tokenAmount, memo, signer);
 
     return txPromise.then((tx) => {
       return config.network.broadcastTransaction(tx);
     })
-
-
-
 	})
 }
 
-function getAddressFromChildPubKey(child) {
+function getAddressFromChildPubKey(child, version_prefix) {
   if (child.length != 33) {
     throw new Error('Invalid public key buffer length, expecting 33 bytes')
   }
@@ -310,7 +300,8 @@ function getAddressFromChildPubKey(child) {
   RIPEMD160.update(pk256)
   var pk160 = RIPEMD160.digest()
 
-  const address = c32address(versions.mainnet.p2pkh,
+  const prefix = version_prefix || versions.mainnet.p2pkh
+  const address = c32address(prefix,
                              pk160.slice(0, 20).toString('hex'))
   return address
 }

@@ -77,7 +77,8 @@ class SendPage extends Component<Props> {
     console.log(this.state.address)
     console.log(this.state.amount)
     
-    const address = this.state.address //'ST2AHMVY0WARE7T6WPBGD0ZX9N13PH5P47Q0X6WDE'
+    const senderAddress = this.props.address
+    const recipientAddress = this.state.address //'ST2AHMVY0WARE7T6WPBGD0ZX9N13PH5P47Q0X6WDE'
     const amount = this.state.amount //"20999"
     // const key = "5d488f8e32bc906cff26d496e9bd27f8b371c91773273b44ae58978fd10651bb01"
 
@@ -98,7 +99,7 @@ class SendPage extends Component<Props> {
 
     // config.network = blockstackNetwork;
 
-    this.props.sendTokens(address, amount)
+    this.props.sendTokens(senderAddress, recipientAddress, amount)
     .then((res) => {
       console.log(res)
     })

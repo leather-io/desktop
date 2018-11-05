@@ -38,8 +38,8 @@ export const initialState = {
 	walletType: null,
   seed: null,
   address: null,
-  stacksBalance: null,
-  btcBalance: null,
+  stacksBalance: 0,
+  btcBalance: 0,
   publicKey: null,
   error: null,
   payload: null

@@ -165,13 +165,14 @@ export function getBtcAddress(seedPhrase) {
 
 export function getTrezorAddr() {
   return (dispatch) => new Promise((resolve, reject) => {
-    TrezorConnect.setCurrency('TEST')
+    // TrezorConnect.setCurrency('TEST')
+    TrezorConnect.setCurrency('BTC')
     TrezorConnect.getXPubKey(path, function (result) {
       if (result.success) {
         // const child = bip32.fromBase58(result.xpubkey, TESTNET_ADDRESS_PREFIX)
         // const address = getAddressFromChildPubKey(child.publicKey, versions.testnet.p2pkh)
-        const child = bip32.fromBase58(result.xpubkey, TESTNET_ADDRESS_PREFIX)
-        const address = getAddressFromChildPubKey(child.publicKey, versions.testnet.p2pkh)
+        const child = bip32.fromBase58(result.xpubkey)
+        const address = getAddressFromChildPubKey(child.publicKey)
         resolve(address)
       } else {
         const error = 'Failed to get address from Trezor'
@@ -259,10 +260,19 @@ export function generateMultiSigPayload(name: string, redeemScript: string) {
 export function getStacksBalance(address) {
 	return (dispatch) => new Promise((resolve, reject) => {
 		fetch(`${coreNodeURI}/v1/accounts/${address}/STACKS/status`)
-			.then(resp => resp.json())
+			.then(resp => {
+				if(resp.status == 200) {
+					return resp.json()
+				} else {
+					throw new Error('Balance check request returned error')
+				}
+			})
 			.then(resp => {
 				const balance = resp.credit_value - resp.debit_value
 				dispatch(updateBalance(balance))
+			})
+			.catch(err => {
+				console.log(err)
 			})
 	})
 }

@@ -59,7 +59,6 @@ class SendPage extends Component<Props> {
   }
 
   logout = () => {
-    console.log('test')
     this.props.eraseData()
   }
 
@@ -71,7 +70,7 @@ class SendPage extends Component<Props> {
                 stacksBalance={this.props.stacksBalance}
                 refresh={this.updateBalance}
                 logout={this.logout}
-                btcBalance={1000}
+                btcBalance={0}
                />;
       default:
         return <div></div>;

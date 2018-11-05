@@ -168,6 +168,8 @@ export function getTrezorAddr() {
     TrezorConnect.setCurrency('TEST')
     TrezorConnect.getXPubKey(path, function (result) {
       if (result.success) {
+        // const child = bip32.fromBase58(result.xpubkey, TESTNET_ADDRESS_PREFIX)
+        // const address = getAddressFromChildPubKey(child.publicKey, versions.testnet.p2pkh)
         const child = bip32.fromBase58(result.xpubkey, TESTNET_ADDRESS_PREFIX)
         const address = getAddressFromChildPubKey(child.publicKey, versions.testnet.p2pkh)
         resolve(address)
@@ -187,12 +189,11 @@ export function getLedgerAddr() {
       .then((btc) => btc.getWalletPublicKey(path))
       .then((ledgerPK) => ledgerPK.publicKey)
       .then((publicKey) => {
-        var ecPair = btc.ECPair.fromPublicKeyBuffer(Buffer.from(publicKey, 'hex'))
+        var ecPair = btc.ECPair.fromPublicKey(Buffer.from(publicKey, 'hex'))
         ecPair.compressed = true
-        var pkBuffer = ecPair.getPublicKeyBuffer()
+        var pkBuffer = ecPair.publicKey
         const address = getAddressFromChildPubKey(pkBuffer)
-        dispatch(updatePubKey(address, pkBuffer.toString('hex')))
-        resolve()
+        resolve(address)
       })
       .catch((err) => {
         const error = 'Failed to get address from Ledger'

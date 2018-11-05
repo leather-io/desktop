@@ -104,7 +104,8 @@ class HardwareWalletPage extends Component<Props> {
       processing: true
     })
     this.props.getLedgerAddr()
-  		.then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
+  		// .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
+      .then((address) => this.props.setupWallet(address))
   		.then(() => {
         this.changeView(VIEWS.COMPLETE)
         this.setState({

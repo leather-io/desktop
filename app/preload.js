@@ -28,6 +28,6 @@ window.require = require;
 // 		return require('blockstack')
 // 	} else if (module==='trezor-connect') {
 // 		return require('trezor-connect')
-// 	}
+// 	} 
 // }
 window.nodeBuffer = Buffer;

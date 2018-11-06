@@ -114,12 +114,12 @@ class HardwareWalletPage extends Component<Props> {
           processing: false
         })
       })
-      // .catch(() => {
-      //   this.setState({
-      //     hardwareError: 'There was an error retrieving the public key from your Ledger.',
-      //     processing: false
-      //   })
-      // })
+      .catch(() => {
+        this.setState({
+          hardwareError: 'There was an error retrieving the public key from your Ledger.',
+          processing: false
+        })
+      })
   }
 
   confirmSeed = (confirmSeed) => {

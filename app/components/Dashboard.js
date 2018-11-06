@@ -29,26 +29,34 @@ export default class Dashboard extends Component<Props> {
     return (
       <div>
         <div>
-          <p>Your Stacks Address:</p>
-          {address}
-          <p>Your Balance:</p>
+          <p>Balance</p>
           <h2>{microToStacks(stacksBalance)} Stacks</h2>
+          <br/>
+          <p>Address</p>
+          {address}
           {/*{btcBalance} Bitcoin*/}
         </div>
-        <Button onClick={refresh}>Refresh</Button>
-        <Button onClick={logout}>Sign Out</Button>
+{/*        <Button onClick={refresh}>Refresh</Button>
+        <Button onClick={logout}>Sign Out</Button>*/}
         <br/><br/>
+        <Button to="/send" height={35}>
+          Send
+        </Button>
+
+
+
 {/*        <Button to="/send" height={25} small>
           Send
         </Button>
-        &nbsp;
         <Button to="/send" height={25} small>
           Receive
         </Button>*/}
 
         <ActionButtons>
-          <Button to="/send">Send</Button>
-          <Button to="/send">Receive</Button>
+          {/*<Button to="/send">Send</Button>*/}
+          {/*<Button to="/send">Receive</Button>*/}
+          <Button onClick={refresh}>Refresh</Button>
+          <Button onClick={logout}>Sign Out</Button>
         </ActionButtons>
 
       </div>

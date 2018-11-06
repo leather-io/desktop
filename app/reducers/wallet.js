@@ -10,7 +10,8 @@ import {
 	SET_HARDWARE_ERROR,
 	SET_PAYLOAD,
   ERASE_DATA,
-  ERASE_SEED
+  ERASE_SEED,
+  ACCEPT_TERMS
 } from '../actions/wallet';
 
 export type walletStateType = {
@@ -25,7 +26,8 @@ export type walletStateType = {
     +btcBalance: string,
 	  +publicKey: string,
 	  +error: string,
-	  +payload: string
+	  +payload: string,
+    +termsAccepted: bool
 	}
 };
 
@@ -44,7 +46,8 @@ export const initialState = {
   btcBalance: 0,
   publicKey: null,
   error: null,
-  payload: null
+  payload: null,
+  termsAccepted: false,
 }
 
 export default function wallet(state = initialState, action: actionType) {
@@ -99,11 +102,19 @@ export default function wallet(state = initialState, action: actionType) {
     		payload: action.payload
     	}
     case ERASE_DATA:
-      return initialState
+      return { 
+        ...initialState, 
+        termsAccepted: true
+      }
     case ERASE_SEED:
       return {
         ...state,
         seed: '',
+      }
+    case ACCEPT_TERMS:
+      return {
+        ...state,
+        termsAccepted: true
       }
     default:
       return state;

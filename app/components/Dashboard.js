@@ -14,6 +14,22 @@ export default class Dashboard extends Component<Props> {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      receiveButtonText: 'Receive',
+    }
+  }
+
+  addressCopied = () => {
+    this.setState({
+      receiveButtonText: 'Address Copied!',
+    })
+
+    setTimeout(() => {
+      this.setState({
+        receiveButtonText: 'Receive',
+      })
+    }, 1500)
   }
 
   render() {
@@ -42,7 +58,12 @@ export default class Dashboard extends Component<Props> {
         <Button to="/send" height={35}>
           Send
         </Button>
-
+        &nbsp;
+        <CopyToClipboard text={address}>
+          <Button onClick={this.addressCopied} height={25}>
+            {this.state.receiveButtonText}
+          </Button>
+        </CopyToClipboard>
 
 
 {/*        <Button to="/send" height={25} small>

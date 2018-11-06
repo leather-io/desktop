@@ -34,6 +34,7 @@ const TESTNET_ADDRESS_PREFIX = {
   }
 }
 
+export const ACCEPT_TERMS = 'ACCEPT_TERMS'
 export const CREATE_WALLET = 'CREATE_WALLET'
 export const SET_NAME = 'SET_NAME'
 export const CREATE_NEW_SEED = 'NEW_SEED'
@@ -44,6 +45,12 @@ export const SET_HARDWARE_ERROR = 'SET_HARDWARE_ERROR'
 export const SET_PAYLOAD = 'SET_PAYLOAD'
 export const ERASE_DATA = 'ERASE_DATA'
 export const ERASE_SEED = 'ERASE_SEED'
+
+export function acceptTerms() {
+	return {
+		type: ACCEPT_TERMS
+	}
+}
 
 export function createWallet(stacksAddress: string, btcAddress: string, type: string) {
 	return {

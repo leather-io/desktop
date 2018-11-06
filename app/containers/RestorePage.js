@@ -11,6 +11,7 @@ import CompleteView from '../components/Complete'
 import PageWrapper from '../containers/PageWrapper'
 import bip39 from 'bip39'
 import { remote } from 'electron'
+import { c32ToB58 } from 'c32check'
 
 type Props = {};
 
@@ -65,7 +66,9 @@ class RestorePage extends Component<Props> {
         addressError: 'Please enter an address or public key.'
       })
     } else {
-      this.props.setupWallet(this.state.address)
+      const stacksAddress = this.state.address
+      const btcAddress = c32ToB58(stacksAddress)
+      this.props.setupWallet(stacksAddress, btcAddress, 'watch-only')
         .then(() => this.changeView(VIEWS.COMPLETE))
         .catch((error) => {
           console.log(error)

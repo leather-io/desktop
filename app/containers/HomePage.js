@@ -1,24 +1,37 @@
 // @flow
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Home from '../components/Home';
 import Terms from '../components/Terms';
 import { remote } from 'electron'
+import * as WalletActions from '../actions/wallet'
 
 type Props = {};
+
+function mapStateToProps(state) {
+  return {
+    termsAccepted: state.wallet.termsAccepted,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(WalletActions, dispatch);
+}
 
 const VIEWS = {
   DEFAULT: 0,
   TERMS: 1,
 }
 
-export default class HomePage extends Component<Props> {
+class HomePage extends Component<Props> {
   props: Props;
 
   constructor(props) {
     super(props)
 
     this.state = {
-      view: global.termsAccepted ? VIEWS.DEFAULT : VIEWS.TERMS
+      view: this.props.termsAccepted ? VIEWS.DEFAULT : VIEWS.TERMS
     }
   }
 
@@ -29,7 +42,7 @@ export default class HomePage extends Component<Props> {
   }
 
   handleAccept = () => {
-  	global.termsAccepted = true
+    this.props.acceptTerms()
   	this.changeView(VIEWS.DEFAULT)
   }
 
@@ -56,3 +69,5 @@ export default class HomePage extends Component<Props> {
   	return this.renderView(this.state.view)
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

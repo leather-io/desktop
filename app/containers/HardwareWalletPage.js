@@ -83,19 +83,19 @@ class HardwareWalletPage extends Component<Props> {
     })
     this.props.getTrezorAddr()
   		// .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-      .then((address) => this.props.setupWallet(address))
+      .then(({stacksAddress, btcAddress}) => this.props.setupWallet(stacksAddress, btcAddress, 'trezor'))
   		.then(() => {
         this.changeView(VIEWS.COMPLETE)
         this.setState({
           processing: false
         })
       })
-      // .catch(() => {
-      //   this.setState({
-      //     hardwareError: 'There was an error retrieving the public key from your Trezor.',
-      //     processing: false
-      //   })
-      // })
+      .catch(() => {
+        this.setState({
+          hardwareError: 'There was an error retrieving the public key from your Trezor.',
+          processing: false
+        })
+      })
   }
 
   getLedgerAddress = () => {
@@ -105,19 +105,21 @@ class HardwareWalletPage extends Component<Props> {
     })
     this.props.getLedgerAddr()
   		// .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-      .then((address) => this.props.setupWallet(address))
+      .then(({stacksAddress, btcAddress}) => { 
+        return this.props.setupWallet(stacksAddress, btcAddress, 'ledger')
+      })
   		.then(() => {
         this.changeView(VIEWS.COMPLETE)
         this.setState({
           processing: false
         })
       })
-      .catch(() => {
-        this.setState({
-          hardwareError: 'There was an error retrieving the public key from your Ledger.',
-          processing: false
-        })
-      })
+      // .catch(() => {
+      //   this.setState({
+      //     hardwareError: 'There was an error retrieving the public key from your Ledger.',
+      //     processing: false
+      //   })
+      // })
   }
 
   confirmSeed = (confirmSeed) => {

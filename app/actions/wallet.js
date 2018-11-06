@@ -13,6 +13,7 @@ import TrezorConnect from '../../trezor/trezor'
 import { encryptECIES } from '../utils/encryption'
 import { getPrivateKeyAddress, sumUTXOs } from '../utils/utils'
 import { TrezorSigner, configureTestnet } from '../../blockstack-trezor'
+import { LedgerSigner } from '../../blockstack-ledger'
 
 export const WALLET_TYPE = {
 	NORMAL: 'NORMAL',
@@ -44,10 +45,12 @@ export const SET_PAYLOAD = 'SET_PAYLOAD'
 export const ERASE_DATA = 'ERASE_DATA'
 export const ERASE_SEED = 'ERASE_SEED'
 
-export function createWallet(address:string) {
+export function createWallet(stacksAddress: string, btcAddress: string, type: string) {
 	return {
 		type: CREATE_WALLET,
-		address
+		stacksAddress,
+		btcAddress,
+		walletType: type
 	}
 }
 
@@ -128,9 +131,9 @@ export function generateNewSeed() {
 	}
 }
 
-export function setupWallet(address) {
+export function setupWallet(stacksAddress, btcAddress, type) {
 	return dispatch => new Promise((resolve) => {
-		resolve(dispatch(createWallet(address)))
+		resolve(dispatch(createWallet(stacksAddress, btcAddress, type)))
 	})
 }
 
@@ -170,10 +173,11 @@ export function getTrezorAddr() {
     TrezorConnect.getXPubKey(path, function (result) {
       if (result.success) {
         // const child = bip32.fromBase58(result.xpubkey, TESTNET_ADDRESS_PREFIX)
-        // const address = getAddressFromChildPubKey(child.publicKey, versions.testnet.p2pkh)
+        // const stacksAddress = getAddressFromChildPubKey(child.publicKey, versions.testnet.p2pkh)
         const child = bip32.fromBase58(result.xpubkey)
-        const address = getAddressFromChildPubKey(child.publicKey)
-        resolve(address)
+        const stacksAddress = getAddressFromChildPubKey(child.publicKey)
+        const btcAddress = c32ToB58(stacksAddress)
+        resolve({stacksAddress, btcAddress})
       } else {
         const error = 'Failed to get address from Trezor'
         dispatch(updateHardwareError(error))
@@ -193,8 +197,9 @@ export function getLedgerAddr() {
         var ecPair = btc.ECPair.fromPublicKey(Buffer.from(publicKey, 'hex'))
         ecPair.compressed = true
         var pkBuffer = ecPair.publicKey
-        const address = getAddressFromChildPubKey(pkBuffer)
-        resolve(address)
+        const stacksAddress = getAddressFromChildPubKey(pkBuffer)
+        const btcAddress = c32ToB58(stacksAddress)
+        resolve({stacksAddress, btcAddress})
       })
       .catch((err) => {
         const error = 'Failed to get address from Ledger'
@@ -278,7 +283,7 @@ export function getStacksBalance(address) {
 }
 
 // export function sendTokens(network: Object, address: string, amount: string) {
-export function sendTokens(senderAddress: string, recipientAddress: string, amount: string) {
+export function sendTokens(senderAddress: string, recipientAddress: string, amount: string, walletType: string) {
 	return (dispatch) => new Promise((resolve, reject) => {
 		const senderBtcAddress = c32ToB58(senderAddress)
 	  const recipientBtcAddress = c32ToB58(recipientAddress) 
@@ -286,10 +291,15 @@ export function sendTokens(senderAddress: string, recipientAddress: string, amou
 	  const tokenAmount = bigi.fromByteArrayUnsigned(amount)
 	  const memo = ""
 
-	  configureTestnet()
+	  // configureTestnet()
 
-	  const signer = new TrezorSigner(path, senderBtcAddress)
-
+	  let signer
+	  if (walletType === 'trezor') {
+	  	signer = new TrezorSigner(path, senderBtcAddress)	
+	  } else {
+	  	signer = new LedgerSigner(path, senderBtcAddress)
+	  }
+	 
 	  const txPromise = transactions.makeTokenTransfer(
 	    recipientBtcAddress, tokenType, tokenAmount, memo, signer);
 
@@ -314,5 +324,6 @@ function getAddressFromChildPubKey(child, version_prefix) {
   const prefix = version_prefix || versions.mainnet.p2pkh
   const address = c32address(prefix,
                              pk160.slice(0, 20).toString('hex'))
+
   return address
 }

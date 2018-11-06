@@ -20,6 +20,7 @@ export type walletStateType = {
 		+walletType: string,
 		+seed: string,
 	  +address: string,
+    +btcAddress: string,
     +stacksBalance: string,
     +btcBalance: string,
 	  +publicKey: string,
@@ -38,6 +39,7 @@ export const initialState = {
 	walletType: null,
   seed: null,
   address: null,
+  btcAddress: null,
   stacksBalance: 0,
   btcBalance: 0,
   publicKey: null,
@@ -50,7 +52,9 @@ export default function wallet(state = initialState, action: actionType) {
     case CREATE_WALLET:
       return {
         ...state,
-        address: action.address,
+        address: action.stacksAddress,
+        btcAddress: action.btcAddress,
+        walletType: action.walletType,
         created: true
       }
   	case SET_NAME:

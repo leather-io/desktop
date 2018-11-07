@@ -288,7 +288,7 @@ export function sendTokens(senderAddress: string, recipientAddress: string, amou
 	  const recipientBtcAddress = c32ToB58(recipientAddress) 
 	  const tokenType = "STACKS"
 	  const microStacksFactor = bigi.fromByteArrayUnsigned("1000000")
-	  const tokenAmount = bigi.fromByteArrayUnsigned(amount).multiply(toMicroStacksFactor)
+	  const tokenAmount = bigi.fromByteArrayUnsigned(amount).multiply(microStacksFactor)
 	  const memo = ""
 
 	  // configureTestnet()

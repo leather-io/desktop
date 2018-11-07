@@ -271,17 +271,10 @@ export function generateMultiSigPayload(name: string, redeemScript: string) {
 
 export function getStacksBalance(address) {
 	return (dispatch) => new Promise((resolve, reject) => {
-		fetch(`${config.network.blockstackAPIUrl}/v1/accounts/${address}/STACKS/status`)
-			.then(resp => {
-				if(resp.status == 200) {
-					return resp.json()
-				} else {
-					throw new Error('Balance check request returned error')
-				}
-			})
-			.then(resp => {
-				const balance = resp.credit_value - resp.debit_value
-				dispatch(updateBalance(balance))
+		config.network.getAccountBalance(address, "STACKS")
+			.then((balance) => {
+				const stacks = balance.intValue() / 1 / Math.pow(10,6)
+				dispatch(updateBalance(stacks))
 			})
 			.catch(err => {
 				console.log(err)
@@ -303,7 +296,7 @@ export function sendTokens(senderAddress: string, recipientAddress: string, amou
 	  let signer
 	  if (walletType === 'trezor') {
 	  	signer = new TrezorSigner(path, senderBtcAddress)	
-	  } else {
+	  } else if (walletType === 'ledger') {
 	  	signer = new LedgerSigner(path, senderBtcAddress)
 	  }
 	 

@@ -5,7 +5,6 @@ import ActionButtons from '../containers/ActionButtons'
 import Button from '../containers/Button'
 import Blob from '../components/Blob'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { microToStacks } from '../utils/utils'
 
 type Props = {};
 
@@ -37,7 +36,6 @@ export default class Dashboard extends Component<Props> {
     const { 
       address,
       stacksBalance,
-      btcBalance,
       refresh,
       logout
     } = this.props
@@ -46,11 +44,10 @@ export default class Dashboard extends Component<Props> {
       <div>
         <div>
           <p>Balance</p>
-          <h2>{microToStacks(stacksBalance)} Stacks</h2>
+          <h2>{stacksBalance} Stacks</h2>
           <br/>
           <p>Address</p>
           {address}
-          {/*{btcBalance} Bitcoin*/}
         </div>
 {/*        <Button onClick={refresh}>Refresh</Button>
         <Button onClick={logout}>Sign Out</Button>*/}

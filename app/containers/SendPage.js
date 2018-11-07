@@ -17,6 +17,8 @@ function mapStateToProps(state) {
   return {
     address: state.wallet.address,
     btcAddress: state.wallet.btcAddress,
+    stacksBalance: state.wallet.stacksBalance,
+    btcBalance: state.wallet.btcBalance,
     walletType: state.wallet.walletType
   };
 }
@@ -39,17 +41,11 @@ class SendPage extends Component<Props> {
     this.state = {
       view: VIEWS.DEFAULT,
       address: '',
-      amount: 0,
-      nameError: '',
-      seedError: ''
-
+      amount: '',
+      addressError: '',
+      amountError: '',
+      error: ''
     }
-  }
-
-  handleNameChange = (event) => {
-    this.setState({
-      name: event.target.value
-    })
   }
 
   handleAddressChange = (event) => {
@@ -57,7 +53,6 @@ class SendPage extends Component<Props> {
       address: event.target.value
     })
   }
-
 
   handleAmountChange = (event) => {
     this.setState({
@@ -71,77 +66,66 @@ class SendPage extends Component<Props> {
     })
   }
 
+  validate = () => {
+    let error = false;
+
+    if (this.state.address == '') {
+      this.setState({
+        addressError: 'You must enter a valid recipient Stacks address.'
+      })
+      error = true;
+    }
+
+    if (this.state.amount == '') {
+      this.setState({
+        amountError: 'You must enter a valid amount.'
+      })
+      error = true;
+    }
+    else if (isNaN(this.state.amount)) {
+      this.setState({
+        amountError: 'Amount must be a number.'
+      })
+      error = true;
+    }
+
+    return !error
+  }
+
   send = () => {
     console.log(this.state.address)
     console.log(this.state.amount)
-    
-    const senderAddress = this.props.address
-    const recipientAddress = this.state.address 
-    const amount = this.state.amount 
-    const walletType = this.props.walletType
 
-    // const key = "5d488f8e32bc906cff26d496e9bd27f8b371c91773273b44ae58978fd10651bb01"
+    if (this.validate()) {
+      const senderAddress = this.props.address
+      const recipientAddress = this.state.address 
+      const amount = this.state.amount 
+      const walletType = this.props.walletType
 
-    // const PUBLIC_TESTNET_HOST = 'testnet.blockstack.org';
+      // const key = "5d488f8e32bc906cff26d496e9bd27f8b371c91773273b44ae58978fd10651bb01"
 
-    // const CONFIG = {
-    //   blockstackAPIUrl: `http://${PUBLIC_TESTNET_HOST}:16268`,
-    //   blockstackNodeUrl: `http://${PUBLIC_TESTNET_HOST}:16264`,
-    //   broadcastServiceUrl: `http://${PUBLIC_TESTNET_HOST}:16269`,
-    //   // utxoServiceUrl: `http://${PUBLIC_TESTNET_HOST}:18332`,
-    //   logConfig: { level: 'debug' }
-    // };
+      // const PUBLIC_TESTNET_HOST = 'testnet.blockstack.org';
 
-    // const blockstackNetwork = new network.LocalRegtest(
-    //   CONFIG.blockstackAPIUrl, CONFIG.broadcastServiceUrl, 
-    //   new network.BitcoindAPI(CONFIG.utxoServiceUrl,
-    //     { username: 'blockstack', password: 'blockstacksystem' }))
+      // const CONFIG = {
+      //   blockstackAPIUrl: `http://${PUBLIC_TESTNET_HOST}:16268`,
+      //   blockstackNodeUrl: `http://${PUBLIC_TESTNET_HOST}:16264`,
+      //   broadcastServiceUrl: `http://${PUBLIC_TESTNET_HOST}:16269`,
+      //   // utxoServiceUrl: `http://${PUBLIC_TESTNET_HOST}:18332`,
+      //   logConfig: { level: 'debug' }
+      // };
 
-    // config.network = blockstackNetwork;
+      // const blockstackNetwork = new network.LocalRegtest(
+      //   CONFIG.blockstackAPIUrl, CONFIG.broadcastServiceUrl, 
+      //   new network.BitcoindAPI(CONFIG.utxoServiceUrl,
+      //     { username: 'blockstack', password: 'blockstacksystem' }))
 
-    this.props.sendTokens(senderAddress, recipientAddress, amount, walletType)
-    .then((res) => {
-      console.log(res)
-      this.changeView(VIEWS.COMPLETE)
-    })
-  }
+      // config.network = blockstackNetwork;
 
-  nextWithName = () => {
-  	const name = this.state.name
-    if (name.trim().length === 0) {
-      this.setState({
-        nameError: 'You must enter a name.'
+      this.props.sendTokens(senderAddress, recipientAddress, amount, walletType)
+      .then((res) => {
+        console.log(res)
+        this.changeView(VIEWS.COMPLETE)
       })
-    } else {
-      this.setState({
-        nameError: ''
-      })
-	  	this.props.updateName(name)
-	  		.then(() => this.changeView(VIEWS.SEED))
-    }
-  }
-
-  restore = () => {
-    if (this.state.seed.length == 0) {
-      this.setState({
-        seedError: 'Please enter your seed phrase.'
-      })
-    } else {
-      if (bip39.validateMnemonic(this.state.seed)) {
-        this.props.restoreFromSeed(this.state.seed)
-          .then(() => this.props.generatePayload(this.props.name, this.props.publicKey))
-          .then(() => this.changeView(VIEWS.COMPLETE))
-          .catch((error) => {
-            console.log(error)
-            this.setState({
-              seedError: 'Failed to restore from the seed phrase you entered!'
-            })
-          })
-      } else {
-        this.setState({
-          seedError: 'Please enter a valid seed phrase.'
-        })
-      }
     }
   }
 
@@ -155,9 +139,10 @@ class SendPage extends Component<Props> {
     switch(view) {
       case VIEWS.DEFAULT:
         return <Send
-        				address={this.state.name}
-                amount={this.state.name}
-        				error={this.state.nameError}
+        				address={this.state.address}
+                amount={this.state.amount}
+        				addressError={this.state.addressError}
+                amountError={this.state.amountError}
         				handleAddressChange={this.handleAddressChange}
                 handleAmountChange={this.handleAmountChange}
                 next={this.send}

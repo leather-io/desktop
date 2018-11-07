@@ -41,6 +41,8 @@ export default class Dashboard extends Component<Props> {
       logout
     } = this.props
 
+    console.log(stacksBalance)
+
     return (
       <div>
         <div>

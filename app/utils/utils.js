@@ -19,5 +19,8 @@ export function sumUTXOs(utxos: Array<UTXO>) {
 }
 
 export function microToStacks(microStacks: string) {
+  if (!microStacks) {
+    return 0
+  }
   return Number(microStacks) * 1 / Math.pow(10,6)
 }

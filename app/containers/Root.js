@@ -11,7 +11,7 @@ type Props = {
   history: {}
 };
 
-const loading = (<PageWrapper><div>Loading></div></PageWrapper>)
+const loading = (<PageWrapper><div>Loading</div></PageWrapper>)
 
 export default class Root extends Component<Props> {
   render() {

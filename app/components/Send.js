@@ -19,7 +19,8 @@ export default class Send extends Component<Props> {
     const {
       address,
       amount,
-      error
+      addressError,
+      amountError
     } = this.props
 
     return (
@@ -29,7 +30,7 @@ export default class Send extends Component<Props> {
           type="text" 
           name="address" 
           value={address} 
-          error={error}
+          error={addressError}
           onChange={this.props.handleAddressChange} 
           onReturn={this.props.next}
         />
@@ -38,7 +39,7 @@ export default class Send extends Component<Props> {
           type="text" 
           name="amount" 
           value={amount} 
-          error={error}
+          error={amountError}
           onChange={this.props.handleAmountChange} 
           onReturn={this.props.next}
         />

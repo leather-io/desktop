@@ -1,4 +1,6 @@
 // @flow
+import bigi from 'bigi'
+
 import { 
 	WALLET_TYPE,
   CREATE_WALLET,
@@ -42,8 +44,8 @@ export const initialState = {
   seed: null,
   address: null,
   btcAddress: null,
-  stacksBalance: null,
-  btcBalance: null,
+  stacksBalance: new bigi().valueOf(0),
+  btcBalance: new bigi().valueOf(0),
   publicKey: null,
   error: null,
   payload: null,

@@ -49,8 +49,6 @@ export default class Dashboard extends Component<Props> {
           <p>Address</p>
           {address}
         </div>
-{/*        <Button onClick={refresh}>Refresh</Button>
-        <Button onClick={logout}>Sign Out</Button>*/}
         <br/><br/>
         <Button to="/send" height={35}>
           Send
@@ -62,17 +60,7 @@ export default class Dashboard extends Component<Props> {
           </Button>
         </CopyToClipboard>
 
-
-{/*        <Button to="/send" height={25} small>
-          Send
-        </Button>
-        <Button to="/send" height={25} small>
-          Receive
-        </Button>*/}
-
         <ActionButtons>
-          {/*<Button to="/send">Send</Button>*/}
-          {/*<Button to="/send">Receive</Button>*/}
           <Button onClick={refresh}>Refresh</Button>
           <Button to="/settings">Settings</Button>
         </ActionButtons>

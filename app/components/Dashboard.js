@@ -77,7 +77,7 @@ export default class Dashboard extends Component<Props> {
           {/*<Button to="/send">Send</Button>*/}
           {/*<Button to="/send">Receive</Button>*/}
           <Button onClick={refresh}>Refresh</Button>
-          <Button onClick={logout}>Sign Out</Button>
+          <Button to="/settings">Settings</Button>
         </ActionButtons>
 
       </div>

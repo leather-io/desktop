@@ -271,7 +271,7 @@ export function generateMultiSigPayload(name: string, redeemScript: string) {
 
 export function getStacksBalance(address) {
 	return (dispatch) => new Promise((resolve, reject) => {
-		fetch(`${coreNodeURI}/v1/accounts/${address}/STACKS/status`)
+		fetch(`${config.network.blockstackAPIUrl}/v1/accounts/${address}/STACKS/status`)
 			.then(resp => {
 				if(resp.status == 200) {
 					return resp.json()

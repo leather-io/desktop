@@ -106,7 +106,7 @@ export function updateAddress(address: string) {
   };
 }
 
-export function updateBalance(stacksBalance: number) {
+export function updateBalance(stacksBalance: Object) {
 	return {
 		type: UPDATE_BALANCE,
 		stacksBalance
@@ -273,8 +273,7 @@ export function getStacksBalance(address) {
 	return (dispatch) => new Promise((resolve, reject) => {
 		config.network.getAccountBalance(address, "STACKS")
 			.then((balance) => {
-				const stacks = balance.intValue() / 1 / Math.pow(10,6)
-				dispatch(updateBalance(stacks))
+				dispatch(updateBalance(balance))
 			})
 			.catch(err => {
 				console.log(err)
@@ -285,10 +284,11 @@ export function getStacksBalance(address) {
 // export function sendTokens(network: Object, address: string, amount: string) {
 export function sendTokens(senderAddress: string, recipientAddress: string, amount: string, walletType: string) {
 	return (dispatch) => new Promise((resolve, reject) => {
-		const senderBtcAddress = c32ToB58(senderAddress)
+	  const senderBtcAddress = c32ToB58(senderAddress)
 	  const recipientBtcAddress = c32ToB58(recipientAddress) 
 	  const tokenType = "STACKS"
-	  const tokenAmount = bigi.fromByteArrayUnsigned(amount)
+	  const microStacksFactor = bigi.fromByteArrayUnsigned("1000000")
+	  const tokenAmount = bigi.fromByteArrayUnsigned(amount).multiply(toMicroStacksFactor)
 	  const memo = ""
 
 	  // configureTestnet()

@@ -15,11 +15,9 @@ type Props = {};
 
 function mapStateToProps(state) {
   return {
-  	name: state.wallet.name,
-    seed: state.wallet.seed,
     address: state.wallet.address,
-    publicKey: state.wallet.publicKey,
-    payload: state.wallet.payload
+    btcAddress: state.wallet.btcAddress,
+    walletType: state.wallet.walletType
   };
 }
 
@@ -78,9 +76,10 @@ class SendPage extends Component<Props> {
     console.log(this.state.amount)
     
     const senderAddress = this.props.address
-    const recipientAddress = this.state.address //'ST2AHMVY0WARE7T6WPBGD0ZX9N13PH5P47Q0X6WDE'
-    const amount = this.state.amount //"20999"
+    const recipientAddress = this.state.address 
+    const amount = this.state.amount 
     const walletType = this.props.walletType
+
     // const key = "5d488f8e32bc906cff26d496e9bd27f8b371c91773273b44ae58978fd10651bb01"
 
     // const PUBLIC_TESTNET_HOST = 'testnet.blockstack.org';

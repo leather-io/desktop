@@ -34,7 +34,7 @@ export default class Send extends Component<Props> {
           onReturn={this.props.next}
         />
         <Input 
-          label="Amount" 
+          label="Amount (Stacks)" 
           type="text" 
           name="amount" 
           value={amount} 

@@ -55,6 +55,21 @@ class SendPage extends Component<Props> {
   }
 
   updateBalance = () => {
+
+    // const TESTNET_HOST = 'localhost';
+
+    // const CONFIG = {
+    //   blockstackAPIUrl: `http://${TESTNET_HOST}:6270`,
+    //   // blockstackNodeUrl: `http://${TESTNET_HOST}:16264`,
+    //   // broadcastServiceUrl: `http://${TESTNET_HOST}:16269`,
+    //   // utxoServiceUrl: `http://${TESTNET_HOST}:18332`,
+    //   logConfig: { level: 'debug' }
+    // };
+
+    // const blockstackNetwork = new network.MAINNET_DEFAULT(CONFIG.blockstackAPIUrl)
+
+    config.network.blockstackAPIUrl = 'http://localhost:6270'
+
     this.props.getStacksBalance(this.props.address)
   }
 

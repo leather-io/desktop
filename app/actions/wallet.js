@@ -11,7 +11,7 @@ import { c32address, c32ToB58, versions } from 'c32check'
 // import TrezorConnect from 'trezor-connect'
 import TrezorConnect from '../../trezor/trezor'
 import { encryptECIES } from '../utils/encryption'
-import { getPrivateKeyAddress, sumUTXOs } from '../utils/utils'
+import { getPrivateKeyAddress, satoshisToBtc, sumUTXOs } from '../utils/utils'
 import { TrezorSigner, configureTestnet } from '../../blockstack-trezor'
 import { LedgerSigner } from '../../blockstack-ledger'
 
@@ -25,6 +25,7 @@ const BSKPK = '03956cd9ba758cb7be56d0f8d52476673814d8dbb3c1a728d73a36b3b9268f9cb
 const path = `m/44'/5757'/0'/0/0`
 const coreNodeURI = 'http://testnet.blockstack.org:16268'
 const testnetCoreNodeURI = 'http://testnet.blockstack.org:16268'
+const utxoServiceURI = 'https://utxo.blockstack.org'
 
 const TESTNET_ADDRESS_PREFIX = {
   wif: 0x6F,
@@ -40,7 +41,8 @@ export const SET_NAME = 'SET_NAME'
 export const CREATE_NEW_SEED = 'NEW_SEED'
 export const USE_HARDWARE_WALLET = 'USE_HARDWARE_WALLET'
 export const SET_ADDRESS = 'SET_ADDRESS'
-export const UPDATE_BALANCE = 'UPDATE_BALANCE'
+export const UPDATE_STACKS_BALANCE = 'UPDATE_STACKS_BALANCE'
+export const UPDATE_BTC_BALANCE = 'UPDATE_BTC_BALANCE'
 export const SET_HARDWARE_ERROR = 'SET_HARDWARE_ERROR'
 export const SET_PAYLOAD = 'SET_PAYLOAD'
 export const ERASE_DATA = 'ERASE_DATA'
@@ -106,10 +108,17 @@ export function updateAddress(address: string) {
   };
 }
 
-export function updateBalance(stacksBalance: Object) {
+export function updateStacksBalance(stacksBalance: Object) {
 	return {
-		type: UPDATE_BALANCE,
+		type: UPDATE_STACKS_BALANCE,
 		stacksBalance
+	}
+}
+
+export function updateBTCBalance(btcBalance: Object) {
+	return {
+		type: UPDATE_BTC_BALANCE,
+		btcBalance
 	}
 }
 
@@ -273,8 +282,29 @@ export function getStacksBalance(address) {
 	return (dispatch) => new Promise((resolve, reject) => {
 		config.network.getAccountBalance(address, "STACKS")
 			.then((balance) => {
-				dispatch(updateBalance(balance))
+				dispatch(updateStacksBalance(balance))
 			})
+			.catch(err => {
+				console.log(err)
+			})
+	})
+}
+
+export function getBtcBalance(address) {
+	const confirmedBalanceURI = `${utxoServiceURI}/insight-api/addr/${address}/balance`
+	const unConfirmedBalanceURI = `${utxoServiceURI}/insight-api/addr/${address}/unconfirmedBalance`
+	return (dispatch) => new Promise((resolve, reject) => {
+		fetch(confirmedBalanceURI)
+      .then(response => response.text())
+      .then(responseText => {
+        const confirmedBalance = parseInt(responseText, 10)
+        return fetch(unConfirmedBalanceURI)
+          .then(response => response.text())
+          .then(responseText => {
+          	const unConfirmedBalance = parseInt(responseText, 10)
+          	dispatch(updateBTCBalance(bigi.valueOf((confirmedBalance + unConfirmedBalance))))
+          })
+      })
 			.catch(err => {
 				console.log(err)
 			})

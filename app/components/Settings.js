@@ -5,6 +5,7 @@ import ActionButtons from '../containers/ActionButtons'
 import Button from '../containers/Button'
 import Blob from '../components/Blob'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { satoshisToBtc } from '../utils/utils'
 
 type Props = {};
 
@@ -19,6 +20,7 @@ export default class Settings extends Component<Props> {
 
     const { 
       btcAddress,
+      btcBalance,
       reset,
       done
     } = this.props
@@ -26,7 +28,11 @@ export default class Settings extends Component<Props> {
     return (
       <div>
         <div>
-          <p>BTC Address</p>
+          <p>Bitcoin Balance</p>
+          {satoshisToBtc(btcBalance.toString())}
+        </div>
+        <div>
+          <p>Bitcoin Address</p>
           {btcAddress}
         </div>
         <br/><br/>

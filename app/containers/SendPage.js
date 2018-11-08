@@ -7,6 +7,7 @@ import * as WalletActions from '../actions/wallet'
 import Send from '../components/Send'
 import SendConfirmation from '../components/SendConfirmation'
 import SendError from '../components/SendError'
+import SendBtcNeeded from '../components/SendBtcNeeded'
 import SendComplete from '../components/SendComplete'
 import { config, network } from 'blockstack'
 import PageWrapper from '../containers/PageWrapper'
@@ -36,7 +37,8 @@ const VIEWS = {
   DEFAULT: 0,
   CONFIRMATION: 1,
   ERROR: 2,
-  COMPLETE: 3
+  BTC: 3,
+  COMPLETE: 4
 }
 
 class SendPage extends Component<Props> {
@@ -76,42 +78,49 @@ class SendPage extends Component<Props> {
   }
 
   validate = () => {
-    let error = false;
+    let valid = true;
 
     if (this.state.address == '') {
       this.setState({
         addressError: 'You must enter a valid recipient Stacks address.'
       })
-      error = true;
+      valid = false;
     }
 
     if (this.state.amount == '') {
       this.setState({
         amountError: 'You must enter a valid amount.'
       })
-      error = true;
+      valid = false;
     }
     else if (isNaN(this.state.amount)) {
       this.setState({
         amountError: 'Amount must be a number.'
       })
-      error = true;
+      valid = false;
     }
-    else if (this.props.stacksBalance.compareTo(bigi.fromByteArrayUnsigned(stacksToMicro(this.state.amount).toString())) < 0) {
+
+    return valid
+  }
+
+  checkBalances = () => {
+    let valid = true
+
+    if (this.props.stacksBalance.compareTo(bigi.fromByteArrayUnsigned(stacksToMicro(this.state.amount).toString())) < 0) {
       this.setState({
         amountError: 'Amount exceeds available account balance.'
       })
-      error = true;
-    }
+      valid = false;
+    } 
 
-    return !error
+    return valid
   }
 
   send = () => {
     // console.log(this.state.address)
     // console.log(this.state.amount)
 
-    if (this.validate()) {
+    if (this.validate() && this.checkBalances()) {
       this.clearErrors()
       const senderAddress = this.props.address
       const recipientAddress = this.state.address 
@@ -207,6 +216,12 @@ class SendPage extends Component<Props> {
       case VIEWS.ERROR:
         return <SendError
                 error={this.state.error}
+               />;
+      case VIEWS.BTC:
+        return <SendBtcNeeded
+                btcAddress={this.state.btcAddress}
+                minBtcAmount={0.0001}
+                tryAgain={this.send}
                />;
       case VIEWS.COMPLETE:
         return <SendComplete 

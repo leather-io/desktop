@@ -19,6 +19,7 @@ function mapStateToProps(state) {
     stacksBalance: state.wallet.stacksBalance,
     btcBalance: state.wallet.btcBalance,
     address: state.wallet.address,
+    btcAddress: state.wallet.btcAddress,
     publicKey: state.wallet.publicKey,
   };
 }
@@ -56,6 +57,7 @@ class SendPage extends Component<Props> {
 
   updateBalance = () => {
     this.props.getStacksBalance(this.props.address)
+    this.props.getBtcBalance(this.props.btcAddress)
   }
 
   logout = () => {

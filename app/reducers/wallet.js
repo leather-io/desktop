@@ -7,7 +7,8 @@ import {
 	SET_NAME,
 	CREATE_NEW_SEED,
 	SET_ADDRESS,
-  UPDATE_BALANCE,
+  UPDATE_STACKS_BALANCE,
+  UPDATE_BTC_BALANCE,
 	USE_HARDWARE_WALLET,
 	SET_HARDWARE_ERROR,
 	SET_PAYLOAD,
@@ -80,10 +81,14 @@ export default function wallet(state = initialState, action: actionType) {
     		...state,
     		address: action.address
     	}
-    case UPDATE_BALANCE:
+    case UPDATE_STACKS_BALANCE:
       return {
         ...state,
-        stacksBalance: action.stacksBalance,
+        stacksBalance: action.stacksBalance
+      }
+    case UPDATE_BTC_BALANCE:
+      return {
+        ...state,
         btcBalance: action.btcBalance
       }
     case USE_HARDWARE_WALLET:

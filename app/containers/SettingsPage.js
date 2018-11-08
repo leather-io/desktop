@@ -15,6 +15,7 @@ type Props = {};
 function mapStateToProps(state) {
   return {
     btcAddress: state.wallet.btcAddress,
+    btcBalance: state.wallet.btcBalance
   };
 }
 
@@ -37,10 +38,18 @@ class SettingsPage extends Component<Props> {
     }
   }
 
+  componentDidMount = () => {
+    this.updateBtcBalance()
+  }
+
   changeView = (view) => {
     this.setState({
       view: view
     })
+  }
+
+  updateBtcBalance = () => {
+    this.props.getBtcBalance(this.props.btcAddress)
   }
 
   reset = () => {
@@ -52,6 +61,7 @@ class SettingsPage extends Component<Props> {
       case VIEWS.DEFAULT:
         return <Settings
         				btcAddress={this.props.btcAddress}
+                btcBalance={this.props.btcBalance}
                 reset={this.reset}
                />;
       default:

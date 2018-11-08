@@ -5,11 +5,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as WalletActions from '../actions/wallet'
 import Send from '../components/Send'
+import SendConfirmation from '../components/SendConfirmation'
+import SendError from '../components/SendError'
 import SendComplete from '../components/SendComplete'
 import { config, network } from 'blockstack'
 import PageWrapper from '../containers/PageWrapper'
 import bip39 from 'bip39'
 import { remote } from 'electron'
+import bigi from 'bigi'
+import { stacksToMicro } from '../utils/utils'
 
 type Props = {};
 
@@ -19,7 +23,8 @@ function mapStateToProps(state) {
     btcAddress: state.wallet.btcAddress,
     stacksBalance: state.wallet.stacksBalance,
     btcBalance: state.wallet.btcBalance,
-    walletType: state.wallet.walletType
+    walletType: state.wallet.walletType,
+    rawTransaction: state.wallet.rawTransaction
   };
 }
 
@@ -29,7 +34,9 @@ function mapDispatchToProps(dispatch) {
 
 const VIEWS = {
   DEFAULT: 0,
-  COMPLETE: 1,
+  CONFIRMATION: 1,
+  ERROR: 2,
+  COMPLETE: 3
 }
 
 class SendPage extends Component<Props> {
@@ -44,6 +51,8 @@ class SendPage extends Component<Props> {
       amount: '',
       addressError: '',
       amountError: '',
+      rawTransaction: null,
+      txID: '',
       error: ''
     }
   }
@@ -88,15 +97,22 @@ class SendPage extends Component<Props> {
       })
       error = true;
     }
+    else if (this.props.stacksBalance.compareTo(bigi.fromByteArrayUnsigned(stacksToMicro(this.state.amount).toString())) < 0) {
+      this.setState({
+        amountError: 'Amount exceeds available account balance.'
+      })
+      error = true;
+    }
 
     return !error
   }
 
   send = () => {
-    console.log(this.state.address)
-    console.log(this.state.amount)
+    // console.log(this.state.address)
+    // console.log(this.state.amount)
 
     if (this.validate()) {
+      this.clearErrors()
       const senderAddress = this.props.address
       const recipientAddress = this.state.address 
       const amount = this.state.amount 
@@ -121,12 +137,47 @@ class SendPage extends Component<Props> {
 
       // config.network = blockstackNetwork;
 
-      this.props.sendTokens(senderAddress, recipientAddress, amount, walletType)
-      .then((res) => {
-        console.log(res)
+      this.props.generateTransaction(senderAddress, recipientAddress, amount, walletType)
+        .then((tx) => {
+          console.log(tx)
+          this.setState({
+            rawTransaction: tx
+          })
+          this.changeView(VIEWS.CONFIRMATION)
+        })
+        .catch((error) => {
+          console.log(error)
+          this.setState({
+            error
+          })
+          this.changeView(VIEWS.ERROR)
+        })
+    }
+  }
+
+  confirmSend = () => {
+    this.props.broadcastTransaction(this.props.rawTransaction)
+      .then((txID) => {
+        this.setState({
+          txID: txID
+        })
         this.changeView(VIEWS.COMPLETE)
       })
-    }
+      .catch((error) => {
+        console.log(error)
+        this.setState({
+          error
+        })
+        this.changeView(VIEWS.ERROR)
+      })
+  }
+
+  clearErrors = () => {
+    this.setState({
+      addressError: '',
+      amountError: '',
+      error: ''
+    })
   }
 
   exit = () => {
@@ -146,6 +197,16 @@ class SendPage extends Component<Props> {
         				handleAddressChange={this.handleAddressChange}
                 handleAmountChange={this.handleAmountChange}
                 next={this.send}
+               />;
+      case VIEWS.CONFIRMATION:
+        return <SendConfirmation
+                address={this.state.address}
+                amount={this.state.amount}
+                confirm={this.confirmSend}
+               />;
+      case VIEWS.ERROR:
+        return <SendError
+                error={this.state.error}
                />;
       case VIEWS.COMPLETE:
         return <SendComplete 

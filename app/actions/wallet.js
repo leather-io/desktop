@@ -282,7 +282,7 @@ export function getStacksBalance(address) {
 }
 
 // export function sendTokens(network: Object, address: string, amount: string) {
-export function sendTokens(senderAddress: string, recipientAddress: string, amount: string, walletType: string) {
+export function generateTransaction(senderAddress: string, recipientAddress: string, amount: string, walletType: string) {
 	return (dispatch) => new Promise((resolve, reject) => {
 	  const senderBtcAddress = c32ToB58(senderAddress)
 	  const recipientBtcAddress = c32ToB58(recipientAddress) 
@@ -303,10 +303,18 @@ export function sendTokens(senderAddress: string, recipientAddress: string, amou
 	  const txPromise = transactions.makeTokenTransfer(
 	    recipientBtcAddress, tokenType, tokenAmount, memo, signer);
 
-    return txPromise.then((tx) => {
-      return config.network.broadcastTransaction(tx);
-    })
+		return txPromise.catch((error) => {
+			reject(error)
+		})
+
+    // return txPromise.then((tx) => {
+    //   return config.network.broadcastTransaction(tx);
+    // })
 	})
+}
+
+export function broadcastTransaction(rawTransaction: string) {
+	return config.network.broadcastTransaction(rawTransaction)
 }
 
 function getAddressFromChildPubKey(child, version_prefix) {

@@ -2,6 +2,7 @@ import {
 	hexStringToECPair,
 	ecPairToAddress
 } from 'blockstack'
+import bigi from 'bigi'
 
 export function getPrivateKeyAddress(network: Object, privateKey: string | TransactionSigner) 
   : string {
@@ -24,3 +25,15 @@ export function microToStacks(microStacks: string) {
   }
   return Number(microStacks) * 1 / Math.pow(10,6)
 }
+
+export function stacksToMicro(stacks: string) {
+  if (!stacks) {
+    return 0
+  }
+  return Math.floor(Number(stacks) * 1000000)
+}
+
+// export function stacksToMicro(stacks: Object) {
+//   const microStacksFactor = bigi.fromByteArrayUnsigned("1000000")
+//   return stacks.multiply(microStacksFactor)
+// }

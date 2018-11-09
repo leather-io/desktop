@@ -38,28 +38,40 @@ export default class Dashboard extends Component<Props> {
       address,
       stacksBalance,
       refresh,
-      logout
+      logout,
+      walletType
     } = this.props
+
+    const sendDisabled = walletType === 'watch-only'
 
     return (
       <div>
         <div>
-          <p>Balance</p>
+          <p>Available Balance</p>
           <h2>{microToStacks(stacksBalance.toString())} Stacks</h2>
           <br/>
           <p>Address</p>
-          {address}
+          <Blob>{address}</Blob>
         </div>
-        <br/><br/>
-        <Button to="/send" height={35}>
-          Send
-        </Button>
-        &nbsp;
-        <CopyToClipboard text={address}>
-          <Button onClick={this.addressCopied} height={25}>
-            {this.state.receiveButtonText}
-          </Button>
-        </CopyToClipboard>
+        <br/>
+        {sendDisabled && 
+          <div>This is a watch-only wallet, sending is disabled.<br/><br/><br/></div>
+        }
+        {sendDisabled ?
+            <Button to="/send" height={35} disabled title="Test">
+              Send
+            </Button>
+          :
+            <Button to="/send" height={35}>
+              Send
+            </Button>
+          }
+          &nbsp;
+          <CopyToClipboard text={address}>
+            <Button onClick={this.addressCopied} height={25}>
+              {this.state.receiveButtonText}
+            </Button>
+          </CopyToClipboard>
 
         <ActionButtons>
           <Button onClick={refresh}>Refresh</Button>

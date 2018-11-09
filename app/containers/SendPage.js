@@ -99,6 +99,12 @@ class SendPage extends Component<Props> {
       })
       valid = false;
     }
+    else if (Number(this.state.amount) <= 0) {
+      this.setState({
+        amountError: 'Amount must be greater than 0.'
+      })
+      valid = false;
+    }
 
     return valid
   }
@@ -112,6 +118,10 @@ class SendPage extends Component<Props> {
       })
       valid = false;
     } 
+    else if (this.props.btcBalance.compareTo(bigi.valueOf(0)) <= 0) {
+      valid = false;
+      this.changeView(VIEWS.BTC)
+    } 
 
     return valid
   }
@@ -120,6 +130,7 @@ class SendPage extends Component<Props> {
     // console.log(this.state.address)
     // console.log(this.state.amount)
 
+    this.clearErrors()
     if (this.validate() && this.checkBalances()) {
       this.clearErrors()
       const senderAddress = this.props.address
@@ -145,6 +156,9 @@ class SendPage extends Component<Props> {
       //     { username: 'blockstack', password: 'blockstacksystem' }))
 
       // config.network = blockstackNetwork;
+
+      // this.changeView(VIEWS.CONFIRMATION)
+      // this.changeView(VIEWS.COMPLETE)
 
       this.props.generateTransaction(senderAddress, recipientAddress, amount, walletType)
         .then((tx) => {
@@ -219,12 +233,13 @@ class SendPage extends Component<Props> {
                />;
       case VIEWS.BTC:
         return <SendBtcNeeded
-                btcAddress={this.state.btcAddress}
+                btcAddress={this.props.btcAddress}
                 minBtcAmount={0.0001}
                 tryAgain={this.send}
                />;
       case VIEWS.COMPLETE:
         return <SendComplete 
+                txID={this.state.txID}
                 confirm={() => this.changeView(VIEWS.DEFAULT)}
         			 />;
       default:

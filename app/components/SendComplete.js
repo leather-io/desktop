@@ -18,8 +18,7 @@ export default class SendComplete extends Component<Props> {
   render() {
 
     const { 
-      address,
-      balance,
+      txID,
       confirm
     } = this.props
 
@@ -28,10 +27,14 @@ export default class SendComplete extends Component<Props> {
         <div>
           <p>Transaction Sent!</p>
         </div>
+        <p>
+          Transaction ID:<br/>
+          <Blob>{txID}</Blob>
+        </p>
         <br/><br/>
-        <Button to="/send" height={25} small>
+{/*        <Button to="/send" height={25} small>
           Check status
-        </Button>
+        </Button>*/}
 
         <ActionButtons>
           <Button onClick={confirm}>Done</Button>

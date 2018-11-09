@@ -49,6 +49,7 @@ class SettingsPage extends Component<Props> {
   }
 
   updateBtcBalance = () => {
+    console.log(config)
     this.props.getBtcBalance(this.props.btcAddress)
   }
 
@@ -62,6 +63,8 @@ class SettingsPage extends Component<Props> {
         return <Settings
         				btcAddress={this.props.btcAddress}
                 btcBalance={this.props.btcBalance}
+                blockstackCoreURL={config.network.blockstackAPIUrl}
+                broadcastServiceURL={config.network.broadcastServiceUrl}
                 reset={this.reset}
                />;
       default:

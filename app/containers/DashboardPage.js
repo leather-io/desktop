@@ -21,6 +21,7 @@ function mapStateToProps(state) {
     address: state.wallet.address,
     btcAddress: state.wallet.btcAddress,
     publicKey: state.wallet.publicKey,
+    walletType: state.wallet.walletType
   };
 }
 
@@ -56,6 +57,7 @@ class SendPage extends Component<Props> {
   }
 
   updateBalance = () => {
+    // config.network.blockstackAPIUrl = 'http://localhost:6270'
     this.props.getStacksBalance(this.props.address)
     this.props.getBtcBalance(this.props.btcAddress)
   }
@@ -72,7 +74,7 @@ class SendPage extends Component<Props> {
                 stacksBalance={this.props.stacksBalance}
                 refresh={this.updateBalance}
                 logout={this.logout}
-                btcBalance={0}
+                walletType={this.props.walletType}
                />;
       default:
         return <div></div>;

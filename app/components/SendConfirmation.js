@@ -29,8 +29,8 @@ export default class SendConfirmation extends Component<Props> {
         <div>
           <p>Confirm transaction</p>
         </div>
-        <br/><br/>
-        Sending {amount} Stacks to {address}
+        Sending {amount} Stacks to 
+        <Blob>{address}</Blob>
         <ActionButtons>
           <Button to="/dashboard">Cancel</Button>
           <Button onClick={confirm}>Confirm</Button>

@@ -25,20 +25,17 @@ export default class SendBtcNeeded extends Component<Props> {
 
     return (
       <div>
-        <div>
-          <p>Bitcoin needed</p>
-        </div>
-        <br/><br/>
         <p>
           You don't have enough Bitcoin to fund this transaction. <br/>
+        </p>
+        <p>
           Send at least {minBtcAmount} bitcoin to your bitcoin wallet and try again.<br/>
           Bitcoin is used for Stacks transaction fees. 
-          <a href="">Why is BTC required?</a>
         </p>
-        <h2>Bitcoin Wallet Address</h2>
-        <p>
+        <p>Bitcoin Wallet Address</p>
+        <Blob>
           {btcAddress}
-        </p>
+        </Blob>
         <ActionButtons>
           <Button to="/send">Cancel</Button>
           <Button onClick={tryAgain}>Try again</Button>

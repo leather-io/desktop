@@ -30,7 +30,7 @@ export default class RestoreSeed extends Component<Props> {
             For your security, at this time you can only create a watch-only wallet if you do not have a hardware wallet device.
           </p>
           <p>
-            Enter your Stacks address or public key to continue.
+            Enter your Stacks address to continue.
           </p>
           <Input 
             type="textarea" 

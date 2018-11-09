@@ -61,7 +61,7 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 950,
+    width: 550,
     height: 760,
     webPreferences: {
       nodeIntegration: true,

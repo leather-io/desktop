@@ -21,6 +21,8 @@ export default class Settings extends Component<Props> {
     const { 
       btcAddress,
       btcBalance,
+      blockstackCoreURL,
+      broadcastServiceURL,
       reset,
       done
     } = this.props
@@ -29,13 +31,21 @@ export default class Settings extends Component<Props> {
       <div>
         <div>
           <p>Bitcoin Balance</p>
-          {satoshisToBtc(btcBalance.toString())}
+          {satoshisToBtc(btcBalance.toString())} BTC
         </div>
         <div>
           <p>Bitcoin Address</p>
-          {btcAddress}
+          <Blob>{btcAddress}</Blob>
         </div>
-        <br/><br/>
+        <div>
+          <p>Blocktack Core API URL</p>
+          <Blob>{blockstackCoreURL}</Blob>
+        </div>
+        <div>
+          <p>Transaction Broadcast Service URL</p>
+          <Blob>{broadcastServiceURL}</Blob>
+        </div>
+        <br/>
         <Button onClick={reset} height={25}>
           Reset Wallet
         </Button>

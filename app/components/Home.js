@@ -22,13 +22,13 @@ export default class Home extends Component<Props> {
           to="/hardware" 
           height={68} 
           margin={'0 0 1px 0'}>
-          I have a hardware device
+          Create wallet from hardware device
         </Button>
         <Button 
           to="/restore" 
           height={68} 
           margin={'0 0 1px 0'}>
-          I have a seed phrase
+          Create watch-only wallet
         </Button>
 {/*       <Button 
           to="/new" 

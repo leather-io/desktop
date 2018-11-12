@@ -20,6 +20,7 @@ function mapStateToProps(state) {
     btcBalance: state.wallet.btcBalance,
     address: state.wallet.address,
     btcAddress: state.wallet.btcAddress,
+    stacksTransactions: state.wallet.stacksTransactions,
     publicKey: state.wallet.publicKey,
     walletType: state.wallet.walletType
   };
@@ -47,7 +48,7 @@ class SendPage extends Component<Props> {
   }
 
   componentDidMount = () => {
-    this.updateBalance()
+    this.refresh()
   }
 
   changeView = (view) => {
@@ -56,10 +57,19 @@ class SendPage extends Component<Props> {
     })
   }
 
+  refresh = () => {
+    this.updateBalance()
+    this.updateTransactionHistory()
+  }
+
   updateBalance = () => {
     // config.network.blockstackAPIUrl = 'http://localhost:6270'
     this.props.getStacksBalance(this.props.address)
     this.props.getBtcBalance(this.props.btcAddress)
+  }
+
+  updateTransactionHistory = () => {
+    this.props.getTransactionHistory(this.props.address)
   }
 
   logout = () => {
@@ -72,7 +82,8 @@ class SendPage extends Component<Props> {
         return <Dashboard
         				address={this.props.address}
                 stacksBalance={this.props.stacksBalance}
-                refresh={this.updateBalance}
+                transactions={this.props.stacksTransactions}
+                refresh={this.refresh}
                 logout={this.logout}
                 walletType={this.props.walletType}
                />;

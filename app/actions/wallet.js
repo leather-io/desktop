@@ -26,6 +26,7 @@ const path = `m/44'/5757'/0'/0/0`
 const coreNodeURI = 'http://testnet.blockstack.org:16268'
 const testnetCoreNodeURI = 'http://testnet.blockstack.org:16268'
 const utxoServiceURI = 'https://utxo.blockstack.org'
+const explorerAPI = 'https://blockstack-explorer-api.herokuapp.com'
 
 const TESTNET_ADDRESS_PREFIX = {
   wif: 0x6F,
@@ -43,6 +44,7 @@ export const USE_HARDWARE_WALLET = 'USE_HARDWARE_WALLET'
 export const SET_ADDRESS = 'SET_ADDRESS'
 export const UPDATE_STACKS_BALANCE = 'UPDATE_STACKS_BALANCE'
 export const UPDATE_BTC_BALANCE = 'UPDATE_BTC_BALANCE'
+export const UPDATE_TX_HISTORY = 'UPDATE_TX_HISTORY'
 export const SET_HARDWARE_ERROR = 'SET_HARDWARE_ERROR'
 export const SET_PAYLOAD = 'SET_PAYLOAD'
 export const ERASE_DATA = 'ERASE_DATA'
@@ -119,6 +121,13 @@ export function updateBTCBalance(btcBalance: Object) {
 	return {
 		type: UPDATE_BTC_BALANCE,
 		btcBalance
+	}
+}
+
+export function updateTransactionHistory(transactions: Array) {
+	return {
+		type: UPDATE_TX_HISTORY,
+		transactions
 	}
 }
 
@@ -304,6 +313,23 @@ export function getBtcBalance(address) {
           	const unConfirmedBalance = parseInt(responseText, 10)
           	dispatch(updateBTCBalance(bigi.valueOf((confirmedBalance + unConfirmedBalance))))
           })
+      })
+			.catch(err => {
+				console.log(err)
+			})
+	})
+}
+
+export function getTransactionHistory(address) {
+	const apiURL = `${explorerAPI}/api/stacks/addresses/${address}`
+	return (dispatch) => new Promise((resolve, reject) => {
+		fetch(apiURL)
+      .then(response => response.json())
+      .then(result => {
+      	// console.log('transactions')
+      	// console.log(result)
+      	const transactions = result.history
+      	dispatch(updateTransactionHistory(transactions))
       })
 			.catch(err => {
 				console.log(err)

@@ -32,11 +32,18 @@ export default class Dashboard extends Component<Props> {
     }, 1500)
   }
 
+  renderTransaction = (tx) => {
+    return (<div>
+
+    </div>)
+  }
+
   render() {
 
     const { 
       address,
       stacksBalance,
+      transactions,
       refresh,
       logout,
       walletType
@@ -72,6 +79,14 @@ export default class Dashboard extends Component<Props> {
               {this.state.receiveButtonText}
             </Button>
           </CopyToClipboard>
+
+          {transactions && transactions.length > 0 && <p>Recent Transactions</p>}
+          {transactions.map((tx) => {
+            return <Blob key={tx.txid}>
+              {tx.operation} {microToStacks(tx.tokensSent)} Stacks<br/>
+              {tx.recipient}<br/>
+            </Blob>
+          })}
 
         <ActionButtons>
           <Button onClick={refresh}>Refresh</Button>

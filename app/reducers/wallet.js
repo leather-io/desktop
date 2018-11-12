@@ -9,6 +9,7 @@ import {
 	SET_ADDRESS,
   UPDATE_STACKS_BALANCE,
   UPDATE_BTC_BALANCE,
+  UPDATE_TX_HISTORY,
 	USE_HARDWARE_WALLET,
 	SET_HARDWARE_ERROR,
 	SET_PAYLOAD,
@@ -27,6 +28,7 @@ export type walletStateType = {
     +btcAddress: string,
     +stacksBalance: Object,
     +btcBalance: Object,
+    +stacksTransactions: Array,
 	  +publicKey: string,
 	  +error: string,
 	  +payload: string,
@@ -47,6 +49,7 @@ export const initialState = {
   btcAddress: null,
   stacksBalance: new bigi().valueOf(0),
   btcBalance: new bigi().valueOf(0),
+  stacksTransactions: [],
   publicKey: null,
   error: null,
   payload: null,
@@ -90,6 +93,11 @@ export default function wallet(state = initialState, action: actionType) {
       return {
         ...state,
         btcBalance: action.btcBalance
+      }
+    case UPDATE_TX_HISTORY:
+      return {
+        ...state,
+        stacksTransactions: action.transactions
       }
     case USE_HARDWARE_WALLET:
       return { 

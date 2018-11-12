@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Type, Buttons, Button } from "blockstack-ui/dist";
-import { TermsOfUse } from "./terms-of-use";
-
+import { TermsOfUse } from "@components/terms-of-use";
+import { Link } from "react-router-dom";
 const Title = ({ ...rest }) => (
   <Type
     display="block"
@@ -33,7 +33,7 @@ const TermsPage = ({ quit, next }) => (
       <Button mx={2} outline invert onClick={quit}>
         Quit
       </Button>
-      <Button mx={2} invert onClick={next}>
+      <Button is={Link} to="/restore-options" mx={2} invert>
         I Accept
       </Button>
     </Buttons>

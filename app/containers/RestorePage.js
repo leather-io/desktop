@@ -2,11 +2,11 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import * as WalletActions from "../actions/wallet";
 import RestoreSeedView from "../components/RestoreSeed";
 import CompleteView from "../components/Complete";
 import PageWrapper from "../containers/PageWrapper";
+import { Flex, Box } from "blockstack-ui/dist";
 
 type Props = {};
 
@@ -52,7 +52,7 @@ class RestorePage extends Component<Props> {
   };
 
   restore = () => {
-    if (this.state.address.length == 0) {
+    if (this.state.address.length === 0) {
       this.setState({
         addressError: "Please enter an address or public key."
       });

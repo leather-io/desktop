@@ -4,7 +4,7 @@
 
 import path from "path";
 import webpack from "webpack";
-
+import { resolve } from "./webpack.resolve";
 import { dependencies } from "../package.json";
 
 export default {
@@ -33,19 +33,7 @@ export default {
   /**
    * Determine the array of extensions that should be used to resolve modules.
    */
-  resolve: {
-    extensions: [".js", ".jsx", ".json"],
-    modules: [path.join(__dirname, "../app"), "node_modules"],
-    alias: {
-      "@components": path.resolve(__dirname, "../app", "components"),
-      "@containers": path.resolve(__dirname, "../app", "containers"),
-      "@common": path.resolve(__dirname, "../app", "common"),
-      "@stores": path.resolve(__dirname, "../app", "store"),
-      "@actions": path.resolve(__dirname, "../app", "actions"),
-      "@reducers": path.resolve(__dirname, "../app", "reducers"),
-      "@utils": path.resolve(__dirname, "../app", "utils")
-    }
-  },
+  resolve,
 
   plugins: [
     new webpack.EnvironmentPlugin({

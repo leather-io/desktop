@@ -4,18 +4,31 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme, Flex } from "blockstack-ui";
+import { normalize } from "polished";
 import Routes from "../routes";
+import Modal from "@components/modal";
 
 const GlobalStyles = createGlobalStyle`
 
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,600,700');
+
+${normalize()}
 html {
   height: 100%;
+  width:100%;
+    max-width: 100%;
+
+}
+
+*{
+box-sizing: border-box;
 }
 
 body {
   position: relative;
   height: 100%;
+  width: 100%;
+  max-width: 100%;
   font-size: 16px;
   margin: 0;
   font-family: ${theme.fonts.default};
@@ -77,7 +90,9 @@ export default class Root extends Component<Props> {
             <React.Fragment>
               <Flex flexGrow={1} flexDirection="column">
                 <GlobalStyles />
-                <Routes />
+                <Modal>
+                  <Routes />
+                </Modal>
               </Flex>
             </React.Fragment>
           </ThemeProvider>

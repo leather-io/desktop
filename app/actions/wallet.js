@@ -11,7 +11,7 @@ import { c32address, c32ToB58, versions } from 'c32check'
 // import TrezorConnect from 'trezor-connect'
 import TrezorConnect from '../../trezor/trezor'
 import { encryptECIES } from '../utils/encryption'
-import { getPrivateKeyAddress, satoshisToBtc, sumUTXOs } from '../utils/utils'
+import { getPrivateKeyAddress, satoshisToBtc, sumUTXOs, MICROSTACKS_IN_STACKS } from '../utils/utils'
 import { TrezorSigner, configureTestnet } from '../../blockstack-trezor'
 import { LedgerSigner } from '../../blockstack-ledger'
 
@@ -312,16 +312,15 @@ export function getBtcBalance(address) {
 }
 
 // export function sendTokens(network: Object, address: string, amount: string) {
-export function generateTransaction(senderAddress: string, recipientAddress: string, amount: string, walletType: string) {
+export function generateTransaction(senderAddress: string, recipientAddress: string, amount: Object, walletType: string) {
 	return (dispatch) => new Promise((resolve, reject) => {
 	  const senderBtcAddress = c32ToB58(senderAddress)
 	  const recipientBtcAddress = c32ToB58(recipientAddress) 
 	  const tokenType = "STACKS"
-	  const microStacksFactor = bigi.fromByteArrayUnsigned("1000000")
-	  const tokenAmount = bigi.fromByteArrayUnsigned(amount).multiply(microStacksFactor)
+	  // const microStacksFactor = bigi.fromByteArrayUnsigned("1000000")
+	  // const tokenAmount = bigi.fromByteArrayUnsigned(amount).multiply(microStacksFactor)
+	  const tokenAmount = amount
 	  const memo = ""
-
-	  // configureTestnet()
 
 	  let signer
 	  if (walletType === 'trezor') {
@@ -329,22 +328,107 @@ export function generateTransaction(senderAddress: string, recipientAddress: str
 	  } else if (walletType === 'ledger') {
 	  	signer = new LedgerSigner(path, senderBtcAddress)
 	  }
-	 
-	  const txPromise = transactions.makeTokenTransfer(
-	    recipientBtcAddress, tokenType, tokenAmount, memo, signer);
+		
+	  const senderUTXOsPromise = config.network.getUTXOs(senderBtcAddress);
 
-		return txPromise.catch((error) => {
-			reject(error)
-		})
+	  const estimatePromise = senderUTXOsPromise.then((utxos) => {
+	    const numUTXOs = utxos.length;
+	    return transactions.estimateTokenTransfer(
+	      recipientBtcAddress, tokenType, tokenAmount, memo, numUTXOs);
+	  });
 
-    // return txPromise.then((tx) => {
-    //   return config.network.broadcastTransaction(tx);
-    // })
+	  const btcBalancePromise = senderUTXOsPromise.then((utxos) => {
+	    return sumUTXOs(utxos);
+	  });
+
+	  const accountStatePromise = config.network.getAccountStatus(senderBtcAddress, tokenType);
+	  const tokenBalancePromise = config.network.getAccountBalance(senderBtcAddress, tokenType);
+	  const blockHeightPromise = config.network.getBlockHeight()
+
+	  const safetyChecksPromise = Promise.all(
+	    [tokenBalancePromise, estimatePromise, btcBalancePromise,
+	      accountStatePromise, blockHeightPromise])
+	    .then(([tokenBalance, estimate, btcBalance, 
+	      accountState, blockHeight]) => {
+
+	    	console.log('safety check results')
+	    	const results = {
+	    		tokenBalance,
+	    		estimate,
+	    		btcBalance,
+	    		accountState,
+					blockHeight
+	    	}
+	    	console.log(results)
+
+	    	console.log(`token balance: ${tokenBalance.toString()}`)
+	    	console.log(`token amount: ${tokenAmount.toString()}`)
+	    	console.log(tokenBalance.compareTo(tokenAmount))
+
+	    	if (btcBalance < estimate) {
+	    		throw new Error('Insufficient Bitcoin balance to fund transaction fees.')
+	    	} else if (tokenBalance.compareTo(tokenAmount) < 0) {
+	    		throw new Error('Send amount greater than available token balance.')
+	    	} else if (accountState.lock_transfer_block_id > blockHeight) {
+	    		throw new Error('Token transfer cannot be safely sent. Tokens have not been unlocked.')
+	    	} else {
+	    		return { status: true }
+	    	}
+			})
+
+	  return safetyChecksPromise
+	    .then((safetyChecksResult) => {
+	      if (safetyChecksResult.status) {
+	      	console.log('safety check success')
+	  			const txPromise = transactions.makeTokenTransfer(
+	    			recipientBtcAddress, tokenType, tokenAmount, memo, signer);
+	  			resolve(txPromise)
+	      } else {
+	      	throw new Error('Token transfer cannot be safely sent.')
+	      }
+	    })
+	    .catch((error) => {
+	    	reject(error)
+	    });
+
+	  // const safetyChecksPromise = Promise.all(
+	  //   [tokenBalancePromise, estimatePromise, btcBalancePromise,
+	  //     accountStatePromise, blockHeightPromise])
+	  //   .then(([tokenBalance, estimate, btcBalance, 
+	  //     accountState, blockHeight]) => {
+	  //     if (btcBalance >= estimate && tokenBalance.compareTo(tokenAmount) >= 0 &&
+	  //         accountState.lock_transfer_block_id <= blockHeight) {
+	  //       return {'status': true};
+	  //     }
+	  //     else {
+	  //       return JSONStringify({
+	  //         'status': false,
+	  //         'error': 'TokenTransfer cannot be safely sent',
+	  //         'lockTransferBlockHeight': accountState.lock_transfer_block_id,
+	  //         'senderBalanceBTC': btcBalance,
+	  //         'estimateCostBTC': estimate,
+	  //         'tokenBalance': tokenBalance.toString(),
+	  //         'blockHeight': blockHeight,
+	  //       }, true);
+	  //     }
+	  // });
+
+
+		// return txPromise.catch((error) => {
+		// 	reject(error)
+		// })
 	})
 }
 
 export function broadcastTransaction(rawTransaction: string) {
-	return config.network.broadcastTransaction(rawTransaction)
+	// return (dispatch) => new Promise((resolve, reject) => {
+	// 	console.log('mock broadcast transaction')
+	// 	console.log(config.network)
+	// 	resolve('faketxID')
+	// })
+	return (dispatch) => new Promise((resolve, reject) => {
+		resolve(config.network.broadcastTransaction(rawTransaction))
+	})
 }
 
 function getAddressFromChildPubKey(child, version_prefix) {

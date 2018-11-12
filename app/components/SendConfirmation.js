@@ -21,7 +21,8 @@ export default class SendConfirmation extends Component<Props> {
       address,
       amount,
       confirm,
-      cancel
+      cancel,
+      processing
     } = this.props
 
     return (
@@ -33,7 +34,7 @@ export default class SendConfirmation extends Component<Props> {
         <Blob>{address}</Blob>
         <ActionButtons>
           <Button to="/dashboard">Cancel</Button>
-          <Button onClick={confirm}>Confirm</Button>
+          <Button onClick={confirm} disabled={processing}>Confirm</Button>
         </ActionButtons>
 
       </div>

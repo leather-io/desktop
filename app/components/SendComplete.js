@@ -24,20 +24,16 @@ export default class SendComplete extends Component<Props> {
 
     return (
       <div>
-        <div>
-          <p>Transaction Sent!</p>
-        </div>
-        <p>
-          Transaction ID:<br/>
-          <Blob>{txID}</Blob>
-        </p>
+        <p>Transaction Sent!</p>
+        <p>Transaction ID:</p>
+        <Blob>{txID}</Blob>
         <br/><br/>
 {/*        <Button to="/send" height={25} small>
           Check status
         </Button>*/}
 
         <ActionButtons>
-          <Button onClick={confirm}>Done</Button>
+          <Button to="/dashboard">Done</Button>
         </ActionButtons>
 
       </div>

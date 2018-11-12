@@ -27,7 +27,7 @@ export default class SendError extends Component<Props> {
         <div>
           <p>Error</p>
         </div>
-        {error}
+        {error.toString()}
         <br/><br/>
 
         <ActionButtons>

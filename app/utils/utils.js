@@ -4,8 +4,8 @@ import {
 } from 'blockstack'
 import bigi from 'bigi'
 
-const SATOSHIS_IN_BTC = 100000000
-const MICROSTACKS_IN_STACKS = 1000000
+export const SATOSHIS_IN_BTC = 100000000
+export const MICROSTACKS_IN_STACKS = 1000000
 
 export function getPrivateKeyAddress(network: Object, privateKey: string | TransactionSigner) 
   : string {

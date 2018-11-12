@@ -132,11 +132,10 @@ export class TrezorSigner {
 
   promisifySignTx(inputs, outputs, requiredFirmware, coin) {
     return new Promise((resolve, reject) => {
-      TrezorConnect.setCurrency('Testnet')
+      // TrezorConnect.setCurrency('Testnet')
       TrezorConnect.signTx(inputs,
                            outputs,
                            (resp) => {
-                             console.log(resp)
                              if (!resp.success) {
                                if (resp && resp.error) {
                                  reject(resp.error)

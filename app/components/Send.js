@@ -20,7 +20,8 @@ export default class Send extends Component<Props> {
       address,
       amount,
       addressError,
-      amountError
+      amountError,
+      processing
     } = this.props
 
     return (
@@ -45,7 +46,7 @@ export default class Send extends Component<Props> {
         />
         <ActionButtons>
           <Button to="/dashboard">Back</Button>
-          <Button onClick={this.props.next}>Send</Button>
+          <Button onClick={this.props.next} disabled={processing}>Send</Button>
         </ActionButtons>
       </div>
     );

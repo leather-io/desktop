@@ -55,7 +55,8 @@ class SendPage extends Component<Props> {
       amountError: '',
       rawTransaction: null,
       txID: '',
-      error: ''
+      error: '',
+      processing: false
     }
   }
 
@@ -92,18 +93,16 @@ class SendPage extends Component<Props> {
         amountError: 'You must enter a valid amount.'
       })
       valid = false;
-    }
-    else if (isNaN(this.state.amount)) {
+    } else if (isNaN(this.state.amount)) {
       this.setState({
         amountError: 'Amount must be a number.'
       })
       valid = false;
-    }
-    else if (Number(this.state.amount) <= 0) {
+    } else if (Number(this.state.amount) < 0.000001) {
       this.setState({
-        amountError: 'Amount must be greater than 0.'
+        amountError: 'Amount must be at least 1 microstack.'
       })
-      valid = false;
+      valid = false
     }
 
     return valid
@@ -112,16 +111,16 @@ class SendPage extends Component<Props> {
   checkBalances = () => {
     let valid = true
 
-    if (this.props.stacksBalance.compareTo(bigi.fromByteArrayUnsigned(stacksToMicro(this.state.amount).toString())) < 0) {
-      this.setState({
-        amountError: 'Amount exceeds available account balance.'
-      })
-      valid = false;
-    } 
-    else if (this.props.btcBalance.compareTo(bigi.valueOf(0)) <= 0) {
-      valid = false;
-      this.changeView(VIEWS.BTC)
-    } 
+    // if (this.props.stacksBalance.compareTo(bigi.fromByteArrayUnsigned(stacksToMicro(this.state.amount).toString())) < 0) {
+    //   this.setState({
+    //     amountError: 'Amount exceeds available account balance.'
+    //   })
+    //   valid = false;
+    // } 
+    // else if (this.props.btcBalance.compareTo(bigi.valueOf(0)) <= 0) {
+    //   valid = false;
+    //   this.changeView(VIEWS.BTC)
+    // } 
 
     return valid
   }
@@ -130,12 +129,16 @@ class SendPage extends Component<Props> {
     // console.log(this.state.address)
     // console.log(this.state.amount)
 
+    this.setState({
+      processing: true
+    })
     this.clearErrors()
     if (this.validate() && this.checkBalances()) {
       this.clearErrors()
       const senderAddress = this.props.address
       const recipientAddress = this.state.address 
-      const amount = this.state.amount 
+      const amount = Number(this.state.amount) < 1 ? bigi.valueOf(Number(this.state.amount) * 1000000) 
+        : bigi.fromByteArrayUnsigned(this.state.amount).multiply(bigi.valueOf(1000000))
       const walletType = this.props.walletType
 
       // const key = "5d488f8e32bc906cff26d496e9bd27f8b371c91773273b44ae58978fd10651bb01"
@@ -164,14 +167,16 @@ class SendPage extends Component<Props> {
         .then((tx) => {
           console.log(tx)
           this.setState({
-            rawTransaction: tx
+            rawTransaction: tx,
+            processing: false
           })
           this.changeView(VIEWS.CONFIRMATION)
         })
         .catch((error) => {
           console.log(error)
           this.setState({
-            error
+            error,
+            processing: false
           })
           this.changeView(VIEWS.ERROR)
         })
@@ -179,17 +184,22 @@ class SendPage extends Component<Props> {
   }
 
   confirmSend = () => {
-    this.props.broadcastTransaction(this.props.rawTransaction)
+    this.setState({
+      processing: true
+    })
+    this.props.broadcastTransaction(this.state.rawTransaction)
       .then((txID) => {
         this.setState({
-          txID: txID
+          txID: txID,
+          processing: false
         })
         this.changeView(VIEWS.COMPLETE)
       })
       .catch((error) => {
         console.log(error)
         this.setState({
-          error
+          error,
+          processing: false
         })
         this.changeView(VIEWS.ERROR)
       })
@@ -220,12 +230,14 @@ class SendPage extends Component<Props> {
         				handleAddressChange={this.handleAddressChange}
                 handleAmountChange={this.handleAmountChange}
                 next={this.send}
+                processing={this.state.processing}
                />;
       case VIEWS.CONFIRMATION:
         return <SendConfirmation
                 address={this.state.address}
                 amount={this.state.amount}
                 confirm={this.confirmSend}
+                processing={this.state.processing}
                />;
       case VIEWS.ERROR:
         return <SendError
@@ -240,7 +252,6 @@ class SendPage extends Component<Props> {
       case VIEWS.COMPLETE:
         return <SendComplete 
                 txID={this.state.txID}
-                confirm={() => this.changeView(VIEWS.DEFAULT)}
         			 />;
       default:
         return <div></div>;

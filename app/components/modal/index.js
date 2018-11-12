@@ -2,12 +2,19 @@ import React from "react";
 import { Block, Backdrop, Overlay } from "reakit";
 import { Flex, Box, Card, Type } from "blockstack-ui/dist";
 import { CloseIcon } from "mdi-react";
+
 const ModalContext = React.createContext();
 
 const Component = ({ children, ...rest }) => children({ ...rest });
 
-export const Modal = ({ title, children, hide, visible, ...rest }) => (
-  <Card p={0} flexGrow={1} width={"70vw"}>
+export const Modal = ({ title, children, hide, visible, p = 4, ...rest }) => (
+  <Card
+    p={0}
+    flexGrow={1}
+    width={["90vw", "70vw"]}
+    maxHeight={"90vh"}
+    {...rest}
+  >
     <Flex
       justifyContent={"space-between"}
       borderBottom="1px solid"
@@ -21,7 +28,7 @@ export const Modal = ({ title, children, hide, visible, ...rest }) => (
         <CloseIcon />
       </Flex>
     </Flex>
-    <Flex p={4} flexDirection="column" overflow="auto" flexGrow={1}>
+    <Flex p={p} flexDirection="column" overflow="auto" flexGrow={1}>
       {children}
     </Flex>
   </Card>
@@ -30,26 +37,28 @@ export const Modal = ({ title, children, hide, visible, ...rest }) => (
 class ModalRoot extends React.Component {
   state = {
     comp: null,
-    modalProps: {},
-    visible: false,
-    timeout: null
+    visible: false
   };
 
   componentWillUnmount() {
     this.setState({
-      modalType: null
+      comp: null
     });
   }
 
-  handleShow = (show, comp, modalProps) => {
-    this.state.timeout && clearTimeout(this.state.timeout);
-    this.setState({ comp, visible: true, modalProps });
+  timeout = null;
+
+  handleShow = (show, comp) => {
+    this.setState({ comp, visible: true });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
     show();
   };
 
   handleHide = hide => {
-    const timeout = setTimeout(() => this.setState({ visible: false }), 800);
-    this.setState({ timeout });
+    this.timeout = setTimeout(() => this.setState({ visible: false }), 200);
     hide();
   };
 
@@ -61,8 +70,7 @@ class ModalRoot extends React.Component {
         {overlay => {
           const props = {
             ...overlay,
-            show: (comp, modalProps) =>
-              this.handleShow(overlay.show, comp, modalProps),
+            show: comp => this.handleShow(overlay.show, comp),
             hide: () => this.handleHide(overlay.hide)
           };
           return (
@@ -95,7 +103,7 @@ class ModalRoot extends React.Component {
                         visible: overlay.visible
                       })}
                   </Flex>
-                  <Box color={"hsla(205, 30%, 10%, 0.75)"}>
+                  <Box color="hsla(225,50%,7%,0.75)">
                     <Backdrop
                       style={{ background: "currentColor" }}
                       as={Overlay.Hide}

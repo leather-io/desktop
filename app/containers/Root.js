@@ -12,6 +12,12 @@ const GlobalStyles = createGlobalStyle`
 
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,600,700');
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
 ${normalize()}
 html {
   height: 100%;

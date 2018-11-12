@@ -3,9 +3,11 @@ import { Flex, Type } from "blockstack-ui/dist";
 import QrCode from "mdi-react/QrcodeIcon";
 import SendIcon from "mdi-react/SendIcon";
 import { Hover } from "react-powerplug";
+import { TxDetailsModal } from "@containers/modals/tx";
+import { OpenModal } from "@components/modal";
 
-const TypeIcon = ({ type }) => {
-  const Icon = type === "sent" ? SendIcon : QrCode;
+export const TypeIcon = ({ type }) => {
+  const Icon = type === "SENT" ? SendIcon : QrCode;
   return (
     <Flex
       mr={3}
@@ -29,7 +31,8 @@ const Item = ({ last, ...rest }) => (
         borderColor={!last ? "blue.mid" : undefined}
         alignItems="center"
         flexShrink={0}
-        bg={hovered ? "blue.light" : undefined}
+        bg={hovered ? "blue.light" : "white"}
+        cursor={hovered ? "pointer" : undefined}
         px={4}
         py={4}
         {...rest}
@@ -49,32 +52,43 @@ const Date = ({ ...rest }) => (
   </Flex>
 );
 
-const Details = ({ ...rest }) => (
+const Details = ({ operation, recipient, ...rest }) => (
   <Flex flexDirection={"column"} flexGrow={1}>
     <Type pb={1} fontWeight={500}>
-      Sent Stacks
+      {operation === "SENT" ? "Sent" : "Received"} Stacks
     </Type>
     <Type fontSize={1} color="hsl(205, 30%, 70%)">
-      To SPNN289GPP5HQA5ZF2FKQKJM3K2MP...
+      {operation === "SENT" ? "To" : "From"} {recipient}
     </Type>
   </Flex>
 );
 
-const Amount = ({ ...rest }) => (
+const Amount = ({ value, ...rest }) => (
   <Flex>
     <Type>
-      -6,845 <Type color="hsl(205, 30%, 70%)">STX</Type>
+      {parseInt(value) / 1000000} <Type color="hsl(205, 30%, 70%)">STX</Type>
     </Type>
   </Flex>
 );
 
-const TxItem = ({ last, ...rest }) => (
-  <Item last={last}>
-    <Date />
-    <TypeIcon type="sent" />
-    <Details />
-    <Amount />
-  </Item>
-);
+const TxItem = ({ last, item, ...rest }) => {
+  const { operation, recipient, tokensSent } = item;
+  return (
+    <OpenModal
+      component={({ hide, visible }) => (
+        <TxDetailsModal hide={hide} tx={item} />
+      )}
+    >
+      {({ bind }) => (
+        <Item {...bind} last={last}>
+          <Date />
+          <TypeIcon type={operation} />
+          <Details operation={operation} recipient={recipient} />
+          <Amount value={tokensSent} />
+        </Item>
+      )}
+    </OpenModal>
+  );
+};
 
 export { TxItem };

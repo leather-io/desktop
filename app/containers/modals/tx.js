@@ -1,9 +1,41 @@
 import React from "react";
-import { Button, Flex, Type } from "blockstack-ui/dist";
+import { Button, Buttons, Flex, Type } from "blockstack-ui/dist";
 import { Modal } from "@components/modal";
 import { Label } from "@components/field";
 import { Value } from "@components/stacks";
 import { TypeIcon } from "@components/transaction-item";
+import { StaticField } from "@components/field";
+
+const TxAmounts = ({ amount, ...rest }) => (
+  <Flex py={4} px={6} flexDirection="column" justifyContent="center">
+    <Label>Amount</Label>
+    <Flex>
+      <Value fontSize={6} amount={amount} micro suffix="STX" />
+    </Flex>
+    <Label pt={4} pb={0}>
+      Fees
+    </Label>
+    <Value fontSize={2} fontWeight={500} amount={amount} suffix="BTC" micro />
+  </Flex>
+);
+
+const OperationTypeSection = ({ operation, ...rest }) => (
+  <Flex
+    alignItems="center"
+    justifyContent="center"
+    flexDirection="column"
+    py={4}
+    px={6}
+    flexShrink={0}
+    borderRight={1}
+    borderColor="blue.mid"
+    alignSelf={"stretch"}
+  >
+    <TypeIcon mb={2} size={72} type={operation} />
+    <Label pb={0}>{operation === "SENT" ? "Sent" : "Received"}</Label>
+    <Label pb={0}>Stacks</Label>
+  </Flex>
+);
 
 const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
   const {
@@ -40,56 +72,26 @@ const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
         <Flex
           width={1}
           bg="white"
-          p={4}
           borderRadius={6}
           border={1}
           borderColor="blue.mid"
           alignItems="center"
           flexShrink={0}
         >
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            flexDirection="column"
-            pr={4}
-            flexShrink={0}
-          >
-            <Label>
-              {operation === "SENT" ? "Sent Stacks" : "Received Stacks"}
-            </Label>
-            <TypeIcon type={operation} />
-          </Flex>
-          <Flex flexDirection="column" justifyContent="center">
-            <Label>Amount</Label>
-            <Flex py={3}>
-              <Value amount={tokensSent} micro />
-            </Flex>
-            <Label>Fees</Label>
-            <Flex pt={2}>
-              <Value fontSize={1} amount={tokensSent} micro />
-            </Flex>
-          </Flex>
+          <OperationTypeSection operation={operation} />
+          <TxAmounts amount={tokensSent} />
         </Flex>
       </Flex>
       <Flex flexDirection="column" p={4} flexShrink={0}>
         {items.map(
           ({ label, value }, i) =>
             value && value !== "" ? (
-              <Flex pb={3} flexDirection="column" key={i} flexShrink={0}>
-                <Label>{label}</Label>
-                <Flex
-                  border={1}
-                  borderColor="blue.mid"
-                  bg="blue.light"
-                  p={2}
-                  overflow="auto"
-                >
-                  <Type fontFamily="brand">{value}</Type>
-                </Flex>
-              </Flex>
+              <StaticField key={i} label={label} value={value} />
             ) : null
         )}
-        <Button onClick={hide}>Close</Button>
+        <Buttons>
+          <Button onClick={hide}>Close</Button>
+        </Buttons>
       </Flex>
     </Modal>
   );

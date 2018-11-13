@@ -25,10 +25,10 @@ const InitialScreen = ({ ...props }) => (
     alignItems="center"
     textAlign="center"
   >
-    <Box pb={6} maxWidth="400px">
+    <Box maxWidth="400px">
       <Title>Welcome to the Stacks Wallet</Title>
     </Box>
-    <Type pb={2} Type lineHeight={1.5} fontSize={2} pt={6} color="hsl(242, 56%, 75%)" maxWidth="300px">
+    <Type pb={2} Type lineHeight={1.5} fontSize={2} pt={4} color="hsl(242, 56%, 75%)" maxWidth="300px">
       Choose one of the following options to setup your Stacks wallet.
     </Type>
     <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={5}>
@@ -36,7 +36,7 @@ const InitialScreen = ({ ...props }) => (
         Use a Hardware Wallet
       </Button>
       <Button outline is={Link} mt={4} invert to={ROUTES.RESTORE_WATCH}>
-        Watch Only Wallet
+        Use a Stacks Address
       </Button>
     </Buttons>
   </Flex>

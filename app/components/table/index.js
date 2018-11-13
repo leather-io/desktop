@@ -4,7 +4,7 @@ import { Flex } from "blockstack-ui/dist";
 const ThItem = ({ ...rest }) => (
   <Flex
     fontWeight="500"
-    fontSize={1}
+    fontSize={"12px"}
     width={60}
     py={2}
     px={2}

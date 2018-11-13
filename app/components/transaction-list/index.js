@@ -44,6 +44,167 @@ const data = {
       recipient: "SP1SQ68HK9N4GFT3CG694FBFAYWS28C39NF1TZG9X",
       tokenSentHex: "000000000000000a",
       tokensSentSTX: "0",
+      operation: "SENT",
+      pending: true
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549412,
+      credit_value: "100",
+      debit_value: "0",
+      lock_transfer_block_id: 0,
+      txid: "88c002771b2fd17bbf8162e41e37646564408464ff08143719a19699518f60ea",
+      type: "STACKS",
+      vtxindex: 726,
+      operationType: "$",
+      consensusHash: "d78a1df54bbdf3843a1c9277fd3ea9b3",
+      tokenType: "STACKS",
+      tokensSent: "100",
+      scratchData: "E pur si muove",
+      recipientBitcoinAddress: "1CCiDpMj5fPid1Gs6pRt6zRJh3LHgobgpk",
+      recipient: "SP1XE0QK5JYMY3TH4YBQ0V56Z3DHG0G34C44930VF",
+      tokenSentHex: "0000000000000064",
+      tokensSentSTX: "0",
+      operation: "RECEIVED"
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549703,
+      credit_value: "100",
+      debit_value: "10",
+      lock_transfer_block_id: 0,
+      txid: "fca73d510b083311291623773a69febf0dd236e395f1aeab64bf197ce0111ad9",
+      type: "STACKS",
+      vtxindex: 1091,
+      operationType: "$",
+      consensusHash: "038a1541a4f314ae37cf3e43d3ad3e54",
+      tokenType: "STACKS",
+      tokensSent: "10",
+      scratchData: "",
+      recipientBitcoinAddress: "1BXSdgcRLtrjw5AXZPe1eawmQr75qckfMo",
+      recipient: "SP1SQ68HK9N4GFT3CG694FBFAYWS28C39NF1TZG9X",
+      tokenSentHex: "000000000000000a",
+      tokensSentSTX: "0",
+      operation: "SENT"
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549412,
+      credit_value: "100",
+      debit_value: "0",
+      lock_transfer_block_id: 0,
+      txid: "88c002771b2fd17bbf8162e41e37646564408464ff08143719a19699518f60ea",
+      type: "STACKS",
+      vtxindex: 726,
+      operationType: "$",
+      consensusHash: "d78a1df54bbdf3843a1c9277fd3ea9b3",
+      tokenType: "STACKS",
+      tokensSent: "100",
+      scratchData: "E pur si muove",
+      recipientBitcoinAddress: "1CCiDpMj5fPid1Gs6pRt6zRJh3LHgobgpk",
+      recipient: "SP1XE0QK5JYMY3TH4YBQ0V56Z3DHG0G34C44930VF",
+      tokenSentHex: "0000000000000064",
+      tokensSentSTX: "0",
+      operation: "RECEIVED"
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549703,
+      credit_value: "100",
+      debit_value: "10",
+      lock_transfer_block_id: 0,
+      txid: "fca73d510b083311291623773a69febf0dd236e395f1aeab64bf197ce0111ad9",
+      type: "STACKS",
+      vtxindex: 1091,
+      operationType: "$",
+      consensusHash: "038a1541a4f314ae37cf3e43d3ad3e54",
+      tokenType: "STACKS",
+      tokensSent: "10",
+      scratchData: "",
+      recipientBitcoinAddress: "1BXSdgcRLtrjw5AXZPe1eawmQr75qckfMo",
+      recipient: "SP1SQ68HK9N4GFT3CG694FBFAYWS28C39NF1TZG9X",
+      tokenSentHex: "000000000000000a",
+      tokensSentSTX: "0",
+      operation: "SENT"
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549412,
+      credit_value: "100",
+      debit_value: "0",
+      lock_transfer_block_id: 0,
+      txid: "88c002771b2fd17bbf8162e41e37646564408464ff08143719a19699518f60ea",
+      type: "STACKS",
+      vtxindex: 726,
+      operationType: "$",
+      consensusHash: "d78a1df54bbdf3843a1c9277fd3ea9b3",
+      tokenType: "STACKS",
+      tokensSent: "100",
+      scratchData: "E pur si muove",
+      recipientBitcoinAddress: "1CCiDpMj5fPid1Gs6pRt6zRJh3LHgobgpk",
+      recipient: "SP1XE0QK5JYMY3TH4YBQ0V56Z3DHG0G34C44930VF",
+      tokenSentHex: "0000000000000064",
+      tokensSentSTX: "0",
+      operation: "RECEIVED"
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549703,
+      credit_value: "100",
+      debit_value: "10",
+      lock_transfer_block_id: 0,
+      txid: "fca73d510b083311291623773a69febf0dd236e395f1aeab64bf197ce0111ad9",
+      type: "STACKS",
+      vtxindex: 1091,
+      operationType: "$",
+      consensusHash: "038a1541a4f314ae37cf3e43d3ad3e54",
+      tokenType: "STACKS",
+      tokensSent: "10",
+      scratchData: "",
+      recipientBitcoinAddress: "1BXSdgcRLtrjw5AXZPe1eawmQr75qckfMo",
+      recipient: "SP1SQ68HK9N4GFT3CG694FBFAYWS28C39NF1TZG9X",
+      tokenSentHex: "000000000000000a",
+      tokensSentSTX: "0",
+      operation: "SENT"
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549412,
+      credit_value: "100",
+      debit_value: "0",
+      lock_transfer_block_id: 0,
+      txid: "88c002771b2fd17bbf8162e41e37646564408464ff08143719a19699518f60ea",
+      type: "STACKS",
+      vtxindex: 726,
+      operationType: "$",
+      consensusHash: "d78a1df54bbdf3843a1c9277fd3ea9b3",
+      tokenType: "STACKS",
+      tokensSent: "100",
+      scratchData: "E pur si muove",
+      recipientBitcoinAddress: "1CCiDpMj5fPid1Gs6pRt6zRJh3LHgobgpk",
+      recipient: "SP1XE0QK5JYMY3TH4YBQ0V56Z3DHG0G34C44930VF",
+      tokenSentHex: "0000000000000064",
+      tokensSentSTX: "0",
+      operation: "RECEIVED"
+    },
+    {
+      address: "mrifWsShtgpyQ7kUpPQFvuddZ2vzbDaQxc",
+      block_id: 549703,
+      credit_value: "100",
+      debit_value: "10",
+      lock_transfer_block_id: 0,
+      txid: "fca73d510b083311291623773a69febf0dd236e395f1aeab64bf197ce0111ad9",
+      type: "STACKS",
+      vtxindex: 1091,
+      operationType: "$",
+      consensusHash: "038a1541a4f314ae37cf3e43d3ad3e54",
+      tokenType: "STACKS",
+      tokensSent: "10",
+      scratchData: "",
+      recipientBitcoinAddress: "1BXSdgcRLtrjw5AXZPe1eawmQr75qckfMo",
+      recipient: "SP1SQ68HK9N4GFT3CG694FBFAYWS28C39NF1TZG9X",
+      tokenSentHex: "000000000000000a",
+      tokensSentSTX: "0",
       operation: "SENT"
     },
     {
@@ -77,7 +238,7 @@ const TxList = ({
   action,
   ...rest
 }) => (
-  <Card p={0} flexGrow={1} bg="blue.light">
+  <Card p={0} bg="blue.light" flexGrow={1} flexShrink={0} overflow="hidden">
     <Flex
       justifyContent={"space-between"}
       borderBottom="1px solid"
@@ -92,12 +253,28 @@ const TxList = ({
       {action ? <Type color="hsl(205, 30%, 70%)">{action}</Type> : null}
     </Flex>
     {items && items.length && contentHeader ? contentHeader : null}
-    <Flex flexDirection="column" overflow="auto" flexGrow={1}>
-      {items && items.length ? (
-        items.map((item, i) => <TxItem key={i} last={items.length === item} item={item} />)
-      ) : (
-        <Empty />
-      )}
+    <Flex
+      flexDirection="column"
+      overflow="auto"
+      flexGrow={1}
+      position="relative"
+    >
+      <Flex
+        flexDirection="column"
+        overflow="auto"
+        position="absolute"
+        height="100%"
+        left={0}
+        width={"100%"}
+      >
+        {items && items.length ? (
+          items.map((item, i) => (
+            <TxItem key={i} last={items.length === i + 1} item={item} />
+          ))
+        ) : (
+          <Empty />
+        )}
+      </Flex>
     </Flex>
   </Card>
 );

@@ -6,8 +6,9 @@ import { TxList } from "@components/transaction-list";
 import { OpenModal } from "@components/modal";
 import { Modal } from "@components/modal";
 import { TableHeader } from "@components/table";
-
+import { SettingsModal } from "@containers/modals/settings";
 import { Balance } from "@containers/balance";
+import { PageContext } from "@components/page";
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -17,13 +18,7 @@ const Content = ({ ...rest }) => (
 
 const SettingsButton = ({ ...rest }) => {
   return (
-    <OpenModal
-      component={({ visible, hide }) => (
-        <Modal title="Settings" hide={hide}>
-          Settings!
-        </Modal>
-      )}
-    >
+    <OpenModal component={({ visible, hide }) => <SettingsModal hide={hide} />}>
       {({ bind }) => (
         <Hover>
           {({ hovered, bind: hoveredBind }) => (
@@ -74,16 +69,16 @@ const tableHeadItems = [
 const balance = 1231231.12312;
 
 const Dashboard = ({ ...rest }) => (
-  <Flex bg="blue.light" flexGrow={1}>
-    <Content p={3}>
-      <Header />
-      <Balance value={balance} />
-      <TxList
-        title="Recent Activity"
-        contentHeader={<TableHeader items={tableHeadItems} />}
-      />
-    </Content>
-  </Flex>
+    <Flex bg="blue.light" flexGrow={1} maxWidth={"100%"}>
+      <Content p={3} maxWidth={"100%"}>
+        <Header />
+        <Balance value={balance} />
+        <TxList
+          title="Recent Activity"
+          contentHeader={<TableHeader items={tableHeadItems} />}
+        />
+      </Content>
+    </Flex>
 );
 
 export default Dashboard;

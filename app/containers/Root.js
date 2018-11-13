@@ -55,6 +55,14 @@ body {
   }
 }
 
+textarea{
+resize: vertical;
+
+}
+#root{
+max-width: 100%;
+}
+
 h2 {
   margin: 0;
   font-size: 3rem;

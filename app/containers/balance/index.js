@@ -25,10 +25,7 @@ const SendButton = ({ ...rest }) => (
   <OpenModal
     component={({ visible, hide }) => (
       <Modal title="Send Stacks" hide={hide}>
-        <Send />
-        <Buttons>
-          <Button>Continue</Button>
-        </Buttons>
+        <Send hide={hide} />
       </Modal>
     )}
   >

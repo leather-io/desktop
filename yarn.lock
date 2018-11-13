@@ -3098,10 +3098,10 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-blockstack-ui@^0.0.44:
-  version "0.0.44"
-  resolved "https://registry.yarnpkg.com/blockstack-ui/-/blockstack-ui-0.0.44.tgz#9b52dbfab43318277b69e97f2a35750d2cf22792"
-  integrity sha512-TNUynW0CN/hZAQH3ODFhE3v+rO4m44AihyJNv2VnCdmbGbtsjfySK//rco/wF29oD5hCVXan8wcXJfSlUvV2PQ==
+blockstack-ui@^0.0.47:
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/blockstack-ui/-/blockstack-ui-0.0.47.tgz#ca89fe4a36c95d5b376e5019170049dd97d2b05e"
+  integrity sha512-GPk10jvaqlrRi0gEFrQUpDmHK20OuNQlf3URpRYhgbpUyWKkPUfM7zwiJOpKqq1km4X/ZJcxLLk+Pe43tfM+7w==
   dependencies:
     epitath "^1.0.0-beta.1"
     html-tags "^2.0.0"
@@ -3504,7 +3504,7 @@ bytes@3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
   integrity sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg=
 
-c32check@0.0.6:
+c32check@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/c32check/-/c32check-0.0.6.tgz#9b5bac1c6b73fc12f5ec7114d372daa079cf5509"
   integrity sha512-aXUFQML0sRvR/aBn9cpBGmP/m8t5JmfgaQ4O4/zdphTpLTEaDx0+RbuzDGkps2rAk3Ck69nswR8fknIZSI5rUg==

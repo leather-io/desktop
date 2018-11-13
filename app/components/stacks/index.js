@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex, Type, Button, Buttons } from "blockstack-ui/dist";
 import { formatLargeNumber } from "@utils";
-const Value = ({ micro, amount, ...rest }) => {
+const Value = ({ micro, amount, suffix, ...rest }) => {
   const adjustedValue = micro ? parseInt(amount) / 1000000 : amount;
   const hasMicroStacks = adjustedValue.toString().includes(".");
   const value = hasMicroStacks ? adjustedValue.toString().split(".") : [amount];
@@ -13,6 +13,7 @@ const Value = ({ micro, amount, ...rest }) => {
       {fractionalUnits && (
         <Type color="hsl(205, 30%, 70%)">{fractionalUnits}</Type>
       )}
+      {suffix ? <Type pl={1} color="hsl(205, 30%, 70%)">{suffix}</Type> : null}
     </Type>
   );
 };

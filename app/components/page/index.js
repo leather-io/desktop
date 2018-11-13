@@ -23,6 +23,8 @@ const Page = ({ title, children, icon, bg = "blue.dark", ...rest }) => {
       flexGrow={1}
       color="white"
       bg={bg}
+      maxWidth="100%"
+      position="relative"
       {...rest}
     >
       <PageContext.Provider value={{ bg }}>

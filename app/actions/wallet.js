@@ -14,6 +14,7 @@ import { encryptECIES } from '../utils/encryption'
 import { getPrivateKeyAddress, satoshisToBtc, sumUTXOs, MICROSTACKS_IN_STACKS } from '../utils/utils'
 import { TrezorSigner, configureTestnet } from '../../blockstack-trezor'
 import { LedgerSigner } from '../../blockstack-ledger'
+import FormData from 'form-data'
 
 export const WALLET_TYPE = {
 	NORMAL: 'NORMAL',
@@ -291,10 +292,10 @@ export function getStacksBalance(address) {
 	return (dispatch) => new Promise((resolve, reject) => {
 		config.network.getAccountBalance(address, "STACKS")
 			.then((balance) => {
-				dispatch(updateStacksBalance(balance))
+				resolve(dispatch(updateStacksBalance(balance)))
 			})
 			.catch(err => {
-				console.log(err)
+				reject(console.log(err))
 			})
 	})
 }
@@ -311,11 +312,11 @@ export function getBtcBalance(address) {
           .then(response => response.text())
           .then(responseText => {
           	const unConfirmedBalance = parseInt(responseText, 10)
-          	dispatch(updateBTCBalance(bigi.valueOf((confirmedBalance + unConfirmedBalance))))
+          	resolve(dispatch(updateBTCBalance(bigi.valueOf((confirmedBalance + unConfirmedBalance)))))
           })
       })
 			.catch(err => {
-				console.log(err)
+				reject(console.log(err))
 			})
 	})
 }
@@ -329,15 +330,15 @@ export function getTransactionHistory(address) {
       	// console.log('transactions')
       	// console.log(result)
       	const transactions = result.history
-      	dispatch(updateTransactionHistory(transactions))
+      	resolve(dispatch(updateTransactionHistory(transactions.reverse())))
       })
 			.catch(err => {
 				console.log(err)
+				reject(err)
 			})
 	})
 }
 
-// export function sendTokens(network: Object, address: string, amount: string) {
 export function generateTransaction(senderAddress: string, recipientAddress: string, amount: Object, walletType: string) {
 	return (dispatch) => new Promise((resolve, reject) => {
 	  const senderBtcAddress = c32ToB58(senderAddress)
@@ -352,7 +353,7 @@ export function generateTransaction(senderAddress: string, recipientAddress: str
 	  if (walletType === 'trezor') {
 	  	signer = new TrezorSigner(path, senderBtcAddress)	
 	  } else if (walletType === 'ledger') {
-	  	signer = new LedgerSigner(path, senderBtcAddress)
+	  	signer = new LedgerSigner(path, Transport)
 	  }
 		
 	  const senderUTXOsPromise = config.network.getUTXOs(senderBtcAddress);
@@ -377,7 +378,6 @@ export function generateTransaction(senderAddress: string, recipientAddress: str
 	    .then(([tokenBalance, estimate, btcBalance, 
 	      accountState, blockHeight]) => {
 
-	    	console.log('safety check results')
 	    	const results = {
 	    		tokenBalance,
 	    		estimate,
@@ -386,10 +386,6 @@ export function generateTransaction(senderAddress: string, recipientAddress: str
 					blockHeight
 	    	}
 	    	console.log(results)
-
-	    	console.log(`token balance: ${tokenBalance.toString()}`)
-	    	console.log(`token amount: ${tokenAmount.toString()}`)
-	    	console.log(tokenBalance.compareTo(tokenAmount))
 
 	    	if (btcBalance < estimate) {
 	    		throw new Error('Insufficient Bitcoin balance to fund transaction fees.')
@@ -405,7 +401,6 @@ export function generateTransaction(senderAddress: string, recipientAddress: str
 	  return safetyChecksPromise
 	    .then((safetyChecksResult) => {
 	      if (safetyChecksResult.status) {
-	      	console.log('safety check success')
 	  			const txPromise = transactions.makeTokenTransfer(
 	    			recipientBtcAddress, tokenType, tokenAmount, memo, signer);
 	  			resolve(txPromise)
@@ -416,45 +411,39 @@ export function generateTransaction(senderAddress: string, recipientAddress: str
 	    .catch((error) => {
 	    	reject(error)
 	    });
-
-	  // const safetyChecksPromise = Promise.all(
-	  //   [tokenBalancePromise, estimatePromise, btcBalancePromise,
-	  //     accountStatePromise, blockHeightPromise])
-	  //   .then(([tokenBalance, estimate, btcBalance, 
-	  //     accountState, blockHeight]) => {
-	  //     if (btcBalance >= estimate && tokenBalance.compareTo(tokenAmount) >= 0 &&
-	  //         accountState.lock_transfer_block_id <= blockHeight) {
-	  //       return {'status': true};
-	  //     }
-	  //     else {
-	  //       return JSONStringify({
-	  //         'status': false,
-	  //         'error': 'TokenTransfer cannot be safely sent',
-	  //         'lockTransferBlockHeight': accountState.lock_transfer_block_id,
-	  //         'senderBalanceBTC': btcBalance,
-	  //         'estimateCostBTC': estimate,
-	  //         'tokenBalance': tokenBalance.toString(),
-	  //         'blockHeight': blockHeight,
-	  //       }, true);
-	  //     }
-	  // });
-
-
-		// return txPromise.catch((error) => {
-		// 	reject(error)
-		// })
 	})
 }
 
 export function broadcastTransaction(rawTransaction: string) {
+  const form = new FormData()
+  form.append('tx', rawTransaction)
+  return (dispatch) => new Promise((resolve, reject) => {
+	  return fetch(`${config.network.btc.utxoProviderUrl}/pushtx?cors=true`,
+	               {
+	                 method: 'POST',
+	                 body: form
+	               })
+	    .then((resp) => {
+	      const text = resp.text()
+	      return text
+	        .then((respText) => {
+	          if (respText.toLowerCase().indexOf('transaction submitted') >= 0) {
+	            const txHash = btc.Transaction.fromHex(rawTransaction)
+	              .getHash()
+	              .reverse()
+	              .toString('hex') // big_endian
+	            resolve(txHash)
+	          } else {
+	          	reject(new RemoteServiceError(resp,
+	                                         `Broadcast transaction failed with message: ${respText}`))
+	          }
+	        })
+	    })
+  })
+
 	// return (dispatch) => new Promise((resolve, reject) => {
-	// 	console.log('mock broadcast transaction')
-	// 	console.log(config.network)
-	// 	resolve('faketxID')
+	// 	resolve(config.network.broadcastTransaction(rawTransaction))
 	// })
-	return (dispatch) => new Promise((resolve, reject) => {
-		resolve(config.network.broadcastTransaction(rawTransaction))
-	})
 }
 
 function getAddressFromChildPubKey(child, version_prefix) {

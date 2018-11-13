@@ -44,6 +44,7 @@ class SendPage extends Component<Props> {
 
     this.state = {
       view: VIEWS.DEFAULT,
+      refreshing: false
     }
   }
 
@@ -58,18 +59,31 @@ class SendPage extends Component<Props> {
   }
 
   refresh = () => {
-    this.updateBalance()
-    this.updateTransactionHistory()
+    console.log(config.network)
+    this.setState({
+      refreshing: true
+    })
+    const refreshPromise = Promise.all([
+      this.updateBalance(),
+      this.updateTransactionHistory()
+    ])
+    .finally(() => {
+      this.setState({
+        refreshing: false
+      })
+    })
   }
 
   updateBalance = () => {
     // config.network.blockstackAPIUrl = 'http://localhost:6270'
-    this.props.getStacksBalance(this.props.address)
-    this.props.getBtcBalance(this.props.btcAddress)
+    return Promise.all([
+      this.props.getStacksBalance(this.props.address),
+      this.props.getBtcBalance(this.props.btcAddress)
+    ])
   }
 
   updateTransactionHistory = () => {
-    this.props.getTransactionHistory(this.props.address)
+    return this.props.getTransactionHistory(this.props.address)
   }
 
   logout = () => {
@@ -84,6 +98,7 @@ class SendPage extends Component<Props> {
                 stacksBalance={this.props.stacksBalance}
                 transactions={this.props.stacksTransactions}
                 refresh={this.refresh}
+                refreshing={this.state.refreshing}
                 logout={this.logout}
                 walletType={this.props.walletType}
                />;

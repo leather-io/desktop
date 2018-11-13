@@ -45,6 +45,7 @@ export default class Dashboard extends Component<Props> {
       stacksBalance,
       transactions,
       refresh,
+      refreshing,
       logout,
       walletType
     } = this.props
@@ -55,7 +56,7 @@ export default class Dashboard extends Component<Props> {
       <div>
         <div>
           <p>Available Balance</p>
-          <h2>{microToStacks(stacksBalance.toString())} Stacks</h2>
+          {refreshing ? <h2>Refreshing</h2> : <h2>{microToStacks(stacksBalance.toString())} Stacks</h2>}
           <br/>
           <p>Address</p>
           <Blob>{address}</Blob>
@@ -81,10 +82,10 @@ export default class Dashboard extends Component<Props> {
           </CopyToClipboard>
 
           {transactions && transactions.length > 0 && <p>Recent Transactions</p>}
-          {transactions.map((tx) => {
+          {transactions && transactions.map((tx) => {
             return <Blob key={tx.txid}>
-              {tx.operation} {microToStacks(tx.tokensSent)} Stacks<br/>
-              {tx.recipient}<br/>
+              {tx.recipient === address ? 'Received' : 'Sent'} {microToStacks(tx.tokensSent)} Stacks<br/>
+              {tx.recipient === address ? 'From' : 'To'}: {tx.recipient}<br/>
             </Blob>
           })}
 

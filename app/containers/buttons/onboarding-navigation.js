@@ -10,17 +10,18 @@ const NextButton = ({ label, ...props }) => (
   </Button>
 );
 
-const Back = ({ ...rest }) => (
+export const TextLink = ({ ...rest }) => (
   <Hover>
     {({ hovered, bind }) => (
       <Type
         pt={3}
+        fontSize={1}
+        fontWeight={600}
         cursor={hovered ? "pointer" : undefined}
         color={hovered ? "hsl(242, 56%, 85%)" : "hsl(242, 56%, 75%)"}
         {...bind}
-      >
-        Back
-      </Type>
+        {...rest}
+      />
     )}
   </Hover>
 );
@@ -28,11 +29,11 @@ const Back = ({ ...rest }) => (
 const BackButton = ({ to, onClick, ...props }) =>
   to ? (
     <Link to={to}>
-      <Back />
+      <TextLink>Back</TextLink>
     </Link>
   ) : (
     <Flex onClick={onClick}>
-      <Back />
+      <TextLink>Back</TextLink>
     </Flex>
   );
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as WalletActions from '../actions/wallet'
+import * as WalletActions from '../store/actions/wallet'
 import NameInput from '../components/NameInput'
 import HardwareSelectView from '../components/HardwareSelect'
 import TrezorView from '../components/Trezor'

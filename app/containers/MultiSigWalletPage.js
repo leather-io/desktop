@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as WalletActions from '../actions/wallet'
+import * as WalletActions from '../store/actions/wallet'
 import NameInput from '../components/NameInput'
 import SignaturesView from '../components/Signatures'
 import PubKeysView from '../components/PubKeys'
@@ -102,8 +102,8 @@ class MultiSigWalletPage extends Component<Props> {
   }
 
   isInt = (value) => {
-    return !isNaN(value) && 
-         parseInt(Number(value)) == value && 
+    return !isNaN(value) &&
+         parseInt(Number(value)) == value &&
          !isNaN(parseInt(value, 10));
   }
 
@@ -189,7 +189,7 @@ class MultiSigWalletPage extends Component<Props> {
   hasDuplicatePubKeys = (pubKeys) => {
     return !(pubKeys.length === new Set(pubKeys).size)
   }
- 
+
   isCompressedPubKey = (pubKey) => pubKey.startsWith('02') || pubKey.startsWith('03')
 
   makeMultiSig = () => {

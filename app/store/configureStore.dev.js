@@ -1,16 +1,15 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { createHashHistory } from 'history';
-import { routerMiddleware, routerActions } from 'react-router-redux';
-import { createLogger } from 'redux-logger';
-import rootReducer from '../reducers';
-import * as walletActions from '../actions/wallet';
-import type { walletStateType } from '../reducers/wallet';
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import { createHashHistory } from "history";
+import { routerMiddleware, routerActions } from "react-router-redux";
+
+import { createLogger } from "redux-logger";
+import rootReducer from "./reducers";
+import type { walletStateType } from "./reducers/wallet";
 
 const history = createHashHistory();
 
 const configureStore = (initialState?: { wallet: walletStateType }) => {
-
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -20,12 +19,12 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
 
   // Logging Middleware
   const logger = createLogger({
-    level: 'info',
+    level: "info",
     collapsed: true
   });
 
   // Skip redux logs in console during the tests
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== "test") {
     middleware.push(logger);
   }
 
@@ -33,20 +32,14 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
   const router = routerMiddleware(history);
   middleware.push(router);
 
-  // Redux DevTools Configuration
-  const actionCreators = {
-    ...walletActions,
-    ...routerActions
-  };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
-  const composeEnhancers = compose;
-  // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  //   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-  //       // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
-  //       actionCreators
-  //     })
-  //   : compose;
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Options: http://extension.remotedev.io/docs/API/Arguments.html
+        actionCreators: {}
+      })
+    : compose;
   /* eslint-enable no-underscore-dangle */
 
   // Apply Middleware & Compose Enhancers
@@ -58,8 +51,8 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
 
   if (module.hot) {
     module.hot.accept(
-      '../reducers',
-      () => store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
+      "./reducers",
+      () => store.replaceReducer(require("./reducers")) // eslint-disable-line global-require
     );
   }
 

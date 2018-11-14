@@ -8,6 +8,12 @@ import { Field } from "@components/field";
 import { validateStxAddress } from "@utils/validation";
 import { withRouter } from "react-router-dom";
 import { Spinner } from "@components/spinner";
+import { connect } from "react-redux";
+
+import {
+  doAddWatchOnlyAddress,
+  doFetchStxAddressData
+} from "@stores/reducers/wallet";
 
 type Props = {};
 
@@ -66,10 +72,12 @@ class WatchOnlyScreen extends Component<Props> {
     }
   };
 
-  handleLoading = () => {
-    setTimeout(() => {
-      this.props.history.push(ROUTES.DASHBOARD);
-    }, 1200);
+  handleLoading = addr => {
+    this.props.doAddWatchOnlyAddress(addr);
+    this.props.doFetchStxAddressData(addr);
+    // setTimeout(() => {
+    //   this.props.history.push(ROUTES.DASHBOARD);
+    // }, 1200);
   };
 
   handleValidation = () => {
@@ -82,7 +90,7 @@ class WatchOnlyScreen extends Component<Props> {
         valid,
         loading: true
       });
-      this.handleLoading();
+      this.handleLoading(this.state.value);
     } else {
       this.setState({
         error: "Stacks address seems invalid."
@@ -139,4 +147,10 @@ class WatchOnlyScreen extends Component<Props> {
   }
 }
 
-export default withRouter(WatchOnlyScreen);
+export default connect(
+  null,
+  {
+    doAddWatchOnlyAddress,
+    doFetchStxAddressData
+  }
+)(withRouter(WatchOnlyScreen));

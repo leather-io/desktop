@@ -4,7 +4,9 @@ import { formatLargeNumber } from "@utils";
 const Value = ({ micro, amount, suffix, ...rest }) => {
   const adjustedValue = micro ? parseInt(amount) / 1000000 : amount;
   const hasMicroStacks = adjustedValue.toString().includes(".");
-  const value = hasMicroStacks ? adjustedValue.toString().split(".") : [amount];
+  const value = hasMicroStacks
+    ? adjustedValue.toString().split(".")
+    : [adjustedValue];
   const wholeUnits = formatLargeNumber(value[0]);
   const fractionalUnits = hasMicroStacks ? `.${value[1]}` : null;
   return (
@@ -13,7 +15,11 @@ const Value = ({ micro, amount, suffix, ...rest }) => {
       {fractionalUnits && (
         <Type color="hsl(205, 30%, 70%)">{fractionalUnits}</Type>
       )}
-      {suffix ? <Type pl={1} color="hsl(205, 30%, 70%)">{suffix}</Type> : null}
+      {suffix ? (
+        <Type pl={1} color="hsl(205, 30%, 70%)">
+          {suffix}
+        </Type>
+      ) : null}
     </Type>
   );
 };

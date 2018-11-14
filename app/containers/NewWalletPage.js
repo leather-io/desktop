@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as WalletActions from '../actions/wallet'
+import * as WalletActions from '../store/actions/wallet'
 import NameInputView from '../components/NameInput'
 import ViewSeedView from '../components/ViewSeed'
 import ConfirmSeedView from '../components/ConfirmSeed'
@@ -120,7 +120,7 @@ class NewWalletPage extends Component<Props> {
                 back={() => this.changeView(VIEWS.SEED)}
                />;
       case VIEWS.COMPLETE:
-        return <CompleteView 
+        return <CompleteView
                 address={this.props.address}
                 payload={this.props.payload}
                 publicKey={this.props.publicKey}

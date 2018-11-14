@@ -18,6 +18,7 @@ const Empty = ({ ...rest }) => (
     </Flex>
   </Flex>
 );
+import { AppContext } from "@containers/Root";
 
 const data = {
   walletType: "trezor",
@@ -238,45 +239,61 @@ const TxList = ({
   action,
   ...rest
 }) => (
-  <Card p={0} bg="blue.light" flexGrow={1} flexShrink={0} overflow="hidden">
-    <Flex
-      justifyContent={"space-between"}
-      borderBottom="1px solid"
-      borderColor={"blue.mid"}
-      px={4}
-      py={3}
-      borderRadius="6px 6px 0 0"
-      flexShrink={0}
-      bg="white"
-    >
-      <Type fontWeight={500}>{title}</Type>
-      {action ? <Type color="hsl(205, 30%, 70%)">{action}</Type> : null}
-    </Flex>
-    {items && items.length && contentHeader ? contentHeader : null}
-    <Flex
-      flexDirection="column"
-      overflow="auto"
-      flexGrow={1}
-      position="relative"
-    >
-      <Flex
-        flexDirection="column"
-        overflow="auto"
-        position="absolute"
-        height="100%"
-        left={0}
-        width={"100%"}
+  <AppContext.Consumer>
+    {data => (
+      <Card
+        p={0}
+        bg="blue.light"
+        flexGrow={data && data.history && data.history.length > 2 ? 1 : 0}
+        flexShrink={0}
+        overflow="hidden"
       >
-        {items && items.length ? (
-          items.map((item, i) => (
-            <TxItem key={i} last={items.length === i + 1} item={item} />
-          ))
-        ) : (
-          <Empty />
-        )}
-      </Flex>
-    </Flex>
-  </Card>
+        <Flex
+          justifyContent={"space-between"}
+          borderBottom="1px solid"
+          borderColor={"blue.mid"}
+          px={4}
+          py={3}
+          borderRadius="6px 6px 0 0"
+          flexShrink={0}
+          bg="white"
+        >
+          <Type fontWeight={500}>{title}</Type>
+          {action ? <Type color="hsl(205, 30%, 70%)">{action}</Type> : null}
+        </Flex>
+        {data && data.history && data.history.length && contentHeader
+          ? contentHeader
+          : null}
+        <Flex
+          flexDirection="column"
+          overflow="auto"
+          flexGrow={1}
+          position="relative"
+        >
+          <Flex
+            flexDirection="column"
+            overflow="auto"
+            position="absolute"
+            height="100%"
+            left={0}
+            width={"100%"}
+          >
+            {data && data.history && data.history.length ? (
+              data.history.map((item, i) => (
+                <TxItem
+                  key={i}
+                  last={data.history.length === i + 1}
+                  item={item}
+                />
+              ))
+            ) : (
+              <Empty />
+            )}
+          </Flex>
+        </Flex>
+      </Card>
+    )}
+  </AppContext.Consumer>
 );
 
 export { TxList };

@@ -5,6 +5,7 @@ module.exports = {
     extensions: [".js", ".jsx", ".json"],
     modules: [path.join(__dirname, "../app"), "node_modules"],
     alias: {
+      "react-devtools": path.resolve(__dirname, "node_modules", "react-devtools"),
       "@components": path.resolve(__dirname, "../app", "components"),
       "@containers": path.resolve(__dirname, "../app", "containers"),
       "@screens": path.resolve(__dirname, "../app", "screens"),

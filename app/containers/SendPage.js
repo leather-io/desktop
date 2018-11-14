@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as WalletActions from '../actions/wallet'
+import * as WalletActions from '../store/actions/wallet'
 import Send from '../components/Send'
 import SendComplete from '../components/SendComplete'
 import { config, network } from 'blockstack'
@@ -76,7 +76,7 @@ class SendPage extends Component<Props> {
   send = () => {
     console.log(this.state.address)
     console.log(this.state.amount)
-    
+
     const address = this.state.address //'ST2AHMVY0WARE7T6WPBGD0ZX9N13PH5P47Q0X6WDE'
     const amount = this.state.amount //"20999"
     // const key = "5d488f8e32bc906cff26d496e9bd27f8b371c91773273b44ae58978fd10651bb01"
@@ -92,7 +92,7 @@ class SendPage extends Component<Props> {
     // };
 
     // const blockstackNetwork = new network.LocalRegtest(
-    //   CONFIG.blockstackAPIUrl, CONFIG.broadcastServiceUrl, 
+    //   CONFIG.blockstackAPIUrl, CONFIG.broadcastServiceUrl,
     //   new network.BitcoindAPI(CONFIG.utxoServiceUrl,
     //     { username: 'blockstack', password: 'blockstacksystem' }))
 
@@ -161,7 +161,7 @@ class SendPage extends Component<Props> {
                 next={this.send}
                />;
       case VIEWS.COMPLETE:
-        return <SendComplete 
+        return <SendComplete
                 confirm={() => this.changeView(VIEWS.DEFAULT)}
         			 />;
       default:

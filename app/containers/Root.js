@@ -7,7 +7,22 @@ import { theme, Flex } from "blockstack-ui";
 import { normalize } from "polished";
 import Routes from "../routes";
 import Modal from "@components/modal";
+import fetch from "cross-fetch";
 
+export const AppContext = React.createContext();
+
+const fetchStacksData = async () => {
+  try {
+    const response = await fetch(
+      "https://blockstack-explorer-api.herokuapp.com/api/stacks/addresses/SM3KJBA4RZ7Z20KD2HBXNSXVPCR1D3CRAV6Q05MKT"
+    );
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 const GlobalStyles = createGlobalStyle`
 
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,600,700');
@@ -96,22 +111,36 @@ type Props = {
 };
 
 export default class Root extends Component<Props> {
+  state = {
+    data: null
+  };
+  async componentDidMount() {
+    const data = await fetchStacksData();
+    if (!this.state.data && data) {
+      this.setState({
+        data
+      });
+    }
+  }
+
   render() {
     return (
-      <Provider store={this.props.store}>
-        <ConnectedRouter history={this.props.history}>
-          <ThemeProvider theme={theme}>
-            <React.Fragment>
-              <Flex flexGrow={1} flexDirection="column">
-                <GlobalStyles />
-                <Modal>
-                  <Routes />
-                </Modal>
-              </Flex>
-            </React.Fragment>
-          </ThemeProvider>
-        </ConnectedRouter>
-      </Provider>
+      <AppContext.Provider value={this.state.data}>
+        <Provider store={this.props.store}>
+          <ConnectedRouter history={this.props.history}>
+            <ThemeProvider theme={theme}>
+              <React.Fragment>
+                <Flex flexGrow={1} flexDirection="column">
+                  <GlobalStyles />
+                  <Modal>
+                    <Routes />
+                  </Modal>
+                </Flex>
+              </React.Fragment>
+            </ThemeProvider>
+          </ConnectedRouter>
+        </Provider>
+      </AppContext.Provider>
     );
   }
 }

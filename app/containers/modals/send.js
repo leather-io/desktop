@@ -6,6 +6,7 @@ import { validateStxAddress, validateStxAmount } from "@utils/validation";
 import produce from "immer";
 import { HardwareSteps } from "@containers/hardware-steps";
 import { ledgerSteps } from "@screens/onboarding/hardware-wallet/ledger";
+import { TextLink } from "@containers/buttons/onboarding-navigation";
 
 const updateValue = (value, setState, key) =>
   setState(state =>
@@ -23,10 +24,10 @@ const handleValidation = (currentBalance, values, setState, nextView) => {
   let errors = {};
 
   if (amount === "") {
-    errors.amount = "Please enter a valid amount.";
+    errors.amount = "Please enter a valid amount to send.";
   }
   if (recipient === "") {
-    errors.recipient = "Please enter a valid Stacks Address.";
+    errors.recipient = "Please enter a valid Stacks address.";
   }
 
   if (!errors.amount && parseInt(currentBalance) <= amount) {
@@ -36,7 +37,7 @@ const handleValidation = (currentBalance, values, setState, nextView) => {
   if (!errors.recipient) {
     const valid = validateStxAddress(recipient);
     if (!valid) {
-      errors.recipient = "Address seems invalid.";
+      errors.recipient = "Invalid Stacks address.";
     }
   }
 
@@ -57,7 +58,14 @@ const handleSubmit = (balance = 123212, values, setState, nextView) => {
   handleValidation(balance, values, setState, nextView);
 };
 
-const InitialScreen = ({ nextView, state, setState, children, ...rest }) => (
+const InitialScreen = ({
+  nextView,
+  hide,
+  state,
+  setState,
+  children,
+  ...rest
+}) => (
   <>
     <Field
       name="recipient"
@@ -87,7 +95,13 @@ const InitialScreen = ({ nextView, state, setState, children, ...rest }) => (
     />
     {children
       ? children({
-          next: () => handleSubmit(312312, state.values, setState, nextView)
+          next: {
+            action: () => handleSubmit(312312, state.values, setState, nextView)
+          },
+          secondary: {
+            label: "Cancel",
+            action: hide
+          }
         })
       : null}
   </>
@@ -96,14 +110,17 @@ const InitialScreen = ({ nextView, state, setState, children, ...rest }) => (
 const HardwareView = ({ nextView, children, ...rest }) => {
   return children ? (
     <Flex flexDirection="column" alignItems="center" pt={4}>
-      <Type pb={5} fontSize={4}>
+      <Type pb={6} fontSize={4}>
         Connect your Ledger
       </Type>
       <HardwareSteps steps={ledgerSteps}>
         {({ step, next, hasNext, hasPrev, prev }) => (
           <Flex pt={4}>
             {children({
-              next: () => (hasNext ? next() : nextView()),
+              next: {
+                label: hasNext ? "Next" : "Continue",
+                action: () => (hasNext ? next() : nextView())
+              },
               secondary: {
                 label: "Skip",
                 action: nextView
@@ -121,7 +138,9 @@ const BTCTopUpView = ({ nextView, children, ...rest }) => {
       Top Up View
       {children
         ? children({
-            next: () => nextView()
+            next: {
+              action: () => nextView()
+            }
           })
         : null}
     </>
@@ -133,7 +152,9 @@ const Confirmation = ({ nextView, children, ...rest }) => {
       Confirmation
       {children
         ? children({
-            next: () => nextView()
+            next: {
+              action: () => nextView()
+            }
           })
         : null}
     </>
@@ -145,7 +166,9 @@ const Success = ({ nextView, children, hide, ...rest }) => {
       Success!
       {children
         ? children({
-            next: () => hide()
+            next: {
+              action: () => hide()
+            }
           })
         : null}
     </>
@@ -180,6 +203,7 @@ const Send = ({ hide, ...rest }) => {
           default:
             Component = InitialScreen;
         }
+
         return (
           <Component
             view={state.view}
@@ -199,11 +223,13 @@ const Send = ({ hide, ...rest }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Button onClick={next}>Continue</Button>
+                <Button height="auto" py={2} onClick={next.action}>
+                  {next.label || "Continue"}
+                </Button>
                 {secondary ? (
-                  <Flex pt={3}>
-                    <Type onClick={secondary.action}>{secondary.label}</Type>
-                  </Flex>
+                  <TextLink onClick={secondary.action}>
+                    {secondary.label}
+                  </TextLink>
                 ) : null}
               </Flex>
             )}

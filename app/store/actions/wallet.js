@@ -8,9 +8,9 @@ import { network, transactions, config } from "blockstack";
 import Transport from "@ledgerhq/hw-transport-node-hid";
 import AppBtc from "@ledgerhq/hw-app-btc";
 import { c32address, c32ToB58, versions } from "c32check";
-import TrezorConnect from "../../trezor/trezor";
-import { encryptECIES } from "../utils/encryption";
-import { TrezorSigner, configureTestnet } from "../../blockstack-trezor";
+import TrezorConnect from "../../../trezor/trezor";
+import { encryptECIES } from "../../utils/encryption";
+import { TrezorSigner, configureTestnet } from "../../../blockstack-trezor/index";
 
 export const WALLET_TYPE = {
   NORMAL: "NORMAL",

@@ -95,7 +95,7 @@ const DangerZone = ({ ...rest }) => (
 );
 const SettingsModal = ({ hide, ...rest }) => {
   return (
-    <Modal title="Settings" hide={hide} p={0}>
+    <Modal title="Settings" hide={hide} p={0} width="90vw">
       <TopUpSection />
       <DangerZone />
       <API />

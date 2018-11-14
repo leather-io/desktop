@@ -39,26 +39,19 @@ const OperationTypeSection = ({ operation, ...rest }) => (
 
 const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
   const {
-    address,
+    sender,
     block_id,
     txid,
     consensusHash,
-    tokensSent,
+    valueStacks,
+    value: amount,
     scratchData,
     recipientBitcoinAddress,
     recipient,
     operation
   } = tx;
 
-  const items = [
-    { label: "Sender (Stacks)", value: address },
-    { label: "Recipient (Stacks)", value: recipient },
-    { label: "Recipient (BTC)", value: recipientBitcoinAddress },
-    { label: "Tx ID", value: txid },
-    { label: "Block ID", value: block_id },
-    { label: "Consensus Hash", value: consensusHash },
-    { label: "Note", value: scratchData }
-  ];
+  const items = [{ label: "Sender", value: sender }, { label: "Recipient (Stacks)", value: recipient }, { label: "BTC Transaction", value: txid }, { label: "BTC Block", value: block_id }, { label: "Memo", value: scratchData }];
   return (
     <Modal title="Transaction Details" hide={hide} p={0}>
       <Flex
@@ -79,7 +72,7 @@ const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
           flexShrink={0}
         >
           <OperationTypeSection operation={operation} />
-          <TxAmounts amount={tokensSent} />
+          <TxAmounts amount={amount} />
         </Flex>
       </Flex>
       <Flex flexDirection="column" p={4} flexShrink={0}>

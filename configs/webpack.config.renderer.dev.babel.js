@@ -261,7 +261,7 @@ export default merge.smart(baseConfig, {
     },
     historyApiFallback: {
       verbose: true,
-      disableDotRule: true
+      disableDotRule: false
     },
     before() {
       if (process.env.START_HOT) {

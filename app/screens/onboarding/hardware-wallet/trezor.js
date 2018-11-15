@@ -12,8 +12,8 @@ const steps = [
     icon: UsbIcon
   }
 ];
-const TrezorPage = ({ ...rest }) => (
-  <Page alignItems="center" justifyContent="center" title="Connect your Trezor">
+const TrezorPage = ({ style, ...rest }) => (
+  <Page alignItems="center" justifyContent="center" title="Connect your Trezor" style={style}>
     <Flex width={1} flexDirection={"column"} maxWidth="600px">
       <Flex py={6} justifyContent="space-between" width={1}>
         <HardwareSteps steps={steps}>

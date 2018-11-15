@@ -50,40 +50,26 @@ const doLeaveNotification = item => dispatch => {
   });
 };
 
-const doNotify = (notif, type = types.DEFAULT) => dispatch =>
-  dispatch({
-    type: NOTIFICATION_ADD,
-    payload: {
-      ...notif,
-      type
-    }
-  });
+const doNotify = (notif, type = types.DEFAULT) => dispatch => {
+  const isString = typeof notif === "string";
 
-const doNotifyAlert = (notif, type = types.ALERT) => dispatch =>
-  dispatch({
-    type: NOTIFICATION_ADD,
-    payload: {
-      ...notif,
-      type
-    }
-  });
-const doNotifyWarning = (notif, type = types.WARNING) => dispatch =>
-  dispatch({
-    type: NOTIFICATION_ADD,
-    payload: {
-      ...notif,
-      type
-    }
-  });
+  const notification = isString
+    ? {
+        message: notif
+      }
+    : notif;
 
-const doNotifySuccess = (notif, type = types.SUCCESS) => dispatch =>
   dispatch({
     type: NOTIFICATION_ADD,
     payload: {
-      ...notif,
+      ...notification,
       type
     }
   });
+};
+const doNotifyAlert = notif => doNotify(notif, types.ALERT);
+const doNotifyWarning = notif => doNotify(notif, types.WARNING);
+const doNotifySuccess = notif => doNotify(notif, types.SUCCESS);
 
 export default function reducer(state = initialState, { type, payload }) {
   return produce(state, draft => {

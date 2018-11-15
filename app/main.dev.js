@@ -70,6 +70,7 @@ app.on("ready", async () => {
     show: false,
     width: 950,
     height: 760,
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       nodeIntegration: false,
       preload: path.join(__dirname, "preload.js")

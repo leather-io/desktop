@@ -3,7 +3,6 @@ import { Box, Flex, Buttons, Type, Input } from "blockstack-ui/dist";
 import { Button } from "@components/button/index";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../routes";
-import { Notify } from "@components/notifications";
 
 const Title = ({ ...rest }) => (
   <Type
@@ -25,6 +24,7 @@ const InitialScreen = ({ ...props }) => (
     justifyContent="center"
     alignItems="center"
     textAlign="center"
+    {...props}
   >
     <Box maxWidth="400px">
       <Title>Welcome to the Stacks Wallet</Title>
@@ -44,17 +44,6 @@ const InitialScreen = ({ ...props }) => (
       <Button outline is={Link} invert to={ROUTES.RESTORE_HARDWARE}>
         Use a Hardware Wallet
       </Button>
-      <Notify
-        notification={{
-          message: "Test!!"
-        }}
-      >
-        {({ bind }) => (
-          <Button outline mt={4} invert {...bind}>
-            Notify
-          </Button>
-        )}
-      </Notify>
       <Button outline is={Link} mt={4} invert to={ROUTES.RESTORE_WATCH}>
         Use a Stacks Address
       </Button>

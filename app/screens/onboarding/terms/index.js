@@ -24,9 +24,9 @@ const handleAccept = (accept, history) => {
   history.push(ROUTES.RESTORE_OPTIONS);
 };
 
-const TermsPage = ({ quit, doAcceptTerms, history, next }) => {
+const TermsPage = ({ quit, doAcceptTerms, history, next, style }) => {
   return (
-    <Flex flexDirection="column" color="white" flexGrow={1} bg="blue.dark">
+    <Flex flexDirection="column" color="white" flexGrow={1} bg="blue.dark" style={style}>
       <Flex
         alignItems="center"
         justifyContent="center"

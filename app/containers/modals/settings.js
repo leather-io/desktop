@@ -1,8 +1,15 @@
 import React from "react";
 import { Button, Buttons, Flex, Type } from "blockstack-ui/dist";
+import { State } from "react-powerplug";
 import { Modal } from "@components/modal";
 import { Label } from "@components/field";
 import { StaticField } from "@components/field";
+import { doResetWallet } from "@stores/actions/wallet";
+import { OpenModal } from "@components/modal";
+import { TxFeesModal } from "@containers/modals/tx-fees-top-up";
+import { connect } from "react-redux";
+import { selectWalletType } from "@stores/selectors/wallet";
+import { WALLET_TYPES } from "@stores/reducers/wallet";
 
 const Card = ({ ...rest }) => (
   <Flex
@@ -28,27 +35,36 @@ const Section = ({ ...rest }) => (
     {...rest}
   />
 );
-const TopUpSection = ({ ...rest }) => (
-  <Section>
-    <Label pb={4} fontSize={2}>
-      Transaction Fees
-    </Label>
-    <Card>
-      <Flex alignItems="center">
-        <Flex width={0.7} p={4} borderRight={1} borderColor="blue.mid">
-          <Type>
-            Bitcoin is used to pay transaction fees for Stacks transactions. You
-            have enough BTC to process 100 transactions.
-          </Type>
-        </Flex>
-        <Flex justifyContent="center" width={0.4} p={4}>
-          <Button height={"auto"} py={2}>
-            Top Up
-          </Button>
-        </Flex>
-      </Flex>
-    </Card>
-  </Section>
+const TopUpSection = connect(state => ({
+  type: selectWalletType(state)
+}))(
+  ({ type, ...rest }) =>
+    type !== WALLET_TYPES.WATCH_ONLY ? (
+      <Section>
+        <Label pb={4} fontSize={2}>
+          Transaction Fees
+        </Label>
+        <Card>
+          <Flex alignItems="center">
+            <Flex width={0.7} p={4} borderRight={1} borderColor="blue.mid">
+              <Type>
+                Bitcoin is used to pay transaction fees for Stacks transactions.
+                You have enough BTC to process 100 transactions.
+              </Type>
+            </Flex>
+            <Flex justifyContent="center" width={0.4} p={4}>
+              <OpenModal component={TxFeesModal}>
+                {({ bind }) => (
+                  <Button height={"auto"} py={2} {...bind}>
+                    Top Up
+                  </Button>
+                )}
+              </OpenModal>
+            </Flex>
+          </Flex>
+        </Card>
+      </Section>
+    ) : null
 );
 
 const API = ({ ...rest }) => (
@@ -64,40 +80,67 @@ const API = ({ ...rest }) => (
     </Flex>
   </Section>
 );
-const DangerZone = ({ ...rest }) => (
+const DangerZone = connect(
+  null,
+  { doResetWallet }
+)(({ doResetWallet, hide, ...rest }) => (
   <Section>
     <Label pb={4} fontSize={2}>
       Danger Zone
     </Label>
     <Card>
-      <Flex alignItems="center">
-        <Flex
-          p={4}
-          flexDirection="column"
-          borderRight={1}
-          borderColor="blue.mid"
-          width={0.7}
-        >
-          <Label>Reset Wallet</Label>
-          <Type>
-            This will remove all data and you’ll have to restore it to gain
-            access.
-          </Type>
-        </Flex>
-        <Flex justifyContent="center" width={0.4} p={4}>
-          <Button height={"auto"} py={2}>
-            Reset Wallet
-          </Button>
-        </Flex>
+      <Flex
+        p={4}
+        flexDirection="column"
+        borderRight={1}
+        borderColor="blue.mid"
+        flexGrow={1}
+      >
+        <Label>Reset Wallet</Label>
+        <Type>
+          This will remove all data and you’ll have to restore it to gain
+          access.
+        </Type>
+      </Flex>
+      <Flex justifyContent="center" alignItems="center" p={4}>
+        <State initial={{ clicked: false }}>
+          {({ state, setState }) => {
+            if (state.clicked) {
+              return (
+                <Button
+                  onClick={() => {
+                    hide();
+                    doResetWallet();
+                  }}
+                  height={"auto"}
+                  py={2}
+                >
+                  Are you sure?
+                </Button>
+              );
+            }
+            return (
+              <Button
+                onClick={() => {
+                  setState({ clicked: true });
+                }}
+                height={"auto"}
+                py={2}
+              >
+                Reset Wallet
+              </Button>
+            );
+          }}
+        </State>
       </Flex>
     </Card>
   </Section>
-);
+));
 const SettingsModal = ({ hide, ...rest }) => {
   return (
     <Modal title="Settings" hide={hide} p={0} width="90vw">
       <TopUpSection />
-      <DangerZone />
+      <DangerZone hide={hide} />
       <API />
       <Flex flexDirection="column" p={4} flexShrink={0}>
         <Buttons>

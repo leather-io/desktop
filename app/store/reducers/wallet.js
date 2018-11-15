@@ -1,11 +1,12 @@
 import produce from "immer";
-import { fetchStxAddressDetails } from "@common/lib";
-import { selectWalletStacksAddress } from "@stores/selectors/wallet";
-import { push } from "connected-react-router";
 
 const FETCH_ADDRESS_DATA_STARTED = "wallet/FETCH_ADDRESS_DATA_STARTED";
 const FETCH_ADDRESS_DATA_FINISHED = "wallet/FETCH_ADDRESS_DATA_FINISHED";
 const FETCH_ADDRESS_DATA_ERROR = "wallet/FETCH_ADDRESS_DATA_ERROR";
+
+const FETCH_BALANCES_STARTED = "wallet/FETCH_BALANCES_STARTED";
+const FETCH_BALANCES_FINISHED = "wallet/FETCH_BALANCES_FINISHED";
+const FETCH_BALANCES_ERROR = "wallet/FETCH_BALANCES_ERROR";
 
 const ADD_WALLET_ADDRESS = "wallet/ADD_WALLET_ADDRESS";
 
@@ -14,14 +15,21 @@ const WALLET_RESET = "wallet/WALLET_RESET";
 const WALLET_LOADING_STARTED = "wallet/WALLET_LOADING_STARTED";
 const WALLET_LOADING_FINISHED = "wallet/WALLET_LOADING_FINISHED";
 
-export const WALLET_TYPES = {
+const WALLET_TYPES = {
   WATCH_ONLY: "wallet_types/WATCH_ONLY",
   LEDGER: "wallet_types/LEDGER",
   TREZOR: "wallet_types/TREZOR"
 };
 
 export const initialState = {
-  address: null,
+  addresses: {
+    stx: null,
+    btc: null
+  },
+  balances: {
+    stx: null,
+    btc: null
+  },
   type: null,
   data: null,
   loading: false,
@@ -30,78 +38,34 @@ export const initialState = {
   error: null
 };
 
-/**
- * Fetch our data for the Stacks Address
- * Address should already be validated before calling this function
- * @param {string} address - the stacks address we want data on
- */
-const doFetchStxAddressData = address => async dispatch => {
-  try {
-    dispatch({
-      type: FETCH_ADDRESS_DATA_STARTED
-    });
-    const data = await fetchStxAddressDetails(address);
-    dispatch({
-      type: FETCH_ADDRESS_DATA_FINISHED,
-      payload: data
-    });
-  } catch (e) {
-    console.log("error!", e.message);
-    dispatch({
-      type: FETCH_ADDRESS_DATA_ERROR,
-      payload: e.message
-    });
-  }
-};
-
-/**
- * Add our address
- *
- * @param {string} address - the wallet address
- * @param {string} type - the type of wallet
- */
-const doAddWalletAddress = (address, type) => dispatch => {
-  if (!address) {
-    console.error("Please provide an address");
-    return;
-  }
-  if (!type) {
-    console.error("Please provide a wallet type");
-    return;
-  }
-  return dispatch({
-    type: ADD_WALLET_ADDRESS,
-    payload: {
-      address,
-      type
-    }
-  });
-};
-
-/**
- * Our specific wallet type actions
- */
-const doAddWatchOnlyAddress = address =>
-  doAddWalletAddress(address, WALLET_TYPES.WATCH_ONLY);
-
-const doAddTrezorAddress = address =>
-  doAddWalletAddress(address, WALLET_TYPES.TREZOR);
-
-const doAddLedgerAddress = address =>
-  doAddWalletAddress(address, WALLET_TYPES.LEDGER);
-
-const doResetWallet = () => dispatch => {
-  dispatch({
-    type: WALLET_RESET
-  });
-  dispatch(push("/"));
-};
-
 const reducer = (state = initialState, { type, payload }) =>
   produce(state, draft => {
     switch (type) {
+      case FETCH_BALANCES_STARTED:
+        draft.loading = true;
+        break;
+      case FETCH_BALANCES_FINISHED:
+        draft.loading = false;
+        payload.forEach(coin => {
+          draft.balances[coin.type] = coin.balance;
+        });
+        break;
+      case FETCH_BALANCES_ERROR:
+        draft.loading = false;
+        draft.error = payload;
+        draft.lastAttempt = new Date();
+        break;
       case WALLET_RESET:
-        draft = initialState;
+        draft.address = {
+          stx: null,
+          btc: null
+        };
+        draft.type = null;
+        draft.data = null;
+        draft.loading = false;
+        draft.lastFetch = null;
+        draft.lastAttempt = null;
+        draft.error = null;
         break;
       case WALLET_LOADING_STARTED:
         draft.loading = true;
@@ -110,7 +74,7 @@ const reducer = (state = initialState, { type, payload }) =>
         draft.loading = false;
         break;
       case ADD_WALLET_ADDRESS:
-        draft.address = payload.address;
+        draft.addresses = payload.addresses;
         draft.type = payload.type;
         break;
       case FETCH_ADDRESS_DATA_STARTED:
@@ -133,9 +97,15 @@ const reducer = (state = initialState, { type, payload }) =>
 export default reducer;
 
 export {
-  doFetchStxAddressData,
-  doAddWalletAddress,
-  doAddWatchOnlyAddress,
-  doAddTrezorAddress,
-  doAddLedgerAddress
+  FETCH_ADDRESS_DATA_STARTED,
+  FETCH_ADDRESS_DATA_FINISHED,
+  FETCH_ADDRESS_DATA_ERROR,
+  FETCH_BALANCES_STARTED,
+  FETCH_BALANCES_FINISHED,
+  FETCH_BALANCES_ERROR,
+  ADD_WALLET_ADDRESS,
+  WALLET_RESET,
+  WALLET_LOADING_STARTED,
+  WALLET_LOADING_FINISHED,
+  WALLET_TYPES
 };

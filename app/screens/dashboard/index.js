@@ -47,9 +47,7 @@ const SettingsButton = ({ ...rest }) => {
 const Header = ({ ...rest }) => {
   return (
     <Flex justifyContent="space-between">
-      <Flex p={2} fontWeight={500}>
-        Stacks Wallet
-      </Flex>
+      <Flex />
       <SettingsButton />
     </Flex>
   );
@@ -72,11 +70,11 @@ const tableHeadItems = [
 
 const balance = 1231231.12312;
 
-const Dashboard = ({ loading, data, ...rest }) =>
+const Dashboard = ({ loading, data, style, ...rest }) =>
   loading || !data ? (
-    <Loading bg="blue.dark" />
+    <Loading style={style} bg="blue.dark" />
   ) : (
-    <Flex bg="blue.light" flexGrow={1} maxWidth={"100%"}>
+    <Flex style={style} bg="blue.light" flexGrow={1} maxWidth={"100%"}>
       <Content p={3} maxWidth={"100%"}>
         <Header />
         <Balance value={balance} />

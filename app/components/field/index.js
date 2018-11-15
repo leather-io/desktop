@@ -2,7 +2,12 @@ import React from "react";
 import { Flex, Type, Input } from "blockstack-ui/dist";
 import { Copy } from "@components/copy";
 import { formatStx } from "@utils";
+import { connect } from "react-redux";
+import { selectWalletBalance } from "@stores/selectors/wallet";
 
+const mapStateToProps = state => ({
+  balance: selectWalletBalance(state)
+});
 const Label = ({ ...rest }) => (
   <Type pb={2} fontWeight={500} fontSize={1} is="label" {...rest} />
 );
@@ -89,7 +94,7 @@ const Field = ({
   );
 };
 
-const BalanceField = ({ value, ...rest }) => (
+const BalanceField = connect(mapStateToProps)(({ balance, value, ...rest }) => (
   <Flex flexDirection={"column"} flexShrink={0} pb={5}>
     <Type pb={2} fontWeight={500} fontSize={1} is="label">
       Available to Send
@@ -112,14 +117,14 @@ const BalanceField = ({ value, ...rest }) => (
         borderColor="blue.mid"
         bg="white"
       >
-        <Type>{formatStx(value)}</Type>
+        <Type>{balance}</Type>
         <Type color="hsl(205, 30%, 70%)" pl={2}>
           STX
         </Type>
       </Flex>
     </Flex>
   </Flex>
-);
+));
 
 const StaticField = ({ ...rest }) => (
   <Field width={1} disabled copy {...rest} />

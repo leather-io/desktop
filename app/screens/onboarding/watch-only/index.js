@@ -7,13 +7,12 @@ import { ROUTES } from "../../../routes";
 import { Field } from "@components/field";
 import { validateStxAddress } from "@utils/validation";
 import { withRouter } from "react-router-dom";
-import { Spinner } from "@components/spinner";
 import { connect } from "react-redux";
 import { selectWalletLoading } from "@stores/selectors/wallet";
 import {
   doAddWatchOnlyAddress,
   doFetchStxAddressData
-} from "@stores/reducers/wallet";
+} from "@stores/actions/wallet";
 
 type Props = {};
 
@@ -76,13 +75,14 @@ class WatchOnlyScreen extends Component<Props> {
   };
 
   render() {
-    const { address, error, handleChange, next } = this.props;
+    const { address, error, handleChange, next, ...rest } = this.props;
 
     return (
       <Page
         alignItems="center"
         justifyContent="center"
         title="Create a Watch Only Wallet"
+        {...rest}
       >
         <Flex flexDirection={"column"} maxWidth="600px">
           <Type lineHeight={1.5} fontSize={2} pt={6} color="hsl(242, 56%, 75%)">

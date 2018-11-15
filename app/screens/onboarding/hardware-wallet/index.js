@@ -63,13 +63,14 @@ export default class RestoreSeed extends Component<Props> {
   }
 
   render() {
-    const { address, error, handleChange, next } = this.props;
+    const { address, error, handleChange, next, style } = this.props;
 
     return (
       <Page
         alignItems="center"
         justifyContent="center"
         title="Select your Hardware Wallet"
+        style={style}
       >
         <Flex width={1} flexDirection={"column"} maxWidth="600px">
           <Flex py={6} justifyContent="space-between" width={1}>

@@ -7,7 +7,13 @@ import produce from "immer";
 import { HardwareSteps } from "@containers/hardware-steps";
 import { ledgerSteps } from "@screens/onboarding/hardware-wallet/ledger";
 import { TextLink } from "@containers/buttons/onboarding-navigation";
+import { connect } from "react-redux";
+import { selectWalletBalance } from "@stores/selectors/wallet";
+import CoinsIcon from "mdi-react/CoinsIcon";
 
+const mapStateToProps = state => ({
+  balance: selectWalletBalance(state)
+});
 const updateValue = (value, setState, key) =>
   setState(state =>
     produce(state, draft => {
@@ -175,7 +181,36 @@ const Success = ({ nextView, children, hide, ...rest }) => {
   );
 };
 
-const Send = ({ hide, ...rest }) => {
+const NoBalance = ({ nextView, children, hide, ...rest }) => {
+  return (
+    <>
+      <Flex
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        color="blue.mid"
+        pb={6}
+      >
+        <Flex py={4}>
+          <CoinsIcon size={100} />
+        </Flex>
+        <Type fontWeight="bold" color="blue.dark">
+          You don't have any Stacks!
+        </Type>
+      </Flex>
+      {children
+        ? children({
+            next: {
+              action: () => hide(),
+              label: "Cancel"
+            }
+          })
+        : null}
+    </>
+  );
+};
+
+const Send = connect(mapStateToProps)(({ balance, hide, ...rest }) => {
   return (
     <State
       initial={{
@@ -202,6 +237,10 @@ const Send = ({ hide, ...rest }) => {
             break;
           default:
             Component = InitialScreen;
+        }
+
+        if (balance === "0") {
+          Component = NoBalance;
         }
 
         return (
@@ -238,6 +277,6 @@ const Send = ({ hide, ...rest }) => {
       }}
     </State>
   );
-};
+});
 
 export { Send };

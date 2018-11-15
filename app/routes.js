@@ -9,7 +9,7 @@ import HardwareWalletScreen from "@screens/onboarding/hardware-wallet";
 import Dashboard from "@screens/dashboard";
 import TrezorPage from "@screens/onboarding/hardware-wallet/trezor";
 import LedgerPage from "@screens/onboarding/hardware-wallet/ledger";
-
+import { Transition } from "react-spring";
 export const ROUTES = {
   TERMS: "/",
   DASHBOARD: "/dashboard",

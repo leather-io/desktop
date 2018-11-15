@@ -18,7 +18,6 @@ const Empty = ({ ...rest }) => (
     </Flex>
   </Flex>
 );
-import { AppContext } from "@containers/Root";
 import { connect } from "react-redux";
 import { selectWalletHistory } from "@stores/selectors/wallet";
 
@@ -236,13 +235,7 @@ const data = {
 const TxList = connect(state => ({
   history: selectWalletHistory(state)
 }))(({ children, contentHeader, title, action, history, ...rest }) => (
-  <Card
-    p={0}
-    bg="blue.light"
-    flexGrow={history && history.length > 2 ? 1 : 0}
-    flexShrink={0}
-    overflow="hidden"
-  >
+  <Card p={0} bg="blue.light" flexGrow={1} flexShrink={0} overflow="hidden">
     <Flex
       justifyContent={"space-between"}
       borderBottom="1px solid"

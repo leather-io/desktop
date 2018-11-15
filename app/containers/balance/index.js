@@ -7,12 +7,12 @@ import { ReceiveModal } from "@containers/modals/receive";
 import { Modal } from "@components/modal";
 import { Send } from "@containers/modals/send";
 import { Value } from "@components/stacks";
-import { AppContext } from "@containers/Root";
 import { State } from "react-powerplug";
 import { connect } from "react-redux";
 import { selectWalletData, selectWalletType } from "@stores/selectors/wallet";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
-import dayjs from "dayjs";
+import { Notice } from "@components/notice";
+
 const funct = ({ visible, hide }) => (
   <ReceiveModal hide={hide} visible={visible} />
 );
@@ -53,7 +53,12 @@ const BalanceSection = connect(state => ({
   data: selectWalletData(state)
 }))(({ value, data, ...rest }) => {
   if (!data) return null;
-  const { balance, formattedUnlockTotal, vesting_total } = data;
+  const {
+    balance,
+    formattedUnlockTotal,
+    vesting_total,
+    totalUnlockedStacks
+  } = data;
   return (
     <State initial={{ view: "balance" }}>
       {({ state, setState }) => (
@@ -97,6 +102,12 @@ const BalanceSection = connect(state => ({
               STX
             </Type>
           </Flex>
+          {state.view === "allocation" ? (
+            <Type fontWeight="bold">
+              <Type color="hsl(205, 30%, 70%)">Unlocked to date:</Type>{" "}
+              {totalUnlockedStacks} <Type color="hsl(205, 30%, 70%)">STX</Type>
+            </Type>
+          ) : null}
         </Flex>
       )}
     </State>
@@ -115,36 +126,15 @@ const Balance = connect(state => ({
   >
     <BalanceSection pt={6} pb={5} />
     {type !== WALLET_TYPES.WATCH_ONLY ? (
-      <Buttons>
+      <Buttons pb={5}>
         <SendButton />
         <ReceiveButton />
       </Buttons>
     ) : (
-      <Flex
-        mb={4}
-        width={1}
-        bg="white"
-        borderColor="blue.mid"
-        borderRadius={6}
-        border={1}
-        boxShadow="card"
-        overflow="hidden"
-      >
-        <Flex
-          px={4}
-          fontSize={1}
-          bg="blue.light"
-          p={2}
-          borderRight={1}
-          borderColor="blue.mid"
-        >
-          Note
-        </Flex>
-        <Flex px={3} p={2}>
-          This is a watch only wallet, you can view your balance and transaction
-          history only.
-        </Flex>
-      </Flex>
+      <Notice>
+        This is a watch only wallet, you can view your balance and transaction
+        history only.
+      </Notice>
     )}
   </Flex>
 ));

@@ -56,6 +56,7 @@ export const Modal = ({ title, children, hide, visible, p = 4, ...rest }) => (
 class ModalRoot extends React.Component {
   state = {
     comp: null,
+    previous: null,
     visible: false
   };
 
@@ -63,6 +64,19 @@ class ModalRoot extends React.Component {
     this.setState({
       comp: null
     });
+  }
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    if (
+      nextState.comp &&
+      this.state.comp &&
+      nextState.comp.name !== this.state.comp.name &&
+      !this.state.previous
+    ) {
+      this.setState({
+        previous: this.state.comp
+      });
+    }
   }
 
   timeout = null;
@@ -77,8 +91,21 @@ class ModalRoot extends React.Component {
   };
 
   handleHide = hide => {
-    this.timeout = setTimeout(() => this.setState({ visible: false }), 200);
-    hide();
+    if (this.state.previous) {
+      this.setState({
+        comp: this.state.previous,
+        previous: null
+      });
+    } else {
+      this.setState({
+        previous: null
+      });
+      this.timeout = setTimeout(
+        () => this.setState({ visible: false, comp: null, previous: null }),
+        200
+      );
+      hide();
+    }
   };
 
   render() {

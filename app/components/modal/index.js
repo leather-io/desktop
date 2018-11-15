@@ -4,7 +4,7 @@ import { Flex, Box, Card, Type } from "blockstack-ui/dist";
 import { CloseIcon } from "mdi-react";
 import { Hover, Active } from "react-powerplug";
 import { PageContext } from "@components/page";
-
+import Notifications from "@components/notifications";
 const ModalContext = React.createContext();
 
 const CloseButton = ({ ...rest }) => (
@@ -85,60 +85,62 @@ class ModalRoot extends React.Component {
     const { children } = this.props;
 
     return (
-      <PageContext.Provider value={{ bg: "blue.light" }}>
-        <Overlay.Container>
-          {overlay => {
-            const props = {
-              ...overlay,
-              show: comp => this.handleShow(overlay.show, comp),
-              hide: () => this.handleHide(overlay.hide)
-            };
-            return (
-              <ModalContext.Provider value={props}>
-                <>
-                  {children}
-                  <Overlay
-                    style={{
-                      transform: "none",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                    fade
-                    {...overlay}
-                  >
-                    <Flex
-                      justifyContent="center"
-                      width={[1, 1, "auto"]}
-                      position="relative"
-                      zIndex={999}
+      <Notifications>
+        <PageContext.Provider value={{ bg: "blue.light" }}>
+          <Overlay.Container>
+            {overlay => {
+              const props = {
+                ...overlay,
+                show: comp => this.handleShow(overlay.show, comp),
+                hide: () => this.handleHide(overlay.hide)
+              };
+              return (
+                <ModalContext.Provider value={props}>
+                  <>
+                    {children}
+                    <Overlay
+                      style={{
+                        transform: "none",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                      fade
+                      {...overlay}
                     >
-                      {this.state.visible &&
-                        this.state.comp({
-                          hide: () => this.handleHide(overlay.hide),
-                          visible: overlay.visible
-                        })}
-                    </Flex>
-                    <Box color="hsla(225,50%,7%,0.75)">
-                      <Backdrop
-                        style={{ background: "currentColor" }}
-                        as={Overlay.Hide}
-                        fade
-                        {...overlay}
-                        hide={() => this.handleHide(overlay.hide)}
-                      />
-                    </Box>
-                  </Overlay>
-                </>
-              </ModalContext.Provider>
-            );
-          }}
-        </Overlay.Container>
-      </PageContext.Provider>
+                      <Flex
+                        justifyContent="center"
+                        width={[1, 1, "auto"]}
+                        position="relative"
+                        zIndex={999}
+                      >
+                        {this.state.visible &&
+                          this.state.comp({
+                            hide: () => this.handleHide(overlay.hide),
+                            visible: overlay.visible
+                          })}
+                      </Flex>
+                      <Box color="hsla(225,50%,7%,0.75)">
+                        <Backdrop
+                          style={{ background: "currentColor" }}
+                          as={Overlay.Hide}
+                          fade
+                          {...overlay}
+                          hide={() => this.handleHide(overlay.hide)}
+                        />
+                      </Box>
+                    </Overlay>
+                  </>
+                </ModalContext.Provider>
+              );
+            }}
+          </Overlay.Container>
+        </PageContext.Provider>
+      </Notifications>
     );
   }
 }

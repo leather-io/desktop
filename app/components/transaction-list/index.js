@@ -19,6 +19,8 @@ const Empty = ({ ...rest }) => (
   </Flex>
 );
 import { AppContext } from "@containers/Root";
+import { connect } from "react-redux";
+import { selectWalletHistory } from "@stores/selectors/wallet";
 
 const data = {
   walletType: "trezor",
@@ -231,69 +233,54 @@ const data = {
   ]
 };
 
-const TxList = ({
-  children,
-  items = data.stacksTransactions,
-  contentHeader,
-  title,
-  action,
-  ...rest
-}) => (
-  <AppContext.Consumer>
-    {data => (
-      <Card
-        p={0}
-        bg="blue.light"
-        flexGrow={data && data.history && data.history.length > 2 ? 1 : 0}
-        flexShrink={0}
-        overflow="hidden"
+const TxList = connect(state => ({
+  history: selectWalletHistory(state)
+}))(({ children, contentHeader, title, action, history, ...rest }) => (
+  <Card
+    p={0}
+    bg="blue.light"
+    flexGrow={history && history.length > 2 ? 1 : 0}
+    flexShrink={0}
+    overflow="hidden"
+  >
+    <Flex
+      justifyContent={"space-between"}
+      borderBottom="1px solid"
+      borderColor={"blue.mid"}
+      px={4}
+      py={3}
+      borderRadius="6px 6px 0 0"
+      flexShrink={0}
+      bg="white"
+    >
+      <Type fontWeight={500}>{title}</Type>
+      {action ? <Type color="hsl(205, 30%, 70%)">{action}</Type> : null}
+    </Flex>
+    {history && history.length && contentHeader ? contentHeader : null}
+    <Flex
+      flexDirection="column"
+      overflow="auto"
+      flexGrow={1}
+      position="relative"
+    >
+      <Flex
+        flexDirection="column"
+        overflow="auto"
+        position="absolute"
+        height="100%"
+        left={0}
+        width={"100%"}
       >
-        <Flex
-          justifyContent={"space-between"}
-          borderBottom="1px solid"
-          borderColor={"blue.mid"}
-          px={4}
-          py={3}
-          borderRadius="6px 6px 0 0"
-          flexShrink={0}
-          bg="white"
-        >
-          <Type fontWeight={500}>{title}</Type>
-          {action ? <Type color="hsl(205, 30%, 70%)">{action}</Type> : null}
-        </Flex>
-        {data && data.history && data.history.length && contentHeader
-          ? contentHeader
-          : null}
-        <Flex
-          flexDirection="column"
-          overflow="auto"
-          flexGrow={1}
-          position="relative"
-        >
-          <Flex
-            flexDirection="column"
-            overflow="auto"
-            position="absolute"
-            height="100%"
-            left={0}
-            width={"100%"}
-          >
-            {data && data.history && data.history.length ? (
-              data.history.map((item, i) => (
-                <TxItem
-                  key={i}
-                  last={data.history.length === i + 1}
-                  item={item}
-                />
-              ))
-            ) : (
-              <Empty />
-            )}
-          </Flex>
-        </Flex>
-      </Card>
-    )}
-  </AppContext.Consumer>
-);
+        {history && history.length ? (
+          history.map((item, i) => (
+            <TxItem key={i} last={history.length === i + 1} item={item} />
+          ))
+        ) : (
+          <Empty />
+        )}
+      </Flex>
+    </Flex>
+  </Card>
+));
 
 export { TxList };

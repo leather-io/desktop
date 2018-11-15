@@ -9,46 +9,13 @@ import { validateStxAddress } from "@utils/validation";
 import { withRouter } from "react-router-dom";
 import { Spinner } from "@components/spinner";
 import { connect } from "react-redux";
-
+import { selectWalletLoading } from "@stores/selectors/wallet";
 import {
   doAddWatchOnlyAddress,
   doFetchStxAddressData
 } from "@stores/reducers/wallet";
 
 type Props = {};
-
-const Loading = ({ message = "Fetching Wallet Details...", ...rest }) => (
-  <Flex
-    position="absolute"
-    width="100%"
-    height="100%"
-    left={0}
-    top={0}
-    alignItems="center"
-    justifyContent="center"
-    zIndex={9999}
-    flexDirection="column"
-    {...rest}
-  >
-    <Spinner size={80} />
-    <Flex pt={6}>
-      <Type fontWeight={500} color="blue.mid" opacity={0.5}>
-        {message}
-      </Type>
-    </Flex>
-  </Flex>
-);
-
-const Item = ({ title, body, ...rest }) => (
-  <Flex width={0.45} flexDirection="column" {...rest}>
-    <Type fontWeight="500" fontSize={2} pb={3}>
-      {title}
-    </Type>
-    <Type lineHeight={1.5} fontSize={1} color="hsl(242, 56%, 75%)">
-      {body}
-    </Type>
-  </Flex>
-);
 
 class WatchOnlyScreen extends Component<Props> {
   props: Props;
@@ -75,9 +42,9 @@ class WatchOnlyScreen extends Component<Props> {
   handleLoading = addr => {
     this.props.doAddWatchOnlyAddress(addr);
     this.props.doFetchStxAddressData(addr);
-    // setTimeout(() => {
-    //   this.props.history.push(ROUTES.DASHBOARD);
-    // }, 1200);
+    setTimeout(() => {
+      this.props.history.push(ROUTES.DASHBOARD);
+    }, 10);
   };
 
   handleValidation = () => {
@@ -117,7 +84,6 @@ class WatchOnlyScreen extends Component<Props> {
         justifyContent="center"
         title="Create a Watch Only Wallet"
       >
-        {this.state.loading ? <Loading bg="blue.dark" /> : null}
         <Flex flexDirection={"column"} maxWidth="600px">
           <Type lineHeight={1.5} fontSize={2} pt={6} color="hsl(242, 56%, 75%)">
             For your security, at this time you can only create a watch-only
@@ -148,7 +114,9 @@ class WatchOnlyScreen extends Component<Props> {
 }
 
 export default connect(
-  null,
+  state => ({
+    loading: selectWalletLoading(state)
+  }),
   {
     doAddWatchOnlyAddress,
     doFetchStxAddressData

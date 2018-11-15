@@ -14,4 +14,17 @@ const selectWalletBalance = state =>
 
 const selectWalletLoading = state => state.wallet.loading;
 
+const selectWalletData = state => state.wallet.data;
+
 const selectWalletError = state => state.wallet.error;
+
+export {
+  selectWalletHistory,
+  selectWalletStacksAddress,
+  selectWalletBitcoinAddress,
+  selectWalletType,
+  selectWalletBalance,
+  selectWalletLoading,
+  selectWalletData,
+  selectWalletError
+};

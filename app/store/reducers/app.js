@@ -3,7 +3,7 @@ import produce from "immer";
 export const ACCEPT_TERMS = "app/ACCEPT_TERMS";
 
 const initialState = {
-  terms: false
+  terms: false,
 };
 
 export default function reducer(state = initialState, { type, payload }) {

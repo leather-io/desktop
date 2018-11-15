@@ -5,10 +5,11 @@ import { ConnectedRouter } from "react-router-redux";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme, Flex } from "blockstack-ui";
 import { normalize } from "polished";
+import Notifications from "@components/notifications";
+
 import Routes from "../routes";
 import Modal from "@components/modal";
 import fetch from "cross-fetch";
-
 export const AppContext = React.createContext();
 
 const fetchStacksData = async () => {
@@ -129,14 +130,12 @@ export default class Root extends Component<Props> {
         <Provider store={this.props.store}>
           <ConnectedRouter history={this.props.history}>
             <ThemeProvider theme={theme}>
-              <React.Fragment>
-                <Flex flexGrow={1} flexDirection="column">
-                  <GlobalStyles />
-                  <Modal>
-                    <Routes />
-                  </Modal>
-                </Flex>
-              </React.Fragment>
+              <Flex flexGrow={1} flexDirection="column">
+                <GlobalStyles />
+                <Modal>
+                  <Routes />
+                </Modal>
+              </Flex>
             </ThemeProvider>
           </ConnectedRouter>
         </Provider>

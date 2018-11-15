@@ -1,11 +1,18 @@
 import produce from "immer";
 import { fetchStxAddressDetails } from "@common/lib";
+import { selectWalletStacksAddress } from "@stores/selectors/wallet";
+import { push } from "connected-react-router";
 
 const FETCH_ADDRESS_DATA_STARTED = "wallet/FETCH_ADDRESS_DATA_STARTED";
 const FETCH_ADDRESS_DATA_FINISHED = "wallet/FETCH_ADDRESS_DATA_FINISHED";
 const FETCH_ADDRESS_DATA_ERROR = "wallet/FETCH_ADDRESS_DATA_ERROR";
 
 const ADD_WALLET_ADDRESS = "wallet/ADD_WALLET_ADDRESS";
+
+const WALLET_RESET = "wallet/WALLET_RESET";
+
+const WALLET_LOADING_STARTED = "wallet/WALLET_LOADING_STARTED";
+const WALLET_LOADING_FINISHED = "wallet/WALLET_LOADING_FINISHED";
 
 export const WALLET_TYPES = {
   WATCH_ONLY: "wallet_types/WATCH_ONLY",
@@ -83,9 +90,25 @@ const doAddTrezorAddress = address =>
 const doAddLedgerAddress = address =>
   doAddWalletAddress(address, WALLET_TYPES.LEDGER);
 
+const doResetWallet = () => dispatch => {
+  dispatch({
+    type: WALLET_RESET
+  });
+  dispatch(push("/"));
+};
+
 const reducer = (state = initialState, { type, payload }) =>
   produce(state, draft => {
     switch (type) {
+      case WALLET_RESET:
+        draft = initialState;
+        break;
+      case WALLET_LOADING_STARTED:
+        draft.loading = true;
+        break;
+      case WALLET_LOADING_FINISHED:
+        draft.loading = false;
+        break;
       case ADD_WALLET_ADDRESS:
         draft.address = payload.address;
         draft.type = payload.type;
@@ -108,8 +131,6 @@ const reducer = (state = initialState, { type, payload }) =>
   });
 
 export default reducer;
-
-
 
 export {
   doFetchStxAddressData,

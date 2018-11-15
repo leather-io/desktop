@@ -4,11 +4,15 @@ import SettingsIcon from "mdi-react/SettingsIcon";
 import { Hover } from "react-powerplug";
 import { TxList } from "@components/transaction-list";
 import { OpenModal } from "@components/modal";
-import { Modal } from "@components/modal";
 import { TableHeader } from "@components/table";
 import { SettingsModal } from "@containers/modals/settings";
 import { Balance } from "@containers/balance";
-import { PageContext } from "@components/page";
+import { connect } from "react-redux";
+import {
+  selectWalletLoading,
+  selectWalletData
+} from "@stores/selectors/wallet";
+import { Loading } from "@components/loading";
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -68,7 +72,10 @@ const tableHeadItems = [
 
 const balance = 1231231.12312;
 
-const Dashboard = ({ ...rest }) => (
+const Dashboard = ({ loading, data, ...rest }) =>
+  loading || !data ? (
+    <Loading bg="blue.dark" />
+  ) : (
     <Flex bg="blue.light" flexGrow={1} maxWidth={"100%"}>
       <Content p={3} maxWidth={"100%"}>
         <Header />
@@ -79,6 +86,11 @@ const Dashboard = ({ ...rest }) => (
         />
       </Content>
     </Flex>
-);
+  );
 
-export default Dashboard;
+const mapStateToProps = state => ({
+  loading: selectWalletLoading(state),
+  data: selectWalletData(state)
+});
+
+export default connect(mapStateToProps)(Dashboard);

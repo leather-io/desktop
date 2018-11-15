@@ -1,13 +1,12 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import { createHashHistory } from "history";
-import { routerMiddleware, routerActions } from "react-router-redux";
-
+import createHistory from "history/createHashHistory";
+import { routerMiddleware } from "connected-react-router";
 import { createLogger } from "redux-logger";
 import rootReducer from "./reducers";
 import type { walletStateType } from "./reducers/wallet";
 
-const history = createHashHistory();
+const history = createHistory();
 
 const configureStore = (initialState?: { wallet: walletStateType }) => {
   // Redux Configuration
@@ -47,7 +46,7 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
   const enhancer = composeEnhancers(...enhancers);
 
   // Create Store
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(rootReducer(history), initialState, enhancer);
 
   if (module.hot) {
     module.hot.accept(

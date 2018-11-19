@@ -6,7 +6,7 @@ import btc from 'bitcoinjs-lib'
 import bigi from 'bigi'
 import { network, transactions, config} from 'blockstack'
 import Transport from '@ledgerhq/hw-transport-node-hid'
-import AppBtc  from '@ledgerhq/hw-app-btc'
+import AppBtc from 'ablankstein-ledger-hw-app-btc'
 import { c32address, c32ToB58, versions } from 'c32check'
 // import TrezorConnect from 'trezor-connect'
 import TrezorConnect from '../../trezor/trezor'
@@ -415,6 +415,9 @@ export function generateTransaction(senderAddress: string, recipientAddress: str
 }
 
 export function broadcastTransaction(rawTransaction: string) {
+	// console.log('mock broadcast transaction')
+	// return (dispatch) => Promise.resolve('faketxid')
+
   const form = new FormData()
   form.append('tx', rawTransaction)
   return (dispatch) => new Promise((resolve, reject) => {
@@ -440,10 +443,6 @@ export function broadcastTransaction(rawTransaction: string) {
 	        })
 	    })
   })
-
-	// return (dispatch) => new Promise((resolve, reject) => {
-	// 	resolve(config.network.broadcastTransaction(rawTransaction))
-	// })
 }
 
 function getAddressFromChildPubKey(child, version_prefix) {

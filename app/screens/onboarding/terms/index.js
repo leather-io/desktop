@@ -26,7 +26,13 @@ const handleAccept = (accept, history) => {
 
 const TermsPage = ({ quit, doAcceptTerms, history, next, style }) => {
   return (
-    <Flex flexDirection="column" color="white" flexGrow={1} bg="blue.dark" style={style}>
+    <Flex
+      flexDirection="column"
+      color="white"
+      flexGrow={1}
+      bg="blue.dark"
+      style={style}
+    >
       <Flex
         alignItems="center"
         justifyContent="center"

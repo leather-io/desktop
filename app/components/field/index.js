@@ -1,9 +1,37 @@
 import React from "react";
-import { Flex, Type, Input } from "blockstack-ui/dist";
+import { Flex, Type, Input, Tooltip } from "blockstack-ui/dist";
 import { Copy } from "@components/copy";
-import { formatStx } from "@utils";
 import { connect } from "react-redux";
 import { selectWalletBalance } from "@stores/selectors/wallet";
+import { LinkIcon } from "mdi-react";
+import { Hover, State } from "react-powerplug";
+const { shell } = require("electron");
+import { microToStacks } from "@utils/utils";
+
+const Link = ({ value, ...rest }) => (
+  <Hover>
+    {({ hovered, bind }) => (
+      <Flex
+        color="hsl(205, 30%, 70%)"
+        opacity={hovered ? 1 : 0.5}
+        target="_blank"
+        alignItems="center"
+        justifyContent="center"
+        transition={1}
+        cursor="pointer"
+        onClick={() => shell.openExternal(value)}
+        {...rest}
+        {...bind}
+      >
+        <Tooltip text="View in Explorer">
+          <Flex p={1}>
+            <LinkIcon />
+          </Flex>
+        </Tooltip>
+      </Flex>
+    )}
+  </Hover>
+);
 
 const mapStateToProps = state => ({
   balance: selectWalletBalance(state)
@@ -28,6 +56,7 @@ const Field = ({
   copy,
   value,
   variant,
+  link,
   error,
   ...rest
 }) => {
@@ -65,6 +94,9 @@ const Field = ({
         {copy ? (
           <Copy position="absolute" height="100%" value={value} right={0} />
         ) : null}
+        {link ? (
+          <Link position="absolute" height="100%" value={link} right={40} />
+        ) : null}
         {overlay ? (
           <Type
             pr={4}
@@ -83,7 +115,7 @@ const Field = ({
           width="100%"
           flexGrow={1}
           value={value}
-          pr={copy ? 38 : undefined}
+          pr={copy && link ? 80 : copy || link ? 38 : undefined}
           variant={variant}
           {...disabledProps}
           {...errorProps}
@@ -117,7 +149,7 @@ const BalanceField = connect(mapStateToProps)(({ balance, value, ...rest }) => (
         borderColor="blue.mid"
         bg="white"
       >
-        <Type>{balance}</Type>
+        <Type>{microToStacks(balance)}</Type>
         <Type color="hsl(205, 30%, 70%)" pl={2}>
           STX
         </Type>

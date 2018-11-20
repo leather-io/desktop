@@ -51,7 +51,29 @@ const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
     operation
   } = tx;
 
-  const items = [{ label: "Sender", value: sender }, { label: "Recipient (Stacks)", value: recipient }, { label: "BTC Transaction", value: txid }, { label: "BTC Block", value: block_id }, { label: "Memo", value: scratchData }];
+  const items = [
+    {
+      label: "Sender",
+      value: sender,
+      link: `https://explorer.blockstack.org/address/stacks/${sender}`
+    },
+    {
+      label: "Recipient (Stacks)",
+      value: recipient,
+      link: `https://explorer.blockstack.org/address/stacks/${recipient}`
+    },
+    {
+      label: "BTC Transaction",
+      value: txid,
+      link: `https://explorer.blockstack.org/tx/${txid}`
+    },
+    {
+      label: "BTC Block",
+      value: block_id,
+      link: `https://explorer.blockstack.org/blocks/${block_id}`
+    },
+    { label: "Memo", value: scratchData }
+  ];
   return (
     <Modal title="Transaction Details" hide={hide} p={0}>
       <Flex
@@ -76,11 +98,10 @@ const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
         </Flex>
       </Flex>
       <Flex flexDirection="column" p={4} flexShrink={0}>
-        {items.map(
-          ({ label, value }, i) =>
-            value && value !== "" ? (
-              <StaticField key={i} label={label} value={value} />
-            ) : null
+        {items.map(({ label, value, link }, i) =>
+          value && value !== "" ? (
+            <StaticField key={i} label={label} value={value} link={link} />
+          ) : null
         )}
         <Buttons>
           <Button onClick={hide}>Close</Button>

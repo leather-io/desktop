@@ -1,12 +1,24 @@
 // @flow
 import * as React from "react";
+import { withRouter } from "react-router-dom";
 import { Flex } from "blockstack-ui";
+import { connect } from "react-redux";
+import { selectWalletStacksAddress } from "@stores/selectors/wallet";
+
 type Props = {
   children: React.Node
 };
 
-export default class App extends React.Component<Props> {
+class App extends React.Component<Props> {
   props: Props;
+
+  componentDidMount() {
+    if (this.props.location.pathname === "/dashboard") {
+      if (!this.props.stx) {
+        this.props.history.push("/");
+      }
+    }
+  }
 
   render() {
     return (
@@ -24,3 +36,7 @@ export default class App extends React.Component<Props> {
     );
   }
 }
+
+export default connect(state => ({
+  stx: selectWalletStacksAddress(state)
+}))(withRouter(App));

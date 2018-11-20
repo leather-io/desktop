@@ -7,8 +7,10 @@ import { ROUTES } from "../../../routes";
 import { BitcoinIcon, NoEntryIcon, UsbIcon, LockIcon } from "mdi-react";
 import { HardwareSteps } from "@containers/hardware-steps";
 import { doAddHardwareWallet, doFetchBalances } from "@stores/actions/wallet";
+import { selectWalletLoading } from "@stores/selectors/wallet";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { connect } from "react-redux";
+
 export const ledgerSteps = [
   {
     value: `Please connect your Ledger to your computer via USB.`,
@@ -29,9 +31,11 @@ export const ledgerSteps = [
 ];
 
 export const LedgerSteps = connect(
-  null,
+  state => ({
+    loading: selectWalletLoading(state)
+  }),
   { doAddHardwareWallet }
-)(({ doAddHardwareWallet, ...rest }) => {
+)(({ doAddHardwareWallet, loading, ...rest }) => {
   const handleSubmit = () => {
     doAddHardwareWallet(WALLET_TYPES.LEDGER);
   };
@@ -40,8 +44,15 @@ export const LedgerSteps = connect(
       {({ step, next, hasNext, hasPrev, prev }) => (
         <OnboardingNavigation
           back={hasPrev ? prev : ROUTES.RESTORE_HARDWARE}
-          next={hasNext ? next : handleSubmit}
-          nextLabel={hasNext ? "Next" : "Continue"}
+          next={{
+            action: hasNext ? next : handleSubmit,
+            label: loading ? "Loading..." : hasNext ? "Next" : "Continue",
+            props: {
+              style: {
+                pointerEvents: loading ? "none" : "unset"
+              }
+            }
+          }}
         />
       )}
     </HardwareSteps>
@@ -49,7 +60,12 @@ export const LedgerSteps = connect(
 });
 
 const LedgerPage = ({ style, ...rest }) => (
-  <Page alignItems="center" justifyContent="center" title="Connect your Ledger" style={style}>
+  <Page
+    alignItems="center"
+    justifyContent="center"
+    title="Connect your Ledger"
+    style={style}
+  >
     <Flex width={1} flexDirection={"column"} maxWidth="600px">
       <Flex py={6} justifyContent="space-between" width={1}>
         <LedgerSteps />

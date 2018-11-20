@@ -35,36 +35,34 @@ const Section = ({ ...rest }) => (
     {...rest}
   />
 );
+
 const TopUpSection = connect(state => ({
   type: selectWalletType(state)
-}))(
-  ({ type, ...rest }) =>
-    type !== WALLET_TYPES.WATCH_ONLY ? (
-      <Section>
-        <Label pb={4} fontSize={2}>
-          Transaction Fees
-        </Label>
-        <Card>
-          <Flex alignItems="center">
-            <Flex width={0.7} p={4} borderRight={1} borderColor="blue.mid">
-              <Type>
-                Bitcoin is used to pay transaction fees for Stacks transactions.
-                You have enough BTC to process 100 transactions.
-              </Type>
-            </Flex>
-            <Flex justifyContent="center" width={0.4} p={4}>
-              <OpenModal component={TxFeesModal}>
-                {({ bind }) => (
-                  <Button height={"auto"} py={2} {...bind}>
-                    Top Up
-                  </Button>
-                )}
-              </OpenModal>
-            </Flex>
-          </Flex>
-        </Card>
-      </Section>
-    ) : null
+}))(({ type, ...rest }) =>
+  type !== WALLET_TYPES.WATCH_ONLY ? (
+    <Section>
+      <Label pb={4} fontSize={2}>
+        Transaction Fees
+      </Label>
+      <Card>
+        <Flex p={4} borderRight={1} borderColor="blue.mid" flexGrow={1}>
+          <Type>
+            Bitcoin is used to pay transaction fees for Stacks transactions. You
+            have enough BTC to process 100 transactions.
+          </Type>
+        </Flex>
+        <Flex justifyContent="center" p={4}>
+          <OpenModal component={TxFeesModal}>
+            {({ bind }) => (
+              <Button height={"auto"} py={2} {...bind}>
+                Top Up
+              </Button>
+            )}
+          </OpenModal>
+        </Flex>
+      </Card>
+    </Section>
+  ) : null
 );
 
 const API = ({ ...rest }) => (

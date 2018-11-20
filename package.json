@@ -53,12 +53,13 @@
   "dependencies": {
     "@ledgerhq/hw-app-btc": "^4.27.0",
     "@ledgerhq/hw-transport-node-hid": "^4.24.0",
+    "ablankstein-ledger-hw-app-btc": "^4.32.0",
     "bigi": "^1.4.2",
     "bip32": "^1.0.2",
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^4.0.2",
     "blockstack": "^18.1.0",
-    "blockstack-ui": "^0.0.47",
+    "blockstack-ui": "^0.0.49",
     "c32check": "^0.0.6",
     "connected-react-router": "^5.0.1",
     "core-js": "^2.5.7",
@@ -71,6 +72,7 @@
     "electron-store": "^2.0.0",
     "elliptic": "^6.4.0",
     "font-awesome": "^4.7.0",
+    "form-data": "^2.3.3",
     "history": "^4.7.2",
     "immer": "^1.7.4",
     "lorem-ipsum": "^1.0.6",
@@ -94,12 +96,14 @@
     "redux-persist-electron-storage": "^2.0.0",
     "redux-thunk": "^2.2.0",
     "reselect": "^4.0.0",
+    "rwlock": "^5.0.0",
     "setimmediate": "^1.0.5",
     "shortid": "^2.2.14",
     "source-map-support": "^0.5.6",
     "styled-components": "^4.0.3",
     "styled-icons": "^3.6.0",
-    "trezor-connect": "^5.0.17"
+    "trezor-connect": "^6.0.2",
+    "varuint-bitcoin": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

@@ -9,7 +9,11 @@ import { Send } from "@containers/modals/send";
 import { Value } from "@components/stacks";
 import { State } from "react-powerplug";
 import { connect } from "react-redux";
-import { selectWalletData, selectWalletType } from "@stores/selectors/wallet";
+import {
+  selectWalletData,
+  selectWalletType,
+  selectWalletBalance
+} from "@stores/selectors/wallet";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { Notice } from "@components/notice";
 
@@ -17,7 +21,7 @@ const funct = ({ visible, hide }) => (
   <ReceiveModal hide={hide} visible={visible} />
 );
 
-const ReceiveButton = ({ ...rest }) => (
+export const ReceiveButton = ({ ...rest }) => (
   <OpenModal component={funct}>
     {({ bind }) => (
       <Button icon={QrCode} width={150} height={"auto"} py={2} mx={2} {...bind}>
@@ -50,21 +54,15 @@ const SendButton = ({ ...rest }) => (
 );
 
 const BalanceSection = connect(state => ({
-  data: selectWalletData(state)
-}))(({ value, data, ...rest }) => {
-  if (!data) return null;
-  const {
-    balance,
-    formattedUnlockTotal,
-    vesting_total,
-    totalUnlockedStacks
-  } = data;
+  data: selectWalletData(state),
+  balance: selectWalletBalance(state)
+}))(({ value, balance, data, ...rest }) => {
   return (
     <State initial={{ view: "balance" }}>
       {({ state, setState }) => (
         <Flex pb={4} flexDirection={"column"} alignItems={"center"} {...rest}>
           <Type fontWeight="bold" color="hsl(205, 30%, 70%)">
-            {formattedUnlockTotal ? (
+            {data && data.formattedUnlockTotal ? (
               <>
                 <Type
                   onClick={() => setState({ view: "balance" })}
@@ -89,8 +87,11 @@ const BalanceSection = connect(state => ({
           <Flex py={6} alignItems={"center"}>
             <Value
               amount={
-                parseInt(state.view === "balance" ? balance : vesting_total) /
-                1000000
+                parseInt(
+                  state.view === "balance"
+                    ? balance
+                    : data && data.vesting_total
+                ) / 1000000
               }
             />
             <Type
@@ -102,10 +103,11 @@ const BalanceSection = connect(state => ({
               STX
             </Type>
           </Flex>
-          {state.view === "allocation" ? (
+          {data && state.view === "allocation" ? (
             <Type fontWeight="bold">
-              <Type color="hsl(205, 30%, 70%)">Unlocked to date:</Type>{" "}
-              {totalUnlockedStacks} <Type color="hsl(205, 30%, 70%)">STX</Type>
+              {data.totalUnlockedStacks}{" "}
+              <Type color="hsl(205, 30%, 70%)">STX</Type>{" "}
+              <Type color="hsl(205, 30%, 70%)">Unlocked</Type>
             </Type>
           ) : null}
         </Flex>

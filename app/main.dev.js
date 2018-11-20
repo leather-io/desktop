@@ -36,7 +36,7 @@ if (
 const installExtensions = async () => {
   await installExtension(REACT_DEVELOPER_TOOLS, true);
   console.log("added dev tools");
-  await installExtension(REDUX_DEVTOOLS);
+  await installExtension(REDUX_DEVTOOLS, true);
   console.log("added redux dev tools");
   // const installer = require('electron-devtools-installer');
   // const forceDownload = !!process.env.UPGRADE_EXTENSIONS;

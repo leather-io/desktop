@@ -4,27 +4,29 @@ import { Button } from "@components/button/index";
 import { Link } from "react-router-dom";
 import { Hover } from "react-powerplug";
 
-const NextButton = ({ label, ...props }) => (
-  <Button invert {...props}>
-    {label}
-  </Button>
+const PrimaryButton = ({ label, ...props }) => (
+  <Button {...props}>{label}</Button>
 );
 
-export const TextLink = ({ ...rest }) => (
-  <Hover>
-    {({ hovered, bind }) => (
-      <Type
-        pt={3}
-        fontSize={1}
-        fontWeight={600}
-        cursor={hovered ? "pointer" : undefined}
-        color={hovered ? "hsl(242, 56%, 85%)" : "hsl(242, 56%, 75%)"}
-        {...bind}
-        {...rest}
-      />
-    )}
-  </Hover>
-);
+export const TextLink = ({ label, children, ...rest }) =>
+  children || label ? (
+    <Hover>
+      {({ hovered, bind }) => (
+        <Type
+          pt={3}
+          fontSize={1}
+          fontWeight={600}
+          cursor={hovered ? "pointer" : undefined}
+          color="blue.mid"
+          opacity={hovered ? 1 : 0.5}
+          {...bind}
+          {...rest}
+        >
+          {children || label}
+        </Type>
+      )}
+    </Hover>
+  ) : null;
 
 const BackButton = ({ to, onClick, ...props }) =>
   to ? (
@@ -37,6 +39,24 @@ const BackButton = ({ to, onClick, ...props }) =>
     </Flex>
   );
 
+const ButtonCombo = ({ primary, secondary, ...rest }) => (
+  <Buttons
+    justifyContent="center"
+    alignItems="center"
+    flexDirection="column"
+    {...rest}
+  >
+    {primary ? (
+      primary.component ? (
+        primary.component
+      ) : (
+        <PrimaryButton {...primary} />
+      )
+    ) : null}
+    {secondary ? <TextLink {...secondary} /> : null}
+  </Buttons>
+);
+
 const OnboardingNavigation = ({ back, next, nextLabel = "Continue" }) => {
   return back || next ? (
     <Buttons
@@ -46,10 +66,11 @@ const OnboardingNavigation = ({ back, next, nextLabel = "Continue" }) => {
       pt={6}
     >
       {next ? (
+        typeof next === "object" ? <PrimaryButton invert label={next.label} onClick={next.action} {...next.props} /> :
         typeof next === "function" ? (
-          <NextButton label={nextLabel} onClick={next} />
+          <PrimaryButton invert label={nextLabel} onClick={next} />
         ) : (
-          <NextButton label={nextLabel} to={next} />
+          <PrimaryButton invert label={nextLabel} to={next} />
         )
       ) : null}
       {back ? (
@@ -63,4 +84,4 @@ const OnboardingNavigation = ({ back, next, nextLabel = "Continue" }) => {
   ) : null;
 };
 
-export { OnboardingNavigation };
+export { OnboardingNavigation, ButtonCombo };

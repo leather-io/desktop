@@ -6,14 +6,24 @@ import {
   FETCH_BALANCES_FINISHED,
   FETCH_BALANCES_ERROR,
   ADD_WALLET_ADDRESS,
+  ADD_WALLET_ADDRESS_SUCCESS,
+  ADD_WALLET_ADDRESS_ERROR,
   WALLET_RESET,
   WALLET_LOADING_STARTED,
   WALLET_LOADING_FINISHED,
-  WALLET_TYPES
+  WALLET_TYPES,
+  WALLET_SIGN_TRANSACTION_STARTED,
+  WALLET_SIGN_TRANSACTION_FINISHED,
+  WALLET_SIGN_TRANSACTION_ERROR,
+  WALLET_BROADCAST_TRANSACTION_STARTED,
+  WALLET_BROADCAST_TRANSACTION_FINISHED,
+  WALLET_BROADCAST_TRANSACTION_ERROR,
+  WALLET_CLEAR_ERROR
 } from "@stores/reducers/wallet";
+import { ERRORS } from "@common/lib/transactions";
 import { fetchStxAddressDetails } from "@common/lib";
 import { push } from "connected-react-router";
-import { doNotify } from "@stores/reducers/notifications";
+import { doNotify, doNotifyWarning } from "@stores/reducers/notifications";
 import { fetchBtcBalance, fetchStxBalance } from "@common/lib/balances";
 import {
   getLedgerAddress,
@@ -24,6 +34,15 @@ import {
   selectWalletBitcoinAddress,
   selectWalletStacksAddress
 } from "@stores/selectors/wallet";
+import {
+  generateTransaction,
+  broadcastTransaction
+} from "@common/lib/transactions";
+
+const doClearError = () => dispatch =>
+  dispatch({
+    type: WALLET_CLEAR_ERROR
+  });
 
 /**
  * Fetch our data for the Stacks Address
@@ -107,28 +126,49 @@ const doResetWallet = () => dispatch => {
 };
 
 const doAddHardwareWallet = type => async (dispatch, state) => {
-  // start loading
-  dispatch({
-    type: WALLET_LOADING_STARTED
-  });
-  dispatch(push("/dashboard"));
-  doNotify("Syncing address data!")(dispatch);
   // define our wallet fn
   const walletFn =
     type === WALLET_TYPES.LEDGER ? getLedgerAddress : getTrezorAddress;
 
+  dispatch({
+    type: WALLET_LOADING_STARTED
+  });
+
   try {
     const addresses = await walletFn();
+    if (addresses) {
+      dispatch({
+        type: ADD_WALLET_ADDRESS,
+        payload: {
+          addresses,
+          type
+        }
+      });
+      dispatch({
+        type: WALLET_LOADING_FINISHED
+      });
+      doNotify({
+        title: "Success!",
+        message: "Trezor successfully synced. Fetching data..."
+      })(dispatch);
+      dispatch(push("/dashboard"));
+      doFetchBalances(addresses)(dispatch, state);
+      doFetchStxAddressData(addresses.stx)(dispatch, state);
+    }
+  } catch (e) {
     dispatch({
-      type: ADD_WALLET_ADDRESS,
-      payload: {
-        addresses,
-        type
-      }
+      type: WALLET_LOADING_FINISHED
     });
-    doFetchBalances(addresses)(dispatch, state);
-    doFetchStxAddressData(addresses.stx)(dispatch, state);
-  } catch (e) {}
+    dispatch({
+      type: ADD_WALLET_ADDRESS_ERROR,
+      payload: e.message
+    });
+    doNotifyWarning({
+      type: "error",
+      title: "Whoops!",
+      message: e.message
+    })(dispatch);
+  }
 };
 
 const doFetchBalances = addresses => async (dispatch, state) => {
@@ -176,7 +216,107 @@ const doFetchBalances = addresses => async (dispatch, state) => {
   }
 };
 
+const doRefreshData = (notify = true) => (dispatch, state) => {
+  console.log("state", state());
+  const stx = selectWalletStacksAddress(state());
+  const btc = selectWalletBitcoinAddress(state());
+  notify && doNotify("Refreshing data...")(dispatch);
+  doFetchBalances({ stx, btc })(dispatch);
+  doFetchStxAddressData(stx)(dispatch);
+};
+
+const doSignTransaction = (
+  senderAddress,
+  recipientAddress,
+  amountToSend,
+  walletType,
+  memo
+) => async (dispatch, state) => {
+  doRefreshData(false)(dispatch, state);
+  // start our process
+  dispatch({
+    type: WALLET_SIGN_TRANSACTION_STARTED
+  });
+
+  try {
+    const transaction = await generateTransaction(
+      senderAddress,
+      recipientAddress,
+      amountToSend,
+      walletType,
+      memo
+    );
+
+    // if we have an error
+    if (transaction.error) {
+      // dispatch error
+      dispatch({
+        type: WALLET_SIGN_TRANSACTION_ERROR,
+        payload: transaction
+      });
+      // notification
+      doNotify({
+        type: "error",
+        message: transaction.message
+      });
+      return transaction;
+    } else {
+      // success
+      dispatch({
+        type: WALLET_SIGN_TRANSACTION_FINISHED,
+        payload: transaction
+      });
+      return transaction;
+    }
+  } catch (e) {
+    if (typeof e === "string") {
+      doNotifyWarning({
+        title: "Transaction Signing Failed",
+        message: e
+      })(dispatch);
+      dispatch({
+        type: WALLET_SIGN_TRANSACTION_ERROR,
+        payload: e
+      });
+    }
+    if (e.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type) {
+      doNotifyWarning({
+        title: "Not enough BTC",
+        message:
+          "Looks like you don't have enough BTC to pay the associated transaction fees for this transaction."
+      })(dispatch);
+    }
+    dispatch({
+      type: WALLET_SIGN_TRANSACTION_ERROR,
+      payload: e.message
+    });
+  }
+};
+
+const doBroadcastTransaction = rawTx => async (dispatch, state) => {
+  try {
+    // start our process
+    dispatch({
+      type: WALLET_BROADCAST_TRANSACTION_STARTED
+    });
+    const tx = await broadcastTransaction(rawTx);
+    dispatch({
+      type: WALLET_BROADCAST_TRANSACTION_FINISHED,
+      payload: tx
+    });
+  } catch (e) {
+    dispatch({
+      type: WALLET_BROADCAST_TRANSACTION_ERROR,
+      payload: e.message
+    });
+  }
+};
+
+// const doBroadcastTransaction = () => null;
+// const doSignTransaction = () => null;
+
 export {
+  doClearError,
   doFetchStxAddressData,
   doAddWalletAddress,
   doAddWatchOnlyAddress,
@@ -184,5 +324,8 @@ export {
   doAddLedgerAddress,
   doResetWallet,
   doAddHardwareWallet,
-  doFetchBalances
+  doFetchBalances,
+  doRefreshData,
+  doSignTransaction,
+  doBroadcastTransaction
 };

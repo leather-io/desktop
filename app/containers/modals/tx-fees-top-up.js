@@ -6,7 +6,7 @@ import { Modal } from "@components/modal";
 import { BtcField } from "@containers/fields/btc-address";
 
 const TxFeesModal = ({ hide }) => (
-  <Modal title="Receive Stacks" hide={hide} maxWidth={"560px"} p={0}>
+  <Modal title="Top Up" hide={hide} maxWidth={"560px"} p={0}>
     <Flex
       p={4}
       borderBottom={1}

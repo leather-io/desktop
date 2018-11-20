@@ -13,10 +13,10 @@ export const TypeIcon = ({ type, size = 48, ...rest }) => {
     type === "SENT"
       ? SendIcon
       : type === "RECEIVED"
-        ? QrCode
-        : type === "UNLOCK"
-          ? LockOpenIcon
-          : NewBoxIcon;
+      ? QrCode
+      : type === "UNLOCK"
+      ? LockOpenIcon
+      : NewBoxIcon;
   return (
     <Flex
       border={1}
@@ -33,15 +33,15 @@ export const TypeIcon = ({ type, size = 48, ...rest }) => {
     </Flex>
   );
 };
-const Item = ({ last, ...rest }) => (
+const Item = ({ last, length, ...rest }) => (
   <Hover>
     {({ hovered, bind }) => (
       <Flex
-        borderBottom={!last ? "1px solid" : undefined}
-        borderColor={!last ? "blue.mid" : undefined}
+        borderBottom={!last || length < 3 ? "1px solid" : undefined}
+        borderColor={!last || length < 3 ? "blue.mid" : undefined}
         alignItems="center"
         flexShrink={0}
-        flexGrow={1}
+        flexGrow={length > 3 ? 1 : 0}
         bg={hovered ? "hsl(202, 40%, 97.5%)" : "white"}
         cursor={hovered ? "pointer" : undefined}
         px={4}
@@ -77,10 +77,10 @@ const Details = ({ operation, recipient, pending, ...rest }) => (
       {operation === "SENT"
         ? "Sent Stacks"
         : operation === "RECEIVED"
-          ? "Received Stacks"
-          : operation === "UNLOCK"
-            ? "Stacks Unlocked"
-            : "Genesis Block"}
+        ? "Received Stacks"
+        : operation === "UNLOCK"
+        ? "Stacks Unlocked"
+        : "Genesis Block"}
       {pending ? (
         <Type
           ml={2}
@@ -109,8 +109,8 @@ const Details = ({ operation, recipient, pending, ...rest }) => (
       {operation === "SENT"
         ? `To ${recipient}`
         : operation === "RECEIVED"
-          ? `From ${recipient}`
-          : null}
+        ? `From ${recipient}`
+        : null}
     </Type>
   </Flex>
 );
@@ -129,7 +129,7 @@ const Amount = ({ value, ...rest }) => (
   </Flex>
 );
 
-const TxItem = ({ last, item, ...rest }) => {
+const TxItem = ({ last, item, length, ...rest }) => {
   const { operation, recipient, blockTime, pending, valueStacks } = item;
   return (
     <OpenModal
@@ -138,7 +138,7 @@ const TxItem = ({ last, item, ...rest }) => {
       )}
     >
       {({ bind }) => (
-        <Item {...bind} last={last}>
+        <Item {...bind} last={last} length={length}>
           <Date date={blockTime} />
           <TypeIcon mr={3} type={operation} />
           <Details

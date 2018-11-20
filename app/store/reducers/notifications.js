@@ -1,9 +1,6 @@
 import produce from "immer";
 import shortid from "shortid";
-
-export const NOTIFICATION_ADD = "notification/NOTIFICATION_ADD";
-export const NOTIFICATION_REMOVE = "notification/NOTIFICATION_REMOVE";
-export const NOTIFICATION_LEAVE = "notification/NOTIFICATION_LEAVE";
+import { actions } from "blockstack-ui/dist/components/notifications";
 
 const initialState = {
   items: [],
@@ -17,20 +14,18 @@ const types = {
   SUCCESS: "notification/SUCCESS"
 };
 
-const cancelMap = new WeakMap();
-
 const selectNotifications = state => state.notifications.items;
 const selectNotificationsLeaving = state => state.notifications.leaving;
 
 const doAddNotification = notification => dispatch =>
   dispatch({
-    type: NOTIFICATION_ADD,
+    type: actions.NOTIFICATION_ADD,
     payload: notification
   });
 
 const doRemoveNotification = item => dispatch =>
   dispatch({
-    type: NOTIFICATION_REMOVE,
+    type: actions.NOTIFICATION_REMOVE,
     payload: item
   });
 
@@ -45,7 +40,7 @@ const doCancelNotification = (cancelMap, item, secondPass = false) => {
 };
 const doLeaveNotification = item => dispatch => {
   dispatch({
-    type: NOTIFICATION_LEAVE,
+    type: actions.NOTIFICATION_LEAVE,
     payload: item
   });
 };
@@ -60,7 +55,7 @@ const doNotify = (notif, type = types.DEFAULT) => dispatch => {
     : notif;
 
   dispatch({
-    type: NOTIFICATION_ADD,
+    type: actions.NOTIFICATION_ADD,
     payload: {
       ...notification,
       type
@@ -74,16 +69,16 @@ const doNotifySuccess = notif => doNotify(notif, types.SUCCESS);
 export default function reducer(state = initialState, { type, payload }) {
   return produce(state, draft => {
     switch (type) {
-      case NOTIFICATION_ADD:
+      case actions.NOTIFICATION_ADD:
         draft.items.push({ key: shortid.generate(), ...payload });
         break;
-      case NOTIFICATION_REMOVE:
+      case actions.NOTIFICATION_REMOVE:
         draft.items.splice(
           draft.items.findIndex(i => i.key === payload.key),
           1
         );
         break;
-      case NOTIFICATION_LEAVE:
+      case actions.NOTIFICATION_LEAVE:
         draft.leaving.splice(
           draft.leaving.findIndex(i => i.key === payload.key),
           1

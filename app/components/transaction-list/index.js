@@ -247,7 +247,7 @@ const TxList = connect(state => ({
       bg="white"
     >
       <Type fontWeight={500}>{title}</Type>
-      {action ? <Type color="hsl(205, 30%, 70%)">{action}</Type> : null}
+      {action ? <Type color="hsl(205, 30%, 70%)" onClick={action.onClick}>{action.label}</Type> : null}
     </Flex>
     {history && history.length && contentHeader ? contentHeader : null}
     <Flex
@@ -266,7 +266,7 @@ const TxList = connect(state => ({
       >
         {history && history.length ? (
           history.map((item, i) => (
-            <TxItem key={i} last={history.length === i + 1} item={item} />
+            <TxItem length={history.length} key={i} last={history.length === i + 1} item={item} />
           ))
         ) : (
           <Empty />

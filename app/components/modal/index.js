@@ -4,8 +4,21 @@ import { Flex, Box, Card, Type } from "blockstack-ui/dist";
 import { CloseIcon } from "mdi-react";
 import { Hover, Active } from "react-powerplug";
 import { PageContext } from "@components/page";
-import Notifications from "@components/notifications";
+import { connect } from "react-redux";
+import {
+  selectNotificationsLeaving,
+  selectNotifications
+} from "@stores/reducers/notifications";
+import NotificationsHub from "blockstack-ui/dist/components/notifications";
 const ModalContext = React.createContext();
+
+/**
+ * Connect our notifications so we can dispatch actions in redux if need be
+ */
+const Notifications = connect(state => ({
+  leaving: selectNotificationsLeaving(state),
+  items: selectNotifications(state)
+}))(NotificationsHub);
 
 const CloseButton = ({ ...rest }) => (
   <Active>

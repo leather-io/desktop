@@ -5,8 +5,6 @@ import { ConnectedRouter } from "react-router-redux";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme, Flex } from "blockstack-ui";
 import { normalize } from "polished";
-import Notifications from "@components/notifications";
-import { getLedgerAddress, getTrezorAddress } from "@common/lib/addresses";
 
 import Routes from "../routes";
 import Modal from "@components/modal";

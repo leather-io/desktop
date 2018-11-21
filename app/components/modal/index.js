@@ -9,6 +9,7 @@ import {
   selectNotificationsLeaving,
   selectNotifications
 } from "@stores/reducers/notifications";
+import { selectToggleModal } from "@stores/selectors/app";
 import NotificationsHub from "blockstack-ui/dist/components/notifications";
 const ModalContext = React.createContext();
 
@@ -104,6 +105,9 @@ class ModalRoot extends React.Component {
   };
 
   handleHide = hide => {
+    if (this.props.preventClose) {
+      return null;
+    }
     if (this.state.previous) {
       this.setState({
         comp: this.state.previous,
@@ -199,4 +203,6 @@ export const OpenModal = ({ component, children, title, content, ...rest }) => (
   </ModalConsumer>
 );
 
-export default ModalRoot;
+export default connect(state => ({
+  preventClose: selectToggleModal(state)
+}))(ModalRoot);

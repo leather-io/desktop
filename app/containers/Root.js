@@ -1,14 +1,11 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme, Flex } from "blockstack-ui";
 import { normalize } from "polished";
-
 import Routes from "../routes";
-import Modal from "@components/modal";
-export const AppContext = React.createContext();
 
 const GlobalStyles = createGlobalStyle`
 
@@ -93,26 +90,17 @@ a:hover {
 }
 `;
 
-type Props = {
-  store: {},
-  history: {}
-};
+const Root = ({ store, history, ...rest }) => (
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <ThemeProvider theme={theme}>
+        <Flex flexGrow={1} flexDirection="column">
+          <GlobalStyles />
+          <Routes />
+        </Flex>
+      </ThemeProvider>
+    </ConnectedRouter>
+  </Provider>
+);
 
-export default class Root extends Component<Props> {
-  render() {
-    return (
-      <Provider store={this.props.store}>
-        <ConnectedRouter history={this.props.history}>
-          <ThemeProvider theme={theme}>
-            <Flex flexGrow={1} flexDirection="column">
-              <GlobalStyles />
-              <Modal>
-                <Routes />
-              </Modal>
-            </Flex>
-          </ThemeProvider>
-        </ConnectedRouter>
-      </Provider>
-    );
-  }
-}
+export default Root;

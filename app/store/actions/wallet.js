@@ -38,6 +38,7 @@ import {
   generateTransaction,
   broadcastTransaction
 } from "@common/lib/transactions";
+import { TOGGLE_MODAL } from "@stores/reducers/app";
 
 const doClearError = () => dispatch =>
   dispatch({
@@ -225,6 +226,17 @@ const doRefreshData = (notify = true) => (dispatch, state) => {
   doFetchStxAddressData(stx)(dispatch);
 };
 
+/**
+ * doSignTransaction
+ *
+ * This takes input from the send modal, and then signs a tx with whichever hardware device the user has -- ledger or trezor.
+ *
+ * @param {string} senderAddress - the user's STX address
+ * @param {string} recipientAddress - the STX address they want to send to
+ * @param {string} amountToSend - the STX amount (not microstacks)
+ * @param {string} walletType - WALLET_TYPES.LEDGER || WALLET_TYPES.TREZOR
+ * @param {string} memo - an optional message (scriptData)
+ */
 const doSignTransaction = (
   senderAddress,
   recipientAddress,
@@ -232,7 +244,12 @@ const doSignTransaction = (
   walletType,
   memo
 ) => async (dispatch, state) => {
+  // refresh data, false to prevent a notification
   doRefreshData(false)(dispatch, state);
+  // prevent the modal from being closed
+  dispatch({
+    type: TOGGLE_MODAL
+  });
   // start our process
   dispatch({
     type: WALLET_SIGN_TRANSACTION_STARTED
@@ -254,6 +271,10 @@ const doSignTransaction = (
         type: WALLET_SIGN_TRANSACTION_ERROR,
         payload: transaction
       });
+      // allow the modal to be closed if error
+      dispatch({
+        type: TOGGLE_MODAL
+      });
       // notification
       doNotify({
         type: "error",
@@ -274,18 +295,31 @@ const doSignTransaction = (
         title: "Transaction Signing Failed",
         message: e
       })(dispatch);
+      // allow the modal to be closed
+      dispatch({
+        type: TOGGLE_MODAL
+      });
       dispatch({
         type: WALLET_SIGN_TRANSACTION_ERROR,
         payload: e
       });
     }
     if (e.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type) {
+      // allow the modal to be closed in case of error
+      dispatch({
+        type: TOGGLE_MODAL
+      });
       doNotifyWarning({
         title: "Not enough BTC",
         message:
           "Looks like you don't have enough BTC to pay the associated transaction fees for this transaction."
       })(dispatch);
+      return;
     }
+    // allow the modal to be closed in case of error
+    dispatch({
+      type: TOGGLE_MODAL
+    });
     dispatch({
       type: WALLET_SIGN_TRANSACTION_ERROR,
       payload: e.message

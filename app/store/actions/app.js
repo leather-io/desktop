@@ -1,8 +1,10 @@
-import { ACCEPT_TERMS } from "@stores/reducers/app";
+import { ACCEPT_TERMS, TOGGLE_MODAL } from "@stores/reducers/app";
 
 const doAcceptTerms = () => dispatch =>
   dispatch({
     type: ACCEPT_TERMS
   });
 
-export { doAcceptTerms };
+const doToggleModalClose = () => dispatch => dispatch({ type: TOGGLE_MODAL });
+
+export { doAcceptTerms, doToggleModalClose };

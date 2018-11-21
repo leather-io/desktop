@@ -17,6 +17,7 @@ const selectWalletData = state => state.wallet.data;
 
 const selectWalletError = state => state.wallet.error;
 
+
 export {
   selectWalletHistory,
   selectWalletBalance,
@@ -26,5 +27,6 @@ export {
   selectWalletBitcoinBalance,
   selectWalletLoading,
   selectWalletData,
-  selectWalletError
+  selectWalletError,
+  selectWalletIsProcessing
 };

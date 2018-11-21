@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, BalanceField } from "@components/field";
 import { Hover, State } from "react-powerplug";
-import { Button, Type, Flex } from "blockstack-ui";
+import { Button, Type, Flex, Card } from "blockstack-ui";
 import { validateStxAddress, validateStxAmount } from "@utils/validation";
 import produce from "immer";
 import { HardwareSteps } from "@containers/hardware-steps";
@@ -25,6 +25,8 @@ import {
 } from "@stores/actions/wallet";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { ERRORS } from "@common/lib/transactions";
+import { decodeRawTx } from "@utils/stacks";
+import { satoshisToBtc } from "@utils/utils";
 
 const SecondaryLink = ({ action, label }) => (
   <TextLink onClick={action}>{label}</TextLink>
@@ -177,9 +179,20 @@ const HardwareView = ({
         type,
         state.values.memo || ""
       );
-      console.log(tx);
+      const decoded = decodeRawTx(tx.rawTx);
+
+      setState(
+        {
+          tx: {
+            ...tx,
+            decoded
+          }
+        },
+        () => nextView()
+      );
     } catch (e) {
       console.log("caught error, processing done");
+      console.log(e);
       setState({
         processing: false
       });
@@ -231,10 +244,26 @@ const BTCTopUpView = ({ nextView, children, ...rest }) => {
     </>
   );
 };
-const Confirmation = ({ nextView, children, ...rest }) => {
+const Confirmation = ({ nextView, children, state, ...rest }) => {
+  console.log("new view", state.tx);
+
+  if (!state.tx) return <>Oops!</>;
+
+  const { fee, rawTx, decoded } = state.tx;
+
   return (
     <>
-      Confirmation
+      <Card>
+        <Flex>
+          <Type>Please confirm your transaction.</Type>
+        </Flex>
+        <Flex flexDirection="column">
+          <Type>Amount to send</Type>
+          <Type>{decoded.tokenAmountReadable} STX</Type>
+          <Type>Fees</Type>
+          <Type>{satoshisToBtc(fee)} BTC</Type>
+        </Flex>
+      </Card>
       {children
         ? children({
             next: {
@@ -336,6 +365,7 @@ class SendComponent extends React.Component {
         break;
       default:
         Component = InitialScreen;
+      // Component = Confirmation;
     }
 
     if (balance === "0") {

@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Flex } from "blockstack-ui";
 import { connect } from "react-redux";
 import { selectWalletStacksAddress } from "@stores/selectors/wallet";
+import Modal from "@components/modal";
 
 type Props = {
   children: React.Node
@@ -22,7 +23,7 @@ class App extends React.Component<Props> {
 
   render() {
     return (
-      <>
+      <Modal>
         <Flex
           position="absolute"
           width={1}
@@ -32,7 +33,7 @@ class App extends React.Component<Props> {
           style={{ "-webkit-app-region": "drag" }}
         />
         {this.props.children}
-      </>
+      </Modal>
     );
   }
 }

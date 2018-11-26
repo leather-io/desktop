@@ -1,4 +1,4 @@
-import { c32addressDecode } from "c32check";
+import { validateStacksAddress } from "stacks-utils";
 
 const validateStxAmount = amount => {
   if (amount.toString().includes(".")) {
@@ -22,18 +22,4 @@ const validateStxAmount = amount => {
   };
 };
 
-const validateStxAddress = address => {
-  let valid = false;
-  try {
-    if (c32addressDecode(address)) {
-      console.log("Valid stacks address");
-      valid = true;
-    }
-  } catch (e) {
-    console.log("Not a valid STX address");
-    valid = false;
-  }
-  return valid;
-};
-
-export { validateStxAddress, validateStxAmount };
+export { validateStacksAddress, validateStxAmount };

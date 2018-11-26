@@ -1,5 +1,6 @@
 import { hexStringToECPair, ecPairToAddress } from "blockstack";
 import bigi from "bigi";
+import { microToStacks, stacksToMicro } from "stacks-utils";
 /**
  * Constants
  */
@@ -24,12 +25,6 @@ const getPrivateKeyAddress = (network, privateKey) => {
 };
 
 const sumUTXOs = utxos => utxos.reduce((agg, x) => agg + x.value, 0);
-
-const microToStacks = microStacks =>
-  microStacks ? Number(microStacks) / Math.pow(10, 6) : 0;
-
-const stacksToMicro = stacks =>
-  stacks ? Math.floor(Number(stacks) * MICROSTACKS_IN_STACKS) : 0;
 
 const btcToSatoshis = amountInBtc =>
   amountInBtc ? Number(amountInBtc) * SATOSHIS_IN_BTC : 0;

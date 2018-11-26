@@ -5,7 +5,7 @@ import { Page } from "@components/page";
 import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
 import { ROUTES } from "../../../routes";
 import { Field } from "@components/field";
-import { validateStxAddress } from "@utils/validation";
+import { validateStacksAddress } from "@utils/validation";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { selectWalletLoading } from "@stores/selectors/wallet";
@@ -51,7 +51,7 @@ class WatchOnlyScreen extends Component<Props> {
     this.setState({
       error: ""
     });
-    const valid = validateStxAddress(this.state.value);
+    const valid = validateStacksAddress(this.state.value);
     if (valid) {
       this.setState({
         valid,

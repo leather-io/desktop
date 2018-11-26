@@ -7,7 +7,8 @@ import { connect } from "react-redux";
 import {
   selectWalletHistory,
   selectPendingTxs,
-  selectWalletStacksAddress
+  selectWalletStacksAddress,
+  selectRawTxs
 } from "@stores/selectors/wallet";
 
 const Empty = ({ ...rest }) => (
@@ -53,6 +54,7 @@ const Action = ({
 const TxList = connect(state => ({
   history: selectWalletHistory(state),
   pending: selectPendingTxs(state),
+  txs: selectRawTxs(state),
   stx: selectWalletStacksAddress(state)
 }))(
   ({
@@ -61,6 +63,7 @@ const TxList = connect(state => ({
     title,
     action,
     history,
+    txs,
     pending,
     stx,
     ...rest
@@ -100,9 +103,9 @@ const TxList = connect(state => ({
               data.map((item, i) => (
                 <TxItem
                   stx={stx}
-                  length={history.length}
+                  length={data.length}
                   key={i}
-                  last={history.length === i + 1}
+                  last={data.length === i + 1}
                   item={item}
                 />
               ))

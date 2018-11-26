@@ -22,6 +22,9 @@ const selectWalletLastFetch = state => state.wallet.lastFetch;
 const selectPendingTxs = state =>
   state.wallet.data ? state.wallet.data.pendingTxs : [];
 
+const selectRawTxs = state =>
+  state.wallet.data ? state.wallet.data.transactions : [];
+
 export {
   selectWalletHistory,
   selectWalletBalance,
@@ -33,5 +36,6 @@ export {
   selectWalletData,
   selectWalletError,
   selectPendingTxs,
+  selectRawTxs,
   selectWalletLastFetch
 };

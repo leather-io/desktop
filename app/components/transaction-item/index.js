@@ -8,6 +8,7 @@ import { Hover } from "react-powerplug";
 import { TxDetailsModal } from "@containers/modals/tx";
 import { OpenModal } from "@components/modal";
 import dayjs from "dayjs";
+import { btcToStx } from "@common/lib/addresses";
 
 const getIcon = (item, stx) => {
   const { operation, sender, recipient } = item;
@@ -106,7 +107,7 @@ const getTitle = (item, stx) => {
 };
 
 const getSubtitle = (item, stx) => {
-  const { operation, sender, recipient } = item;
+  const { operation, sender, recipient, senderBitcoinAddress } = item;
 
   if (sender && sender.stx) {
     if (sender.stx === stx) {
@@ -119,7 +120,7 @@ const getSubtitle = (item, stx) => {
     return `To ${recipient}`;
   }
   if (operation === "RECEIVED") {
-    return `From ${recipient}`;
+    return `From ${btcToStx(senderBitcoinAddress)}`;
   }
 };
 

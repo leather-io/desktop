@@ -77,7 +77,7 @@ const getAddressesFromPublicKey = publicKey => {
 };
 
 const convertStxAddressToBtcAddress = stx => c32ToB58(stx);
-const btcToStx = (btc) => b58ToC32(btc)
+const btcToStx = btc => b58ToC32(btc);
 const fetchBtcAddressData = async btcAddress => {
   try {
     const response = await fetch(
@@ -90,5 +90,10 @@ const fetchBtcAddressData = async btcAddress => {
   }
 };
 
-
-export { getTrezorAddress, getLedgerAddress, convertStxAddressToBtcAddress, fetchBtcAddressData, btcToStx };
+export {
+  getTrezorAddress,
+  getLedgerAddress,
+  convertStxAddressToBtcAddress,
+  fetchBtcAddressData,
+  btcToStx
+};

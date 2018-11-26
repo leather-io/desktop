@@ -1,7 +1,7 @@
 import btc from "bitcoinjs-lib";
 import bigi from "bigi";
 import { b58ToC32 } from "c32check";
-
+import { decodeRawTx } from "stacks-utils";
 import { microToStacks } from "@utils/utils";
 
 /**
@@ -49,37 +49,37 @@ const getOperationType = opCode => {
   return null;
 };
 
-const decodeRawTx = rawTx => {
-  const tx = btc.Transaction.fromHex(rawTx);
-  const data = btc.script.decompile(tx.outs[0].script)[1];
-  if (!data.slice) {
-    return;
-  }
-  const operationType = data.slice(2, 3).toString();
-  const consensusHash = data.slice(3, 19).toString("hex");
-  const tokenTypeHex = data.slice(19, 38).toString("hex");
-  const tokenTypeStart = tokenTypeHex.search(/[1-9]/);
-  const tokenType = Buffer.from(
-    tokenTypeHex.slice(tokenTypeStart - (tokenTypeStart % 2)),
-    "hex"
-  ).toString();
-  const tokenSentHex = data.slice(38, 46).toString("hex");
-  const tokenSentBigI = bigi.fromHex(tokenSentHex);
-  const scratchData = data.slice(46, 80).toString();
-  const recipientBitcoinAddress = btc.address.fromOutputScript(
-    tx.outs[1].script
-  );
-  const recipientC32Address = b58ToC32(recipientBitcoinAddress);
-  return {
-    opcode: operationType,
-    operation: getOperationType(operationType),
-    consensusHash,
-    tokenType,
-    tokenAmount: tokenSentBigI,
-    tokenAmountReadable: microToStacks(tokenSentBigI.toString()),
-    memo: scratchData,
-    recipient: recipientC32Address
-  };
-};
+// const decodeRawTx = rawTx => {
+//   const tx = btc.Transaction.fromHex(rawTx);
+//   const data = btc.script.decompile(tx.outs[0].script)[1];
+//   if (!data.slice) {
+//     return;
+//   }
+//   const operationType = data.slice(2, 3).toString();
+//   const consensusHash = data.slice(3, 19).toString("hex");
+//   const tokenTypeHex = data.slice(19, 38).toString("hex");
+//   const tokenTypeStart = tokenTypeHex.search(/[1-9]/);
+//   const tokenType = Buffer.from(
+//     tokenTypeHex.slice(tokenTypeStart - (tokenTypeStart % 2)),
+//     "hex"
+//   ).toString();
+//   const tokenSentHex = data.slice(38, 46).toString("hex");
+//   const tokenSentBigI = bigi.fromHex(tokenSentHex);
+//   const scratchData = data.slice(46, 80).toString();
+//   const recipientBitcoinAddress = btc.address.fromOutputScript(
+//     tx.outs[1].script
+//   );
+//   const recipientC32Address = b58ToC32(recipientBitcoinAddress);
+//   return {
+//     opcode: operationType,
+//     operation: getOperationType(operationType),
+//     consensusHash,
+//     tokenType,
+//     tokenAmount: tokenSentBigI,
+//     tokenAmountReadable: microToStacks(tokenSentBigI.toString()),
+//     memo: scratchData,
+//     recipient: recipientC32Address
+//   };
+// };
 
 export { decodeRawTx };

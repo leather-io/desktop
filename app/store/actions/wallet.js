@@ -42,7 +42,11 @@ import {
   fetchRawTxData,
   fetchJsonTxData
 } from "@common/lib/transactions";
-import { TOGGLE_MODAL } from "@stores/reducers/app";
+import {
+  TOGGLE_MODAL,
+  TOGGLE_MODAL_KEEP_OPEN,
+  TOGGLE_MODAL_CLOSE
+} from "@stores/reducers/app";
 import { decodeRawTx } from "@utils/stacks";
 import { ROUTES } from "../../routes";
 
@@ -72,22 +76,30 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
         const jsonData = await fetchJsonTxData(tx.hash);
         const rawTxData = await fetchRawTxData(tx.hash);
         if (!rawTxData) return;
-        const transaction = decodeRawTx(rawTxData);
-        if (!transaction) return null;
-        const sender = transaction
-          ? {
-              btc: jsonData.inputs[0] && jsonData.inputs[0].prev_out.addr,
-              stx:
-                jsonData.inputs[0] && btcToStx(jsonData.inputs[0].prev_out.addr)
-            }
-          : null;
-        return {
-          ...transaction,
-          pending: true,
-          time: jsonData.time,
-          txid: tx.hash,
-          sender
-        };
+        try {
+          const transaction = decodeRawTx(rawTxData);
+          if (!transaction) return;
+          const sender = transaction
+            ? {
+                btc: jsonData.inputs[0] && jsonData.inputs[0].prev_out.addr,
+                stx:
+                  jsonData.inputs[0] &&
+                  btcToStx(jsonData.inputs[0].prev_out.addr)
+              }
+            : null;
+          return {
+            ...transaction,
+            block_height: jsonData.block_height,
+            inputs: jsonData.inputs,
+            out: jsonData.out,
+            time: jsonData.time,
+            txid: tx.hash,
+            sender
+          };
+        } catch (e) {
+          console.log(e);
+          return;
+        }
       })
     );
 
@@ -104,14 +116,23 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
                 historicalTx =>
                   historicalTx.consensusHash === rawTx.consensusHash
               )
-          );
+          )
+          .map(tx => ({ ...tx, pending: true }));
       }
     }
+    const transactions = rawTxs
+      .filter(item => item) // remove null items
+      .filter(rawTx =>
+        data.history.find(
+          historicalTx => historicalTx.consensusHash === rawTx.consensusHash
+        )
+      );
     dispatch({
       type: FETCH_ADDRESS_DATA_FINISHED,
       payload: {
         ...data,
-        pendingTxs
+        pendingTxs,
+        transactions
       }
     });
   } catch (e) {
@@ -204,7 +225,7 @@ const doAddHardwareWallet = type => async (dispatch, state) => {
       });
       doNotify({
         title: "Success!",
-        message: "Trezor successfully synced. Fetching data..."
+        message: "Hardware wallet successfully synced!"
       })(dispatch);
       dispatch(push("/dashboard"));
       doFetchBalances(addresses)(dispatch, state);
@@ -280,6 +301,15 @@ const doRefreshData = (notify = true) => (dispatch, state) => {
   doFetchStxAddressData(stx)(dispatch, state);
 };
 
+const doAllowModalToClose = () => dispatch =>
+  dispatch({
+    type: TOGGLE_MODAL_CLOSE
+  });
+const doNotAllowModalToClose = () => dispatch =>
+  dispatch({
+    type: TOGGLE_MODAL_KEEP_OPEN
+  });
+
 /**
  * doSignTransaction
  *
@@ -301,9 +331,7 @@ const doSignTransaction = (
   // refresh data, false to prevent a notification
   doRefreshData(false)(dispatch, state);
   // prevent the modal from being closed
-  dispatch({
-    type: TOGGLE_MODAL
-  });
+  doNotAllowModalToClose()(dispatch);
   // start our process
   dispatch({
     type: WALLET_SIGN_TRANSACTION_STARTED
@@ -318,8 +346,6 @@ const doSignTransaction = (
       memo
     );
 
-    console.log("SIGN TX", transaction);
-
     // if we have an error
     if (transaction.error) {
       // dispatch error
@@ -328,9 +354,8 @@ const doSignTransaction = (
         payload: transaction
       });
       // allow the modal to be closed if error
-      dispatch({
-        type: TOGGLE_MODAL
-      });
+      doAllowModalToClose()(dispatch);
+
       // notification
       doNotify({
         type: "error",
@@ -352,9 +377,7 @@ const doSignTransaction = (
         message: e
       })(dispatch);
       // allow the modal to be closed
-      dispatch({
-        type: TOGGLE_MODAL
-      });
+      doAllowModalToClose()(dispatch);
       dispatch({
         type: WALLET_SIGN_TRANSACTION_ERROR,
         payload: e
@@ -365,9 +388,7 @@ const doSignTransaction = (
       e.message.includes("Not enough UTXOs to fund. Left to fund: ")
     ) {
       // allow the modal to be closed in case of error
-      dispatch({
-        type: TOGGLE_MODAL
-      });
+      doAllowModalToClose()(dispatch);
       doNotifyWarning({
         title: "Not enough BTC",
         message:
@@ -380,9 +401,7 @@ const doSignTransaction = (
       message: e.message
     })(dispatch);
     // allow the modal to be closed in case of error
-    dispatch({
-      type: TOGGLE_MODAL
-    });
+    doAllowModalToClose()(dispatch);
     dispatch({
       type: WALLET_SIGN_TRANSACTION_ERROR,
       payload: e.message

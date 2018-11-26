@@ -1405,10 +1405,10 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-ablankstein-ledger-hw-app-btc@^4.32.0:
-  version "4.32.0"
-  resolved "https://registry.yarnpkg.com/ablankstein-ledger-hw-app-btc/-/ablankstein-ledger-hw-app-btc-4.32.0.tgz#d50e2fabb45b3bfdf0196ea0a050614b8df930e2"
-  integrity sha512-B366dyyHo+oD5yW0WBQ4wTp2K+q6OsQc97HYICZHbfBDoREGqB9qk29ErLqKry/Y22riKGyx8xd2JjHZQqgHGw==
+ablankstein-ledger-hw-app-btc@^4.32.1:
+  version "4.32.1"
+  resolved "https://registry.yarnpkg.com/ablankstein-ledger-hw-app-btc/-/ablankstein-ledger-hw-app-btc-4.32.1.tgz#120383a775944eca14ec93e180be17bfb53c628d"
+  integrity sha512-ddSMEhVFRFhZKpxVNA8I3MTbTJ5JONH5a9MlsGqRGSXL6/8R/uSqlKK0T7g2/JI2PwWhOI7O1r1fmuMMHJkHIg==
   dependencies:
     "@babel/core" "^7.1.6"
     "@babel/runtime" "^7.1.5"
@@ -12841,6 +12841,17 @@ stack-utils@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.1.tgz#d4f33ab54e8e38778b0ca5cfd3b3afb12db68620"
   integrity sha1-1PM6tU6OOHeLDKXP07OvsS22hiA=
+
+stacks-utils@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/stacks-utils/-/stacks-utils-0.0.6.tgz#350fc5e650c215245564568a01460468328a57a5"
+  integrity sha512-L7pZVgpUOKHl4DDqCrqYxzWjb9W6RDPY++ZL9qb+EwkhFXB7pke96jywLkWYOnIZjlqFjtUMON8TKLsUU64H6w==
+  dependencies:
+    bigi "^1.4.2"
+    bitcoinjs-lib "^4.0.2"
+    blockstack "^18.1.0"
+    c32check "^0.0.6"
+    crypto "^1.0.1"
 
 staged-git-files@1.1.1:
   version "1.1.1"

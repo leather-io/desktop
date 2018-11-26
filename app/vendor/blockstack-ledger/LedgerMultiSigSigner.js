@@ -2,6 +2,7 @@ import { config as bskConfig } from "blockstack";
 import btc from "bitcoinjs-lib";
 import AppBtc from "ablankstein-ledger-hw-app-btc";
 import ReadWriteLock from "rwlock";
+
 import { getTransaction, serializeOutputHex } from "./utils";
 import { LedgerSigner } from "./LedgerSigner";
 

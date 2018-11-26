@@ -1,5 +1,5 @@
 import React from "react";
-import { validateStxAddress } from "@utils/validation";
+import { validateStacksAddress } from "@utils/validation";
 import produce from "immer";
 import { prepareTransaction } from "@common/lib/transactions";
 
@@ -32,7 +32,7 @@ const handleValidation = (
   }
 
   if (!errors.recipient) {
-    const valid = validateStxAddress(recipient);
+    const valid = validateStacksAddress(recipient);
     if (!valid) {
       errors.recipient = "Invalid Stacks address.";
     }

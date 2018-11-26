@@ -49,6 +49,11 @@ const HardwareSteps = ({ steps, children, ...rest }) => (
             }))
           : null;
 
+      const lastView = () =>
+        setState(currentState => ({
+          step: steps.length - 1
+        }));
+
       return (
         <Flex
           flexDirection="column"
@@ -82,6 +87,7 @@ const HardwareSteps = ({ steps, children, ...rest }) => (
                 step: state.step,
                 hasNext: steps.length - 1 > state.step,
                 hasPrev: state.step > 0,
+                lastView,
                 next,
                 prev
               })

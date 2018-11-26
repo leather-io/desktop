@@ -113,7 +113,7 @@ const reducer = (state = initialState, { type, payload }) =>
        * Reset wallet
        */
       case WALLET_RESET:
-        draft.address = {
+        draft.addresses = {
           stx: null,
           btc: null
         };

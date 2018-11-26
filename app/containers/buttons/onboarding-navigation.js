@@ -17,8 +17,7 @@ export const TextLink = ({ label, children, ...rest }) =>
           fontSize={1}
           fontWeight={600}
           cursor={hovered ? "pointer" : undefined}
-          color="blue.mid"
-          opacity={hovered ? 1 : 0.5}
+          color={hovered ? "blue.dark" : "#8FA6B8"}
           {...bind}
           {...rest}
         >
@@ -66,8 +65,14 @@ const OnboardingNavigation = ({ back, next, nextLabel = "Continue" }) => {
       pt={6}
     >
       {next ? (
-        typeof next === "object" ? <PrimaryButton invert label={next.label} onClick={next.action} {...next.props} /> :
-        typeof next === "function" ? (
+        typeof next === "object" ? (
+          <PrimaryButton
+            invert
+            label={next.label}
+            onClick={next.action}
+            {...next.props}
+          />
+        ) : typeof next === "function" ? (
           <PrimaryButton invert label={nextLabel} onClick={next} />
         ) : (
           <PrimaryButton invert label={nextLabel} to={next} />

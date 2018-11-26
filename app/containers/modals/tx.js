@@ -12,14 +12,14 @@ const TxAmounts = ({ amount, ...rest }) => (
     <Flex>
       <Value fontSize={6} amount={amount} micro suffix="STX" />
     </Flex>
-    <Label pt={4} pb={0}>
-      Fees
-    </Label>
-    <Value fontSize={2} fontWeight={500} amount={amount} suffix="BTC" micro />
+    {/*<Label pt={4} pb={0}>*/}
+    {/*Fees*/}
+    {/*</Label>*/}
+    {/*<Value fontSize={2} fontWeight={500} amount={amount} suffix="BTC" micro />*/}
   </Flex>
 );
 
-const OperationTypeSection = ({ operation, ...rest }) => (
+const OperationTypeSection = ({ item, stx, ...rest }) => (
   <Flex
     alignItems="center"
     justifyContent="center"
@@ -31,13 +31,13 @@ const OperationTypeSection = ({ operation, ...rest }) => (
     borderColor="blue.mid"
     alignSelf={"stretch"}
   >
-    <TypeIcon mb={2} size={72} type={operation} />
-    <Label pb={0}>{operation === "SENT" ? "Sent" : "Received"}</Label>
+    <TypeIcon mb={2} size={72} item={item} stx={stx} />
+    <Label pb={0}>{item.operation === "SENT" ? "Sent" : "Received"}</Label>
     <Label pb={0}>Stacks</Label>
   </Flex>
 );
 
-const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
+const TxDetailsModal = ({ hide, visible, tx, stx, ...rest }) => {
   const {
     sender,
     block_id,
@@ -46,6 +46,7 @@ const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
     valueStacks,
     value: amount,
     scratchData,
+    tokenAmount,
     recipientBitcoinAddress,
     recipient,
     operation
@@ -54,8 +55,10 @@ const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
   const items = [
     {
       label: "Sender",
-      value: sender,
-      link: `https://explorer.blockstack.org/address/stacks/${sender}`
+      value: sender && typeof sender === "string" ? sender : sender.stx,
+      link: `https://explorer.blockstack.org/address/stacks/${
+        sender && typeof sender === "string" ? sender : sender.stx
+      }`
     },
     {
       label: "Recipient (Stacks)",
@@ -93,8 +96,8 @@ const TxDetailsModal = ({ hide, visible, tx, ...rest }) => {
           alignItems="center"
           flexShrink={0}
         >
-          <OperationTypeSection operation={operation} />
-          <TxAmounts amount={amount} />
+          <OperationTypeSection item={tx} stx={stx} />
+          <TxAmounts amount={tokenAmount || amount} />
         </Flex>
       </Flex>
       <Flex flexDirection="column" p={4} flexShrink={0}>

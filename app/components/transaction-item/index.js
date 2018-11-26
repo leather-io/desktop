@@ -8,15 +8,29 @@ import { Hover } from "react-powerplug";
 import { TxDetailsModal } from "@containers/modals/tx";
 import { OpenModal } from "@components/modal";
 import dayjs from "dayjs";
-export const TypeIcon = ({ type, size = 48, ...rest }) => {
-  const Icon =
-    type === "SENT"
-      ? SendIcon
-      : type === "RECEIVED"
-      ? QrCode
-      : type === "UNLOCK"
-      ? LockOpenIcon
-      : NewBoxIcon;
+
+const getIcon = (item, stx) => {
+  const { operation, sender, recipient } = item;
+  if (sender && sender.stx) {
+    if (sender.stx === stx) {
+      return SendIcon;
+    } else {
+      return QrCode;
+    }
+  }
+  switch (operation) {
+    case "SENT":
+      return SendIcon;
+    case "RECEIVED":
+      return QrCode;
+    case "UNLOCK":
+      return LockOpenIcon;
+    default:
+      return NewBoxIcon;
+  }
+};
+export const TypeIcon = ({ item, stx, size = 48, ...rest }) => {
+  const Icon = getIcon(item, stx);
   return (
     <Flex
       border={1}
@@ -70,17 +84,49 @@ const Date = ({ date, ...rest }) =>
       </Type>
     </Flex>
   ) : null;
+const getTitle = (item, stx) => {
+  const { operation, sender, recipient } = item;
+  if (sender && sender.stx) {
+    if (sender.stx === stx) {
+      return `Sent Stacks`;
+    } else {
+      return `Received Stacks`;
+    }
+  }
+  switch (operation) {
+    case "SENT":
+      return "Sent Stacks";
+    case "RECEIVED":
+      return "Received Stacks";
+    case "UNLOCK":
+      return "Stacks Unlocked";
+    default:
+      return operation;
+  }
+};
 
-const Details = ({ operation, recipient, pending, ...rest }) => (
+const getSubtitle = (item, stx) => {
+  const { operation, sender, recipient } = item;
+
+  if (sender && sender.stx) {
+    if (sender.stx === stx) {
+      return `To ${recipient}`;
+    } else {
+      return `From ${sender.stx}`;
+    }
+  }
+  if (operation === "SENT") {
+    return `To ${recipient}`;
+  }
+  if (operation === "RECEIVED") {
+    return `From ${recipient}`;
+  }
+};
+
+const Details = ({ operation, recipient, pending, item, stx, ...rest }) => (
   <Flex flexDirection={"column"} flexGrow={1} maxWidth="100%" overflow="hidden">
     <Type pb={1} display={"inline-flex"} alignItems="center" fontWeight={500}>
-      {operation === "SENT"
-        ? "Sent Stacks"
-        : operation === "RECEIVED"
-        ? "Received Stacks"
-        : operation === "UNLOCK"
-        ? "Stacks Unlocked"
-        : "Genesis Block"}
+      {getTitle(item, stx)}
       {pending ? (
         <Type
           ml={2}
@@ -106,11 +152,7 @@ const Details = ({ operation, recipient, pending, ...rest }) => (
       fontSize={1}
       color="hsl(205, 30%, 70%)"
     >
-      {operation === "SENT"
-        ? `To ${recipient}`
-        : operation === "RECEIVED"
-        ? `From ${recipient}`
-        : null}
+      {getSubtitle(item, stx)}
     </Type>
   </Flex>
 );
@@ -129,24 +171,34 @@ const Amount = ({ value, ...rest }) => (
   </Flex>
 );
 
-const TxItem = ({ last, item, length, ...rest }) => {
-  const { operation, recipient, blockTime, pending, valueStacks } = item;
+const TxItem = ({ last, item, length, stx, ...rest }) => {
+  const {
+    operation,
+    recipient,
+    blockTime,
+    pending,
+    valueStacks,
+    tokenAmountReadable,
+    time
+  } = item;
   return (
     <OpenModal
       component={({ hide, visible }) => (
-        <TxDetailsModal hide={hide} tx={item} />
+        <TxDetailsModal hide={hide} tx={item} stx={stx} />
       )}
     >
       {({ bind }) => (
         <Item {...bind} last={last} length={length}>
-          <Date date={blockTime} />
-          <TypeIcon mr={3} type={operation} />
+          {blockTime || time ? <Date date={blockTime || time * 1000} /> : null}
+          <TypeIcon mr={3} item={item} stx={stx} />
           <Details
             pending={pending}
             operation={operation}
             recipient={recipient}
+            item={item}
+            stx={stx}
           />
-          <Amount ml={3} value={valueStacks} />
+          <Amount ml={3} value={valueStacks || tokenAmountReadable} />
         </Item>
       )}
     </OpenModal>

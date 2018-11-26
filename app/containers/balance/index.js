@@ -32,10 +32,7 @@ export const ReceiveButton = ({ ...rest }) => (
 );
 const SendButton = ({ ...rest }) => (
   <OpenModal
-    component={({ visible, hide }) => (
-      <Modal title="Send Stacks" hide={hide}>
-        <Send hide={hide} />
-      </Modal>
+    component={({ visible, hide }) => (<Send hide={hide} />
     )}
   >
     {({ bind }) => (

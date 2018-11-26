@@ -8,8 +8,12 @@ import { doResetWallet } from "@stores/actions/wallet";
 import { OpenModal } from "@components/modal";
 import { TxFeesModal } from "@containers/modals/tx-fees-top-up";
 import { connect } from "react-redux";
-import { selectWalletType } from "@stores/selectors/wallet";
+import {
+  selectWalletType,
+  selectWalletBitcoinBalance
+} from "@stores/selectors/wallet";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
+import { satoshisToBtc } from "@utils/utils";
 
 const Card = ({ ...rest }) => (
   <Flex
@@ -37,8 +41,9 @@ const Section = ({ ...rest }) => (
 );
 
 const TopUpSection = connect(state => ({
-  type: selectWalletType(state)
-}))(({ type, ...rest }) =>
+  type: selectWalletType(state),
+  balance: selectWalletBitcoinBalance(state)
+}))(({ type, balance, ...rest }) =>
   type !== WALLET_TYPES.WATCH_ONLY ? (
     <Section>
       <Label pb={4} fontSize={2}>
@@ -48,7 +53,7 @@ const TopUpSection = connect(state => ({
         <Flex p={4} borderRight={1} borderColor="blue.mid" flexGrow={1}>
           <Type>
             Bitcoin is used to pay transaction fees for Stacks transactions. You
-            have enough BTC to process 100 transactions.
+            currently have {satoshisToBtc(balance)} BTC.
           </Type>
         </Flex>
         <Flex justifyContent="center" p={4}>

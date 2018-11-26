@@ -1,12 +1,5 @@
 import React from "react";
-import { Field, BalanceField } from "@components/field";
-import { Hover, State } from "react-powerplug";
 import { Button, Type, Flex, Card } from "blockstack-ui";
-import { validateStxAddress, validateStxAmount } from "@utils/validation";
-import produce from "immer";
-import { HardwareSteps } from "@containers/hardware-steps";
-import { ledgerSteps } from "@screens/onboarding/hardware-wallet/ledger";
-import { trezorSteps } from "@screens/onboarding/hardware-wallet/trezor";
 import { TextLink } from "@containers/buttons/onboarding-navigation";
 import { connect } from "react-redux";
 import {
@@ -15,308 +8,61 @@ import {
   selectWalletStacksAddress,
   selectWalletError
 } from "@stores/selectors/wallet";
-import CoinsIcon from "mdi-react/CoinsIcon";
-
 import { microToStacks } from "@utils/utils";
 import {
   doSignTransaction,
   doBroadcastTransaction,
   doClearError
 } from "@stores/actions/wallet";
-import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { ERRORS } from "@common/lib/transactions";
-import { decodeRawTx } from "@utils/stacks";
-import { satoshisToBtc } from "@utils/utils";
+import { Modal } from "@components/modal";
+import { BTCTopUpView } from "@containers/modals/send/top-up";
+import { Confirmation } from "@containers/modals/send/confirm";
+import { Success } from "@containers/modals/send/success";
+import { InitialScreen } from "@containers/modals/send/initial";
+import { HardwareView } from "@containers/modals/send/hardware";
+import { NoBalance } from "@containers/modals/send/no-balance";
+import {
+  handleChange,
+  handleValidation
+} from "@containers/modals/send/helpers";
 
-const SecondaryLink = ({ action, label }) => (
-  <TextLink onClick={action}>{label}</TextLink>
+const SecondaryLink = ({ action, label, ...rest }) => (
+  <TextLink onClick={action} {...rest}>
+    {label}
+  </TextLink>
 );
 
+const Navigation = ({ next, secondary }) => (
+  <Flex flexDirection="column" alignItems="center" justifyContent="center">
+    <Button height="auto" py={2} onClick={next.action}>
+      {next.label || "Continue"}
+    </Button>
+    {secondary ? (
+      Array.isArray(secondary) ? (
+        <Flex>
+          {secondary.map((item, i) => (
+            <SecondaryLink
+              {...item}
+              key={i}
+              mr={i < secondary.length - 1 ? 2 : 0}
+            />
+          ))}
+        </Flex>
+      ) : (
+        <SecondaryLink {...secondary} />
+      )
+    ) : null}
+  </Flex>
+);
 const mapStateToProps = state => ({
   balance: microToStacks(selectWalletBalance(state)),
   type: selectWalletType(state),
   sender: selectWalletStacksAddress(state),
   error: selectWalletError(state)
 });
-const updateValue = (value, setState, key) =>
-  setState(state =>
-    produce(state, draft => {
-      draft.values[key] = value;
-    })
-  );
 
-const handleChange = (event, setState, key) =>
-  updateValue(event.target.value, setState, key);
-
-const handleValidation = (
-  sender,
-  currentBalance,
-  values,
-  setState,
-  nextView
-) => {
-  const { recipient, amount, memo } = values;
-
-  let errors = {};
-
-  if (amount === "") {
-    errors.amount = "Please enter a valid amount to send.";
-  }
-
-  if (amount && Number(amount) < 0.000001) {
-    errors.amount = "Amount needs to be more than a microstack (> 0.000001).";
-  }
-
-  if (recipient === "") {
-    errors.recipient = "Please enter a valid Stacks address.";
-  }
-
-  if (!errors.amount && !(Number(currentBalance) >= Number(amount))) {
-    errors.amount = "You don't have enough Stacks!";
-  }
-
-  if (!errors.recipient) {
-    const valid = validateStxAddress(recipient);
-    if (!valid) {
-      errors.recipient = "Invalid Stacks address.";
-    }
-    if (recipient === sender) {
-      errors.recipient = "Sender and recipient address cannot be the same.";
-    }
-  }
-
-  if (Object.entries(errors).length) {
-    setState({
-      errors
-    });
-    return null;
-  } else {
-    nextView();
-  }
-};
-
-/**
- * TODO: connect to global store balance
- */
-const handleSubmit = handleValidation;
-
-const InitialScreen = ({
-  nextView,
-  hide,
-  state,
-  setState,
-  children,
-  balance,
-  sender,
-  ...rest
-}) => (
-  <>
-    <Field
-      name="recipient"
-      label="Recipient"
-      error={state.errors.recipient}
-      onChange={e => handleChange(e, setState, "recipient")}
-      placeholder="Enter a Stacks Address"
-      value={state.values.recipient}
-      autofocus
-    />
-    <BalanceField />
-    <Field
-      name="amount"
-      overlay="STX"
-      label="Amount"
-      onChange={e => handleChange(e, setState, "amount")}
-      type="number"
-      error={state.errors.amount}
-      placeholder="0.00"
-      value={state.values.amount}
-      max={balance}
-    />
-    <Field
-      name="memo"
-      label="Note"
-      is="textarea"
-      value={state.values.memo}
-      onChange={e => handleChange(e, setState, "memo")}
-      placeholder="Write an optional message..."
-    />
-    {children
-      ? children({
-          next: {
-            action: () =>
-              handleSubmit(sender, balance, state.values, setState, nextView)
-          },
-          secondary: {
-            label: "Cancel",
-            action: hide
-          }
-        })
-      : null}
-  </>
-);
-
-const HardwareView = ({
-  nextView,
-  prevView,
-  children,
-  type,
-  doSignTransaction,
-  state,
-  sender,
-  setState,
-  ...rest
-}) => {
-  const handleSubmit = async () => {
-    console.log("handleSubmit");
-    setState({
-      processing: true
-    });
-    try {
-      const tx = await doSignTransaction(
-        sender,
-        state.values.recipient,
-        state.values.amount,
-        type,
-        state.values.memo || ""
-      );
-      const decoded = decodeRawTx(tx.rawTx);
-
-      setState(
-        {
-          tx: {
-            ...tx,
-            decoded
-          }
-        },
-        () => nextView()
-      );
-    } catch (e) {
-      console.log("caught error, processing done");
-      console.log(e);
-      setState({
-        processing: false
-      });
-    }
-  };
-  return children ? (
-    <Flex flexDirection="column" alignItems="center" pt={4}>
-      <Type pb={6} fontSize={4}>
-        Connect your {type === WALLET_TYPES.TREZOR ? "Trezor" : "Ledger"}
-      </Type>
-      <HardwareSteps
-        steps={type === WALLET_TYPES.TREZOR ? trezorSteps : ledgerSteps}
-      >
-        {({ step, next, hasNext, hasPrev, prev }) => (
-          <Flex pt={4}>
-            {children({
-              next: {
-                label: hasNext ? "Next" : "Continue",
-                action: () => (hasNext ? next() : handleSubmit())
-              },
-              secondary: [
-                {
-                  label: "Back",
-                  action: prevView
-                },
-                {
-                  label: "Skip",
-                  action: nextView
-                }
-              ]
-            })}
-          </Flex>
-        )}
-      </HardwareSteps>
-    </Flex>
-  ) : null;
-};
-const BTCTopUpView = ({ nextView, children, ...rest }) => {
-  return (
-    <>
-      Top Up View
-      {children
-        ? children({
-            next: {
-              action: () => nextView()
-            }
-          })
-        : null}
-    </>
-  );
-};
-const Confirmation = ({ nextView, children, state, ...rest }) => {
-  console.log("new view", state.tx);
-
-  if (!state.tx) return <>Oops!</>;
-
-  const { fee, rawTx, decoded } = state.tx;
-
-  return (
-    <>
-      <Card>
-        <Flex>
-          <Type>Please confirm your transaction.</Type>
-        </Flex>
-        <Flex flexDirection="column">
-          <Type>Amount to send</Type>
-          <Type>{decoded.tokenAmountReadable} STX</Type>
-          <Type>Fees</Type>
-          <Type>{satoshisToBtc(fee)} BTC</Type>
-        </Flex>
-      </Card>
-      {children
-        ? children({
-            next: {
-              action: () => nextView()
-            }
-          })
-        : null}
-    </>
-  );
-};
-const Success = ({ nextView, children, hide, ...rest }) => {
-  return (
-    <>
-      Success!
-      {children
-        ? children({
-            next: {
-              action: () => hide()
-            }
-          })
-        : null}
-    </>
-  );
-};
-
-const NoBalance = ({ nextView, children, hide, ...rest }) => {
-  return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        color="blue.mid"
-        pb={6}
-      >
-        <Flex py={4}>
-          <CoinsIcon size={100} />
-        </Flex>
-        <Type fontWeight="bold" color="blue.dark">
-          You don't have any Stacks!
-        </Type>
-      </Flex>
-      {children
-        ? children({
-            next: {
-              action: () => hide(),
-              label: "Cancel"
-            }
-          })
-        : null}
-    </>
-  );
-};
+const Wrapper = props => <Modal title="Send Stacks" {...props} />;
 
 class SendComponent extends React.Component {
   state = {
@@ -327,6 +73,7 @@ class SendComponent extends React.Component {
       amount: "",
       memo: ""
     },
+    draft: null,
     errors: {}
   };
 
@@ -351,9 +98,9 @@ class SendComponent extends React.Component {
     switch (this.state.view) {
       case 1:
         Component =
-          error &&
-          error.type &&
-          error.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type
+          this.state.errors &&
+          this.state.errors.type &&
+          this.state.errors.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type
             ? BTCTopUpView
             : HardwareView;
         break;
@@ -365,7 +112,6 @@ class SendComponent extends React.Component {
         break;
       default:
         Component = InitialScreen;
-      // Component = Confirmation;
     }
 
     if (balance === "0") {
@@ -380,8 +126,11 @@ class SendComponent extends React.Component {
       type,
       sender,
       error,
+      handleChange,
+      handleValidation,
       nextView: () =>
         this.setState(({ view, ...rest }) => ({ ...rest, view: view + 1 })),
+      goToView: view => this.setState(({ ...rest }) => ({ ...rest, view })),
       prevView: () =>
         this.setState(({ view, ...rest }) => ({ ...rest, view: view - 1 })),
       hide: this.state.processing
@@ -395,30 +144,7 @@ class SendComponent extends React.Component {
     };
 
     return (
-      <Component {...componentProps}>
-        {({ next, secondary }) => (
-          <Flex
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Button height="auto" py={2} onClick={next.action}>
-              {next.label || "Continue"}
-            </Button>
-            {secondary ? (
-              Array.isArray(secondary) ? (
-                <Flex>
-                  {secondary.map((item, i) => (
-                    <SecondaryLink {...item} key={i} />
-                  ))}
-                </Flex>
-              ) : (
-                <SecondaryLink {...secondary} />
-              )
-            ) : null}
-          </Flex>
-        )}
-      </Component>
+      <Component wrapper={Wrapper} {...componentProps} children={Navigation} />
     );
   }
 }

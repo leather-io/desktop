@@ -28,7 +28,9 @@ import { fetchBtcBalance, fetchStxBalance } from "@common/lib/balances";
 import {
   getLedgerAddress,
   getTrezorAddress,
-  convertStxAddressToBtcAddress
+  convertStxAddressToBtcAddress,
+  fetchBtcAddressData,
+  btcToStx
 } from "@common/lib/addresses";
 import {
   selectWalletBitcoinAddress,
@@ -36,9 +38,12 @@ import {
 } from "@stores/selectors/wallet";
 import {
   generateTransaction,
-  broadcastTransaction
+  broadcastTransaction,
+  fetchRawTxData,
+  fetchJsonTxData
 } from "@common/lib/transactions";
 import { TOGGLE_MODAL } from "@stores/reducers/app";
+import { decodeRawTx } from "@utils/stacks";
 
 const doClearError = () => dispatch =>
   dispatch({
@@ -50,15 +55,63 @@ const doClearError = () => dispatch =>
  * Address should already be validated before calling this function
  * @param {string} address - the stacks address we want data on
  */
-const doFetchStxAddressData = address => async dispatch => {
+const doFetchStxAddressData = address => async (dispatch, state) => {
+  const btcAddress = selectWalletBitcoinAddress(state());
   try {
     dispatch({
       type: FETCH_ADDRESS_DATA_STARTED
     });
     const data = await fetchStxAddressDetails(address);
+    const btcData = await fetchBtcAddressData(btcAddress);
+    const txs = btcData && btcData.txs && btcData.txs.length ? btcData.txs : [];
+
+    let pendingTxs = [];
+    const rawTxs = await Promise.all(
+      txs.map(async tx => {
+        const jsonData = await fetchJsonTxData(tx.hash);
+        const rawTxData = await fetchRawTxData(tx.hash);
+        if (!rawTxData) return;
+        const transaction = decodeRawTx(rawTxData);
+        if (!transaction) return null;
+        const sender = transaction
+          ? {
+              btc: jsonData.inputs[0] && jsonData.inputs[0].prev_out.addr,
+              stx:
+                jsonData.inputs[0] && btcToStx(jsonData.inputs[0].prev_out.addr)
+            }
+          : null;
+        return {
+          ...transaction,
+          pending: true,
+          time: jsonData.time,
+          txid: tx.hash,
+          sender
+        };
+      })
+    );
+
+    if (
+      (rawTxs.length && data.history.length) ||
+      (rawTxs.length && !data.history.length)
+    ) {
+      if (rawTxs.length !== data.history.length) {
+        pendingTxs = rawTxs
+          .filter(item => item) // remove null items
+          .filter(
+            rawTx =>
+              !data.history.find(
+                historicalTx =>
+                  historicalTx.consensusHash === rawTx.consensusHash
+              )
+          );
+      }
+    }
     dispatch({
       type: FETCH_ADDRESS_DATA_FINISHED,
-      payload: data
+      payload: {
+        ...data,
+        pendingTxs
+      }
     });
   } catch (e) {
     console.log("error!", e.message);
@@ -223,7 +276,7 @@ const doRefreshData = (notify = true) => (dispatch, state) => {
   const btc = selectWalletBitcoinAddress(state());
   notify && doNotify("Refreshing data...")(dispatch);
   doFetchBalances({ stx, btc })(dispatch);
-  doFetchStxAddressData(stx)(dispatch);
+  doFetchStxAddressData(stx)(dispatch, state);
 };
 
 /**
@@ -263,6 +316,8 @@ const doSignTransaction = (
       walletType,
       memo
     );
+
+    console.log("SIGN TX", transaction);
 
     // if we have an error
     if (transaction.error) {
@@ -304,7 +359,10 @@ const doSignTransaction = (
         payload: e
       });
     }
-    if (e.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type) {
+    if (
+      e.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type ||
+      e.message.includes("Not enough UTXOs to fund. Left to fund: ")
+    ) {
       // allow the modal to be closed in case of error
       dispatch({
         type: TOGGLE_MODAL
@@ -316,6 +374,10 @@ const doSignTransaction = (
       })(dispatch);
       return;
     }
+    doNotifyWarning({
+      title: "Something went wrong.",
+      message: e.message
+    })(dispatch);
     // allow the modal to be closed in case of error
     dispatch({
       type: TOGGLE_MODAL
@@ -333,12 +395,21 @@ const doBroadcastTransaction = rawTx => async (dispatch, state) => {
     dispatch({
       type: WALLET_BROADCAST_TRANSACTION_STARTED
     });
-    const tx = await broadcastTransaction(rawTx);
+    const txHash = await broadcastTransaction(rawTx);
     dispatch({
       type: WALLET_BROADCAST_TRANSACTION_FINISHED,
-      payload: tx
+      payload: txHash
     });
+    doNotify({
+      title: "Success!",
+      message: "Your transaction has been submitted!"
+    })(dispatch);
+    return txHash;
   } catch (e) {
+    doNotifyWarning({
+      title: "Something went wrong.",
+      message: e.message
+    })(dispatch);
     dispatch({
       type: WALLET_BROADCAST_TRANSACTION_ERROR,
       payload: e.message

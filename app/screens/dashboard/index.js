@@ -10,7 +10,8 @@ import { Balance } from "@containers/balance";
 import { connect } from "react-redux";
 import {
   selectWalletLoading,
-  selectWalletData
+  selectWalletData,
+  selectPendingTxs
 } from "@stores/selectors/wallet";
 import { Loading } from "@components/loading";
 import { ReceiveButton } from "@containers/balance";
@@ -139,7 +140,8 @@ const Dashboard = ({ loading, data, style, doRefreshData, ...rest }) =>
 
 const mapStateToProps = state => ({
   loading: selectWalletLoading(state),
-  data: selectWalletData(state)
+  data: selectWalletData(state),
+  pending: selectPendingTxs(state)
 });
 
 export default connect(

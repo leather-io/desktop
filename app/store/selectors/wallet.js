@@ -1,5 +1,5 @@
 const selectWalletHistory = state =>
-  state.wallet.data && state.wallet.data.history;
+  state.wallet.data ? state.wallet.data.history : [];
 
 const selectWalletStacksAddress = state => state.wallet.addresses.stx;
 
@@ -17,6 +17,8 @@ const selectWalletData = state => state.wallet.data;
 
 const selectWalletError = state => state.wallet.error;
 
+const selectPendingTxs = state =>
+  state.wallet.data ? state.wallet.data.pendingTxs : [];
 
 export {
   selectWalletHistory,
@@ -28,5 +30,5 @@ export {
   selectWalletLoading,
   selectWalletData,
   selectWalletError,
-  selectWalletIsProcessing
+  selectPendingTxs
 };

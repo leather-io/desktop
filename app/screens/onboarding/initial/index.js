@@ -3,6 +3,7 @@ import { Box, Flex, Buttons, Type, Input } from "blockstack-ui/dist";
 import { Button } from "@components/button/index";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../routes";
+import { decodeRawTx } from "@utils/stacks";
 
 const Title = ({ ...rest }) => (
   <Type

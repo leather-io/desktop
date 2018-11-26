@@ -1,7 +1,7 @@
 import bip32 from "bip32";
 import crypto from "crypto";
 import { network, transactions, config } from "blockstack";
-import { c32address, c32ToB58, versions } from "c32check";
+import { c32address, c32ToB58, versions, b58ToC32 } from "c32check";
 import TrezorConnect from "../../../trezor/trezor";
 import { PATH } from "@common/constants";
 import AppBtc from "@ledgerhq/hw-app-btc";
@@ -77,5 +77,18 @@ const getAddressesFromPublicKey = publicKey => {
 };
 
 const convertStxAddressToBtcAddress = stx => c32ToB58(stx);
+const btcToStx = (btc) => b58ToC32(btc)
+const fetchBtcAddressData = async btcAddress => {
+  try {
+    const response = await fetch(
+      `https://blockchain.info/rawaddr/${btcAddress}`
+    );
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-export { getTrezorAddress, getLedgerAddress, convertStxAddressToBtcAddress };
+
+export { getTrezorAddress, getLedgerAddress, convertStxAddressToBtcAddress, fetchBtcAddressData, btcToStx };

@@ -74,13 +74,14 @@ const prepareTransaction = async (
   const utxos = await config.network.getUTXOs(senderBtcAddress);
   const numUTXOs = utxos.length;
 
-  const estimate = await transactions.estimateTokenTransfer(
-    recipientBtcAddress,
-    tokenType,
-    tokenAmount,
-    memo,
-    numUTXOs
-  );
+  const estimate =
+    (await transactions.estimateTokenTransfer(
+      recipientBtcAddress,
+      tokenType,
+      tokenAmount,
+      memo,
+      numUTXOs
+    )) + 5500;
 
   // current BTC balance
   const btcBalance = sumUTXOs(utxos);
@@ -186,14 +187,14 @@ const generateTransaction = async (
       memo,
       signer
     );
-    console.log(rawTx);
+    console.log("RAW", rawTx);
     return {
       fee: tx.estimate,
       rawTx
     };
   } catch (e) {
     console.log("ERROR", e);
-    throw e;
+    return ERRORS.TRANSACTION_ERROR(e.message);
   }
 };
 

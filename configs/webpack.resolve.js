@@ -10,6 +10,11 @@ module.exports = {
         "../node_modules",
         "ablankstein-ledger-hw-app-btc"
       ),
+      "bitcoinjs-lib": path.resolve(
+        __dirname,
+        "../node_modules",
+        "bitcoinjs-lib"
+      ),
       "@components": path.resolve(__dirname, "../app", "components"),
       "@containers": path.resolve(__dirname, "../app", "containers"),
       "@screens": path.resolve(__dirname, "../app", "screens"),

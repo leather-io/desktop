@@ -94,7 +94,7 @@ const handleBtcCheck = async (
   nextView,
   type
 ) => {
-  const tx = await generateTransaction(
+  const tx = await prepareTransaction(
     sender,
     values.recipient,
     values.amount,

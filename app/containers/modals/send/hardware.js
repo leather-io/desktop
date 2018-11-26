@@ -5,6 +5,7 @@ import { ledgerSteps } from "@screens/onboarding/hardware-wallet/ledger";
 import { trezorSteps } from "@screens/onboarding/hardware-wallet/trezor";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { decodeRawTx } from "@utils/stacks";
+import { ERRORS } from "@common/lib/transactions";
 
 const HardwareView = ({
   wrapper: Wrapper,
@@ -32,10 +33,29 @@ const HardwareView = ({
         state.values.memo || ""
       );
 
-      if (tx.error) {
+      if (tx && tx.error) {
         console.log("error");
         console.log(tx);
+        if (
+          tx.error.message.includes("Not enough UTXOs to fund. Left to fund: ")
+        ) {
+          const difference = Number(
+            tx.error.message.replace(
+              "Not enough UTXOs to fund. Left to fund: ",
+              ""
+            )
+          );
+          console.log(difference);
+          setState({
+            errors: {
+              ...ERRORS.INSUFFICIENT_BTC_BALANCE,
+              difference
+            }
+          });
+        }
+        return;
       }
+      console.log("Right before", tx);
       const decoded = decodeRawTx(tx.rawTx);
 
       setState(

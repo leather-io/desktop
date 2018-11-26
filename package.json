@@ -11,13 +11,11 @@
     "productName": "Stacks Wallet",
     "appId": "org.blockstack.stacks-wallet",
     "files": [
-      "dist/",
-      "node_modules/",
-      "app.html",
-      "main.prod.js",
-      "main.prod.js.map",
-      "package.json",
-      "preload.js"
+      "app/dist/",
+      "app/app.html",
+      "app/main.prod.js",
+      "app/main.prod.js.map",
+      "package.json"
     ],
     "dmg": {
       "contents": [
@@ -35,12 +33,15 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "nsis",
+        "msi"
       ]
     },
     "linux": {
       "target": [
         "deb",
+        "rpm",
+        "snap",
         "AppImage"
       ],
       "category": "Development"
@@ -68,6 +69,7 @@
     "dayjs": "^1.7.7",
     "devtron": "^1.4.0",
     "electron-debug": "^1.5.0",
+    "electron-log": "^2.2.17",
     "electron-store": "^2.0.0",
     "elliptic": "^6.4.0",
     "font-awesome": "^4.7.0",
@@ -198,6 +200,7 @@
     "stylefmt": "^6.0.0",
     "stylelint": "^9.2.1",
     "stylelint-config-standard": "^18.2.0",
+    "terser-webpack-plugin": "^1.1.0",
     "uglifyjs-webpack-plugin": "1.2.5",
     "url-loader": "^1.0.1",
     "webpack": "^4.20.2",
@@ -242,14 +245,15 @@
     "sass",
     "webpack"
   ],
+  "main": "./app/main.prod.js",
   "license": "MIT",
   "productName": "StacksWallet",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
     "build-e2e": "cross-env E2E_BUILD=true yarn build",
-    "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
-    "build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.babel.js --colors",
+    "build-main": "cross-env DEBUG_PROD=true NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
+    "build-renderer": "cross-env DEBUG_PROD=true NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.babel.js --colors",
     "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && cross-env START_HOT=1 yarn start-renderer-dev",
     "flow": "flow",
     "flow-typed": "rimraf flow-typed/npm && flow-typed install --overwrite || true",
@@ -262,11 +266,11 @@
     "package-ci": "yarn postinstall && yarn build && electron-builder --publish always",
     "package-linux": "yarn build && electron-builder build --linux",
     "package-win": "yarn build && electron-builder build --win --x64",
-    "postinstall": "yarn flow-typed && yarn build-dll && electron-builder install-app-deps package.json",
+    "postinstall": "yarn flow-typed && electron-builder install-app-deps package.json && yarn build-dll",
     "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.{*{js,jsx,json},babelrc,eslintrc,prettierrc,stylelintrc}'",
     "postlint-styles-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.{css,scss}'",
     "prestart": "yarn build",
-    "start": "cross-env NODE_ENV=production electron ./app/",
+    "start": "cross-env NODE_ENV=production DEBUG_PROD=true electron ./app/main.prod.js",
     "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./app/main.dev.js",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.renderer.dev.babel.js",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",

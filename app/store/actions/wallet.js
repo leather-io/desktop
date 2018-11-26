@@ -44,6 +44,7 @@ import {
 } from "@common/lib/transactions";
 import { TOGGLE_MODAL } from "@stores/reducers/app";
 import { decodeRawTx } from "@utils/stacks";
+import { ROUTES } from "../../routes";
 
 const doClearError = () => dispatch =>
   dispatch({
@@ -175,7 +176,7 @@ const doResetWallet = () => dispatch => {
   dispatch({
     type: WALLET_RESET
   });
-  dispatch(push("/"));
+  dispatch(push(ROUTES.RESTORE_OPTIONS));
   doNotify("Wallet has been reset!")(dispatch);
 };
 

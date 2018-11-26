@@ -11,7 +11,8 @@ import { connect } from "react-redux";
 import { selectWalletLoading } from "@stores/selectors/wallet";
 import {
   doAddWatchOnlyAddress,
-  doFetchStxAddressData
+  doFetchStxAddressData,
+  doRefreshData
 } from "@stores/actions/wallet";
 
 type Props = {};
@@ -40,7 +41,7 @@ class WatchOnlyScreen extends Component<Props> {
 
   handleLoading = addr => {
     this.props.doAddWatchOnlyAddress(addr);
-    this.props.doFetchStxAddressData(addr);
+    this.props.doRefreshData(false);
     setTimeout(() => {
       this.props.history.push(ROUTES.DASHBOARD);
     }, 10);
@@ -75,7 +76,16 @@ class WatchOnlyScreen extends Component<Props> {
   };
 
   render() {
-    const { address, error, handleChange, next, ...rest } = this.props;
+    const {
+      address,
+      error,
+      handleChange,
+      next,
+      loading,
+      doAddWatchOnlyAddress,
+      doRefreshData,
+      ...rest
+    } = this.props;
 
     return (
       <Page
@@ -119,6 +129,6 @@ export default connect(
   }),
   {
     doAddWatchOnlyAddress,
-    doFetchStxAddressData
+    doRefreshData
   }
 )(withRouter(WatchOnlyScreen));

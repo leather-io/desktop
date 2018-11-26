@@ -5,6 +5,7 @@ import { Flex } from "blockstack-ui";
 import { connect } from "react-redux";
 import { selectWalletStacksAddress } from "@stores/selectors/wallet";
 import Modal from "@components/modal";
+import { ROUTES } from "../routes";
 
 type Props = {
   children: React.Node
@@ -14,9 +15,9 @@ class App extends React.Component<Props> {
   props: Props;
 
   componentDidMount() {
-    if (this.props.location.pathname === "/dashboard") {
+    if (this.props.location.pathname === ROUTES.DASHBOARD) {
       if (!this.props.stx) {
-        this.props.history.push("/");
+        this.props.history.push(ROUTES.RESTORE_OPTIONS);
       }
     }
   }

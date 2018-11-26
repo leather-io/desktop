@@ -113,7 +113,7 @@ const DangerZone = connect(
                 <Button
                   onClick={() => {
                     hide();
-                    doResetWallet();
+                    setTimeout(() => doResetWallet(), 300);
                   }}
                   height={"auto"}
                   py={2}

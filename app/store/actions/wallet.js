@@ -232,17 +232,27 @@ const doAddHardwareWallet = type => async (dispatch, state) => {
       doFetchStxAddressData(addresses.stx)(dispatch, state);
     }
   } catch (e) {
+    let message = e.message;
+    if (
+      e &&
+      e.message &&
+      e.message.includes(`cannot open device with path`) &&
+      type === WALLET_TYPES.LEDGER
+    ) {
+      message =
+        "Could not connect to device. Try closing the BTC app and reopening it.";
+    }
     dispatch({
       type: WALLET_LOADING_FINISHED
     });
     dispatch({
       type: ADD_WALLET_ADDRESS_ERROR,
-      payload: e.message
+      payload: message
     });
     doNotifyWarning({
       type: "error",
       title: "Whoops!",
-      message: e.message
+      message: message
     })(dispatch);
   }
 };
@@ -363,6 +373,9 @@ const doSignTransaction = (
       });
       return transaction;
     } else {
+      // allow the modal to be closed if error
+      doAllowModalToClose()(dispatch);
+      doRefreshData(false)(dispatch, state);
       // success
       dispatch({
         type: WALLET_SIGN_TRANSACTION_FINISHED,

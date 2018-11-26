@@ -133,12 +133,10 @@ class SendComponent extends React.Component {
       goToView: view => this.setState(({ ...rest }) => ({ ...rest, view })),
       prevView: () =>
         this.setState(({ view, ...rest }) => ({ ...rest, view: view - 1 })),
-      hide: this.state.processing
-        ? () => null
-        : () => {
-            doClearError();
-            hide();
-          },
+      hide: () => {
+        doClearError();
+        hide();
+      },
       doSignTransaction,
       doBroadcastTransaction
     };

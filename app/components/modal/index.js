@@ -71,7 +71,8 @@ class ModalRoot extends React.Component {
   state = {
     comp: null,
     previous: null,
-    visible: false
+    visible: false,
+    alert: null,
   };
 
   componentWillUnmount() {

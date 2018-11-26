@@ -43,6 +43,7 @@ export const LedgerSteps = connect(
     <HardwareSteps steps={ledgerSteps}>
       {({ step, next, hasNext, hasPrev, prev }) => (
         <OnboardingNavigation
+          onDark
           back={hasPrev ? prev : ROUTES.RESTORE_HARDWARE}
           next={{
             action: hasNext ? next : handleSubmit,

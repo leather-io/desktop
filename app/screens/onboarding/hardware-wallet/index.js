@@ -87,7 +87,7 @@ export default class RestoreSeed extends Component<Props> {
               to={ROUTES.RESTORE_LEDGER}
             />
           </Flex>
-          <OnboardingNavigation back={ROUTES.RESTORE_OPTIONS} />
+          <OnboardingNavigation onDark back={ROUTES.RESTORE_OPTIONS} />
         </Flex>
       </Page>
     );

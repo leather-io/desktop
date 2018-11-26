@@ -32,6 +32,7 @@ const TrezorPage = connect(
           <HardwareSteps steps={trezorSteps}>
             {({ step, next, hasNext }) => (
               <OnboardingNavigation
+                onDark
                 back={"/restore-hardware"}
                 next={hasNext ? next : handleSubmit}
               />

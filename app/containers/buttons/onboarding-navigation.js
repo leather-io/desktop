@@ -8,7 +8,14 @@ const PrimaryButton = ({ label, ...props }) => (
   <Button {...props}>{label}</Button>
 );
 
-export const TextLink = ({ label, children, ...rest }) =>
+export const TextLink = ({
+  label,
+  children,
+  hoverBg = "blue.dark",
+  bg = "#8FA6B8",
+  onDark,
+  ...rest
+}) =>
   children || label ? (
     <Hover>
       {({ hovered, bind }) => (
@@ -17,7 +24,10 @@ export const TextLink = ({ label, children, ...rest }) =>
           fontSize={1}
           fontWeight={600}
           cursor={hovered ? "pointer" : undefined}
-          color={hovered ? "blue.dark" : "#8FA6B8"}
+          color={hovered ? (onDark ? "blue.light" : hoverBg) : bg}
+          style={{
+            userSelect: "none"
+          }}
           {...bind}
           {...rest}
         >
@@ -27,14 +37,14 @@ export const TextLink = ({ label, children, ...rest }) =>
     </Hover>
   ) : null;
 
-const BackButton = ({ to, onClick, ...props }) =>
+const BackButton = ({ to, onClick, onDark, ...props }) =>
   to ? (
     <Link to={to}>
-      <TextLink>Back</TextLink>
+      <TextLink onDark={onDark}>Back</TextLink>
     </Link>
   ) : (
     <Flex onClick={onClick}>
-      <TextLink>Back</TextLink>
+      <TextLink onDark={onDark}>Back</TextLink>
     </Flex>
   );
 
@@ -56,7 +66,12 @@ const ButtonCombo = ({ primary, secondary, ...rest }) => (
   </Buttons>
 );
 
-const OnboardingNavigation = ({ back, next, nextLabel = "Continue" }) => {
+const OnboardingNavigation = ({
+  back,
+  next,
+  nextLabel = "Continue",
+  onDark
+}) => {
   return back || next ? (
     <Buttons
       justifyContent="center"
@@ -80,9 +95,9 @@ const OnboardingNavigation = ({ back, next, nextLabel = "Continue" }) => {
       ) : null}
       {back ? (
         typeof back === "function" ? (
-          <BackButton onClick={back} />
+          <BackButton onDark={onDark} onClick={back} />
         ) : (
-          <BackButton to={back} />
+          <BackButton onDark={onDark} to={back} />
         )
       ) : null}
     </Buttons>

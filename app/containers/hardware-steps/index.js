@@ -16,7 +16,6 @@ const getDotColor = (bg, current) => {
 const Dots = ({ items, current, ...rest }) => (
   <PageContext.Consumer>
     {({ bg }) =>
-      console.log(bg) ||
       items.map((item, i) => (
         <Flex
           borderRadius={8}

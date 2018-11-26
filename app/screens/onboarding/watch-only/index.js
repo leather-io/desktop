@@ -109,11 +109,12 @@ class WatchOnlyScreen extends Component<Props> {
               onChange={this.handleChange}
               label="Stacks Address"
               autoFocus
-              placeholder="Enter Stacks Address"
+              placeholder="SM3KJBA4RZ7Z20KD2HBXNSXVPCR1D3CRAV6Q05MKT"
             />
           </Flex>
           <Flex flexGrow={1} mt="auto" />
           <OnboardingNavigation
+            onDark
             back={ROUTES.RESTORE_OPTIONS}
             next={this.handleSubmit}
           />

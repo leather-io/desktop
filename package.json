@@ -33,8 +33,7 @@
     },
     "win": {
       "target": [
-        "nsis",
-        "msi"
+        "portable"
       ]
     },
     "linux": {
@@ -158,7 +157,8 @@
     "css-loader": "^0.28.11",
     "detect-port": "^1.2.3",
     "electron": "^2.0.6",
-    "electron-builder": "^20.28.4",
+    "electron-builder": "^20.37.0",
+    "electron-builder-squirrel-windows": "^20.37.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-rebuild": "^1.8.1",
     "enzyme": "^3.3.0",

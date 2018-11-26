@@ -17,6 +17,8 @@ const selectWalletData = state => state.wallet.data;
 
 const selectWalletError = state => state.wallet.error;
 
+const selectWalletLastFetch = state => state.wallet.lastFetch;
+
 const selectPendingTxs = state =>
   state.wallet.data ? state.wallet.data.pendingTxs : [];
 
@@ -30,5 +32,6 @@ export {
   selectWalletLoading,
   selectWalletData,
   selectWalletError,
-  selectPendingTxs
+  selectPendingTxs,
+  selectWalletLastFetch
 };

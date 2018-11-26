@@ -37,6 +37,7 @@ const HardwareView = ({
         console.log("error");
         console.log(tx);
         if (
+          tx.error.message &&
           tx.error.message.includes("Not enough UTXOs to fund. Left to fund: ")
         ) {
           const difference = Number(

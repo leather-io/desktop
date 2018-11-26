@@ -27,21 +27,27 @@ const Empty = ({ ...rest }) => (
   </Flex>
 );
 
-const Action = ({ onClick, label }) => (
-  <Hover>
-    {({ hovered, bind }) => (
-      <Type
-        color={hovered ? "blue.dark" : "hsl(205, 30%, 70%)"}
-        style={{
-          cursor: "pointer"
-        }}
-        onClick={onClick}
-        {...bind}
-      >
-        {label}
-      </Type>
-    )}
-  </Hover>
+const Action = ({
+  onClick,
+  label,
+  wrapper: Wrapper = ({ children }) => children
+}) => (
+  <Wrapper>
+    <Hover>
+      {({ hovered, bind }) => (
+        <Type
+          color={hovered ? "blue.dark" : "hsl(205, 30%, 70%)"}
+          style={{
+            cursor: "pointer"
+          }}
+          onClick={onClick}
+          {...bind}
+        >
+          {label}
+        </Type>
+      )}
+    </Hover>
+  </Wrapper>
 );
 
 const TxList = connect(state => ({
@@ -61,7 +67,7 @@ const TxList = connect(state => ({
   }) => {
     const data = [...pending, ...history];
     return (
-      <Card p={0} bg="blue.light" flexGrow={1} flexShrink={0} overflow="hidden">
+      <Card p={0} bg="blue.light" flexGrow={1} flexShrink={0}>
         <Flex
           justifyContent={"space-between"}
           borderBottom="1px solid"

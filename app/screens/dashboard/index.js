@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Type, Card } from "blockstack-ui/dist";
+import { Flex, Type, Card, Tooltip } from "blockstack-ui/dist";
 import SettingsIcon from "mdi-react/SettingsIcon";
 import { Hover } from "react-powerplug";
 import { TxList } from "@components/transaction-list";
@@ -11,12 +11,14 @@ import { connect } from "react-redux";
 import {
   selectWalletLoading,
   selectWalletData,
-  selectPendingTxs
+  selectPendingTxs,
+  selectWalletLastFetch
 } from "@stores/selectors/wallet";
 import { Loading } from "@components/loading";
 import { ReceiveButton } from "@containers/balance";
 import { ButtonCombo } from "@containers/buttons/onboarding-navigation";
 import { doRefreshData } from "@stores/actions/wallet";
+import dayjs from "dayjs";
 import debounce from "lodash.debounce";
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -111,7 +113,6 @@ const NewWallet = ({ doRefreshData, ...rest }) => (
     </Card>
   </Flex>
 );
-
 const Dashboard = ({ loading, data, style, doRefreshData, ...rest }) =>
   loading ? (
     <Loading style={style} bg="blue.dark" />

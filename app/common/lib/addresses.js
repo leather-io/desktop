@@ -78,10 +78,12 @@ const getAddressesFromPublicKey = publicKey => {
 
 const convertStxAddressToBtcAddress = stx => c32ToB58(stx);
 const btcToStx = btc => b58ToC32(btc);
+
 const fetchBtcAddressData = async btcAddress => {
   try {
     const response = await fetch(
-      `https://blockchain.info/rawaddr/${btcAddress}`
+      // `https://blockchain.info/rawaddr/${btcAddress}`
+      `https://api.blockcypher.com/v1/btc/main/addrs/${btcAddress}/full?includeHex=true&limit=50`
     );
     const data = await response.json();
     return data;

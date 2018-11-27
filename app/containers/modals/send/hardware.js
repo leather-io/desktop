@@ -57,7 +57,7 @@ const HardwareView = ({
         return;
       }
       console.log("Right before", tx);
-      const decoded = decodeRawTx(tx.rawTx);
+      const decoded = await decodeRawTx(tx.rawTx);
 
       setState(
         {

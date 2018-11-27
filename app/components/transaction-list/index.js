@@ -2,31 +2,36 @@ import React from "react";
 import { Flex, Type, Card } from "blockstack-ui/dist";
 import { Hover } from "react-powerplug";
 import { TxItem } from "@components/transaction-item";
-import { LayersOffOutlineIcon } from "mdi-react";
+import { LayersOffOutlineIcon, LoadingIcon } from "mdi-react";
 import { connect } from "react-redux";
 import {
   selectWalletHistory,
   selectPendingTxs,
   selectWalletStacksAddress,
-  selectRawTxs
+  selectRawTxs,
+  selectWalletIsFetching
 } from "@stores/selectors/wallet";
 
-const Empty = ({ ...rest }) => (
-  <Flex
-    flexGrow={1}
-    alignItems="center"
-    justifyContent={"center"}
-    color="hsl(205, 30%, 70%)"
-    flexDirection="column"
-  >
-    <LayersOffOutlineIcon size={80} />
-    <Flex pt={3}>
-      <Type fontSize={2} fontWeight={700}>
-        No Transaction History
-      </Type>
+const Empty = ({ isFetching, ...rest }) => {
+  const Icon = isFetching ? LoadingIcon : LayersOffOutlineIcon;
+  const message = isFetching ? "Loading..." : "No Transaction History";
+  return (
+    <Flex
+      flexGrow={1}
+      alignItems="center"
+      justifyContent={"center"}
+      color="hsl(205, 30%, 70%)"
+      flexDirection="column"
+    >
+      <Icon size={80} />
+      <Flex pt={3}>
+        <Type fontSize={2} fontWeight={700}>
+          {message}
+        </Type>
+      </Flex>
     </Flex>
-  </Flex>
-);
+  );
+};
 
 const Action = ({
   onClick,
@@ -55,7 +60,8 @@ const TxList = connect(state => ({
   history: selectWalletHistory(state),
   pending: selectPendingTxs(state),
   txs: selectRawTxs(state),
-  stx: selectWalletStacksAddress(state)
+  stx: selectWalletStacksAddress(state),
+  isFetching: selectWalletIsFetching(state)
 }))(
   ({
     children,
@@ -66,9 +72,10 @@ const TxList = connect(state => ({
     txs,
     pending,
     stx,
+    isFetching,
     ...rest
   }) => {
-    const data = [...pending, ...history];
+    const data = txs;
     return (
       <Card p={0} bg="blue.light" flexGrow={1} flexShrink={0}>
         <Flex
@@ -77,7 +84,7 @@ const TxList = connect(state => ({
           borderColor={"blue.mid"}
           px={4}
           py={3}
-          borderRadius="6px 6px 0 0"
+          borderRadius="8px 8px 0 0"
           flexShrink={0}
           bg="white"
         >
@@ -105,12 +112,12 @@ const TxList = connect(state => ({
                   stx={stx}
                   length={data.length}
                   key={i}
-                  last={data.length === i + 1}
+                  last={data.length - 1 === i}
                   item={item}
                 />
               ))
             ) : (
-              <Empty />
+              <Empty isFetching={isFetching} />
             )}
           </Flex>
         </Flex>

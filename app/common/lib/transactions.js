@@ -187,7 +187,6 @@ const generateTransaction = async (
       memo,
       signer
     );
-    console.log("RAW", rawTx);
     return {
       fee: tx.estimate,
       rawTx
@@ -243,6 +242,18 @@ const broadcastTransaction = async rawTx => {
   }
 };
 
+const fetchTransactionData = async txHash => {
+  try {
+    const response = await fetch(
+      `https://api.blockcypher.com/v1/btc/main/txs/${txHash}?includeHex=true`
+    ); // fetch out tx in hex data
+    const data = await response.json();
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const fetchJsonTxData = async txHash => {
   try {
     const response = await fetch(
@@ -274,5 +285,6 @@ export {
   broadcastTransaction,
   fetchRawTxData,
   fetchJsonTxData,
-  prepareTransaction
+  prepareTransaction,
+  fetchTransactionData
 };

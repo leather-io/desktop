@@ -12,13 +12,16 @@ import { btcToStx } from "@common/lib/addresses";
 
 const getIcon = (item, stx) => {
   const { operation, sender, recipient } = item;
-  if (sender && sender.stx) {
-    if (sender.stx === stx) {
-      return SendIcon;
-    } else {
-      return QrCode;
+  if (operation === "TOKEN_TRANSFER") {
+    {
+      if (sender === stx) {
+        return SendIcon;
+      } else {
+        return QrCode;
+      }
     }
   }
+
   switch (operation) {
     case "SENT":
       return SendIcon;
@@ -52,11 +55,10 @@ const Item = ({ last, length, ...rest }) => (
   <Hover>
     {({ hovered, bind }) => (
       <Flex
-        borderBottom={!last || length < 3 ? "1px solid" : undefined}
-        borderColor={!last || length < 3 ? "blue.mid" : undefined}
+        borderBottom={!last || length <= 3 ? "1px solid" : undefined}
+        borderColor={!last || length <= 3 ? "blue.mid" : undefined}
         alignItems="center"
         flexShrink={0}
-        flexGrow={length > 3 ? 1 : 0}
         bg={hovered ? "hsl(202, 40%, 97.5%)" : "white"}
         cursor={hovered ? "pointer" : undefined}
         px={4}
@@ -87,13 +89,16 @@ const Date = ({ date, ...rest }) =>
   ) : null;
 const getTitle = (item, stx) => {
   const { operation, sender, recipient } = item;
-  if (sender && sender.stx) {
-    if (sender.stx === stx) {
-      return `Sent Stacks`;
-    } else {
-      return `Received Stacks`;
+  if (operation === "TOKEN_TRANSFER") {
+    {
+      if (sender === stx) {
+        return `Sent Stacks`;
+      } else {
+        return `Received Stacks`;
+      }
     }
   }
+
   switch (operation) {
     case "SENT":
       return "Sent Stacks";
@@ -109,11 +114,13 @@ const getTitle = (item, stx) => {
 const getSubtitle = (item, stx) => {
   const { operation, sender, recipient, senderBitcoinAddress } = item;
 
-  if (sender && sender.stx) {
-    if (sender.stx === stx) {
-      return `To ${recipient}`;
-    } else {
-      return `From ${sender.stx}`;
+  if (operation === "TOKEN_TRANSFER") {
+    {
+      if (sender === stx) {
+        return `To ${recipient}`;
+      } else {
+        return `From ${sender}`;
+      }
     }
   }
   if (operation === "SENT") {
@@ -124,7 +131,15 @@ const getSubtitle = (item, stx) => {
   }
 };
 
-const Details = ({ operation, recipient, pending, item, stx, ...rest }) => (
+const Details = ({
+  operation,
+  recipient,
+  pending,
+  invalid,
+  item,
+  stx,
+  ...rest
+}) => (
   <Flex flexDirection={"column"} flexGrow={1} maxWidth="100%" overflow="hidden">
     <Type pb={1} display={"inline-flex"} alignItems="center" fontWeight={500}>
       {getTitle(item, stx)}
@@ -140,6 +155,19 @@ const Details = ({ operation, recipient, pending, item, stx, ...rest }) => (
           letterSpacing="1px"
         >
           PENDING
+        </Type>
+      ) : invalid ? (
+        <Type
+          ml={2}
+          bg="blue.mid"
+          lineHeight="1rem"
+          borderRadius={6}
+          py={"1px"}
+          px={"5px"}
+          fontSize={"9px"}
+          letterSpacing="1px"
+        >
+          INVALID
         </Type>
       ) : null}
     </Type>
@@ -178,9 +206,11 @@ const TxItem = ({ last, item, length, stx, ...rest }) => {
     recipient,
     blockTime,
     pending,
+    invalid,
     valueStacks,
     tokenAmountReadable,
-    time
+    time,
+    received
   } = item;
   return (
     <OpenModal
@@ -190,10 +220,13 @@ const TxItem = ({ last, item, length, stx, ...rest }) => {
     >
       {({ bind }) => (
         <Item {...bind} last={last} length={length}>
-          {blockTime || time ? <Date date={blockTime || time * 1000} /> : null}
+          {blockTime || time || received ? (
+            <Date date={blockTime || time * 1000 || received} />
+          ) : null}
           <TypeIcon mr={3} item={item} stx={stx} />
           <Details
             pending={pending}
+            invalid={invalid}
             operation={operation}
             recipient={recipient}
             item={item}

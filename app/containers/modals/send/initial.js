@@ -14,6 +14,7 @@ const InitialScreen = ({
   type,
   handleChange,
   handleValidation,
+  pendingBalance,
   ...rest
 }) => (
   <Wrapper hide={hide}>
@@ -30,7 +31,7 @@ const InitialScreen = ({
     <Field
       name="amount"
       overlay="STX"
-      label="Amount"
+      label="Amount to Send"
       onChange={e => handleChange(e, setState, "amount")}
       type="number"
       error={state.errors.amount}
@@ -49,10 +50,15 @@ const InitialScreen = ({
     {children
       ? children({
           next: {
+            props: {
+              disabled: state.processing
+            },
+            label: state.processing ? "Loading..." : "Continue",
             action: () =>
               handleValidation(
                 sender,
                 balance,
+                pendingBalance,
                 state.values,
                 setState,
                 nextView,

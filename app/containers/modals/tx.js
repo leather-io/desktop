@@ -6,16 +6,16 @@ import { Value } from "@components/stacks";
 import { TypeIcon } from "@components/transaction-item";
 import { StaticField } from "@components/field";
 
-const TxAmounts = ({ amount, ...rest }) => (
+const TxAmounts = ({ amount, fees, ...rest }) => (
   <Flex py={4} px={6} flexDirection="column" justifyContent="center">
     <Label>Amount</Label>
     <Flex>
       <Value fontSize={6} amount={amount} micro suffix="STX" />
     </Flex>
-    {/*<Label pt={4} pb={0}>*/}
-    {/*Fees*/}
-    {/*</Label>*/}
-    {/*<Value fontSize={2} fontWeight={500} amount={amount} suffix="BTC" micro />*/}
+    <Label pt={4} pb={0}>
+      Fees
+    </Label>
+    <Value fontSize={2} fontWeight={500} amount={fees} suffix="BTC" satoshis />
   </Flex>
 );
 
@@ -32,7 +32,7 @@ const OperationTypeSection = ({ item, stx, ...rest }) => (
     alignSelf={"stretch"}
   >
     <TypeIcon mb={2} size={72} item={item} stx={stx} />
-    <Label pb={0}>{item.operation === "SENT" ? "Sent" : "Received"}</Label>
+    <Label pb={0}>{item.sender === stx ? "Sent" : "Received"}</Label>
     <Label pb={0}>Stacks</Label>
   </Flex>
 );
@@ -49,7 +49,9 @@ const TxDetailsModal = ({ hide, visible, tx, stx, ...rest }) => {
     tokenAmount,
     recipientBitcoinAddress,
     recipient,
-    operation
+    operation,
+    memo,
+    fees
   } = tx;
 
   const items = [
@@ -61,7 +63,7 @@ const TxDetailsModal = ({ hide, visible, tx, stx, ...rest }) => {
       }`
     },
     {
-      label: "Recipient (Stacks)",
+      label: "Recipient",
       value: recipient,
       link: `https://explorer.blockstack.org/address/stacks/${recipient}`
     },
@@ -73,9 +75,9 @@ const TxDetailsModal = ({ hide, visible, tx, stx, ...rest }) => {
     {
       label: "BTC Block",
       value: block_id,
-      link: `https://explorer.blockstack.org/blocks/${block_id}`
+      link: `https://explorer.blockstack.org/block/${block_id}`
     },
-    { label: "Memo", value: scratchData }
+    { label: "Memo", value: memo || scratchData }
   ];
   return (
     <Modal title="Transaction Details" hide={hide} p={0}>
@@ -95,20 +97,18 @@ const TxDetailsModal = ({ hide, visible, tx, stx, ...rest }) => {
           borderColor="blue.mid"
           alignItems="center"
           flexShrink={0}
+          boxShadow="card"
         >
           <OperationTypeSection item={tx} stx={stx} />
-          <TxAmounts amount={tokenAmount || amount} />
+          <TxAmounts fees={fees} satoshis amount={tokenAmount || amount} />
         </Flex>
       </Flex>
-      <Flex flexDirection="column" p={4} flexShrink={0}>
+      <Flex flexDirection="column" p={4} pb={0} flexShrink={0}>
         {items.map(({ label, value, link }, i) =>
           value && value !== "" ? (
             <StaticField key={i} label={label} value={value} link={link} />
           ) : null
         )}
-        <Buttons>
-          <Button onClick={hide}>Close</Button>
-        </Buttons>
       </Flex>
     </Modal>
   );

@@ -1,8 +1,14 @@
 import React from "react";
 import { Flex, Type, Button, Buttons } from "blockstack-ui/dist";
 import { formatLargeNumber } from "@utils";
-const Value = ({ micro, amount, suffix, ...rest }) => {
-  const adjustedValue = micro ? parseInt(amount) / 1000000 : amount;
+import { satoshisToBtc } from "@utils/utils";
+
+const Value = ({ micro, amount, suffix, satoshis, ...rest }) => {
+  const adjustedValue = micro
+    ? parseInt(amount) / 1000000
+    : satoshis
+    ? satoshisToBtc(amount)
+    : amount;
   const hasMicroStacks = adjustedValue.toString().includes(".");
   const value = hasMicroStacks
     ? adjustedValue.toString().split(".")

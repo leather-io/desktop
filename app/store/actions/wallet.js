@@ -40,7 +40,8 @@ import {
   generateTransaction,
   broadcastTransaction,
   fetchRawTxData,
-  fetchJsonTxData
+  fetchJsonTxData,
+  fetchTransactionData
 } from "@common/lib/transactions";
 import {
   TOGGLE_MODAL,
@@ -69,32 +70,27 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
     const data = await fetchStxAddressDetails(address);
     const btcData = await fetchBtcAddressData(btcAddress);
     const txs = btcData && btcData.txs && btcData.txs.length ? btcData.txs : [];
-
-    let pendingTxs = [];
-    const rawTxs = await Promise.all(
+    const rawtxs = await Promise.all(
       txs.map(async tx => {
-        const jsonData = await fetchJsonTxData(tx.hash);
-        const rawTxData = await fetchRawTxData(tx.hash);
-        if (!rawTxData) return;
+        if (!tx.hex) return;
         try {
-          const transaction = decodeRawTx(rawTxData);
+          const transaction = await decodeRawTx(tx.hex);
+          if (transaction.opcode !== "$") {
+            return;
+          }
+
           if (!transaction) return;
-          const sender = transaction
-            ? {
-                btc: jsonData.inputs[0] && jsonData.inputs[0].prev_out.addr,
-                stx:
-                  jsonData.inputs[0] &&
-                  btcToStx(jsonData.inputs[0].prev_out.addr)
-              }
-            : null;
           return {
             ...transaction,
-            block_height: jsonData.block_height,
-            inputs: jsonData.inputs,
-            out: jsonData.out,
-            time: jsonData.time,
-            txid: tx.hash,
-            sender
+            confirmations: tx.confirmations,
+            block_height: tx.block_height,
+            block_hash: tx.block_hash,
+            inputs: tx.inputs,
+            outputs: tx.outputs,
+            time: tx.time,
+            confirmed: tx.confirmed,
+            received: tx.received,
+            txid: tx.hash
           };
         } catch (e) {
           console.log(e);
@@ -103,35 +99,30 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
       })
     );
 
-    if (
-      (rawTxs.length && data.history.length) ||
-      (rawTxs.length && !data.history.length)
-    ) {
-      if (rawTxs.length !== data.history.length) {
-        pendingTxs = rawTxs
-          .filter(item => item) // remove null items
-          .filter(
-            rawTx =>
-              !data.history.find(
-                historicalTx =>
-                  historicalTx.consensusHash === rawTx.consensusHash
-              )
-          )
-          .map(tx => ({ ...tx, pending: true }));
-      }
-    }
-    const transactions = rawTxs
+    const rawTxs = rawtxs
       .filter(item => item) // remove null items
-      .filter(rawTx =>
+      .map(tx => ({
+        ...tx,
+        pending: Number(tx.confirmations) < 6,
+        invalid:
+          Number(tx.confirmations) >= 6 &&
+          !data.history.find(historical => historical.txid === tx.txid) // if this is true, and is still displayed, it's an invalid stacks tx
+      }));
+
+    const transactions = rawTxs.map(thisTx => {
+      const additionalData =
         data.history.find(
-          historicalTx => historicalTx.consensusHash === rawTx.consensusHash
-        )
-      );
+          historicalTx => historicalTx && historicalTx.txid === thisTx.txid
+        ) || {};
+      return {
+        ...additionalData,
+        ...thisTx
+      };
+    });
     dispatch({
       type: FETCH_ADDRESS_DATA_FINISHED,
       payload: {
         ...data,
-        pendingTxs,
         transactions
       }
     });
@@ -433,6 +424,7 @@ const doBroadcastTransaction = rawTx => async (dispatch, state) => {
       type: WALLET_BROADCAST_TRANSACTION_FINISHED,
       payload: txHash
     });
+    doRefreshData(false)(dispatch, state);
     doNotify({
       title: "Success!",
       message: "Your transaction has been submitted!"

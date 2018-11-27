@@ -6,12 +6,18 @@ import { prepareTransaction } from "@common/lib/transactions";
 const handleValidation = (
   sender,
   currentBalance,
+  pendingBalance,
   values,
   setState,
   nextView,
   type
 ) => {
   const { recipient, amount, memo } = values;
+
+  const availableBalance =
+    pendingBalance && pendingBalance < currentBalance
+      ? pendingBalance
+      : currentBalance;
 
   let errors = {};
 
@@ -27,7 +33,7 @@ const handleValidation = (
     errors.recipient = "Please enter a valid Stacks address.";
   }
 
-  if (!errors.amount && !(Number(currentBalance) >= Number(amount))) {
+  if (!errors.amount && !(Number(availableBalance) >= Number(amount))) {
     errors.amount = "You don't have enough Stacks!";
   }
 
@@ -48,6 +54,10 @@ const handleValidation = (
     return null;
   }
 
+  setState({
+    processing: true
+  });
+
   return prepareTransaction(
     sender,
     values.recipient,
@@ -55,21 +65,23 @@ const handleValidation = (
     type,
     values.memo || ""
   ).then(tx => {
-    console.log("ESTIMATE TX", tx);
     if (tx.error) {
       setState({
-        errors: tx
+        errors: tx,
+        processing: false
       });
       return nextView();
     }
     if (Object.entries(errors).length) {
       setState({
-        errors
+        errors,
+        processing: false
       });
       return null;
     } else {
       setState({
-        errors
+        errors,
+        processing: false
       });
       nextView();
     }

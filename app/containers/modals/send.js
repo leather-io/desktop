@@ -6,7 +6,8 @@ import {
   selectWalletBalance,
   selectWalletType,
   selectWalletStacksAddress,
-  selectWalletError
+  selectWalletError,
+  selectPendingBalance
 } from "@stores/selectors/wallet";
 import { microToStacks } from "@utils/utils";
 import {
@@ -57,6 +58,7 @@ const Navigation = ({ next, secondary }) => (
 );
 const mapStateToProps = state => ({
   balance: microToStacks(selectWalletBalance(state)),
+  pendingBalance: microToStacks(selectPendingBalance(state)),
   type: selectWalletType(state),
   sender: selectWalletStacksAddress(state),
   error: selectWalletError(state)
@@ -91,7 +93,7 @@ class SendComponent extends React.Component {
       type,
       sender,
       error,
-      ...rest
+      pendingBalance,
     } = this.props;
 
     let Component;
@@ -123,6 +125,7 @@ class SendComponent extends React.Component {
       view: this.state.view,
       setState: (...args) => this.setState(...args),
       balance,
+      pendingBalance,
       type,
       sender,
       error,

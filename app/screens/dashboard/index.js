@@ -12,7 +12,8 @@ import {
   selectWalletLoading,
   selectWalletData,
   selectPendingTxs,
-  selectWalletLastFetch
+  selectWalletLastFetch,
+  selectWalletIsFetching
 } from "@stores/selectors/wallet";
 import { Loading } from "@components/loading";
 import { ReceiveButton } from "@containers/balance";
@@ -113,7 +114,14 @@ const NewWallet = ({ doRefreshData, ...rest }) => (
     </Card>
   </Flex>
 );
-const Dashboard = ({ loading, data, style, doRefreshData, ...rest }) =>
+const Dashboard = ({
+  loading,
+  data,
+  style,
+  doRefreshData,
+  fetching,
+  ...rest
+}) =>
   loading ? (
     <Loading style={style} bg="blue.dark" />
   ) : (
@@ -126,11 +134,11 @@ const Dashboard = ({ loading, data, style, doRefreshData, ...rest }) =>
           <>
             <Balance />
             <TxList
-              title="Recent Activity"
+              title="Transaction History"
               contentHeader={<TableHeader items={tableHeadItems} />}
               action={{
-                label: "Refresh",
-                onClick: doRefreshData
+                label: fetching ? "Loading..." : "Refresh",
+                onClick: fetching ? () => null : doRefreshData
               }}
             />
           </>
@@ -142,7 +150,8 @@ const Dashboard = ({ loading, data, style, doRefreshData, ...rest }) =>
 const mapStateToProps = state => ({
   loading: selectWalletLoading(state),
   data: selectWalletData(state),
-  pending: selectPendingTxs(state)
+  pending: selectPendingTxs(state),
+  fetching: selectWalletIsFetching(state)
 });
 
 export default connect(

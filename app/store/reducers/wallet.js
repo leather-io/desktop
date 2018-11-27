@@ -51,6 +51,8 @@ export const initialState = {
   transactions: [],
   type: null,
   data: null,
+  fetchingBalances: false,
+  fetchingAddressData: false,
   loading: false,
   signing: false,
   broadcasting: false,
@@ -96,16 +98,16 @@ const reducer = (state = initialState, { type, payload }) =>
        * fetching latest balances
        */
       case FETCH_BALANCES_STARTED:
-        draft.fetching = true;
+        draft.fetchingBalances = true;
         break;
       case FETCH_BALANCES_FINISHED:
-        draft.fetching = false;
+        draft.fetchingBalances = false;
         payload.forEach(coin => {
           draft.balances[coin.type] = coin.balance;
         });
         break;
       case FETCH_BALANCES_ERROR:
-        draft.fetching = false;
+        draft.fetchingBalances = false;
         draft.error = payload;
         draft.lastAttempt = new Date();
         break;
@@ -129,6 +131,8 @@ const reducer = (state = initialState, { type, payload }) =>
         draft.broadcasting = false;
         draft.lastFetch = null;
         draft.lastAttempt = null;
+        draft.fetchingBalances = false;
+        draft.fetchingAddressData = false;
         draft.error = null;
         break;
       /**
@@ -151,16 +155,16 @@ const reducer = (state = initialState, { type, payload }) =>
        * Fetch tx history
        */
       case FETCH_ADDRESS_DATA_STARTED:
-        draft.fetching = true;
+        draft.fetchingAddressData = true;
         break;
       case FETCH_ADDRESS_DATA_FINISHED:
-        draft.fetching = false;
+        draft.fetchingAddressData = false;
         draft.lastFetch = new Date();
         draft.lastAttempt = null;
         draft.data = payload;
         break;
       case FETCH_ADDRESS_DATA_ERROR:
-        draft.fetching = false;
+        draft.fetchingAddressData = false;
         draft.error = payload;
         draft.lastAttempt = new Date();
         break;

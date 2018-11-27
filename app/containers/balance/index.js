@@ -12,10 +12,14 @@ import { connect } from "react-redux";
 import {
   selectWalletData,
   selectWalletType,
-  selectWalletBalance
+  selectWalletBalance,
+  selectPendingBalance
 } from "@stores/selectors/wallet";
+import { microToStacks } from "stacks-utils";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { Notice } from "@components/notice";
+import numeral from "numeral";
+const formatValue = value => numeral(value).format("0.000000");
 
 const funct = ({ visible, hide }) => (
   <ReceiveModal hide={hide} visible={visible} />
@@ -31,10 +35,7 @@ export const ReceiveButton = ({ ...rest }) => (
   </OpenModal>
 );
 const SendButton = ({ ...rest }) => (
-  <OpenModal
-    component={({ visible, hide }) => (<Send hide={hide} />
-    )}
-  >
+  <OpenModal component={({ visible, hide }) => <Send hide={hide} />}>
     {({ bind }) => (
       <Button
         icon={SendIcon}
@@ -52,8 +53,9 @@ const SendButton = ({ ...rest }) => (
 
 const BalanceSection = connect(state => ({
   data: selectWalletData(state),
+  pendingBalance: selectPendingBalance(state),
   balance: selectWalletBalance(state)
-}))(({ value, balance, data, ...rest }) => {
+}))(({ value, balance, data, pendingBalance, ...rest }) => {
   return (
     <State initial={{ view: "balance" }}>
       {({ state, setState }) => (
@@ -105,6 +107,13 @@ const BalanceSection = connect(state => ({
               {data.totalUnlockedStacks}{" "}
               <Type color="hsl(205, 30%, 70%)">STX</Type>{" "}
               <Type color="hsl(205, 30%, 70%)">Unlocked</Type>
+            </Type>
+          ) : null}
+          {pendingBalance ? (
+            <Type fontWeight="500">
+              <Type color="hsl(205, 30%, 70%)">Pending Balance:</Type>{" "}
+              {formatValue(microToStacks(pendingBalance))}{" "}
+              <Type color="hsl(205, 30%, 70%)">STX</Type>{" "}
             </Type>
           ) : null}
         </Flex>

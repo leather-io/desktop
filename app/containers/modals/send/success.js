@@ -58,6 +58,7 @@ const Success = ({
       {children
         ? children({
             next: {
+              label: "Close",
               action: () => hide()
             }
           })

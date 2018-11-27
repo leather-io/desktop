@@ -12892,10 +12892,10 @@ stack-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.1.tgz#d4f33ab54e8e38778b0ca5cfd3b3afb12db68620"
   integrity sha1-1PM6tU6OOHeLDKXP07OvsS22hiA=
 
-stacks-utils@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/stacks-utils/-/stacks-utils-0.0.6.tgz#350fc5e650c215245564568a01460468328a57a5"
-  integrity sha512-L7pZVgpUOKHl4DDqCrqYxzWjb9W6RDPY++ZL9qb+EwkhFXB7pke96jywLkWYOnIZjlqFjtUMON8TKLsUU64H6w==
+stacks-utils@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/stacks-utils/-/stacks-utils-0.1.0.tgz#135fda0ed6f14e09f7900b62739b2b2fcc5f5727"
+  integrity sha512-v3WfmrRqPa2ZG2/oiydKHy0QaNho4RHiqDCd74dfchvJZGckCERnzK3RNHsDStYAXWVOeI4HXp5laOfvmOfyRA==
   dependencies:
     bigi "^1.4.2"
     bitcoinjs-lib "^4.0.2"

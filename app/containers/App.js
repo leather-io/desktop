@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { selectWalletStacksAddress } from "@stores/selectors/wallet";
 import Modal from "@components/modal";
 import { ROUTES } from "../routes";
+import {createObserver} from "@stores/subscriptions";
 
 type Props = {
   children: React.Node

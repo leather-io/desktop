@@ -21,7 +21,7 @@ import { ButtonCombo } from "@containers/buttons/onboarding-navigation";
 import { doRefreshData } from "@stores/actions/wallet";
 import dayjs from "dayjs";
 import debounce from "lodash.debounce";
-
+import { Spinner } from "@components/spinner";
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const Content = ({ ...rest }) => (
@@ -137,7 +137,11 @@ const Dashboard = ({
               title="Transaction History"
               contentHeader={<TableHeader items={tableHeadItems} />}
               action={{
-                label: fetching ? "Loading..." : "Refresh",
+                label: fetching ? (
+                  <Spinner stroke={4} size={20} color="currentColor" />
+                ) : (
+                  "Refresh"
+                ),
                 onClick: fetching ? () => null : doRefreshData
               }}
             />

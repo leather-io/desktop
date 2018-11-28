@@ -29,8 +29,7 @@ import {
   getLedgerAddress,
   getTrezorAddress,
   convertStxAddressToBtcAddress,
-  fetchBtcAddressData,
-  btcToStx
+  fetchBtcAddressData
 } from "@common/lib/addresses";
 import {
   selectWalletBitcoinAddress,
@@ -38,13 +37,9 @@ import {
 } from "@stores/selectors/wallet";
 import {
   generateTransaction,
-  broadcastTransaction,
-  fetchRawTxData,
-  fetchJsonTxData,
-  fetchTransactionData
+  broadcastTransaction
 } from "@common/lib/transactions";
 import {
-  TOGGLE_MODAL,
   TOGGLE_MODAL_KEEP_OPEN,
   TOGGLE_MODAL_CLOSE
 } from "@stores/reducers/app";
@@ -67,20 +62,28 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
     dispatch({
       type: FETCH_ADDRESS_DATA_STARTED
     });
-    const data = await fetchStxAddressDetails(address);
-    const btcData = await fetchBtcAddressData(btcAddress);
+    const fetches = await Promise.all([
+      fetchStxAddressDetails(address),
+      fetchBtcAddressData(btcAddress)
+    ]);
+    if (!fetches) return null;
+    const data = fetches[0];
+    const btcData = fetches[1];
     const txs = btcData && btcData.txs && btcData.txs.length ? btcData.txs : [];
+
+    // decode the raw tx to get at the stacks data
     const rawtxs = await Promise.all(
       txs.map(async tx => {
         if (!tx.hex) return;
         try {
-          const transaction = await decodeRawTx(tx.hex);
+          const transaction = await decodeRawTx(tx.hex, false);
           if (!transaction) return;
           if (transaction.opcode !== "$") {
             return;
           }
           return {
             ...transaction,
+            fees: tx.fees,
             confirmations: tx.confirmations,
             block_height: tx.block_height,
             block_hash: tx.block_hash,
@@ -99,16 +102,20 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
       })
     );
 
+    // - remove null items
+    // - add pending state
+    // - determine if invalid
     const rawTxs = rawtxs
       .filter(item => item) // remove null items
       .map(tx => ({
         ...tx,
-        pending: Number(tx.confirmations) < 6,
+        pending: Number(tx.confirmations) < 6, // blockstack core will either accept or deny a stx tx at 6+ confirmations from the bitcoin blockchain
         invalid:
           Number(tx.confirmations) >= 6 &&
           !data.history.find(historical => historical.txid === tx.txid) // if this is true, and is still displayed, it's an invalid stacks tx
       }));
 
+    // merge the items from the historical api
     const transactions = rawTxs.map(thisTx => {
       const additionalData =
         data.history.find(
@@ -127,7 +134,7 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
       }
     });
   } catch (e) {
-    console.log("error!", e.message);
+    console.error("doFetchStxAddressData error: ", e.message);
     dispatch({
       type: FETCH_ADDRESS_DATA_ERROR,
       payload: e.message
@@ -441,9 +448,6 @@ const doBroadcastTransaction = rawTx => async (dispatch, state) => {
     });
   }
 };
-
-// const doBroadcastTransaction = () => null;
-// const doSignTransaction = () => null;
 
 export {
   doClearError,

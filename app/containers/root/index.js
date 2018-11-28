@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import { ThemeProvider } from "styled-components";
 import { theme, Flex } from "blockstack-ui";
-import Routes from "../routes";
+import Routes from "../../routes";
 import { GlobalStyles } from "@components/global-styles";
 
 const Root = ({ store, history, ...rest }) => (

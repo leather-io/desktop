@@ -33,7 +33,7 @@
     },
     "win": {
       "target": [
-        "msi"
+        "nsis"
       ]
     },
     "linux": {
@@ -51,7 +51,7 @@
     }
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^4.24.0",
+    "@ledgerhq/hw-transport-node-hid": "4.16.0",
     "ablankstein-ledger-hw-app-btc": "^4.32.1",
     "bigi": "^1.4.2",
     "bip32": "^1.0.2",
@@ -100,7 +100,7 @@
     "setimmediate": "^1.0.5",
     "shortid": "^2.2.14",
     "source-map-support": "^0.5.6",
-    "stacks-utils": "^0.1.0",
+    "stacks-utils": "^0.1.1",
     "styled-components": "^4.0.3",
     "styled-icons": "^3.6.0",
     "styled-system": "^3.1.11",
@@ -256,7 +256,7 @@
     "build-e2e": "cross-env E2E_BUILD=true yarn build",
     "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
     "build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.babel.js --colors",
-    "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && cross-env START_HOT=1 yarn start-renderer-dev",
+    "dev": "cross-env START_MINIMIZED=true START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && cross-env START_HOT=1 yarn start-renderer-dev",
     "flow": "flow",
     "flow-typed": "rimraf flow-typed/npm && flow-typed install --overwrite || true",
     "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty .",
@@ -264,7 +264,7 @@
     "lint-styles": "stylelint --ignore-path .eslintignore '**/*.*(css|scss)' --syntax scss",
     "lint-styles-fix": "yarn --silent lint-styles --fix; exit 0",
     "package": "yarn build && electron-builder build --publish never",
-    "package-all": "yarn build && electron-builder build -mwl",
+    "package-all": "yarn build && electron-builder build -mw",
     "package-ci": "yarn postinstall && yarn build && electron-builder --publish always",
     "package-linux": "yarn build && electron-builder build --linux",
     "package-win": "yarn build && electron-builder build --win --x64",

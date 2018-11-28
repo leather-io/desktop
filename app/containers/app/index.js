@@ -6,12 +6,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { selectWalletStacksAddress } from "@stores/selectors/wallet";
 import Modal from "@components/modal";
-import { ROUTES } from "../routes";
-
+import { ROUTES } from "../../routes";
 import debounce from "lodash.debounce";
 import { raf, ric } from "@common/constants";
 import { APP_IDLE } from "@stores/reducers/app";
-
 
 const defaults = {
   idleTimeout: 30000,

@@ -1134,17 +1134,15 @@
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.7.0.tgz#b4363577017f94a7ab9417f030516c7dad9995d7"
   integrity sha512-oRzLa0T0ZvZhlpRwNeBq4U5SyFtb8e5kPkoMWtrTMmFoWu8A6xMGQjN2zaka4dA+d9771xGUVQ4uTLJeCurNaQ==
 
-"@ledgerhq/hw-transport-node-hid@^4.24.0":
-  version "4.24.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-4.24.0.tgz#8457969d66819e8f7f50d5dd96527ab26cd3787d"
-  integrity sha512-RA3ZlRM+6y/XL/sAFKUpuLIU5tsmEpDBwJEBKC+qdzG508Vl/kBJDMuQyo6pmx/YcKZrtjfKiXXQEXP9Fgk75w==
+"@ledgerhq/hw-transport-node-hid@4.16.0":
+  version "4.16.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-node-hid/-/hw-transport-node-hid-4.16.0.tgz#de8d7ffd37e01c77aed566d8c534fe3937c3c35c"
+  integrity sha1-3o1//TfgHHeu1WbYxTT+OTfDw1w=
   dependencies:
-    "@ledgerhq/hw-transport" "^4.24.0"
-    lodash "^4.17.11"
+    "@ledgerhq/hw-transport" "^4.15.0"
     node-hid "^0.7.2"
-    usb "^1.3.3"
 
-"@ledgerhq/hw-transport@^4.24.0":
+"@ledgerhq/hw-transport@^4.15.0", "@ledgerhq/hw-transport@^4.24.0":
   version "4.24.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.24.0.tgz#8def925d8c2e1f73d15128d9e27ead729870be58"
   integrity sha512-L34TG1Ss7goRB+5BxtvBwUuu0CmDSIxS33oUqkpEy6rCs31k7XicV48iUGAnRnt8hNY2DvJ9WFyaOroUE9h6wQ==
@@ -9050,7 +9048,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.0.0, lodash@^4.1.0, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.8.0, lodash@~4.17.10:
+lodash@^4.0.0, lodash@^4.1.0, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.8.0, lodash@~4.17.10:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
@@ -9616,7 +9614,7 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
-nan@^2.10.0, nan@^2.8.0, nan@^2.9.2:
+nan@^2.10.0, nan@^2.9.2:
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.11.1.tgz#90e22bccb8ca57ea4cd37cc83d3819b52eea6766"
   integrity sha512-iji6k87OSXa0CcrLl9z+ZiYSuR2o+c0bGuNmXdrhTQTakxytAFsC56SArGYoiHlJlFoHSnvmhpceZJaXkVuOtA==
@@ -12899,10 +12897,10 @@ stack-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.1.tgz#d4f33ab54e8e38778b0ca5cfd3b3afb12db68620"
   integrity sha1-1PM6tU6OOHeLDKXP07OvsS22hiA=
 
-stacks-utils@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/stacks-utils/-/stacks-utils-0.1.0.tgz#135fda0ed6f14e09f7900b62739b2b2fcc5f5727"
-  integrity sha512-v3WfmrRqPa2ZG2/oiydKHy0QaNho4RHiqDCd74dfchvJZGckCERnzK3RNHsDStYAXWVOeI4HXp5laOfvmOfyRA==
+stacks-utils@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/stacks-utils/-/stacks-utils-0.1.1.tgz#4d0bf79cf08f5264d8f86794dcd5c58c6bbbc0fb"
+  integrity sha512-3OlZab8ac5mtA9polY1XUDYh8lMl+laoKznIRKuTy8sL4wISNg8SVps7JTAnSaYM7E+b4zteWCBRN1jJolKQ/g==
   dependencies:
     bigi "^1.4.2"
     bitcoinjs-lib "^4.0.2"
@@ -14196,14 +14194,6 @@ url@^0.11.0, url@~0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
-
-usb@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/usb/-/usb-1.3.3.tgz#4e8a4b44ab8833fa1c4fb99778ebae1d2d626970"
-  integrity sha512-WRBxI54yEs2QPj28G6kITI3Wu7VxrtHbqiDvDRUDKdg97lcK1pTP8y9LoDWF22OiCCrEvrdeq0lNcr84QOzjXQ==
-  dependencies:
-    nan "^2.8.0"
-    node-pre-gyp "^0.10.0"
 
 use@^3.1.0:
   version "3.1.1"

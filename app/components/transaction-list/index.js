@@ -1,9 +1,11 @@
 import React from "react";
-import { Flex, Type, Card } from "blockstack-ui/dist";
+import { Flex, Type, Card, Scrollbars } from "blockstack-ui/dist";
+
 import { Hover } from "react-powerplug";
 import { TxItem } from "@components/transaction-item";
 import { LayersOffOutlineIcon, LoadingIcon } from "mdi-react";
 import { connect } from "react-redux";
+import { Spinner } from "@components/spinner";
 import {
   selectWalletHistory,
   selectPendingTxs,
@@ -13,7 +15,7 @@ import {
 } from "@stores/selectors/wallet";
 
 const Empty = ({ isFetching, ...rest }) => {
-  const Icon = isFetching ? LoadingIcon : LayersOffOutlineIcon;
+  const Icon = isFetching ? Spinner : LayersOffOutlineIcon;
   const message = isFetching ? "Loading..." : "No Transaction History";
   return (
     <Flex
@@ -23,7 +25,11 @@ const Empty = ({ isFetching, ...rest }) => {
       color="hsl(205, 30%, 70%)"
       flexDirection="column"
     >
-      <Icon size={80} />
+      <Icon
+        color="currentColor"
+        stroke={isFetching ? 3 : undefined}
+        size={isFetching ? 50 : 80}
+      />
       <Flex pt={3}>
         <Type fontSize={2} fontWeight={700}>
           {message}
@@ -89,7 +95,7 @@ const TxList = connect(state => ({
           bg="white"
         >
           <Type fontWeight={500}>{title}</Type>
-          {action ? <Action {...action} /> : null}
+          {data && data.length && action ? <Action {...action} /> : null}
         </Flex>
         {data && data.length && contentHeader ? contentHeader : null}
         <Flex

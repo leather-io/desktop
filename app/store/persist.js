@@ -3,7 +3,7 @@ import getPersistMiddleware from "../reduxpersist";
 import {
   ADD_WALLET_ADDRESS,
   FETCH_ADDRESS_DATA_FINISHED,
-  FETCH_BALANCES_FINISHED,
+  FETCH_BALANCES_FINISHED
 } from "./reducers/wallet";
 
 const storage = ({ electronStore, electronStoreOpts } = {}) => {
@@ -50,7 +50,7 @@ const persistMiddleware = () =>
   });
 
 const clearCache = async () =>
-  Promise.all(keysToWatch.forEach(key => storage().remove(key)));
+  Promise.all(keysToWatch.map(async key => storage().remove(key)));
 
 const getAll = async () => {
   const data = {};

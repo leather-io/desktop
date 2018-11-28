@@ -1,6 +1,6 @@
 {
-  "name": "stacks-wallet",
-  "description": "Stacks Wallet Beta",
+  "name": "stacks-wallet-1",
+  "description": "Stacks Wallet Beta 1",
   "version": "1.0.0",
   "author": {
     "name": "Blockstack PBC",
@@ -8,8 +8,8 @@
   },
   "browserslist": "electron 1.6",
   "build": {
-    "productName": "Stacks Wallet Beta",
-    "appId": "org.blockstack.stacks-wallet-beta",
+    "productName": "Stacks Wallet Beta 1",
+    "appId": "org.blockstack.stacks-wallet-beta-1",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -51,7 +51,7 @@
     }
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "4.16.0",
+    "@ledgerhq/hw-transport-node-hid": "^4.24.0",
     "ablankstein-ledger-hw-app-btc": "^4.32.1",
     "bigi": "^1.4.2",
     "bip32": "^1.0.2",
@@ -252,7 +252,7 @@
   ],
   "main": "./app/main.prod.js",
   "license": "MIT",
-  "productName": "StacksWallet",
+  "productName": "StacksWalletBeta",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",

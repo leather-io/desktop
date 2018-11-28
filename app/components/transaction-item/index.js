@@ -222,7 +222,7 @@ const TxItem = ({ last, item, length, stx, ...rest }) => {
       )}
     >
       {({ bind }) => (
-        <Item {...bind} last={last} length={length}>
+        <Item {...bind} last={last} length={length} {...rest}>
           {blockTime || time || received ? (
             <Date date={blockTime || time * 1000 || received} />
           ) : null}

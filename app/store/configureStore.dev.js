@@ -7,7 +7,7 @@ import rootReducer from "./reducers";
 const history = createHistory();
 import { persistMiddleware } from "@stores/persist";
 
-const configureStore = (initialState, cache) => {
+const configureStore = initialState => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -29,8 +29,7 @@ const configureStore = (initialState, cache) => {
   // Router Middleware
   const router = routerMiddleware(history);
   middleware.push(router);
-
-  middleware.push(persistMiddleware(cache));
+  middleware.push(persistMiddleware());
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
@@ -46,7 +45,6 @@ const configureStore = (initialState, cache) => {
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers(...enhancers);
 
-  console.log("initialState", initialState);
   // Create Store
   const store = createStore(rootReducer(history), initialState, enhancer);
 

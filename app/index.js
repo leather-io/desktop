@@ -3,16 +3,10 @@ import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
 import Root from "@containers/root";
 import { configureStore, history } from "./store/configureStore";
-import ElectronStore from "electron-store";
-export const cache = new ElectronStore({
-  name: "stacks-wallet"
-});
-import { initialState } from "@stores/reducers/wallet";
-
 import { getAll } from "@stores/persist";
 
-getAll(cache).then(data => {
-  const { store } = configureStore(data || {}, cache);
+getAll().then(data => {
+  const { store } = configureStore(data || {});
 
   render(
     <AppContainer>

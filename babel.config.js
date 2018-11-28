@@ -2,13 +2,12 @@
 
 const developmentEnvironments = ["development", "test"];
 
-const developmentPlugins = [require("react-hot-loader/babel")];
+const developmentPlugins = [];
 
 const productionPlugins = [
   require("babel-plugin-dev-expression"),
 
   // babel-preset-react-optimize
-  require("@babel/plugin-transform-react-constant-elements"),
   require("@babel/plugin-transform-react-inline-elements"),
   require("babel-plugin-transform-react-remove-prop-types")
 ];
@@ -31,6 +30,7 @@ module.exports = api => {
       [require("@babel/preset-react"), { development }]
     ],
     plugins: [
+      require("react-hot-loader/babel"),
       require("@babel/plugin-transform-destructuring"),
       require("@babel/plugin-transform-regenerator"),
       require("@babel/plugin-transform-runtime"),

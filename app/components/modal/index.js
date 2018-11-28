@@ -72,7 +72,7 @@ class ModalRoot extends React.Component {
     comp: null,
     previous: null,
     visible: false,
-    alert: null,
+    alert: null
   };
 
   componentWillUnmount() {
@@ -192,17 +192,20 @@ class ModalRoot extends React.Component {
 
 export const ModalConsumer = ModalContext.Consumer;
 
-export const OpenModal = ({ component, children, title, content, ...rest }) => (
-  <ModalConsumer>
-    {({ visible, show, hide }) =>
-      children({
-        bind: {
-          onClick: () => show(component)
-        }
-      })
-    }
-  </ModalConsumer>
-);
+export const OpenModal = props => {
+  const { component, children, title, content, ...rest } = props;
+  return (
+    <ModalConsumer>
+      {({ visible, show, hide }) =>
+        children({
+          bind: {
+            onClick: () => show(component)
+          }
+        })
+      }
+    </ModalConsumer>
+  );
+};
 
 export default connect(state => ({
   preventClose: selectToggleModal(state)

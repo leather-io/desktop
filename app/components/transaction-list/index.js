@@ -117,7 +117,7 @@ const TxList = connect(state => ({
                 <TxItem
                   stx={stx}
                   length={data.length}
-                  key={i}
+                  key={item.txid}
                   last={data.length - 1 === i}
                   item={item}
                 />

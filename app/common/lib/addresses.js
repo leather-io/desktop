@@ -2,7 +2,7 @@ import bip32 from "bip32";
 import crypto from "crypto";
 import { network, transactions, config } from "blockstack";
 import { c32address, c32ToB58, versions, b58ToC32 } from "c32check";
-import TrezorConnect from "../../../trezor/trezor";
+import TrezorConnect from "@vendor/trezor";
 import { PATH } from "@common/constants";
 import AppBtc from "@ledgerhq/hw-app-btc";
 import Transport from "@ledgerhq/hw-transport-node-hid";

@@ -26,7 +26,7 @@ import { push } from "connected-react-router";
 import { doNotify, doNotifyWarning } from "@stores/reducers/notifications";
 import { fetchBtcBalance, fetchStxBalance } from "@common/lib/balances";
 import { doPersistState } from "@stores/actions/app";
-import { clearCache } from "@stores/persist";
+import { clearCache } from "@stores/persist/index";
 import {
   getLedgerAddress,
   getTrezorAddress,

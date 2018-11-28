@@ -5,7 +5,7 @@ import { routerMiddleware } from "connected-react-router";
 import { createLogger } from "redux-logger";
 import rootReducer from "./reducers";
 const history = createHistory();
-import { persistMiddleware } from "@stores/persist";
+import { persistMiddleware } from "@stores/persist/index";
 
 const configureStore = initialState => {
   // Redux Configuration

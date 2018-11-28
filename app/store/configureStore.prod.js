@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import createHistory from "history/createHashHistory";
 import { routerMiddleware } from "connected-react-router";
 import rootReducer from "./reducers";
-import { persistMiddleware } from "@stores/persist";
+import { persistMiddleware } from "@stores/persist/index";
 const history = createHistory();
 
 const configureStore = initialState => {

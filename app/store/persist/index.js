@@ -1,10 +1,10 @@
 import Store from "electron-store";
-import getPersistMiddleware from "../reduxpersist";
+import getPersistMiddleware from "./getPersistMiddleware";
 import {
   ADD_WALLET_ADDRESS,
   FETCH_ADDRESS_DATA_FINISHED,
   FETCH_BALANCES_FINISHED
-} from "./reducers/wallet";
+} from "../reducers/wallet";
 
 const storage = ({ electronStore, electronStoreOpts } = {}) => {
   const store = electronStore || new Store(electronStoreOpts || {});

@@ -12,7 +12,7 @@ import { raf, ric } from "@common/constants";
 import { APP_IDLE } from "@stores/reducers/app";
 import { doPersistState } from "@stores/actions/app";
 import { reactShouldRefreshData } from "@stores/reactors/wallet";
-import { createObserver } from "@stores/subscriptions";
+import { createObserver } from "@stores/reactors/subscriptions";
 
 const defaults = {
   idleTimeout: 30000,

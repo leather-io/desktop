@@ -1,7 +1,7 @@
 import btc from "bitcoinjs-lib";
 import { config as bskConfig } from "blockstack";
-import { pathToPathArray, getCoinName } from "./utils";
-import TrezorConnect from "../../../trezor/trezor";
+import { pathToPathArray } from "./utils";
+import TrezorConnect from "../trezor/index";
 
 export class TrezorSigner {
   constructor(hdpath, address) {

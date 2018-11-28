@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Flex, Type, Input, Box, Buttons } from "blockstack-ui/dist";
+import React from "react";
+import { Flex } from "blockstack-ui/dist";
 import { Page } from "@components/page";
 import { HardwareSteps } from "@containers/hardware-steps";
 import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
 import { UsbIcon } from "mdi-react";
-import { doAddHardwareWallet, doFetchBalances } from "@stores/actions/wallet";
+import { doAddHardwareWallet } from "@stores/actions/wallet";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { connect } from "react-redux";
 export const trezorSteps = [

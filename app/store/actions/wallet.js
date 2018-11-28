@@ -305,10 +305,9 @@ const doFetchBalances = addresses => async (dispatch, state) => {
 };
 
 const doRefreshData = (notify = true) => (dispatch, state) => {
-  console.log("state", state());
   const stx = selectWalletStacksAddress(state());
   const btc = selectWalletBitcoinAddress(state());
-  notify && doNotify("Refreshing data...")(dispatch);
+  notify && doNotify("Refreshing data!")(dispatch);
   doFetchBalances({ stx, btc })(dispatch);
   doFetchStxAddressData(stx)(dispatch, state);
 };

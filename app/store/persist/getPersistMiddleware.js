@@ -1,12 +1,13 @@
-// src: https://github.com/HenrikJoreteg/redux-persist-middleware
-const IS_BROWSER = !!(
-  typeof window !== "undefined" || typeof self !== "undefined"
-);
-const fallback = cb => setTimeout(cb, 0);
-const ric =
-  typeof requestIdleCallback === "undefined" ? fallback : requestIdleCallback;
+import { ric } from "@common/utils";
+import { IS_BROWSER, IS_PROD } from "@common/constants";
 
-export default ({ cacheFn, actionMap, logger }) => ({
+/**
+ * getPersistMiddleware
+ *
+ * Redux persist middleware
+ * src: https://github.com/HenrikJoreteg/redux-persist-middleware
+ */
+const getPersistMiddleware = ({ cacheFn, actionMap, logger }) => ({
   getState
 }) => next => action => {
   const reducersToPersist = actionMap[action.type];
@@ -18,7 +19,7 @@ export default ({ cacheFn, actionMap, logger }) => ({
         Promise.all(
           reducersToPersist.map(key => cacheFn(key, state[key]))
         ).then(() => {
-          if (logger) {
+          if (logger && !IS_PROD) {
             logger(
               `cached ${reducersToPersist.join(", ")} due to ${action.type}`
             );
@@ -30,3 +31,5 @@ export default ({ cacheFn, actionMap, logger }) => ({
   }
   return res;
 };
+
+export default getPersistMiddleware;

@@ -1,14 +1,12 @@
-// @flow
 import React from "react";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "react-router-redux";
 import { ThemeProvider } from "styled-components";
 import { theme, Flex } from "blockstack-ui";
-import Routes from "../../routes";
 import { GlobalStyles } from "@components/global-styles";
-import { PersistGate } from "redux-persist/integration/react";
+import Routes from "@containers/routes";
 
-const Root = ({ store, history, ...rest }) => (
+const Root = ({ store, history }) => (
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <Flex flexGrow={1} flexDirection="column">

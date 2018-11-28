@@ -46,7 +46,7 @@ import {
   TOGGLE_MODAL_CLOSE
 } from "@stores/reducers/app";
 import { decodeRawTx } from "@utils/stacks";
-import { ROUTES } from "../../routes";
+import { ROUTES } from "@common/constants";
 
 const doClearError = () => dispatch =>
   dispatch({
@@ -64,13 +64,12 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
     dispatch({
       type: FETCH_ADDRESS_DATA_STARTED
     });
-    const fetches = await Promise.all([
-      fetchStxAddressDetails(address),
-      fetchBtcAddressData(btcAddress)
-    ]);
-    if (!fetches) return null;
-    const data = fetches[0];
-    const btcData = fetches[1];
+    const btcData = await fetchBtcAddressData(btcAddress);
+    try {
+      let data = await fetchStxAddressDetails(address);
+    } catch (e) {
+      let data = null;
+    }
     const txs = btcData && btcData.txs && btcData.txs.length ? btcData.txs : [];
 
     // decode the raw tx to get at the stacks data
@@ -114,15 +113,20 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
         pending: Number(tx.confirmations) < 6, // blockstack core will either accept or deny a stx tx at 6+ confirmations from the bitcoin blockchain
         invalid:
           Number(tx.confirmations) >= 6 &&
+          data &&
+          data.history &&
           !data.history.find(historical => historical.txid === tx.txid) // if this is true, and is still displayed, it's an invalid stacks tx
       }));
 
     // merge the items from the historical api
     const transactions = rawTxs.map(thisTx => {
       const additionalData =
-        data.history.find(
-          historicalTx => historicalTx && historicalTx.txid === thisTx.txid
-        ) || {};
+        (data &&
+          data.history &&
+          data.history.find(
+            historicalTx => historicalTx && historicalTx.txid === thisTx.txid
+          )) ||
+        {};
       return {
         ...additionalData,
         ...thisTx

@@ -29,6 +29,16 @@ const IS_BROWSER = HAS_WINDOW || typeof self !== "undefined";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 
+const ROUTES = {
+  TERMS: "/",
+  DASHBOARD: "/dashboard",
+  RESTORE_OPTIONS: "/restore-options",
+  RESTORE_HARDWARE: "/restore-hardware",
+  RESTORE_LEDGER: "/restore-ledger",
+  RESTORE_TREZOR: "/restore-trezor",
+  RESTORE_WATCH: "/restore-watch"
+};
+
 export {
   API_URL,
   BSKPK,
@@ -40,5 +50,6 @@ export {
   HAS_DEBUG_FLAG,
   HAS_WINDOW,
   IS_BROWSER,
-  IS_PROD
+  IS_PROD,
+  ROUTES
 };

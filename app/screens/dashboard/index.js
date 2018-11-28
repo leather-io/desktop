@@ -123,7 +123,7 @@ const Dashboard = ({
   <Flex style={style} bg="blue.light" flexGrow={1} maxWidth={"100%"}>
     <Content p={3} maxWidth={"100%"}>
       <Header />
-      {!loading && data && !data.success && !data.status ? (
+      {!loading && data && !data.transactions ? (
         <NewWallet fetching={fetching} doRefreshData={doRefreshData} />
       ) : (
         <>

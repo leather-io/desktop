@@ -7,7 +7,7 @@ import { LedgerLogo } from "@components/svg/ledger";
 import { TrezorLogo } from "@components/svg/trezor";
 import { Hover } from "react-powerplug";
 import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
-import { ROUTES } from "../../../routes";
+import { ROUTES } from "@common/constants";
 
 const Item = ({ title, icon: Icon, subtitle, to, ...rest }) => (
   <Hover>

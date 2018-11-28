@@ -5,13 +5,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { selectWalletStacksAddress } from "@stores/selectors/wallet";
 import Modal from "@components/modal";
-import { ROUTES } from "../../routes";
 import debounce from "lodash.debounce";
 import { raf, ric } from "@common/utils";
 import { APP_IDLE } from "@stores/reducers/app";
 import { doPersistState } from "@stores/actions/app";
 import { reactShouldRefreshData } from "@stores/reactors/wallet";
 import { createObserver } from "@stores/reactors/subscriptions";
+import { ROUTES } from "@common/constants";
+
 
 const defaults = {
   idleTimeout: 30000,

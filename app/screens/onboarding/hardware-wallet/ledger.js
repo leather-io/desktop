@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Flex, Type, Input, Box, Buttons } from "blockstack-ui/dist";
 import { Page } from "@components/page";
 import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
-import { ROUTES } from "../../../routes";
+import { ROUTES } from "@common/constants";
 import { BitcoinIcon, NoEntryIcon, UsbIcon, LockIcon } from "mdi-react";
 import { HardwareSteps } from "@containers/hardware-steps";
 import { doAddHardwareWallet, doFetchBalances } from "@stores/actions/wallet";

@@ -4,14 +4,13 @@ import {
   Flex,
   Type,
   Buttons,
-  Button,
-  Scrollbars
+  Button
 } from "blockstack-ui/dist";
 import { TermsOfUse } from "@components/terms-of-use";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { doAcceptTerms } from "@stores/actions/app";
-import { ROUTES } from "../../../routes";
+import { ROUTES } from "@common/constants";
 import { remote } from "electron";
 
 const mapDispatchToProps = {

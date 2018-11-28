@@ -1,25 +1,16 @@
-// @flow
 import React, { Component } from "react";
-import { Flex, Type, Input, Buttons } from "blockstack-ui/dist";
+import { Flex, Type } from "blockstack-ui/dist";
 import { Page } from "@components/page";
 import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
-import { ROUTES } from "../../../routes";
+import { ROUTES } from "@common/constants";
 import { Field } from "@components/field";
 import { validateStacksAddress } from "@utils/validation";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { selectWalletLoading } from "@stores/selectors/wallet";
-import {
-  doAddWatchOnlyAddress,
-  doFetchStxAddressData,
-  doRefreshData
-} from "@stores/actions/wallet";
+import { doAddWatchOnlyAddress, doRefreshData } from "@stores/actions/wallet";
 
-type Props = {};
-
-class WatchOnlyScreen extends Component<Props> {
-  props: Props;
-
+class WatchOnlyScreen extends Component {
   constructor(props) {
     super(props);
   }

@@ -1,56 +1,55 @@
-import {
-	hexStringToECPair,
-	ecPairToAddress
-} from 'blockstack'
-import bigi from 'bigi'
+import { hexStringToECPair, ecPairToAddress } from "blockstack";
+import bigi from "bigi";
+import numeral from "numeral";
 
-export const SATOSHIS_IN_BTC = 100000000
-export const MICROSTACKS_IN_STACKS = 1000000
+import { microToStacks, stacksToMicro } from "stacks-utils";
+/**
+ * Constants
+ */
+const SATOSHIS_IN_BTC = 100000000;
+const MICROSTACKS_IN_STACKS = 1000000;
 
-export function getPrivateKeyAddress(network: Object, privateKey: string | TransactionSigner) 
-  : string {
-  if (typeof privateKey === 'string') {
+/**
+ * Helpers
+ */
+
+/**
+ * getPrivateKeyAddress
+ * @param {string} network - the network
+ * @param {string || object} privateKey
+ */
+const getPrivateKeyAddress = (network, privateKey) => {
+  if (typeof privateKey === "string") {
     const ecKeyPair = hexStringToECPair(privateKey);
     return network.coerceAddress(ecPairToAddress(ecKeyPair));
   }
-  else {
-    return privateKey.address;
-  }
-}
+  return privateKey.address;
+};
 
-export function sumUTXOs(utxos: Array<UTXO>) {
-  return utxos.reduce((agg, x) => agg + x.value, 0);
-}
+const sumUTXOs = utxos => utxos.reduce((agg, x) => agg + x.value, 0);
 
-export function microToStacks(microStacks: string) {
-  if (!microStacks) {
-    return 0
-  }
-  return Number(microStacks) * 1 / Math.pow(10,6)
-}
+const btcToSatoshis = amountInBtc =>
+  amountInBtc ? Number(amountInBtc) * SATOSHIS_IN_BTC : 0;
 
-export function stacksToMicro(stacks: string) {
-  if (!stacks) {
-    return 0
-  }
-  return Math.floor(Number(stacks) * MICROSTACKS_IN_STACKS)
-}
+const satoshisToBtc = amountInSatoshis =>
+  amountInSatoshis ? Number(amountInSatoshis) / SATOSHIS_IN_BTC : 0;
 
-export function btcToSatoshis(amountInBtc: string) {
-  if (!amountInBtc) {
-    return 0
-  }
-  return Number(amountInBtc) * SATOSHIS_IN_BTC
-}
+const toBigInt = value =>
+  Number(value) < 1
+    ? bigi.valueOf(Number(value) * 1000000)
+    : bigi.fromByteArrayUnsigned(value).multiply(bigi.valueOf(1000000));
 
-export function satoshisToBtc(amountInSatoshis: string) {
-  if (!amountInSatoshis) {
-    return 0
-  }
-  return 1.0 * Number(amountInSatoshis) / SATOSHIS_IN_BTC
-}
+const formatMicroStxValue = value => numeral(value).format("0.000000");
 
-// export function stacksToMicro(stacks: Object) {
-//   const microStacksFactor = bigi.fromByteArrayUnsigned("1000000")
-//   return stacks.multiply(microStacksFactor)
-// }
+export {
+  SATOSHIS_IN_BTC,
+  MICROSTACKS_IN_STACKS,
+  getPrivateKeyAddress,
+  sumUTXOs,
+  microToStacks,
+  stacksToMicro,
+  btcToSatoshis,
+  satoshisToBtc,
+  toBigInt,
+  formatMicroStxValue
+};

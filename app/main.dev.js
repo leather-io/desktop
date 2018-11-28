@@ -10,70 +10,72 @@
  *
  * @flow
  */
-import { app, BrowserWindow, shell } from 'electron';
-import MenuBuilder from './menu';
-import path from 'path'
+import { app, BrowserWindow, shell } from "electron";
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS
+} from "electron-devtools-installer";
+
+import MenuBuilder from "./menu";
+import path from "path";
+
+process.on("uncaughtException", err => {
+  console.log("error");
+  console.log(err);
+});
 
 let mainWindow = null;
 
-if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
+if (process.env.NODE_ENV === "production") {
+  const sourceMapSupport = require("source-map-support");
   sourceMapSupport.install();
 }
 
 if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
+  process.env.NODE_ENV === "development" ||
+  process.env.DEBUG_PROD === "true"
 ) {
-  require('electron-debug')();
-  // const path = require('path');
-  const p = path.join(__dirname, '..', 'app', 'node_modules');
-  require('module').globalPaths.push(p);
+  require("electron-debug")();
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
-
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
+  await installExtension(REACT_DEVELOPER_TOOLS, true);
+  await installExtension(REDUX_DEVTOOLS, true);
 };
 
 /**
  * Add event listeners...
  */
 
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   app.quit();
 });
 
-app.on('ready', async () => {
+app.on("ready", async () => {
   if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
+    process.env.NODE_ENV === "development" ||
+    process.env.DEBUG_PROD === "true"
   ) {
     await installExtensions();
   }
 
-  const nodeIntegrationEnabled = process.env.NODE_ENV === 'development'
+  const nodeIntegration = process.env.NODE_ENV === 'development'
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 550,
+    width: 950,
     height: 760,
+    titleBarStyle: "hiddenInset",
     webPreferences: {
-      nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js')
+      nodeIntegration: nodeIntegration,
+      preload: path.join(__dirname, "preload.js")
     }
   });
-
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  mainWindow.webContents.on('did-finish-load', () => {
+  mainWindow.webContents.on("did-finish-load", () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
@@ -81,16 +83,7 @@ app.on('ready', async () => {
     mainWindow.focus();
   });
 
-  // mainWindow.webContents.on('new-window', function(event, url){
-    // console.log(url)
-    // shell.openExternal(url);
-    // if (!url.startsWith('https://connect.trezor.io')) {
-      // event.preventDefault();
-      // shell.openExternal(url);
-    // }
-  // });
-
-  mainWindow.on('closed', () => {
+  mainWindow.on("closed", () => {
     mainWindow = null;
   });
 

@@ -1,26 +1,13 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { createHashHistory } from 'history';
-import { routerMiddleware, routerActions } from 'react-router-redux';
-import { createLogger } from 'redux-logger';
-import { persistStore, persistReducer } from 'redux-persist';
-import createElectronStorage from 'redux-persist-electron-storage';
-import rootReducer from '../reducers';
-import * as walletActions from '../actions/wallet';
-import type { walletStateType } from '../reducers/wallet';
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import createHistory from "history/createHashHistory";
+import { routerMiddleware } from "connected-react-router";
+import { createLogger } from "redux-logger";
+import rootReducer from "./reducers";
+const history = createHistory();
+import { persistMiddleware } from "@stores/persist/index";
 
-const history = createHashHistory();
-
-const persistConfig = {
-  key: 'wallet',
-  storage: createElectronStorage(),
-  blacklist: ['router']
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-const configureStore = (initialState?: { wallet: walletStateType }) => {
-
+const configureStore = initialState => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -30,33 +17,28 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
 
   // Logging Middleware
   const logger = createLogger({
-    level: 'info',
+    level: "info",
     collapsed: true
   });
 
   // Skip redux logs in console during the tests
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== "test") {
     middleware.push(logger);
   }
 
   // Router Middleware
   const router = routerMiddleware(history);
   middleware.push(router);
+  middleware.push(persistMiddleware());
 
-  // Redux DevTools Configuration
-  const actionCreators = {
-    ...walletActions,
-    ...routerActions
-  };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
-  const composeEnhancers = compose;
-  // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  //   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-  //       // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
-  //       actionCreators
-  //     })
-  //   : compose;
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        // Options: http://extension.remotedev.io/docs/API/Arguments.html
+        actionCreators: {}
+      })
+    : compose;
   /* eslint-enable no-underscore-dangle */
 
   // Apply Middleware & Compose Enhancers
@@ -64,19 +46,16 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
   const enhancer = composeEnhancers(...enhancers);
 
   // Create Store
-  // const store = createStore(rootReducer, initialState, enhancer);
-  const store = createStore(persistedReducer, initialState, enhancer);
-
-  const persistor = persistStore(store)
+  const store = createStore(rootReducer(history), initialState, enhancer);
 
   if (module.hot) {
     module.hot.accept(
-      '../reducers',
-      () => store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
+      "./reducers",
+      () => store.replaceReducer(require("./reducers")) // eslint-disable-line global-require
     );
   }
 
-  return { store, persistor };
+  return { store };
 };
 
 export default { configureStore, history };

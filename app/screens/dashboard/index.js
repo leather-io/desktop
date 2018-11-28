@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Type, Card, Tooltip } from "blockstack-ui/dist";
+import { Flex, Type, Card } from "blockstack-ui/dist";
 import SettingsIcon from "mdi-react/SettingsIcon";
 import { Hover } from "react-powerplug";
 import { TxList } from "@components/transaction-list";
@@ -12,17 +12,13 @@ import {
   selectWalletLoading,
   selectWalletData,
   selectPendingTxs,
-  selectWalletLastFetch,
   selectWalletIsFetching
 } from "@stores/selectors/wallet";
-import { Loading } from "@components/loading";
 import { ReceiveButton } from "@containers/balance";
 import { ButtonCombo } from "@containers/buttons/onboarding-navigation";
 import { doRefreshData } from "@stores/actions/wallet";
-import dayjs from "dayjs";
 import debounce from "lodash.debounce";
 import { Spinner } from "@components/spinner";
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const Content = ({ ...rest }) => (
   <Flex flexDirection="column" flexShrink={0} flexGrow={1} {...rest} />

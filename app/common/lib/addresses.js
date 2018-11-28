@@ -29,9 +29,10 @@ const getAddressFromChildPubKey = (child, version_prefix) => {
 };
 
 /**
+ * getTrezorAddress
+ *
  * Get public key from trezor and return BTC and STX addresses
  */
-
 const getTrezorAddress = async () =>
   new Promise((resolve, reject) => {
     const generate = ({ success, xpubkey, error }) => {
@@ -52,6 +53,7 @@ const getTrezorAddress = async () =>
     TrezorConnect.getXPubKey(PATH, generate);
   });
 /**
+ * getLedgerAddress
  * Get public key from ledger and return BTC and STX addresses
  */
 const getLedgerAddress = async () => {
@@ -70,25 +72,39 @@ const getLedgerAddress = async () => {
   }
 };
 
+/**
+ * getAddressesFromPublicKey
+ */
 const getAddressesFromPublicKey = publicKey => {
   const stx = getAddressFromChildPubKey(publicKey);
   const btc = c32ToB58(stx);
   return { stx, btc };
 };
 
+/**
+ * convertStxAddressToBtcAddress
+ */
 const convertStxAddressToBtcAddress = stx => c32ToB58(stx);
+
+/**
+ * btcToStx
+ */
 const btcToStx = btc => b58ToC32(btc);
 
+/**
+ * fetchBtcAddressData
+ *
+ * TODO: for accounts with 50+ transactions, we'll have to paginate
+ */
 const fetchBtcAddressData = async btcAddress => {
   try {
     const response = await fetch(
-      // `https://blockchain.info/rawaddr/${btcAddress}`
       `https://api.blockcypher.com/v1/btc/main/addrs/${btcAddress}/full?includeHex=true&limit=50`
     );
     const data = await response.json();
     return data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 

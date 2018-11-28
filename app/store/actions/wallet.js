@@ -203,6 +203,11 @@ const doResetWallet = () => async dispatch => {
   doNotify("Wallet has been reset!")(dispatch);
 };
 
+/**
+ * doAddHardwareWallet
+ *
+ * @param {String} type - one of WALLET_TYPES.LEDGER || WALLET_TYPES.TREZOR
+ */
 const doAddHardwareWallet = type => async (dispatch, state) => {
   // define our wallet fn
   const walletFn =
@@ -230,8 +235,7 @@ const doAddHardwareWallet = type => async (dispatch, state) => {
         message: "Hardware wallet successfully synced!"
       })(dispatch);
       dispatch(push("/dashboard"));
-      doFetchBalances(addresses)(dispatch, state);
-      doFetchStxAddressData(addresses.stx)(dispatch, state);
+      doRefreshData(false)(dispatch, state);
     }
   } catch (e) {
     let message = e.message;

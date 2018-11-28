@@ -6,7 +6,6 @@ import { sumUTXOs, toBigInt } from "@utils/utils";
 import { TrezorSigner } from "@vendor/blockstack-trezor";
 import { LedgerSigner } from "@vendor/blockstack-ledger";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
-// import FormData from "form-data";
 import { PATH } from "@common/constants";
 
 export const ERRORS = {
@@ -242,49 +241,4 @@ const broadcastTransaction = async rawTx => {
   }
 };
 
-const fetchTransactionData = async txHash => {
-  try {
-    const response = await fetch(
-      `https://api.blockcypher.com/v1/btc/main/txs/${txHash}?includeHex=true`
-    ); // fetch out tx in hex data
-    const data = await response.json();
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const fetchJsonTxData = async txHash => {
-  try {
-    const response = await fetch(
-      `https://blockchain.info/tx/${txHash}?format=json`
-    ); // fetch out tx in hex data
-    const data = await response.json();
-
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const fetchRawTxData = async txHash => {
-  try {
-    const response = await fetch(
-      `https://blockchain.info/tx/${txHash}?format=hex`
-    ); // fetch out tx in hex data
-    const data = await response.text();
-
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export {
-  generateTransaction,
-  broadcastTransaction,
-  fetchRawTxData,
-  fetchJsonTxData,
-  prepareTransaction,
-  fetchTransactionData
-};
+export { generateTransaction, broadcastTransaction, prepareTransaction };

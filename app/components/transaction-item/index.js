@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Type, Tooltip } from "blockstack-ui/dist";
+import { Flex, Type } from "blockstack-ui/dist";
 import LockOpenIcon from "mdi-react/LockOpenIcon";
 import NewBoxIcon from "mdi-react/NewBoxIcon";
 import QrCode from "mdi-react/QrcodeIcon";
@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 import { btcToStx } from "@common/lib/addresses";
 
 const getIcon = (item, stx) => {
-  const { operation, sender, recipient } = item;
+  const { operation, sender } = item;
   if (operation === "TOKEN_TRANSFER") {
     {
       if (sender === stx) {
@@ -21,7 +21,6 @@ const getIcon = (item, stx) => {
       }
     }
   }
-
   switch (operation) {
     case "SENT":
       return SendIcon;
@@ -33,7 +32,7 @@ const getIcon = (item, stx) => {
       return NewBoxIcon;
   }
 };
-export const TypeIcon = ({ item, stx, size = 48, ...rest }) => {
+const TypeIcon = ({ item, stx, size = 48, ...rest }) => {
   const Icon = getIcon(item, stx);
   return (
     <Flex
@@ -246,4 +245,14 @@ const TxItem = ({ last, item, length, stx, ...rest }) => {
   );
 };
 
-export { TxItem };
+export {
+  getIcon,
+  TypeIcon,
+  Item,
+  Date,
+  getTitle,
+  getSubtitle,
+  Details,
+  Amount,
+  TxItem
+};

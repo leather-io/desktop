@@ -1,7 +1,8 @@
-// @flow
 import React from "react";
 import { Flex, Type } from "blockstack-ui/dist";
+
 const PageContext = React.createContext();
+
 const Title = ({ ...rest }) => (
   <Type
     display="block"

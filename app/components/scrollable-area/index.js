@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { themeGet } from "styled-system";
+import { Box } from "blockstack-ui";
 
-const ScrollableArea = styled.div`
+const ScrollableArea = styled(Box)`
   height: 490px;
   padding-bottom: 50px;
   overflow-y: auto;
@@ -34,4 +35,4 @@ ScrollableArea.defaultProps = {
   thumb: "blue.light"
 };
 
-export default ScrollableArea;
+export { ScrollableArea };

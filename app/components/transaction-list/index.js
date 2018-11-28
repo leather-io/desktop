@@ -1,9 +1,8 @@
 import React from "react";
-import { Flex, Type, Card, Scrollbars } from "blockstack-ui/dist";
-
+import { Flex, Type, Card } from "blockstack-ui/dist";
 import { Hover } from "react-powerplug";
 import { TxItem } from "@components/transaction-item";
-import { LayersOffOutlineIcon, LoadingIcon } from "mdi-react";
+import { LayersOffOutlineIcon } from "mdi-react";
 import { connect } from "react-redux";
 import { Spinner } from "@components/spinner";
 import {

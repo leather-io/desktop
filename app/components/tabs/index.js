@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Type } from "blockstack-ui/dist";
+import { Flex, Type } from "blockstack-ui/dist";
 import { Hover, State } from "react-powerplug";
 
 const Tab = ({ active, key, children, ...rest }) => (

@@ -1,5 +1,5 @@
 import React from "react";
-import ScrollableArea from "@components/scrollable-area/index";
+import { ScrollableArea } from "@components/scrollable-area/index";
 
 const TermsOfUse = ({ ...rest }) => (
   <ScrollableArea>
@@ -214,4 +214,4 @@ const TermsOfUse = ({ ...rest }) => (
   </ScrollableArea>
 );
 
-export {TermsOfUse}
+export { TermsOfUse };

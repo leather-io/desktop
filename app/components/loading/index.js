@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, Type, Input, Buttons } from "blockstack-ui/dist";
 import { Spinner } from "@components/spinner";
+
 const Loading = ({ message = "Fetching Wallet Details...", ...rest }) => (
   <Flex
     position="absolute"

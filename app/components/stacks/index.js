@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Type, Button, Buttons } from "blockstack-ui/dist";
+import { Type } from "blockstack-ui/dist";
 import { formatLargeNumber } from "@utils";
 import { satoshisToBtc } from "@utils/utils";
 

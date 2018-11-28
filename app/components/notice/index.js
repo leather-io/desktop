@@ -28,4 +28,4 @@ const Notice = ({ label = "Note", children, ...rest }) => (
   </Flex>
 );
 
-export {Notice}
+export { Notice };

@@ -1,4 +1,3 @@
-// @flow
 import * as React from "react";
 import { withRouter } from "react-router-dom";
 import { Flex } from "blockstack-ui";
@@ -8,7 +7,7 @@ import { selectWalletStacksAddress } from "@stores/selectors/wallet";
 import Modal from "@components/modal";
 import { ROUTES } from "../../routes";
 import debounce from "lodash.debounce";
-import { raf, ric } from "@common/constants";
+import { raf, ric } from "@common/utils";
 import { APP_IDLE } from "@stores/reducers/app";
 import { doPersistState } from "@stores/actions/app";
 import { reactShouldRefreshData } from "@stores/reactors/wallet";

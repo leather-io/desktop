@@ -177,8 +177,6 @@ const generateTransaction = async (
       : new TrezorSigner(PATH, tx.senderBtcAddress);
 
     // if we get here there are no errors
-    console.log("signing tx", tx);
-    console.log(tx.recipientBtcAddress, tx.tokenType, tx.tokenAmount);
     const rawTx = await transactions.makeTokenTransfer(
       tx.recipientBtcAddress,
       tx.tokenType,
@@ -220,7 +218,6 @@ const postTransaction = async rawTx => {
 const broadcastTransaction = async rawTx => {
   try {
     // return Promise.resolve("txHash");
-    console.log(rawTx);
     const response = await postTransaction(rawTx);
     const text = await response.text();
     const success = text.toLowerCase().indexOf("transaction submitted") >= 0;

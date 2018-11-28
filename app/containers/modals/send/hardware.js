@@ -46,7 +46,6 @@ const HardwareView = ({
               ""
             )
           );
-          console.log(difference);
           setState({
             errors: {
               ...ERRORS.INSUFFICIENT_BTC_BALANCE,
@@ -56,7 +55,6 @@ const HardwareView = ({
         }
         return;
       }
-      console.log("Right before", tx);
       const decoded = await decodeRawTx(tx.rawTx);
 
       setState(

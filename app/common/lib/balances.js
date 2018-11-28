@@ -25,8 +25,6 @@ const fetchBtcBalance = async address => {
   const confirmed = await res1.text();
   const unconfirmed = await res2.text();
 
-  console.log(confirmed, unconfirmed)
-
   return bigi
     .valueOf(parseInt(confirmed, 10) + parseInt(unconfirmed, 10))
     .toString();

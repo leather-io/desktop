@@ -196,7 +196,9 @@ const Amount = ({ value, isSent, ...rest }) => (
   >
     <Type>
       {isSent ? "-" : ""}
-      {value.includes(".") ? formatMicroStxValue(Number(value)) : value}{" "}
+      {value && String(value).includes(".")
+        ? formatMicroStxValue(Number(value))
+        : value}{" "}
       <Type color="hsl(205, 30%, 70%)">STX</Type>
     </Type>
   </Flex>

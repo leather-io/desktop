@@ -14,7 +14,6 @@ const Confirmation = ({
   doBroadcastTransaction,
   ...rest
 }) => {
-  console.log("new view", state.tx);
 
   if (!state.tx) return <>Oops!</>;
 

@@ -1,6 +1,6 @@
 {
-  "name": "StacksWallet",
-  "description": "Stacks Wallet",
+  "name": "stacks-wallet",
+  "description": "Stacks Wallet Beta",
   "version": "1.0.0",
   "author": {
     "name": "Blockstack PBC",
@@ -8,8 +8,8 @@
   },
   "browserslist": "electron 1.6",
   "build": {
-    "productName": "Stacks Wallet",
-    "appId": "org.blockstack.stacks-wallet",
+    "productName": "Stacks Wallet Beta",
+    "appId": "org.blockstack.stacks-wallet-beta",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -58,7 +58,7 @@
     "bip39": "^2.5.0",
     "bitcoinjs-lib": "^4.0.2",
     "blockstack": "^18.1.0",
-    "blockstack-ui": "^0.0.51",
+    "blockstack-ui": "^0.0.52",
     "c32check": "^0.0.6",
     "connected-react-router": "^5.0.1",
     "core-js": "^2.5.7",
@@ -94,6 +94,7 @@
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-persist-electron-storage": "^2.0.0",
+    "redux-persist-middleware": "^1.0.1",
     "redux-thunk": "^2.2.0",
     "reselect": "^4.0.0",
     "rwlock": "^5.0.0",
@@ -108,7 +109,7 @@
     "varuint-bitcoin": "^1.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.2",
+    "@babel/core": "^7.1.6",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/plugin-proposal-decorators": "^7.1.2",
     "@babel/plugin-proposal-do-expressions": "^7.0.0",
@@ -125,6 +126,8 @@
     "@babel/plugin-proposal-throw-expressions": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-transform-destructuring": "^7.1.3",
+    "@babel/plugin-transform-for-of": "^7.0.0",
     "@babel/plugin-transform-react-constant-elements": "^7.0.0",
     "@babel/plugin-transform-react-inline-elements": "^7.0.0",
     "@babel/plugin-transform-regenerator": "^7.0.0",

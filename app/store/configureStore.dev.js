@@ -4,11 +4,10 @@ import createHistory from "history/createHashHistory";
 import { routerMiddleware } from "connected-react-router";
 import { createLogger } from "redux-logger";
 import rootReducer from "./reducers";
-import type { walletStateType } from "./reducers/wallet";
-
 const history = createHistory();
+import { persistMiddleware } from "@stores/persist";
 
-const configureStore = (initialState?: { wallet: walletStateType }) => {
+const configureStore = (initialState, cache) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -31,6 +30,8 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
   const router = routerMiddleware(history);
   middleware.push(router);
 
+  middleware.push(persistMiddleware(cache));
+
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -45,6 +46,7 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers(...enhancers);
 
+  console.log("initialState", initialState);
   // Create Store
   const store = createStore(rootReducer(history), initialState, enhancer);
 
@@ -55,7 +57,7 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
     );
   }
 
-  return store;
+  return { store };
 };
 
 export default { configureStore, history };

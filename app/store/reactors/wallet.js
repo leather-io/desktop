@@ -10,14 +10,15 @@ const ONE_MINUTE = 60 * 1000;
 const staleAfter = ONE_MINUTE * 5;
 
 const reactShouldRefreshData = store => {
+  console.log("reactShouldRefreshData");
   const { getState, dispatch } = store;
   const state = getState();
   const type = selectWalletType(state);
   if (!type) return null; // if no type
   const appTime = selectAppTime(state);
   const lastFetch = selectWalletLastFetch(state);
-  if (!lastFetch) return;
   const isFetching = selectWalletIsFetching(state);
+
   if (!isFetching) {
     if (appTime - lastFetch > staleAfter) {
       return doRefreshData(false)(dispatch, getState);

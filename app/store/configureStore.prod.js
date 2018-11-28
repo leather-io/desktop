@@ -4,7 +4,16 @@ import createHistory from "history/createHashHistory";
 import { routerMiddleware } from "connected-react-router";
 import rootReducer from "./reducers";
 import type { walletStateType } from "./reducers/wallet";
+import { persistStore, persistReducer } from "redux-persist";
+import createElectronStorage from "redux-persist-electron-storage";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+import getPersistMiddleware from 'redux-persist-middleware'
 
+const persistConfig = {
+  key: "root",
+  storage: createElectronStorage(),
+  stateReconciler: autoMergeLevel2
+};
 const history = createHistory();
 
 const configureStore = (initialState?: { wallet: walletStateType }) => {
@@ -33,7 +42,10 @@ const configureStore = (initialState?: { wallet: walletStateType }) => {
   const enhancer = composeEnhancers(...enhancers);
 
   // Create Store
-  return createStore(rootReducer(history), initialState, enhancer);
+  const store = createStore(rootReducer(history), initialState, enhancer);
+  return {
+    store
+  };
 };
 
 export default { configureStore, history };

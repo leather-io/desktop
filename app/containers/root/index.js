@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components";
 import { theme, Flex } from "blockstack-ui";
 import Routes from "../../routes";
 import { GlobalStyles } from "@components/global-styles";
+import { PersistGate } from "redux-persist/integration/react";
 
 const Root = ({ store, history, ...rest }) => (
   <Provider store={store}>

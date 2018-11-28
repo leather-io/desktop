@@ -10,7 +10,7 @@ const TxAmounts = ({ amount, fees, ...rest }) => (
   <Flex py={4} px={6} flexDirection="column" justifyContent="center">
     <Label>Amount</Label>
     <Flex>
-      <Value fontSize={6} amount={amount} micro suffix="STX" />
+      <Value fontSize={6} amount={amount} suffix="STX" />
     </Flex>
     <Label pt={4} pb={0}>
       Fees
@@ -45,6 +45,7 @@ const TxDetailsModal = ({ hide, visible, tx, stx, ...rest }) => {
     consensusHash,
     valueStacks,
     value: amount,
+    tokenAmountReadable,
     scratchData,
     tokenAmount,
     recipientBitcoinAddress,
@@ -100,7 +101,7 @@ const TxDetailsModal = ({ hide, visible, tx, stx, ...rest }) => {
           boxShadow="card"
         >
           <OperationTypeSection item={tx} stx={stx} />
-          <TxAmounts fees={fees} satoshis amount={tokenAmount || amount} />
+          <TxAmounts fees={fees} satoshis amount={tokenAmountReadable} />
         </Flex>
       </Flex>
       <Flex flexDirection="column" p={4} pb={0} flexShrink={0}>

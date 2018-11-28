@@ -31,8 +31,10 @@ module.exports = api => {
       [require("@babel/preset-react"), { development }]
     ],
     plugins: [
+      require("@babel/plugin-transform-destructuring"),
       require("@babel/plugin-transform-regenerator"),
       require("@babel/plugin-transform-runtime"),
+      require("@babel/plugin-transform-for-of"),
       [require("babel-plugin-styled-components"), { displayName: true }],
       // Stage 0
       require("@babel/plugin-proposal-function-bind"),

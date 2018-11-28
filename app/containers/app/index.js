@@ -10,6 +10,9 @@ import { ROUTES } from "../../routes";
 import debounce from "lodash.debounce";
 import { raf, ric } from "@common/constants";
 import { APP_IDLE } from "@stores/reducers/app";
+import { doPersistState } from "@stores/actions/app";
+import { reactShouldRefreshData } from "@stores/reactors/wallet";
+import { createObserver } from "@stores/subscriptions";
 
 const defaults = {
   idleTimeout: 30000,
@@ -35,31 +38,39 @@ class App extends React.Component<Props> {
   };
   props: Props;
 
+  state = {
+    unsubscribe: null
+  };
+
   componentDidMount() {
-    // const { store } = this.context;
-    // const { idleAction, idleTimeout } = defaults;
-    // let idleDispatcher;
-    //
-    // if (idleTimeout) {
-    //   idleDispatcher = getIdleDispatcher(
-    //     defaults.stopWhenTabInactive,
-    //     idleTimeout,
-    //     () => store.dispatch({ type: idleAction })
-    //   );
-    // }
-    // idleDispatcher();
-    // const observer = createObserver(this.context.store);
-    // const unsubscribe = observer(
-    //   state => ({ appTime: state.app.appTime }),
-    //   (state, oldState) => {
-    //     idleDispatcher();
-    //     reactShouldRefreshData(store);
-    //     console.log("state changed from", oldState, "to", state);
-    //   }
-    // );
-    // this.setState({
-    //   unsubscribe
-    // });
+    const { store } = this.context;
+    const { idleAction, idleTimeout } = defaults;
+    let idleDispatcher;
+
+    if (idleTimeout) {
+      idleDispatcher = getIdleDispatcher(
+        defaults.stopWhenTabInactive,
+        idleTimeout,
+        () => store.dispatch({ type: idleAction })
+      );
+    }
+    idleDispatcher();
+    reactShouldRefreshData(store);
+    const observer = createObserver(this.context.store);
+    const unsubscribe = observer(
+      state => ({ appTime: state.app.appTime }),
+      (state, oldState) => {
+        idleDispatcher();
+        reactShouldRefreshData(store);
+        console.log("state changed from", oldState, "to", state);
+      }
+    );
+    this.setState({
+      unsubscribe
+    });
+    if (this.props.stx && this.props.location.pathname !== ROUTES.DASHBOARD) {
+      this.props.history.push(ROUTES.DASHBOARD);
+    }
     if (this.props.location.pathname === ROUTES.DASHBOARD) {
       if (!this.props.stx) {
         this.props.history.push(ROUTES.RESTORE_OPTIONS);
@@ -68,7 +79,8 @@ class App extends React.Component<Props> {
   }
 
   componentWillUnmount() {
-    // this.state.unsubscribe && this.state.unsubscribe();
+    this.props.doPersistState();
+    this.state.unsubscribe && this.state.unsubscribe();
   }
 
   render() {
@@ -80,7 +92,7 @@ class App extends React.Component<Props> {
           left={0}
           top={0}
           height={40}
-          style={{ "-webkit-app-region": "drag" }}
+          style={{ WebkitAppRegion: "drag" }}
         />
         {this.props.children}
       </Modal>
@@ -88,6 +100,11 @@ class App extends React.Component<Props> {
   }
 }
 
-export default connect(state => ({
-  stx: selectWalletStacksAddress(state)
-}))(withRouter(App));
+export default connect(
+  state => ({
+    stx: selectWalletStacksAddress(state)
+  }),
+  {
+    doPersistState
+  }
+)(withRouter(App));

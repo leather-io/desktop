@@ -688,7 +688,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-transform-destructuring@^7.0.0":
+"@babel/plugin-transform-destructuring@^7.0.0", "@babel/plugin-transform-destructuring@^7.1.3":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-destructuring/-/plugin-transform-destructuring-7.1.3.tgz#e69ff50ca01fac6cb72863c544e516c2b193012f"
   integrity sha512-Mb9M4DGIOspH1ExHOUnn2UUXFOyVTiX84fXCd+6B5iWrQg/QMeeRmSwpZ9lnjYLSXtZwiw80ytVMr3zue0ucYw==
@@ -3205,10 +3205,10 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-blockstack-ui@^0.0.51:
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/blockstack-ui/-/blockstack-ui-0.0.51.tgz#69d13a98e47470946b9b5b8092d7657f3caa73a8"
-  integrity sha512-G4kT0Mi8pVr2+9sF5gi2DFyYGXdv1EyYhqAbRtOqA5OkpYtJMQ/zZht29N6Pf1W6/85ZLo96vX9YLJGVRC4bWg==
+blockstack-ui@^0.0.52:
+  version "0.0.52"
+  resolved "https://registry.yarnpkg.com/blockstack-ui/-/blockstack-ui-0.0.52.tgz#afede90a343efdc96a4e2a4a89d67fdc58cae21f"
+  integrity sha512-rDpOZt5sMixVD8Q39nNTRA2soxT55ypVrx84qe5QbD1zc6SmxBFa7GjrH//4RqgaqnCzBOGQAdp5R9HuGjresg==
   dependencies:
     epitath "^1.0.0-beta.1"
     html-tags "^2.0.0"
@@ -11800,6 +11800,11 @@ redux-persist-electron-storage@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/redux-persist-electron-storage/-/redux-persist-electron-storage-2.0.0.tgz#60de80877b97440ba0c52b52776497ce3226d84f"
   integrity sha512-VHKyYi4+QB/vNbCRnqNt8X9a5AZDqFU6wH524eb9EgbxOI4NIekN2t6crSCw0+eiCxztfETfMBEhfxHE3laKHQ==
+
+redux-persist-middleware@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/redux-persist-middleware/-/redux-persist-middleware-1.0.1.tgz#3c2b4bdc52d7cebf5685989222268e689689c5e9"
+  integrity sha512-OulM18BEicxV2xVOiExkQzdOORZKcs5gIRIcgv4QdO/KBIOQEzypGld1w/QJq0yBOvCgeczZ96OVi8IFhQoQ9Q==
 
 redux-persist@^5.10.0:
   version "5.10.0"

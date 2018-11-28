@@ -121,35 +121,32 @@ const Dashboard = ({
   doRefreshData,
   fetching,
   ...rest
-}) =>
-  loading ? (
-    <Loading style={style} bg="blue.dark" />
-  ) : (
-    <Flex style={style} bg="blue.light" flexGrow={1} maxWidth={"100%"}>
-      <Content p={3} maxWidth={"100%"}>
-        <Header />
-        {!loading && data && !data.success && !data.status ? (
-          <NewWallet doRefreshData={doRefreshData} />
-        ) : (
-          <>
-            <Balance />
-            <TxList
-              title="Transaction History"
-              contentHeader={<TableHeader items={tableHeadItems} />}
-              action={{
-                label: fetching ? (
-                  <Spinner stroke={4} size={20} color="currentColor" />
-                ) : (
-                  "Refresh"
-                ),
-                onClick: fetching ? () => null : doRefreshData
-              }}
-            />
-          </>
-        )}
-      </Content>
-    </Flex>
-  );
+}) => (
+  <Flex style={style} bg="blue.light" flexGrow={1} maxWidth={"100%"}>
+    <Content p={3} maxWidth={"100%"}>
+      <Header />
+      {!loading && data && !data.success && !data.status ? (
+        <NewWallet doRefreshData={doRefreshData} />
+      ) : (
+        <>
+          <Balance />
+          <TxList
+            title="Transaction History"
+            contentHeader={<TableHeader items={tableHeadItems} />}
+            action={{
+              label: fetching ? (
+                <Spinner stroke={4} size={20} color="currentColor" />
+              ) : (
+                "Refresh"
+              ),
+              onClick: fetching ? () => null : doRefreshData
+            }}
+          />
+        </>
+      )}
+    </Content>
+  </Flex>
+);
 
 const mapStateToProps = state => ({
   loading: selectWalletLoading(state),

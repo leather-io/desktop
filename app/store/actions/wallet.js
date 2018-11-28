@@ -25,6 +25,8 @@ import { fetchStxAddressDetails } from "@common/lib";
 import { push } from "connected-react-router";
 import { doNotify, doNotifyWarning } from "@stores/reducers/notifications";
 import { fetchBtcBalance, fetchStxBalance } from "@common/lib/balances";
+import { doPersistState } from "@stores/actions/app";
+import { clearCache } from "@stores/persist";
 import {
   getLedgerAddress,
   getTrezorAddress,
@@ -158,13 +160,14 @@ const doAddWalletAddress = (addresses, type) => dispatch => {
     console.error("Please provide a wallet type");
     return;
   }
-  return dispatch({
+  dispatch({
     type: ADD_WALLET_ADDRESS,
     payload: {
       addresses,
       type
     }
   });
+  doPersistState()(dispatch);
 };
 
 /**
@@ -191,11 +194,12 @@ const doAddLedgerAddress = addresses => dispatch =>
 /**
  * Reset our app
  */
-const doResetWallet = () => dispatch => {
+const doResetWallet = () => async dispatch => {
   dispatch({
     type: WALLET_RESET
   });
-  dispatch(push(ROUTES.RESTORE_OPTIONS));
+  dispatch(push(ROUTES.TERMS));
+  await clearCache();
   doNotify("Wallet has been reset!")(dispatch);
 };
 

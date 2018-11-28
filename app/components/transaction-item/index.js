@@ -186,7 +186,7 @@ const Details = ({
   </Flex>
 );
 
-const Amount = ({ value, ...rest }) => (
+const Amount = ({ value, isSent, ...rest }) => (
   <Flex
     style={{
       whiteSpace: "nowrap"
@@ -195,6 +195,7 @@ const Amount = ({ value, ...rest }) => (
     {...rest}
   >
     <Type>
+      {isSent ? "-" : ""}
       {value} <Type color="hsl(205, 30%, 70%)">STX</Type>
     </Type>
   </Flex>
@@ -212,6 +213,8 @@ const TxItem = ({ last, item, length, stx, ...rest }) => {
     time,
     received
   } = item;
+
+  const isSent = item.sender === stx;
   return (
     <OpenModal
       component={({ hide, visible }) => (
@@ -232,7 +235,11 @@ const TxItem = ({ last, item, length, stx, ...rest }) => {
             item={item}
             stx={stx}
           />
-          <Amount ml={3} value={valueStacks || tokenAmountReadable} />
+          <Amount
+            isSent={isSent}
+            ml={3}
+            value={valueStacks || tokenAmountReadable}
+          />
         </Item>
       )}
     </OpenModal>

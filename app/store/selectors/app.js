@@ -1,2 +1,5 @@
-export const selectAcceptedTerms = ({ app }) => app.terms;
-export const selectToggleModal = ({ app }) => app.keepModalOpen;
+const selectAppTime = ({ app }) => app.appTime;
+const selectAcceptedTerms = ({ app }) => app.terms;
+const selectToggleModal = ({ app }) => app.keepModalOpen;
+
+export { selectAppTime, selectAcceptedTerms, selectToggleModal };

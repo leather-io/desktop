@@ -12,6 +12,24 @@ const TESTNET_ADDRESS_PREFIX = {
     private: 0x04358394
   }
 };
+let debug = false;
+try {
+  debug = !!window.localStorage.debug;
+} catch (e) {}
+export const HAS_DEBUG_FLAG = debug || false;
+export const HAS_WINDOW = typeof window !== "undefined";
+export const IS_BROWSER = HAS_WINDOW || typeof self !== "undefined";
+export const IS_PROD = process.env.NODE_ENV === "production";
+const fallback = func => {
+  setTimeout(func, 0);
+};
+export const raf =
+  IS_BROWSER && self.requestAnimationFrame
+    ? self.requestAnimationFrame
+    : fallback;
+
+export const ric =
+  IS_BROWSER && self.requestIdleCallback ? self.requestIdleCallback : fallback;
 
 export {
   API_URL,

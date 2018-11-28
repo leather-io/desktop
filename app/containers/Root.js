@@ -9,14 +9,14 @@ import { GlobalStyles } from "@components/global-styles";
 
 const Root = ({ store, history, ...rest }) => (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <ThemeProvider theme={theme}>
-        <Flex flexGrow={1} flexDirection="column">
-          <GlobalStyles />
+    <ThemeProvider theme={theme}>
+      <Flex flexGrow={1} flexDirection="column">
+        <GlobalStyles />
+        <ConnectedRouter history={history}>
           <Routes />
-        </Flex>
-      </ThemeProvider>
-    </ConnectedRouter>
+        </ConnectedRouter>
+      </Flex>
+    </ThemeProvider>
   </Provider>
 );
 

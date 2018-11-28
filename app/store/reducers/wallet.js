@@ -159,14 +159,14 @@ const reducer = (state = initialState, { type, payload }) =>
         break;
       case FETCH_ADDRESS_DATA_FINISHED:
         draft.fetchingAddressData = false;
-        draft.lastFetch = new Date();
+        draft.lastFetch = Date.now();
         draft.lastAttempt = null;
         draft.data = payload;
         break;
       case FETCH_ADDRESS_DATA_ERROR:
         draft.fetchingAddressData = false;
         draft.error = payload;
-        draft.lastAttempt = new Date();
+        draft.lastAttempt = Date.now();
         break;
     }
   });

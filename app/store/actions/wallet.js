@@ -75,11 +75,10 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
         if (!tx.hex) return;
         try {
           const transaction = await decodeRawTx(tx.hex);
+          if (!transaction) return;
           if (transaction.opcode !== "$") {
             return;
           }
-
-          if (!transaction) return;
           return {
             ...transaction,
             confirmations: tx.confirmations,
@@ -93,6 +92,7 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
             txid: tx.hash
           };
         } catch (e) {
+          doNotifyWarning(e.message)(dispatch, state);
           console.log(e);
           return;
         }

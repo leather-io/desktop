@@ -65,6 +65,9 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
       type: FETCH_ADDRESS_DATA_STARTED
     });
     const btcData = await fetchBtcAddressData(btcAddress);
+
+    // put this in a try/catch because fresh addresses return 404 from the blockstack api
+    // and we want to continue because the btc tx will show pending stacks txs
     try {
       let data = await fetchStxAddressDetails(address);
     } catch (e) {

@@ -18,8 +18,7 @@ import {
 import { microToStacks } from "stacks-utils";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { Notice } from "@components/notice";
-import numeral from "numeral";
-const formatValue = value => numeral(value).format("0.000000");
+import { formatMicroStxValue } from "@utils/utils";
 
 const funct = ({ visible, hide }) => (
   <ReceiveModal hide={hide} visible={visible} />
@@ -85,13 +84,13 @@ const BalanceSection = connect(state => ({
           </Type>
           <Flex py={6} alignItems={"center"}>
             <Value
-              amount={
-                parseInt(
+              amount={formatMicroStxValue(
+                microToStacks(
                   state.view === "balance"
                     ? balance
                     : data && data.vesting_total
-                ) / 1000000
-              }
+                )
+              )}
             />
             <Type
               pl={2}
@@ -112,7 +111,7 @@ const BalanceSection = connect(state => ({
           {pendingBalance ? (
             <Type fontWeight="500">
               <Type color="hsl(205, 30%, 70%)">Pending Balance:</Type>{" "}
-              {formatValue(microToStacks(pendingBalance))}{" "}
+              {formatMicroStxValue(microToStacks(pendingBalance))}{" "}
               <Type color="hsl(205, 30%, 70%)">STX</Type>{" "}
             </Type>
           ) : null}

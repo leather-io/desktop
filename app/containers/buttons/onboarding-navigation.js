@@ -14,6 +14,7 @@ export const TextLink = ({
   hoverBg = "blue.dark",
   bg = "#8FA6B8",
   onDark,
+  typeProps,
   ...rest
 }) =>
   children || label ? (

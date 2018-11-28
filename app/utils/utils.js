@@ -1,5 +1,7 @@
 import { hexStringToECPair, ecPairToAddress } from "blockstack";
 import bigi from "bigi";
+import numeral from "numeral";
+
 import { microToStacks, stacksToMicro } from "stacks-utils";
 /**
  * Constants
@@ -37,6 +39,8 @@ const toBigInt = value =>
     ? bigi.valueOf(Number(value) * 1000000)
     : bigi.fromByteArrayUnsigned(value).multiply(bigi.valueOf(1000000));
 
+const formatMicroStxValue = value => numeral(value).format("0.000000");
+
 export {
   SATOSHIS_IN_BTC,
   MICROSTACKS_IN_STACKS,
@@ -46,5 +50,6 @@ export {
   stacksToMicro,
   btcToSatoshis,
   satoshisToBtc,
-  toBigInt
+  toBigInt,
+  formatMicroStxValue
 };

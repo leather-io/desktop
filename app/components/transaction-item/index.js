@@ -9,6 +9,7 @@ import { TxDetailsModal } from "@containers/modals/tx";
 import { OpenModal } from "@components/modal";
 import dayjs from "dayjs";
 import { btcToStx } from "@common/lib/addresses";
+import { formatMicroStxValue } from "@utils/utils";
 
 const getIcon = (item, stx) => {
   const { operation, sender } = item;
@@ -195,7 +196,8 @@ const Amount = ({ value, isSent, ...rest }) => (
   >
     <Type>
       {isSent ? "-" : ""}
-      {value} <Type color="hsl(205, 30%, 70%)">STX</Type>
+      {value.includes(".") ? formatMicroStxValue(Number(value)) : value}{" "}
+      <Type color="hsl(205, 30%, 70%)">STX</Type>
     </Type>
   </Flex>
 );

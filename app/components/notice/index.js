@@ -1,24 +1,25 @@
 import React from "react";
 import { Flex, Type } from "blockstack-ui/dist";
 
-const Notice = ({ label = "Note", children, ...rest }) => (
+const Notice = ({ label = "Note", children, dark, ...rest }) => (
   <Flex
     mb={4}
     width={1}
-    bg="white"
-    borderColor="blue.mid"
+    bg={dark ? "blue.darker" : "white"}
+    borderColor={dark ? "borders.dark" : "blue.mid"}
     borderRadius={6}
     border={1}
     boxShadow="card"
     overflow="hidden"
+    {...rest}
   >
     <Flex
       px={4}
       fontSize={1}
-      bg="blue.light"
+      bg={dark ? "blue.darker" : "blue.light"}
       p={2}
       borderRight={1}
-      borderColor="blue.mid"
+      borderColor={dark ? "borders.dark" : "blue.mid"}
     >
       <Type>{label}</Type>
     </Flex>

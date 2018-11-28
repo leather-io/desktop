@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { themeGet } from "styled-system";
 
-const Scroll = styled.div`
+const ScrollableArea = styled.div`
   height: 490px;
   padding-bottom: 50px;
   overflow-y: auto;
@@ -29,9 +29,9 @@ const Scroll = styled.div`
     }
   }
 `;
-Scroll.defaultProps = {
+ScrollableArea.defaultProps = {
   scrollbar: "blue.darker",
   thumb: "blue.light"
 };
 
-export default Scroll;
+export default ScrollableArea;

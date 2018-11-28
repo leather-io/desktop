@@ -1,6 +1,6 @@
 {
   "name": "stacks-wallet-1",
-  "description": "Stacks Wallet Beta 1",
+  "description": "Stacks Wallet",
   "version": "1.0.0",
   "author": {
     "name": "Blockstack PBC",
@@ -8,8 +8,8 @@
   },
   "browserslist": "electron 1.6",
   "build": {
-    "productName": "Stacks Wallet Beta 1",
-    "appId": "org.blockstack.stacks-wallet-beta-1",
+    "productName": "Stacks Wallet",
+    "appId": "org.blockstack.stacks-wallet",
     "files": [
       "app/dist/",
       "app/app.html",
@@ -219,7 +219,7 @@
     "npm": ">=4.x",
     "yarn": ">=0.21.3"
   },
-  "homepage": "https://www.blockstack.org",
+  "homepage": "https://www.stackstoken.com/",
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/fileMock.js",
@@ -252,7 +252,7 @@
   ],
   "main": "./app/main.prod.js",
   "license": "MIT",
-  "productName": "StacksWalletBeta",
+  "productName": "StacksWalletasdasda",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",

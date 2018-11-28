@@ -28,15 +28,10 @@ export const getIdleDispatcher = (stopWhenInactive, timeout, fn) =>
     stopWhenInactive ? raf(() => ric(fn, ricOptions)) : ric(fn, ricOptions);
   }, timeout);
 
-type Props = {
-  children: React.Node
-};
-
-class App extends React.Component<Props> {
+class App extends React.Component {
   static contextTypes = {
     store: PropTypes.object
   };
-  props: Props;
 
   state = {
     unsubscribe: null
@@ -62,7 +57,6 @@ class App extends React.Component<Props> {
       (state, oldState) => {
         idleDispatcher();
         reactShouldRefreshData(store);
-        console.log("state changed from", oldState, "to", state);
       }
     );
     this.setState({

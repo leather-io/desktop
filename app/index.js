@@ -6,7 +6,30 @@ import { configureStore, history } from "./store/configureStore";
 import { getAll } from "@stores/persist/index";
 
 getAll().then(data => {
-  const { store } = configureStore(data || {});
+  // we are modifying the data so the
+  // initial state will never be of one that is loading
+  const modifiedData =
+    data &&
+    data.wallet &&
+    (data.wallet.fetchingBalances ||
+      data.wallet.fetchingAddressData ||
+      data.wallet.loading ||
+      data.wallet.signing ||
+      data.wallet.broadcasting)
+      ? {
+          ...data,
+          wallet: {
+            ...data.wallet,
+            fetchingBalances: false,
+            fetchingAddressData: false,
+            loading: false,
+            signing: false,
+            broadcasting: false
+          }
+        }
+      : data;
+
+  const { store } = configureStore(modifiedData || {});
 
   render(
     <AppContainer>

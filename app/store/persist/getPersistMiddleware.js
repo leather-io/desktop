@@ -1,3 +1,4 @@
+// src: https://github.com/HenrikJoreteg/redux-persist-middleware
 const IS_BROWSER = !!(
   typeof window !== "undefined" || typeof self !== "undefined"
 );

@@ -76,9 +76,7 @@ const tableHeadItems = [
   }
 ];
 
-const balance = 1231231.12312;
-
-const NewWallet = ({ doRefreshData, ...rest }) => (
+const NewWallet = ({ doRefreshData, fetching, ...rest }) => (
   <Flex
     flexDirection="column"
     alignItems="center"
@@ -106,7 +104,11 @@ const NewWallet = ({ doRefreshData, ...rest }) => (
           component: <ReceiveButton />
         }}
         secondary={{
-          label: "Refresh",
+          label: fetching ? (
+            <Spinner stroke={4} size={18} color="currentColor" />
+          ) : (
+            "Refresh"
+          ),
           color: "blue",
           onClick: debounce(doRefreshData, 500)
         }}
@@ -126,7 +128,7 @@ const Dashboard = ({
     <Content p={3} maxWidth={"100%"}>
       <Header />
       {!loading && data && !data.success && !data.status ? (
-        <NewWallet doRefreshData={doRefreshData} />
+        <NewWallet fetching={fetching} doRefreshData={doRefreshData} />
       ) : (
         <>
           <Balance />

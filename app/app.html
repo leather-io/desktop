@@ -2,7 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:1212" />
     <title>Stacks Wallet</title>
+    <script>
+      var global = window;
+      var Buffer = window.nodeBuffer;
+    </script>
   </head>
   <body>
     <div id="root"></div>
@@ -12,14 +17,15 @@
 
         // Dynamically insert the DLL script in development env in the
         // renderer process
-        if (process.env.NODE_ENV === "development") {
+        if (window.procNodeEnv === "development") {
           scripts.push("../dll/renderer.dev.dll.js");
         }
 
         // Dynamically insert the bundled app script in the renderer process
-        const port = process.env.PORT || 1212;
+        const port = window.procPort || 1212;
+
         scripts.push(
-          process.env.HOT
+          window.procHot
             ? "http://localhost:" + port + "/dist/renderer.dev.js"
             : "./dist/renderer.prod.js"
         );

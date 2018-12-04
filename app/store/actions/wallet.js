@@ -139,6 +139,10 @@ const doFetchStxAddressData = address => async (dispatch, state) => {
       type: FETCH_ADDRESS_DATA_FINISHED,
       payload: {
         ...data,
+        balances: {
+          confirmed: btcData.balance,
+          unconfirmed: btcData.unconfirmed_balance
+        },
         transactions
       }
     });
@@ -271,15 +275,9 @@ const doAddHardwareWallet = type => async (dispatch, state) => {
 };
 
 const doFetchBalances = addresses => async (dispatch, state) => {
-  let btc = addresses.btc;
   let stx = addresses.stx;
   if (!addresses) {
-    btc = selectWalletBitcoinAddress(state);
     stx = selectWalletStacksAddress(state);
-    if (!btc) {
-      console.error("no btc address");
-      return;
-    }
     if (!stx) {
       console.error("no stx address");
       return;
@@ -289,20 +287,14 @@ const doFetchBalances = addresses => async (dispatch, state) => {
     type: FETCH_BALANCES_STARTED
   });
   try {
-    const btcBalance = await fetchBtcBalance(btc);
     const stxBalance = await fetchStxBalance(stx);
 
     const balances = [
-      {
-        type: "btc",
-        balance: btcBalance
-      },
       {
         type: "stx",
         balance: stxBalance
       }
     ];
-
     dispatch({
       type: FETCH_BALANCES_FINISHED,
       payload: balances

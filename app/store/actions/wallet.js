@@ -197,15 +197,9 @@ const doAddHardwareWallet = type => async (dispatch, state) => {
 };
 
 const doFetchBalances = addresses => async (dispatch, state) => {
-  let btc = addresses.btc;
   let stx = addresses.stx;
   if (!addresses) {
-    btc = selectWalletBitcoinAddress(state);
-    stx = selectWalletStacksAddress(state);
-    if (!btc) {
-      console.error("no btc address");
-      return;
-    }
+    stx = selectWalletStacksAddress(state());
     if (!stx) {
       console.error("no stx address");
       return;
@@ -215,20 +209,13 @@ const doFetchBalances = addresses => async (dispatch, state) => {
     type: FETCH_BALANCES_STARTED
   });
   try {
-    const btcBalance = await fetchBtcBalance(btc);
-    const stxBalance = await fetchStxBalance(stx);
-
+    const promises = await Promise.all([fetchStxBalance(stx)]);
     const balances = [
       {
-        type: "btc",
-        balance: btcBalance
-      },
-      {
         type: "stx",
-        balance: stxBalance
+        balance: promises[0]
       }
     ];
-
     dispatch({
       type: FETCH_BALANCES_FINISHED,
       payload: balances
@@ -245,14 +232,21 @@ const doRefreshData = (notify = true) => (dispatch, state) => {
   const stx = selectWalletStacksAddress(state());
   const btc = selectWalletBitcoinAddress(state());
   notify && doNotify("Refreshing data!")(dispatch);
-  doFetchBalances({ stx, btc })(dispatch);
+  doFetchBalances({ stx, btc })(dispatch, state);
   doFetchStxAddressData(stx)(dispatch, state);
 };
 
+/**
+ * doAllowModalToClose
+ */
 const doAllowModalToClose = () => dispatch =>
   dispatch({
     type: TOGGLE_MODAL_CLOSE
   });
+
+/**
+ * doNotAllowModalToClose
+ */
 const doNotAllowModalToClose = () => dispatch =>
   dispatch({
     type: TOGGLE_MODAL_KEEP_OPEN

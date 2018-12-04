@@ -45,8 +45,7 @@ export const initialState = {
     btc: null
   },
   balances: {
-    stx: null,
-    btc: null
+    stx: null
   },
   transactions: [],
   type: null,
@@ -120,8 +119,7 @@ const reducer = (state = initialState, { type, payload }) =>
           btc: null
         };
         draft.balances = {
-          stx: null,
-          btc: null
+          stx: null
         };
         draft.type = null;
         draft.data = null;

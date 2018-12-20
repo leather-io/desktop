@@ -252,7 +252,7 @@
     "webpack"
   ],
   "main": "./app/main.prod.js",
-  "license": "MIT",
+  "license": "GPLv3",
   "productName": "StacksWalletasdasda",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",

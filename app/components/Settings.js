@@ -1,0 +1,60 @@
+// @flow
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import ActionButtons from '../containers/ActionButtons'
+import Button from '../containers/Button'
+import Blob from '../components/Blob'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { satoshisToBtc } from '../utils/utils'
+
+type Props = {};
+
+export default class Settings extends Component<Props> {
+  props: Props;
+
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+
+    const { 
+      btcAddress,
+      btcBalance,
+      blockstackCoreURL,
+      broadcastServiceURL,
+      reset,
+      done
+    } = this.props
+
+    return (
+      <div>
+        <div>
+          <p>Bitcoin Balance</p>
+          {satoshisToBtc(btcBalance.toString())} BTC
+        </div>
+        <div>
+          <p>Bitcoin Address</p>
+          <Blob>{btcAddress}</Blob>
+        </div>
+        <div>
+          <p>Blocktack Core API URL</p>
+          <Blob>{blockstackCoreURL}</Blob>
+        </div>
+        <div>
+          <p>Transaction Broadcast Service URL</p>
+          <Blob>{broadcastServiceURL}</Blob>
+        </div>
+        <br/>
+        <Button onClick={reset} height={25}>
+          Reset Wallet
+        </Button>
+
+        <ActionButtons>
+          <Button to="/dashboard">Done</Button>
+        </ActionButtons>
+
+      </div>
+    );
+  }
+}

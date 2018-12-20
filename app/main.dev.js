@@ -59,13 +59,15 @@ app.on("ready", async () => {
     await installExtensions();
   }
 
+  const nodeIntegration = process.env.NODE_ENV === 'development'
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 950,
     height: 760,
     titleBarStyle: "hiddenInset",
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: nodeIntegration,
       preload: path.join(__dirname, "preload.js")
     }
   });

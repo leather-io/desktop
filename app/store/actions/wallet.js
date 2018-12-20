@@ -200,6 +200,7 @@ const doFetchBalances = addresses => async (dispatch, state) => {
   let stx = addresses.stx;
   if (!addresses) {
     stx = selectWalletStacksAddress(state());
+
     if (!stx) {
       console.error("no stx address");
       return;

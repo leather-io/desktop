@@ -3,7 +3,6 @@ import { Button, Buttons, Flex, Type } from "blockstack-ui/dist";
 import { State } from "react-powerplug";
 import { Modal } from "@components/modal";
 import { Label } from "@components/field";
-import { StaticField } from "@components/field";
 import { doResetWallet } from "@stores/actions/wallet";
 import { OpenModal } from "@components/modal";
 import { TxFeesModal } from "@containers/modals/tx-fees-top-up";
@@ -70,19 +69,6 @@ const TopUpSection = connect(state => ({
   ) : null
 );
 
-const API = ({ ...rest }) => (
-  <Section>
-    <Label pb={4} fontSize={2}>
-      Wallet Info
-    </Label>
-    <Flex>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis,
-      debitis dignissimos dolores doloribus, earum facere in laborum
-      necessitatibus nihil odit officia officiis optio possimus quam quas
-      repellat sequi soluta vel?
-    </Flex>
-  </Section>
-);
 const DangerZone = connect(
   null,
   { doResetWallet }
@@ -144,7 +130,6 @@ const SettingsModal = ({ hide, ...rest }) => {
     <Modal title="Settings" hide={hide} p={0} width="90vw">
       <TopUpSection />
       <DangerZone hide={hide} />
-      <API />
       <Flex flexDirection="column" p={4} flexShrink={0}>
         <Buttons>
           <Button height={"auto"} py={2} onClick={hide}>

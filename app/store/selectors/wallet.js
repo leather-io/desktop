@@ -23,9 +23,12 @@ const selectWalletData = state => state.wallet.data;
 const selectWalletError = state => state.wallet.error;
 
 const selectWalletLastFetch = state => state.wallet.lastFetch;
+
 const selectWalletIsFetchingBalances = state => state.wallet.fetchingBalances;
+
 const selectWalletIsFetchingAddressData = state =>
   state.wallet.fetchingAddressData;
+
 const selectWalletIsFetching = state => {
   const fetchingBalances = selectWalletIsFetchingBalances(state);
   const fetchingAddressData = selectWalletIsFetchingAddressData(state);

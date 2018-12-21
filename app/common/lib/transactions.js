@@ -42,7 +42,7 @@ export const ERRORS = {
 };
 
 /**
- * generateTransaction
+ * prepareTransaction
  *
  * This will generate and sign our transaction with either a ledger or trezor
  *

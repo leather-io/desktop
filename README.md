@@ -1,4 +1,4 @@
-# Stacks Investor Wallet
+# Stacks Wallet
 
 ## Run
 ```bash

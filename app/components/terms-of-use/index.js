@@ -16,13 +16,12 @@ const TermsOfUse = ({ ...rest }) => (
       <br />
       <br />
       <strong>1. Overview.</strong> The Software is provided to you for the
-      purpose of generating a private-public key pair (your “Keys”), or enabling
-      your use of a hardware wallet, in order to receive Blockstack tokens (the
-      “<strong>Stacks Tokens</strong>”). BLOCKSTACK DOES NOT HOLD YOUR KEYS FOR
-      YOU. WE CANNOT ACCESS YOUR ACCOUNT OR RECOVER YOUR KEYS. IF YOU NEED TO
-      RESTORE YOUR WALLET, YOU MUST ENTER THE SEED PHRASE PROVIDED WHEN YOU
-      FIRST CREATE A NEW WALLET. YOU ARE SOLELY RESPONSIBLE FOR SAFEGUARDING
-      YOUR KEYS AND THE SEED PHRASE.
+      purpose of enabling your use of a hardware wallet, in order to receive
+      Blockstack tokens (the “<strong>Stacks Tokens</strong>”). BLOCKSTACK DOES
+      NOT HOLD YOUR SEED PHRASE FOR YOU. WE CANNOT ACCESS YOUR ACCOUNT OR
+      RECOVER YOUR SEED PHRASE. IF YOU LOSE YOUR SEED PHRASE, YOU WILL HAVE NO
+      ACCESS TO YOUR WALLET. YOU ARE SOLELY RESPONSIBLE FOR SAFEGUARDING YOUR
+      SEED PHRASE.
       <br />
       <br />
       <strong>2. GPLv3.</strong> The Software is provided under the GNU General

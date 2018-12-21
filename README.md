@@ -1,6 +1,6 @@
 # Stacks Wallet
 
-The Stacks Wallet enables holders of Stacks to send and receive tokens.
+The Stacks Wallet enables holders of Stacks to send and receive tokens. [Read the announcement here.](https://blog.blockstack.org/introducing-the-stacks-wallet/)
 
 ![The Stacks Wallet](https://file-elonievacp.now.sh/)
 

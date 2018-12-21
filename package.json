@@ -253,7 +253,7 @@
   ],
   "main": "./app/main.prod.js",
   "license": "GPLv3",
-  "productName": "StacksWalletasdasda",
+  "productName": "Stacks Wallet",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",

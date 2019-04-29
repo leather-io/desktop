@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Flex, Buttons, Type, Input } from "blockstack-ui/dist";
 import { Button } from "@components/button/index";
+import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@common/constants";
 
@@ -15,7 +16,7 @@ const Title = ({ ...rest }) => (
   />
 );
 
-const InitialScreen = ({ ...props }) => (
+const RestoreScreen = ({ ...props }) => (
   <Flex
     flexGrow={1}
     flexDirection="column"
@@ -27,7 +28,7 @@ const InitialScreen = ({ ...props }) => (
     {...props}
   >
     <Box maxWidth="400px">
-      <Title>Welcome to the Stacks Wallet</Title>
+      <Title>Do you have a Hardware Wallet?</Title>
     </Box>
     <Type
       pb={2}
@@ -38,17 +39,20 @@ const InitialScreen = ({ ...props }) => (
       color="hsl(242, 56%, 75%)"
       maxWidth="300px"
     >
-      Choose one of the following options to setup your Stacks wallet.
     </Type>
     <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={5}>
-      <Button outline is={Link} invert to={ROUTES.NEW_OPTIONS}>
-        New Wallet
+      <Button outline is={Link} invert to={ROUTES.RESTORE_HARDWARE}>
+        Yes
       </Button>
-      <Button outline is={Link} mt={4} invert to={ROUTES.RESTORE_OPTIONS}>
-        Restore Wallet
+      <Button outline is={Link} mt={4} invert to={ROUTES.RESTORE_SEED}>
+        No
       </Button>
+      <OnboardingNavigation
+            onDark
+            back={ROUTES.SETUP}
+          />
     </Buttons>
   </Flex>
 );
 
-export default InitialScreen;
+export default RestoreScreen;

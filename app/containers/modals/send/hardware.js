@@ -30,6 +30,7 @@ const HardwareView = ({
         state.values.recipient,
         state.values.amount,
         type,
+        "",
         state.values.memo || ""
       );
 

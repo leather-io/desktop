@@ -3,6 +3,8 @@ import { microToStacks, stacksToMicro } from "stacks-utils";
 const selectWalletHistory = state =>
   state.wallet.data ? state.wallet.data.history : [];
 
+const selectWalletSeed = state => state.wallet.seed;
+
 const selectWalletStacksAddress = state => state.wallet.addresses.stx;
 
 const selectWalletBitcoinAddress = state => state.wallet.addresses.btc;
@@ -66,6 +68,7 @@ const selectPendingBalance = state => {
 
 export {
   selectWalletHistory,
+  selectWalletSeed,
   selectWalletBalance,
   selectWalletStacksAddress,
   selectWalletType,

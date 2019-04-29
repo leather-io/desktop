@@ -55,15 +55,16 @@ const InitialScreen = ({
             },
             label: state.processing ? "Loading..." : "Continue",
             action: () =>
-              handleValidation(
-                sender,
-                balance,
-                pendingBalance,
-                state.values,
-                setState,
-                nextView,
-                type
-              )
+              state.processing ? null :
+                handleValidation(
+                  sender,
+                  balance,
+                  pendingBalance,
+                  state.values,
+                  setState,
+                  nextView,
+                  type
+                )
           },
           secondary: {
             label: "Cancel",

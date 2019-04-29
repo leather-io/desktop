@@ -44,12 +44,12 @@ export const ERRORS = {
 /**
  * prepareTransaction
  *
- * This will generate and sign our transaction with either a ledger or trezor
+ * This will generate and sign our transaction with either a seed phrase, ledger or trezor
  *
  * @param {string} senderAddress - from Stacks address
  * @param {string} recipientAddress - to Stacks address
  * @param {object} amount - the amount of stacks to send
- * @param {string} walletType - one of WALLET_TYPES.TREZOR or WALLET_TYPES.LEDGER
+ * @param {string} walletType - one of WALLET_TYPES.SOFTWARE, WALLET_TYPES.TREZOR, WALLET_TYPES.LEDGER
  * @param {string} memo - the message for the tx
  */
 
@@ -151,6 +151,7 @@ const generateTransaction = async (
   recipientAddress,
   amount,
   walletType,
+  privateKey,
   memo = ""
 ) => {
   try {
@@ -171,10 +172,15 @@ const generateTransaction = async (
     }
 
     // define our signer
-    const isLedger = walletType === WALLET_TYPES.LEDGER;
-    const signer = isLedger
-      ? new LedgerSigner(PATH, Transport)
-      : new TrezorSigner(PATH, tx.senderBtcAddress);
+    const signer = null
+    if (walletType === WALLET_TYPES.SOFTWARE) {
+      signer = privateKey
+    } else {
+      const isLedger = walletType === WALLET_TYPES.LEDGER;
+      signer = isLedger
+        ? new LedgerSigner(PATH, Transport)
+        : new TrezorSigner(PATH, tx.senderBtcAddress);
+    }
 
     // if we get here there are no errors
     const rawTx = await transactions.makeTokenTransfer(

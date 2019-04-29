@@ -28,7 +28,7 @@ const Title = ({ ...rest }) => (
 
 const handleAccept = (accept, history) => {
   doAcceptTerms();
-  history.push(ROUTES.RESTORE_OPTIONS);
+  history.push(ROUTES.SETUP);
 };
 
 const handleQuit = () => {

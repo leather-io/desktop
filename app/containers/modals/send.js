@@ -9,7 +9,7 @@ import {
   selectWalletError,
   selectPendingBalance
 } from "@stores/selectors/wallet";
-import { microToStacks } from "@utils/utils";
+import { microToStacks, emptySeedArray } from "@utils/utils";
 import {
   doSignTransaction,
   doBroadcastTransaction,
@@ -22,11 +22,16 @@ import { Confirmation } from "@containers/modals/send/confirm";
 import { Success } from "@containers/modals/send/success";
 import { InitialScreen } from "@containers/modals/send/initial";
 import { HardwareView } from "@containers/modals/send/hardware";
+import { SeedView } from "@containers/modals/send/seed";
 import { NoBalance } from "@containers/modals/send/no-balance";
 import {
   handleChange,
-  handleValidation
+  handleSeedChange,
+  handleValidation,
+  handleSeedValidation,
+  clearSeed,
 } from "@containers/modals/send/helpers";
+import { WALLET_TYPES } from "@stores/reducers/wallet";
 
 const SecondaryLink = ({ action, label, ...rest }) => (
   <TextLink onClick={action} {...rest}>
@@ -73,7 +78,9 @@ class SendComponent extends React.Component {
     values: {
       recipient: "",
       amount: "",
-      memo: ""
+      memo: "",
+      seed: "",
+      seedArray: emptySeedArray(12)
     },
     draft: null,
     errors: {}
@@ -104,7 +111,7 @@ class SendComponent extends React.Component {
           this.state.errors.type &&
           this.state.errors.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type
             ? BTCTopUpView
-            : HardwareView;
+            : (type === WALLET_TYPES.SOFTWARE ? SeedView : HardwareView);
         break;
       case 2:
         Component = Confirmation;
@@ -130,8 +137,10 @@ class SendComponent extends React.Component {
       sender,
       error,
       handleChange,
+      handleSeedChange,
       handleValidation,
-      nextView: () =>
+      handleSeedValidation,
+      nextView: () => 
         this.setState(({ view, ...rest }) => ({ ...rest, view: view + 1 })),
       goToView: view => this.setState(({ ...rest }) => ({ ...rest, view })),
       prevView: () =>
@@ -141,7 +150,8 @@ class SendComponent extends React.Component {
         hide();
       },
       doSignTransaction,
-      doBroadcastTransaction
+      doBroadcastTransaction,
+      clearSeed
     };
 
     return (

@@ -17,6 +17,9 @@ const WALLET_RESET = "wallet/WALLET_RESET";
 const WALLET_LOADING_STARTED = "wallet/WALLET_LOADING_STARTED";
 const WALLET_LOADING_FINISHED = "wallet/WALLET_LOADING_FINISHED";
 
+const TEMP_SAVE_SEED = "wallet/TEMP_SAVE_SEED";
+const ERASE_SEED = "wallet/ERASE_SEED";
+
 const WALLET_SIGN_TRANSACTION_STARTED =
   "wallet/WALLET_SIGN_TRANSACTION_STARTED";
 const WALLET_SIGN_TRANSACTION_FINISHED =
@@ -36,10 +39,13 @@ const WALLET_CLEAR_ERROR = "wallet/WALLET_CLEAR_ERROR";
 const WALLET_TYPES = {
   WATCH_ONLY: "wallet_types/WATCH_ONLY",
   LEDGER: "wallet_types/LEDGER",
-  TREZOR: "wallet_types/TREZOR"
+  TREZOR: "wallet_types/TREZOR",
+  SOFTWARE: "wallet_types/SOFTWARE",
 };
 
 export const initialState = {
+  seed: null,
+  pubKey: null,
   addresses: {
     stx: null,
     btc: null
@@ -121,6 +127,7 @@ const reducer = (state = initialState, { type, payload }) =>
         draft.balances = {
           stx: null
         };
+        draft.pubKey = null;
         draft.type = null;
         draft.data = null;
         draft.transactions = [];
@@ -141,6 +148,15 @@ const reducer = (state = initialState, { type, payload }) =>
         break;
       case WALLET_LOADING_FINISHED:
         draft.loading = false;
+        break;
+      /**
+       * Temporarily store seed
+       */
+      case TEMP_SAVE_SEED:
+        draft.seed = payload.seed;
+        break;
+      case ERASE_SEED:
+        draft.seed = null;
         break;
       /**
        * Add wallet address + type
@@ -178,6 +194,8 @@ export {
   FETCH_BALANCES_STARTED,
   FETCH_BALANCES_FINISHED,
   FETCH_BALANCES_ERROR,
+  TEMP_SAVE_SEED,
+  ERASE_SEED,
   ADD_WALLET_ADDRESS,
   ADD_WALLET_ADDRESS_SUCCESS,
   ADD_WALLET_ADDRESS_ERROR,

@@ -75,7 +75,7 @@
     "font-awesome": "^4.7.0",
     "form-data": "^2.3.3",
     "history": "^4.7.2",
-    "immer": "^1.7.4",
+    "immer": "^1.12.1",
     "lodash.debounce": "^4.0.8",
     "lorem-ipsum": "^1.0.6",
     "numeral": "^2.0.6",

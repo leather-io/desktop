@@ -62,7 +62,7 @@ const doClearError = () => dispatch =>
  * Generate a new seed phrase
  */
 const doGenerateNewSeed = () => async dispatch => {
-  const entropy = crypto.randomBytes(16)
+  const entropy = crypto.randomBytes(32)
   const seedPhrase = bip39.entropyToMnemonic(entropy)
   
   const address = mnemonicToStxAddress(seedPhrase)
@@ -274,7 +274,6 @@ const doFetchBalances = addresses => async (dispatch, state) => {
 };
 
 const doRefreshData = (notify = true) => (dispatch, state) => {
-  console.log('refreshing data')
   const stx = selectWalletStacksAddress(state());
   const btc = selectWalletBitcoinAddress(state());
   notify && doNotify("Refreshing data!")(dispatch);

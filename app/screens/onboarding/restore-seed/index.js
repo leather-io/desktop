@@ -4,6 +4,7 @@ import { Button } from "@components/button/index";
 import { Seed } from "@components/seed/index";
 import { Page } from "@components/page";
 import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
+import { Hover } from "react-powerplug";
 import { ROUTES } from "@common/constants";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -27,6 +28,63 @@ const Title = ({ ...rest }) => (
   />
 );
 
+export const SeedLengthButton = ({
+  label,
+  children,
+  hoverBg = "blue.dark",
+  bg = "#8FA6B8",
+  onDark,
+  disabled,
+  highlighted,
+  typeProps,
+  ...rest
+}) =>
+  children || label ? (
+    <Hover>
+      {({ hovered, bind }) => (
+        <Type
+          pt={1}
+          fontSize={1}
+          fontWeight={600}
+          cursor={hovered && !disabled ? "pointer" : undefined}
+          color={highlighted ? "blue.light" : (hovered && !disabled ? (onDark ? "blue.light" : hoverBg) : bg)}
+          style={{
+            userSelect: "none"
+          }}
+          {...bind}
+          {...rest}
+        >
+          {children || label}
+        </Type>
+      )}
+    </Hover>
+  ) : null;
+
+const SeedLengthSelector = ({length, handleClick}) => {
+  const twelve = length === 12
+  return (
+    <Flex> 
+      <SeedLengthButton 
+        disabled={twelve} 
+        onDark 
+        highlighted={twelve} 
+        onClick={!twelve ? handleClick : null}
+      >
+        12 words
+      </SeedLengthButton> 
+      <Type color="blue.light" pt={1}>&nbsp;|&nbsp;</Type>
+      <SeedLengthButton 
+        disabled={!twelve} 
+        onDark 
+        highlighted={!twelve} 
+        onClick={twelve ? handleClick : null}
+      >
+        24 words
+      </SeedLengthButton>
+    </Flex>
+  )
+}
+
 class RestoreSeedScreen extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +92,7 @@ class RestoreSeedScreen extends Component {
 
   state = {
     seedArray: null,
+    seedLength: 24,
     error: null,
     loading: false
   };
@@ -44,7 +103,7 @@ class RestoreSeedScreen extends Component {
 
   resetSeedArray = () => {
     this.setState({
-      seedArray: emptySeedArray(12),
+      seedArray: emptySeedArray(this.state.seedLength)
     })
   }
 
@@ -93,6 +152,12 @@ class RestoreSeedScreen extends Component {
     })
   }
 
+  handleSeedLengthClick = () => {
+    this.setState({
+      seedLength: this.state.seedLength === 12 ? 24 : 12
+    }, this.resetSeedArray)
+  }
+
   render () {
     const { 
       doAddSoftwareWalletAddress, 
@@ -132,21 +197,23 @@ class RestoreSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            Provide all 12 words of your seed phrase in order to restore your wallet.
+            Provide all 24 words of your seed phrase in order to restore your wallet.
           </Type>
+          {/* <SeedLengthSelector length={this.state.seedLength} handleClick={this.handleSeedLengthClick} /> */}
           <Seed 
             isInput={true}
-            numWords={12} 
+            numWords={this.state.seedLength} 
             handleKeyPress={this.handleKeyPress}
             handleChange={this.handleInputChange}
             values={this.state.seedArray}
+            small={true}
           />
           { this.state.error && 
             <Type lineHeight={1.5} fontSize={2} pt={1} color="hsl(10, 85%, 50%)">
               {this.state.error}
             </Type>
           }
-          <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={5}>
+          <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={4}>
             <Button outline invert onClick={this.handleConfirmSuccess}>Restore</Button>
             <OnboardingNavigation
                   onDark

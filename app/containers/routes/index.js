@@ -24,7 +24,7 @@ export default () => (
     <Switch>
       <Route path={ROUTES.SETUP} exact component={InitialScreen}/>
       <Route path={ROUTES.NEW_OPTIONS} exact component={NewScreen}/>
-      <Route path={ROUTES.RESTORE_OPTIONS} exact component={RestoreScreen} />
+      <Route path={ROUTES.RESTORE_OPTIONS} exact component={RestoreScreen}/>
       <Route path={ROUTES.NEW_SEED} exact component={NewSeedScreen}/>
       <Route path={ROUTES.CONFIRM_SEED} exact component={ConfirmSeedScreen}/>
       <Route path={ROUTES.RESTORE_SEED} exact component={RestoreSeedScreen}/>

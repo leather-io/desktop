@@ -42,7 +42,7 @@ const mnemonicToPrivateKey = (mnemonic) => {
 }
 
 const mnemonicToStxAddress = (mnemonic) => {
-	const seed = bip39.mnemonicToSeed(mnemonic)
+  const seed = bip39.mnemonicToSeed(mnemonic)
 
 	const master = bip32.fromSeed(seed)
 	const child = master.derivePath(`m/44'/5757'/0'/0/0`)

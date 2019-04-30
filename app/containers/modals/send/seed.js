@@ -102,17 +102,8 @@ const SeedView = ({
             values={state.values.seedArray}
             invert={true}
             small={true}
+            mt="25px"
           />
-          {/* <Flex flexDirection="column" alignItems="center" pt={2}>
-            <Field
-              name="memo"
-              label="Enter your seed phrase"
-              is="textarea"
-              value={state.values.seed}
-              onChange={e => handleChange(e, setState, "seed")}
-              placeholder=""
-            />
-          </Flex> */}
         </Flex>
       </Flex>
       {state.errors && 

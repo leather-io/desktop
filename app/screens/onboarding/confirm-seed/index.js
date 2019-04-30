@@ -130,7 +130,7 @@ class ConfirmSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            Provide all 12 words of your seed phrase by number to confirm you've written them down in order properly.
+            Provide all 24 words of your seed phrase by number to confirm you've written them down in order properly.
           </Type>
           <Seed 
             seedPhrase={seed} 
@@ -138,6 +138,7 @@ class ConfirmSeedScreen extends Component {
             handleKeyPress={this.handleKeyPress}
             handleChange={this.handleInputChange}
             values={this.state.confirmSeedArray}
+            small
           />
           { this.state.error && 
             <Type lineHeight={1.5} fontSize={2} pt={1} color="hsl(10, 85%, 50%)">

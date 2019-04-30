@@ -19,8 +19,9 @@ const SeedWord = ({word, index, isInput, value, handleKeyPress, handleChange, fo
     border={1}
     borderColor={invert ? "#C4D7E5" :"#6E6CB4"}
     m={2}
+    mt={1}
     width={small ? 120 : 180}
-    height={small ? 40 : 50}
+    height={small ? 35 : 50}
     flexDirection="row"
     flexGrow={1}
     textAlign="center"
@@ -31,7 +32,7 @@ const SeedWord = ({word, index, isInput, value, handleKeyPress, handleChange, fo
     <Box
       borderRight={1}
       borderColor={invert ? "#C4D7E5" :"#6E6CB4"}
-      py={small ? "8px" : "12px"}
+      py={small ? "5px" : "12px"}
       width="30%"
       fontSize="14px"
     > 
@@ -39,8 +40,8 @@ const SeedWord = ({word, index, isInput, value, handleKeyPress, handleChange, fo
     </Box>
       {isInput ?
       <Box
-        py={small ? "5px" : "10px"}
-        px={small ? "10px" : "15px"}
+        py={small ? "3px" : "10px"}
+        px={small ? "8px" : "15px"}
         width="70%"
         fontSize={small ? "14px" : "16px"}
       >
@@ -56,9 +57,9 @@ const SeedWord = ({word, index, isInput, value, handleKeyPress, handleChange, fo
       :      
       <Box
         py={small ? "5px" : "10px"}
-        px="15px"
+        px={small ? "8px" : "15px"}
         width="70%"
-        fontSize="16px"
+        fontSize={small ? "14px" : "16px"}
       >
         {word}
       </Box>
@@ -78,7 +79,7 @@ const Seed = ({ seedPhrase, isInput, numWords, values, handleKeyPress, handleCha
   const seedWords = seedPhrase ? seedArray(seedPhrase) : Array(numWords).fill('')
   return (
     <Flex
-      mt={5}
+      mt={3}
       mb={4}
       p={1}
       alignItems="center"

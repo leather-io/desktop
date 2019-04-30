@@ -44,7 +44,7 @@ class ConfirmSeedScreen extends Component {
 
   resetConfirmSeedArray = () => {
     this.setState({
-      confirmSeedArray: emptySeedArray(12),
+      confirmSeedArray: emptySeedArray(24),
     })
   }
 

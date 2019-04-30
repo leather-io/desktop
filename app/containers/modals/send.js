@@ -80,7 +80,7 @@ class SendComponent extends React.Component {
       amount: "",
       memo: "",
       seed: "",
-      seedArray: emptySeedArray(12)
+      seedArray: emptySeedArray(24)
     },
     draft: null,
     errors: {}

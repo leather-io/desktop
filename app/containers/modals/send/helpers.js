@@ -153,7 +153,7 @@ const clearSeed = (setState) =>
   setState(state =>
     produce(state, draft => {
       draft.seed = '',
-      draft.values['seedArray'] = emptySeedArray(12)
+      draft.values['seedArray'] = emptySeedArray(24)
     })
   );
 

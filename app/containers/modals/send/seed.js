@@ -96,7 +96,7 @@ const SeedView = ({
         <Flex flexDirection="column" alignItems="center" mt="-15px" px="15px">
           <Seed 
             isInput={true}
-            numWords={12} 
+            numWords={24} 
             handleKeyPress={handleKeyPress}
             handleChange={(event, index) => handleSeedChange(event, setState, index)}
             values={state.values.seedArray}

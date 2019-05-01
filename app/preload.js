@@ -28,6 +28,7 @@ const moduleWhiteList = [
 	'@ledgerhq/hw-transport-node-hid',
 	'bitcoinjs-lib',
 	'bigi',
+	'bignumber.js',
 	'crypto',
 	'ablankstein-ledger-hw-app-btc',
 	'rwlock',

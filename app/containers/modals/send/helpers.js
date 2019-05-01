@@ -48,6 +48,10 @@ const handleValidation = (
       errors.recipient = "Sender and recipient address cannot be the same.";
     }
   }
+
+  if (memo !== "" && memo.length > 32) {
+    errors.memo = "Memo cannot be longer than 32 characters.";
+  }
   
   if (Object.entries(errors).length) {
     setState({

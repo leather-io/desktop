@@ -46,6 +46,7 @@ const InitialScreen = ({
       value={state.values.memo}
       onChange={e => handleChange(e, setState, "memo")}
       placeholder="Write an optional message..."
+      error={state.errors.memo}
     />
     {children
       ? children({

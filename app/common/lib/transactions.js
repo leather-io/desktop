@@ -7,6 +7,7 @@ import { TrezorSigner } from "@vendor/blockstack-trezor";
 import { LedgerSigner } from "@vendor/blockstack-ledger";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { PATH } from "@common/constants";
+import bigi from "bigi";
 
 export const ERRORS = {
   // not enough btc for fees
@@ -67,7 +68,7 @@ const prepareTransaction = async (
   // define token type (always stacks)
   const tokenType = "STACKS";
 
-  const tokenAmount = toBigInt(amount); // convert to bigi
+  const tokenAmount = toBigInt(amount); // convert to bigi in microstacks
 
   // get an estimate
   const utxos = await config.network.getUTXOs(senderBtcAddress);

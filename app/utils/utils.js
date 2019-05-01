@@ -7,6 +7,8 @@ import crypto from 'crypto'
 import { b58ToC32, c32address, versions } from 'c32check'
 import { ECPair } from "bitcoinjs-lib"
 import { microToStacks, stacksToMicro } from "stacks-utils";
+import BigNumber from "bignumber.js"
+
 /**
  * Constants
  */
@@ -71,9 +73,7 @@ const satoshisToBtc = amountInSatoshis =>
   amountInSatoshis ? Number(amountInSatoshis) / SATOSHIS_IN_BTC : 0;
 
 const toBigInt = value =>
-  Number(value) < 1
-    ? bigi.valueOf(Number(value) * 1000000)
-    : bigi.fromByteArrayUnsigned(value).multiply(bigi.valueOf(1000000));
+  bigi.fromByteArrayUnsigned(BigNumber(value).multipliedBy(1000000).toString())
 
 const formatMicroStxValue = value => numeral(value).format("0.000000");
 

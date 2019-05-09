@@ -92,7 +92,7 @@ const BTCTopUpView = ({
       </Flex>
       <Flex flexDirection="column" p={4} pb={0}>
         <StaticField
-          label="BTC Amount Needed"
+          label="BTC amount needed"
           value={`${satoshisToBtc(difference)}`}
         />
         <BtcField />

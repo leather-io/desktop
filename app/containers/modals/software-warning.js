@@ -43,7 +43,7 @@ const Section = ({ ...rest }) => (
 
 const SoftwareWarningModal = ({ hide, proceed, history, ...rest }) => {
   return (
-    <Modal title="Warning" hide={hide} p={0} width="90vw">
+    <Modal title="Caution: A hardware wallet is recommended" fontSize={4} hide={hide} p={0} width="90vw">
       <Flex 
         flexDirection="column" 
         p={4} 
@@ -51,15 +51,6 @@ const SoftwareWarningModal = ({ hide, proceed, history, ...rest }) => {
         textAlign="center"
         justifyContent="center"
         alignItems="center">
-        <Type      
-          pb={2}
-          Type
-          lineHeight={1.5}
-          fontSize={4}
-          pt={4}
-          maxWidth="600px">
-            We highly recommend a hardware wallet
-          </Type>
           <Type      
             pb={2}
             Type
@@ -67,14 +58,11 @@ const SoftwareWarningModal = ({ hide, proceed, history, ...rest }) => {
             fontSize={2}
             pt={4}
             maxWidth="600px">
-            Hardware wallets affordably protect you from token loss and theft 
-            should your computer get hacked or your records lost. <br/><br/>
-            Please read our documentation about hardware wallets to ensure you 
-            understand their benefits and the risks of proceeding without one.
+            Hardware wallets further protect you from token loss and theft should your computer get hacked or your records lost. To ensure you understand their benefits and the risks of proceeding without one, please read our documentation.
           </Type>
           <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={5} pb={5}>
             <Button onClick={() => proceed(hide)} mb={3} bg="#EF4813">
-              Proceed without hardware
+              Continue without a hardware wallet
             </Button>
             <Button onClick={hide}>
               Back

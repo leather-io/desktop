@@ -186,7 +186,7 @@ class RestoreSeedScreen extends Component {
           {...rest}
         >
           <Box maxWidth="600px">
-            <Title>Enter Your Seed Phrase</Title>
+            <Title>Enter your seed phrase</Title>
           </Box>
           <Type
             pt={5}
@@ -197,7 +197,7 @@ class RestoreSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            Provide all 24 words of your seed phrase in order to restore your wallet.
+            Restore your wallet by entering the 24 words of your seed phrase in the correct order.
           </Type>
           {/* <SeedLengthSelector length={this.state.seedLength} handleClick={this.handleSeedLengthClick} /> */}
           <Seed 

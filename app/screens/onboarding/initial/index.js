@@ -67,16 +67,28 @@ class InitialScreen extends Component {
           color="hsl(242, 56%, 75%)"
           maxWidth="300px"
         >
-          Choose one of the following options to setup your Stacks wallet.
+          Choose one of the following options to set up a Stacks wallet.
         </Type>
         <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={5}>
           <Button outline is={Link} invert to={ROUTES.NEW_OPTIONS}>
-            New Wallet
+            Create new wallet
           </Button>
           <Button outline is={Link} mt={4} invert to={ROUTES.RESTORE_OPTIONS}>
-            Restore Wallet
+            Restore existing wallet
           </Button>
         </Buttons>
+        <Type
+            pt={5}
+            pb={1}
+            Type
+            lineHeight={1.5}
+            fontSize={1}
+            textAlign="right"
+            color="white"
+            maxWidth="600px"
+          >
+          <a href="https://docs.blockstack.org/org/wallet-use.html" target='_blank'>Wallet help</a>
+          </Type>
         <Type 
           position="absolute" 
           bottom="15px" 

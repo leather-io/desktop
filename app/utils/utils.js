@@ -49,19 +49,8 @@ const mnemonicToStxAddress = (mnemonic) => {
 	const master = bip32.fromSeed(seed)
 	const child = master.derivePath(`m/44'/5757'/0'/0/0`)
 
-	var SHA256 = crypto.createHash('SHA256')
-	var RIPEMD160 = crypto.createHash('RIPEMD160')
-
-	SHA256.update(child.publicKey)
-	var pk256 = SHA256.digest()
-	RIPEMD160.update(pk256)
-	var pk160 = RIPEMD160.digest()
-
-  const address = c32address(versions.mainnet.p2pkh,
-                               pk160.slice(0, 20).toString('hex'))
-	// const publicKey = child.publicKey.toString('hex')
-
-	return address
+  const address = b58ToC32(ecPairToAddress(ECPair.fromPrivateKey(child.privateKey)))
+  return address
 }
 
 const sumUTXOs = utxos => utxos.reduce((agg, x) => agg + x.value, 0);

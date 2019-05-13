@@ -8,6 +8,7 @@ import { b58ToC32, c32address, versions } from 'c32check'
 import { ECPair } from "bitcoinjs-lib"
 import { microToStacks, stacksToMicro } from "stacks-utils";
 import BigNumber from "bignumber.js"
+import { PATH } from "@common/constants";
 
 /**
  * Constants
@@ -36,7 +37,7 @@ const mnemonicToPrivateKey = (mnemonic) => {
 	const seed = bip39.mnemonicToSeed(mnemonic)
 
 	const master = bip32.fromSeed(seed)
-  const child = master.derivePath(`m/44'/5757'/0'/0/0`)
+  const child = master.derivePath(PATH)
 
   const ecPair = ECPair.fromPrivateKey(child.privateKey)
 
@@ -47,7 +48,7 @@ const mnemonicToStxAddress = (mnemonic) => {
   const seed = bip39.mnemonicToSeed(mnemonic)
 
 	const master = bip32.fromSeed(seed)
-	const child = master.derivePath(`m/44'/5757'/0'/0/0`)
+	const child = master.derivePath(PATH)
 
   const address = b58ToC32(ecPairToAddress(ECPair.fromPrivateKey(child.privateKey)))
   return address

@@ -65,7 +65,7 @@ const BTCTopUpView = ({
                 You don't have enough BTC to fund this transaction.
               </Type>
               <Type fontSize={2} lineHeight={1.5}>
-                BTC is used to pay fees for Stacks transactions. Please send at
+                You need BTC to pay fees for Stacks transactions. Please send at
                 least {satoshisToBtc(difference)} BTC to continue.
               </Type>
               <Flex

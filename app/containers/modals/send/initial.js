@@ -23,7 +23,7 @@ const InitialScreen = ({
       label="Recipient"
       error={state.errors.recipient}
       onChange={e => handleChange(e, setState, "recipient")}
-      placeholder="Enter a Stacks Address"
+      placeholder="Enter a Stacks address"
       value={state.values.recipient}
       autofocus
     />

@@ -65,7 +65,7 @@ class NewSeedScreen extends Component {
             <Title>Secure your seed phrase</Title>
           </Box>
           <Type
-            pt={5}
+            pt={4}
             pb={1}
             Type
             lineHeight={1.5}
@@ -73,22 +73,22 @@ class NewSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            A seed phrase is a unique sequence of 24 words provided to you when you create a wallet. You must enter your seed phrase to send Stacks (STX) tokens. 
+            A unique 24-word sequence generated for you when you create a wallet. You enter your seed phrase to open your wallet or to send Stacks (STX) tokens. 
           </Type>
           <Type
-            pt={5}
+            pt={2}
             pb={1}
             Type
             lineHeight={1.5}
-            fontSize={3}
+            fontSize={2}
             textAlign="center"
             color="white"
             maxWidth="600px"
           >
-            Don't lose your seed phrase. If you lose your seed phrase, you lose your STX tokens and can <strong>never</strong> get them back. <a href="https://docs.blockstack.org/org/secureref.html" target='_blank'>Read about wallet security</a>
+            Don't lose your seed phrase. If you lose your seed phrase, you lose your STX tokens and can <em><strong>never</strong></em> get them back. <a href="https://docs.blockstack.org/org/secureref.html" target='_blank'>Read about wallet security</a>
           </Type>
           <Type
-            pt={5}
+            pt={4}
             pb={1}
             Type
             lineHeight={1.5}

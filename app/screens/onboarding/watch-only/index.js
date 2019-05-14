@@ -59,7 +59,7 @@ class WatchOnlyScreen extends Component {
   handleSubmit = () => {
     if (this.state.value === "") {
       this.setState({
-        error: "Please enter a Stacks Address"
+        error: "Please enter a Stacks address"
       });
       return null;
     }

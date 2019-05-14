@@ -51,7 +51,7 @@ const TopUpSection = connect(state => ({
       <Card>
         <Flex p={4} borderRight={1} borderColor="blue.mid" flexGrow={1}>
           <Type>
-            You need small amounts of Bitcoin (BTC) to send Stacks (STX). A few satoshis is generally enough. You
+            You need very small amounts of Bitcoin (BTC) to send Stacks (STX). You
             currently have {satoshisToBtc(balance)} BTC available.
           </Type>
         </Flex>
@@ -86,7 +86,7 @@ const DangerZone = connect(
         flexGrow={1}
       >
         <Type>
-          Resetting removes your Stacks Wallet setup. It does not affect your Stacks addresses or the STX balances on them. You need your seed phrase to gain access to them again. <strong>Record and store your seed phrase securely before you reset.</strong> </Type>
+          Resetting removes your Stacks Wallet setup. It does not affect your Stacks addresses or the STX balances on them. You need your seed phrase to gain access to them again. <strong>Make sure you have stored your seed phrase securely.</strong> </Type>
       </Flex>
       <Flex justifyContent="center" alignItems="center" p={4} >
         <State initial={{ clicked: false }}>

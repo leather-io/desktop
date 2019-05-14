@@ -87,9 +87,8 @@ class WatchOnlyScreen extends Component {
       >
         <Flex flexDirection={"column"} maxWidth="600px">
           <Type lineHeight={1.5} fontSize={2} pt={6} color="hsl(242, 56%, 75%)">
-            For your security, at this time you can only create a watch-only
-            wallet if you do not have a hardware wallet device. Please enter a
-            Stacks Address.
+            You cannot send transactions from a watch-only wallet. If you don't 
+            know what this is click the back button.
           </Type>
           <Flex pt={4}>
             <Field
@@ -106,7 +105,7 @@ class WatchOnlyScreen extends Component {
           <Flex flexGrow={1} mt="auto" />
           <OnboardingNavigation
             onDark
-            back={ROUTES.RESTORE_OPTIONS}
+            back={ROUTES.SETUP}
             next={this.handleSubmit}
           />
         </Flex>

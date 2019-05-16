@@ -58,14 +58,14 @@ class NewSeedScreen extends Component {
           color="white"
           justifyContent="center"
           alignItems="center"
-          textAlign="center"
+          textAlign="left"
           {...rest}
         >
           <Box maxWidth="600px">
-            <Title>Secure Your Seed Phrase</Title>
+            <Title>Secure your seed phrase</Title>
           </Box>
           <Type
-            pt={5}
+            pt={4}
             pb={1}
             Type
             lineHeight={1.5}
@@ -73,17 +73,35 @@ class NewSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            Every wallet is derived from a uniquely generated, 24-word sequence called a "seed phrase". 
-            You must provide this seed phrase every time you want to perform a transaction.
-            <br/><br/>
-            Write down the seed phrase below. Secure the written seed phrase in a safe deposit box or similar.
-            If you lose your seed phrase, you lose all your tokens. <br/>
-            <a href="https://docs.blockstack.org/org/wallet-intro.html" target='_blank'>Read more</a>
+            A unique 24-word sequence generated for you when you create a wallet. You enter your seed phrase to open your wallet or to send Stacks (STX) tokens. 
           </Type>
+          <Type
+            pt={2}
+            pb={1}
+            Type
+            lineHeight={1.5}
+            fontSize={2}
+            textAlign="center"
+            color="white"
+            maxWidth="600px"
+          >
+            Don't lose your seed phrase. If you lose your seed phrase, you lose your STX tokens and can <em><strong>never</strong></em> get them back. <a href="https://docs.blockstack.org/org/secureref.html" target='_blank'>Read about wallet security</a>
+          </Type>
+          <Type
+            pt={4}
+            pb={1}
+            Type
+            lineHeight={1.5}
+            fontSize={2}
+            color="hsl(242, 56%, 75%)"
+            maxWidth="600px"
+          >
+            This is your seed phrase. <strong>(1)</strong> Write down each position and word, for example, <code>1 - frog</code>. <strong>(2)</strong> Store the written seed phrase in a secure location such as a safe deposit box. 
+            </Type>
           <Seed seedPhrase={seed} isInput={false} small={true}/>
           <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={4}>
             <Button outline is={Link} invert to={ROUTES.CONFIRM_SEED}>
-              I've written these down in order
+              I've written down my seed phrase
             </Button>
             <OnboardingNavigation
                   onDark

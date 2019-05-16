@@ -119,7 +119,7 @@ class ConfirmSeedScreen extends Component {
           {...rest}
         >
           <Box maxWidth="600px">
-            <Title>Confirm Your Seed Phrase</Title>
+            <Title>Confirm your seed phrase</Title>
           </Box>
           <Type
             pt={5}
@@ -130,7 +130,7 @@ class ConfirmSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            Provide all 24 words of your seed phrase by number to confirm you've written them down in order properly.
+            Enter the 24 words of your seed phrase in the order requested below. The numbers represent each word's corresponding position in your seed phrase. 
           </Type>
           <Seed 
             seedPhrase={seed} 

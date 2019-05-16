@@ -90,7 +90,7 @@ const doClearSeed = () => dispatch =>
   });
 
 /**
- * Fetch our data for the Stacks Address
+ * Fetch our data for the Stacks address
  * Address should already be validated before calling this function
  * @param {string} address - the stacks address we want data on
  */

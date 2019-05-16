@@ -23,7 +23,7 @@ const InitialScreen = ({
       label="Recipient"
       error={state.errors.recipient}
       onChange={e => handleChange(e, setState, "recipient")}
-      placeholder="Enter a Stacks Address"
+      placeholder="Enter a Stacks address"
       value={state.values.recipient}
       autofocus
     />
@@ -31,7 +31,7 @@ const InitialScreen = ({
     <Field
       name="amount"
       overlay="STX"
-      label="Amount to Send"
+      label="Amount to send"
       onChange={e => handleChange(e, setState, "amount")}
       type="number"
       error={state.errors.amount}

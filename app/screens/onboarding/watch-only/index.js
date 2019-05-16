@@ -59,7 +59,7 @@ class WatchOnlyScreen extends Component {
   handleSubmit = () => {
     if (this.state.value === "") {
       this.setState({
-        error: "Please enter a Stacks Address"
+        error: "Please enter a Stacks address"
       });
       return null;
     }
@@ -82,7 +82,7 @@ class WatchOnlyScreen extends Component {
       <Page
         alignItems="center"
         justifyContent="center"
-        title="Create a Watch Only Wallet"
+        title="Create a watch-only wallet"
         {...rest}
       >
         <Flex flexDirection={"column"} maxWidth="600px">
@@ -97,7 +97,7 @@ class WatchOnlyScreen extends Component {
               value={address}
               error={this.state.error}
               onChange={this.handleChange}
-              label="Stacks Address"
+              label="Stacks address"
               autoFocus
               placeholder="SM3KJBA4RZ7Z20KD2HBXNSXVPCR1D3CRAV6Q05MKT"
             />

@@ -129,7 +129,7 @@ const Dashboard = ({
         <>
           <Balance />
           <TxList
-            title="Transaction History"
+            title="Transaction history"
             contentHeader={<TableHeader items={tableHeadItems} />}
             action={{
               label: fetching ? (

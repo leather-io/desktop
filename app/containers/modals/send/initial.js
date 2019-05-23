@@ -23,7 +23,7 @@ const InitialScreen = ({
       label="Recipient"
       error={state.errors.recipient}
       onChange={e => handleChange(e, setState, "recipient")}
-      placeholder="Enter a Stacks Address"
+      placeholder="Enter a Stacks address"
       value={state.values.recipient}
       autofocus
     />
@@ -31,7 +31,7 @@ const InitialScreen = ({
     <Field
       name="amount"
       overlay="STX"
-      label="Amount to Send"
+      label="Amount to send"
       onChange={e => handleChange(e, setState, "amount")}
       type="number"
       error={state.errors.amount}
@@ -46,6 +46,7 @@ const InitialScreen = ({
       value={state.values.memo}
       onChange={e => handleChange(e, setState, "memo")}
       placeholder="Write an optional message..."
+      error={state.errors.memo}
     />
     {children
       ? children({
@@ -55,15 +56,16 @@ const InitialScreen = ({
             },
             label: state.processing ? "Loading..." : "Continue",
             action: () =>
-              handleValidation(
-                sender,
-                balance,
-                pendingBalance,
-                state.values,
-                setState,
-                nextView,
-                type
-              )
+              state.processing ? null :
+                handleValidation(
+                  sender,
+                  balance,
+                  pendingBalance,
+                  state.values,
+                  setState,
+                  nextView,
+                  type
+                )
           },
           secondary: {
             label: "Cancel",

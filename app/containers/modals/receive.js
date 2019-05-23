@@ -9,7 +9,7 @@ import { selectWalletStacksAddress } from "@stores/selectors/wallet";
 const ReceiveModal = connect(state => ({
   address: selectWalletStacksAddress(state)
 }))(({ address, hide, ...rest }) => (
-  <Modal title="Receive Stacks" hide={hide} maxWidth={"560px"} p={0}>
+  <Modal title="Receive Stacks (STX)" hide={hide} maxWidth={"560px"} p={0}>
     <Flex
       p={4}
       borderBottom={1}
@@ -22,7 +22,7 @@ const ReceiveModal = connect(state => ({
       <QrCode value={address} />
     </Flex>
     <Flex p={4} width={1}>
-      <Field width={1} label="Stacks Address" value={address} disabled copy />
+      <Field width={1} label="Stacks address" value={address} disabled copy />
     </Flex>
   </Modal>
 ));

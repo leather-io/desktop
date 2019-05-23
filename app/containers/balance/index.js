@@ -67,7 +67,7 @@ const BalanceSection = connect(state => ({
                   color={state.view === "balance" ? "blue.dark" : undefined}
                   cursor="pointer"
                 >
-                  Wallet Balance
+                  Available balance
                 </Type>{" "}
                 /{" "}
                 <Type
@@ -79,7 +79,7 @@ const BalanceSection = connect(state => ({
                 </Type>
               </>
             ) : (
-              <Type>Wallet Balance</Type>
+              <Type>Available balance</Type>
             )}
           </Type>
           <Flex py={6} alignItems={"center"}>

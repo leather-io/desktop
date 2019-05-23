@@ -59,7 +59,7 @@ class WatchOnlyScreen extends Component {
   handleSubmit = () => {
     if (this.state.value === "") {
       this.setState({
-        error: "Please enter a Stacks Address"
+        error: "Please enter a Stacks address"
       });
       return null;
     }
@@ -82,14 +82,13 @@ class WatchOnlyScreen extends Component {
       <Page
         alignItems="center"
         justifyContent="center"
-        title="Create a Watch Only Wallet"
+        title="Create a watch-only wallet"
         {...rest}
       >
         <Flex flexDirection={"column"} maxWidth="600px">
           <Type lineHeight={1.5} fontSize={2} pt={6} color="hsl(242, 56%, 75%)">
-            For your security, at this time you can only create a watch-only
-            wallet if you do not have a hardware wallet device. Please enter a
-            Stacks Address.
+            You cannot send transactions from a watch-only wallet. If you don't 
+            know what this is click the back button.
           </Type>
           <Flex pt={4}>
             <Field
@@ -98,7 +97,7 @@ class WatchOnlyScreen extends Component {
               value={address}
               error={this.state.error}
               onChange={this.handleChange}
-              label="Stacks Address"
+              label="Stacks address"
               autoFocus
               placeholder="SM3KJBA4RZ7Z20KD2HBXNSXVPCR1D3CRAV6Q05MKT"
             />
@@ -106,7 +105,7 @@ class WatchOnlyScreen extends Component {
           <Flex flexGrow={1} mt="auto" />
           <OnboardingNavigation
             onDark
-            back={ROUTES.RESTORE_OPTIONS}
+            back={ROUTES.SETUP}
             next={this.handleSubmit}
           />
         </Flex>

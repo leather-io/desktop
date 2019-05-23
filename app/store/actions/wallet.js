@@ -5,6 +5,8 @@ import {
   FETCH_BALANCES_STARTED,
   FETCH_BALANCES_FINISHED,
   FETCH_BALANCES_ERROR,
+  TEMP_SAVE_SEED,
+  ERASE_SEED,
   ADD_WALLET_ADDRESS,
   ADD_WALLET_ADDRESS_SUCCESS,
   ADD_WALLET_ADDRESS_ERROR,
@@ -47,6 +49,9 @@ import {
 } from "@stores/reducers/app";
 import { ROUTES } from "@common/constants";
 import { fetchStacksAddressData } from "stacks-utils";
+import { mnemonicToStxAddress, mnemonicToPrivateKey } from '@utils/utils'
+import crypto from 'crypto'
+import bip39 from 'bip39'
 
 const doClearError = () => dispatch =>
   dispatch({
@@ -54,7 +59,38 @@ const doClearError = () => dispatch =>
   });
 
 /**
- * Fetch our data for the Stacks Address
+ * Generate a new seed phrase
+ */
+const doGenerateNewSeed = () => async dispatch => {
+  const entropy = crypto.randomBytes(32)
+  const seedPhrase = bip39.entropyToMnemonic(entropy)
+  
+  const address = mnemonicToStxAddress(seedPhrase)
+  const publicKey = ""
+
+  dispatch({
+    type: TEMP_SAVE_SEED,
+    payload:  { 
+      seed: seedPhrase,
+      address: {
+        stx: address,
+        btc: convertStxAddressToBtcAddress(address)
+      },
+      publicKey: publicKey
+    }
+  })
+}
+
+/** 
+ * Clear seed from redux state
+ */ 
+const doClearSeed = () => dispatch =>
+  dispatch({
+    type: ERASE_SEED
+  });
+
+/**
+ * Fetch our data for the Stacks address
  * Address should already be validated before calling this function
  * @param {string} address - the stacks address we want data on
  */
@@ -84,7 +120,6 @@ const doFetchStxAddressData = address => async dispatch => {
  * @param {string} type - the type of wallet
  */
 const doAddWalletAddress = (addresses, type) => dispatch => {
-  console.log("add address");
   if (!addresses) {
     console.error("Please provide addresses");
     return;
@@ -110,6 +145,15 @@ const doAddWatchOnlyAddress = address =>
   doAddWalletAddress(
     { stx: address, btc: convertStxAddressToBtcAddress(address) },
     WALLET_TYPES.WATCH_ONLY
+  );
+
+/**
+ * Add a software wallet address
+ */
+const doAddSoftwareWalletAddress = address =>
+  doAddWalletAddress(
+    { stx: address, btc: convertStxAddressToBtcAddress(address) },
+    WALLET_TYPES.SOFTWARE
   );
 
 /**
@@ -261,7 +305,8 @@ const doNotAllowModalToClose = () => dispatch =>
  * @param {string} senderAddress - the user's STX address
  * @param {string} recipientAddress - the STX address they want to send to
  * @param {string} amountToSend - the STX amount (not microstacks)
- * @param {string} walletType - WALLET_TYPES.LEDGER || WALLET_TYPES.TREZOR
+ * @param {string} walletType - WALLET_TYPES.SOFTWARE || WALLET_TYPES.LEDGER || WALLET_TYPES.TREZOR
+ * @param {string} seedPhrase - the seed phrase that will be used to sign the transaction
  * @param {string} memo - an optional message (scriptData)
  */
 const doSignTransaction = (
@@ -269,6 +314,7 @@ const doSignTransaction = (
   recipientAddress,
   amountToSend,
   walletType,
+  seedPhrase,
   memo
 ) => async (dispatch, state) => {
   // refresh data, false to prevent a notification
@@ -281,11 +327,18 @@ const doSignTransaction = (
   });
 
   try {
+    const privateKey = ""
+
+    if (walletType === WALLET_TYPES.SOFTWARE) {
+      privateKey = mnemonicToPrivateKey(seedPhrase)
+    }
+
     const transaction = await generateTransaction(
       senderAddress,
       recipientAddress,
       amountToSend,
       walletType,
+      privateKey,
       memo
     );
 
@@ -367,6 +420,8 @@ const doBroadcastTransaction = rawTx => async (dispatch, state) => {
       payload: txHash
     });
     doRefreshData(false)(dispatch, state);
+    // Set a delayed refresh action in case data pulled from API isn't up to date
+    setTimeout(() => (doRefreshData(false)(dispatch, state)), 2500)
     doNotify({
       title: "Success!",
       message: "Your transaction has been submitted!"
@@ -386,9 +441,12 @@ const doBroadcastTransaction = rawTx => async (dispatch, state) => {
 
 export {
   doClearError,
+  doGenerateNewSeed,
+  doClearSeed,
   doFetchStxAddressData,
   doAddWalletAddress,
   doAddWatchOnlyAddress,
+  doAddSoftwareWalletAddress,
   doAddTrezorAddress,
   doAddLedgerAddress,
   doResetWallet,
@@ -396,5 +454,5 @@ export {
   doFetchBalances,
   doRefreshData,
   doSignTransaction,
-  doBroadcastTransaction
+  doBroadcastTransaction,
 };

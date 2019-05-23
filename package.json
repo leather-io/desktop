@@ -1,7 +1,7 @@
 {
   "name": "stacks-wallet-1",
   "description": "Stacks Wallet",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": {
     "name": "Blockstack PBC",
     "url": "https://www.blockstack.org"

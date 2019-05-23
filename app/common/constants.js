@@ -32,7 +32,12 @@ const IS_PROD = process.env.NODE_ENV === "production";
 const ROUTES = {
   TERMS: "/",
   DASHBOARD: "/dashboard",
+  SETUP: "/setup",
+  NEW_OPTIONS: "/new-options",
   RESTORE_OPTIONS: "/restore-options",
+  NEW_SEED: "/new-seed",
+  CONFIRM_SEED: "/confirm-seed",
+  RESTORE_SEED: "/restore-seed",
   RESTORE_HARDWARE: "/restore-hardware",
   RESTORE_LEDGER: "/restore-ledger",
   RESTORE_TREZOR: "/restore-trezor",

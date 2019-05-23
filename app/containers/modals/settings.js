@@ -46,20 +46,20 @@ const TopUpSection = connect(state => ({
   type !== WALLET_TYPES.WATCH_ONLY ? (
     <Section>
       <Label pb={4} fontSize={2}>
-        Transaction Fees
+        Transaction fees
       </Label>
       <Card>
         <Flex p={4} borderRight={1} borderColor="blue.mid" flexGrow={1}>
           <Type>
-            Bitcoin is used to pay transaction fees for Stacks transactions. You
-            currently have {satoshisToBtc(balance)} BTC.
+            You need very small amounts of Bitcoin (BTC) to send Stacks (STX). You
+            currently have {satoshisToBtc(balance)} BTC available.
           </Type>
         </Flex>
         <Flex justifyContent="center" p={4}>
           <OpenModal component={TxFeesModal}>
             {({ bind }) => (
               <Button height={"auto"} py={2} {...bind}>
-                Top Up
+                Add BTC
               </Button>
             )}
           </OpenModal>
@@ -75,7 +75,7 @@ const DangerZone = connect(
 )(({ doResetWallet, hide, ...rest }) => (
   <Section>
     <Label pb={4} fontSize={2}>
-      Danger Zone
+    Reset wallet setup
     </Label>
     <Card>
       <Flex
@@ -85,13 +85,10 @@ const DangerZone = connect(
         borderColor="blue.mid"
         flexGrow={1}
       >
-        <Label>Reset Wallet</Label>
         <Type>
-          This will remove all data and you’ll have to restore it to gain
-          access.
-        </Type>
+          Resetting removes your Stacks Wallet setup. It does not affect your Stacks addresses or the STX balances on them. You need your seed phrase to gain access to them again. <strong>Make sure you have stored your seed phrase securely.</strong> </Type>
       </Flex>
-      <Flex justifyContent="center" alignItems="center" p={4}>
+      <Flex justifyContent="center" alignItems="center" p={4} >
         <State initial={{ clicked: false }}>
           {({ state, setState }) => {
             if (state.clicked) {
@@ -103,6 +100,7 @@ const DangerZone = connect(
                   }}
                   height={"auto"}
                   py={2}
+                  bg="#EF4813"
                 >
                   Are you sure?
                 </Button>
@@ -115,8 +113,9 @@ const DangerZone = connect(
                 }}
                 height={"auto"}
                 py={2}
+                bg="#EF4813"
               >
-                Reset Wallet
+                Reset wallet
               </Button>
             );
           }}

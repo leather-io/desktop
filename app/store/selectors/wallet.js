@@ -1,7 +1,10 @@
 import { microToStacks, stacksToMicro } from "stacks-utils";
+import BigNumber from "bignumber.js"
 
 const selectWalletHistory = state =>
   state.wallet.data ? state.wallet.data.history : [];
+
+const selectWalletSeed = state => state.wallet.seed;
 
 const selectWalletStacksAddress = state => state.wallet.addresses.stx;
 
@@ -46,26 +49,30 @@ const selectRawTxs = state =>
 
 const selectPendingBalance = state => {
   const thisAddress = selectWalletStacksAddress(state);
-  const balance = microToStacks(selectWalletBalance(state));
+  const balance = BigNumber(microToStacks(selectWalletBalance(state)));
   const pendingTxs = selectPendingTxs(state);
-  let difference = 0;
+
+  let difference = BigNumber(0);
+
   if (pendingTxs && pendingTxs.length) {
     pendingTxs.forEach(tx => {
       const isSent = tx.sender === thisAddress;
       const amount = isSent
-        ? Number(tx.tokenAmountReadable) * -1
-        : Number(tx.tokenAmountReadable);
-      difference += amount;
+        ? BigNumber(tx.tokenAmountReadable).multipliedBy(-1)
+        : BigNumber(tx.tokenAmountReadable);
+
+      difference = difference.plus(amount)
     });
   }
-  if (difference !== 0) {
-    return stacksToMicro(balance + difference);
+  if (!difference.isEqualTo(0)) {
+    return stacksToMicro(balance.plus(difference).toString())
   }
   return null;
 };
 
 export {
   selectWalletHistory,
+  selectWalletSeed,
   selectWalletBalance,
   selectWalletStacksAddress,
   selectWalletType,

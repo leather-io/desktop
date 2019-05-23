@@ -16,7 +16,12 @@ const storage = ({ electronStore, electronStoreOpts } = {}) => {
       }),
     set: (key, item) =>
       new Promise(resolve => {
-        resolve(store.set(key, item));
+        // Prevent seed from being persisted to disk
+        var filteredItem = { ...item }
+        if (key === 'wallet') {
+          filteredItem.seed = null
+        }
+        resolve(store.set(key, filteredItem));
       }),
     remove: key =>
       new Promise(resolve => {

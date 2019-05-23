@@ -19,7 +19,7 @@ const fetchJSON = async path => {
 /**
  * fetchStxAddressDetails
  *
- * Fetches data for a stacks address from the Blockstack Explorer API
+ * Fetches data for a Stacks address from the Blockstack Explorer API
  * Contains data about allocations and confirmed stx tx's
  *
  * @param {String} address - the Stacks address

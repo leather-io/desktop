@@ -1,8 +1,15 @@
-import { hexStringToECPair, ecPairToAddress } from "blockstack";
+import { hexStringToECPair, ecPairToHexString, ecPairToAddress } from "blockstack";
 import bigi from "bigi";
 import numeral from "numeral";
-
+import bip32 from 'bip32'
+import bip39 from 'bip39'
+import crypto from 'crypto'
+import { b58ToC32, c32address, versions } from 'c32check'
+import { ECPair } from "bitcoinjs-lib"
 import { microToStacks, stacksToMicro } from "stacks-utils";
+import BigNumber from "bignumber.js"
+import { PATH } from "@common/constants";
+
 /**
  * Constants
  */
@@ -26,6 +33,27 @@ const getPrivateKeyAddress = (network, privateKey) => {
   return privateKey.address;
 };
 
+const mnemonicToPrivateKey = (mnemonic) => {
+	const seed = bip39.mnemonicToSeed(mnemonic)
+
+	const master = bip32.fromSeed(seed)
+  const child = master.derivePath(PATH)
+
+  const ecPair = ECPair.fromPrivateKey(child.privateKey)
+
+  return ecPairToHexString(ecPair)
+}
+
+const mnemonicToStxAddress = (mnemonic) => {
+  const seed = bip39.mnemonicToSeed(mnemonic)
+
+	const master = bip32.fromSeed(seed)
+	const child = master.derivePath(PATH)
+
+  const address = b58ToC32(ecPairToAddress(ECPair.fromPrivateKey(child.privateKey)))
+  return address
+}
+
 const sumUTXOs = utxos => utxos.reduce((agg, x) => agg + x.value, 0);
 
 const btcToSatoshis = amountInBtc =>
@@ -35,21 +63,30 @@ const satoshisToBtc = amountInSatoshis =>
   amountInSatoshis ? Number(amountInSatoshis) / SATOSHIS_IN_BTC : 0;
 
 const toBigInt = value =>
-  Number(value) < 1
-    ? bigi.valueOf(Number(value) * 1000000)
-    : bigi.fromByteArrayUnsigned(value).multiply(bigi.valueOf(1000000));
+  bigi.fromByteArrayUnsigned(BigNumber(value).multipliedBy(1000000).toString())
 
 const formatMicroStxValue = value => numeral(value).format("0.000000");
+
+const emptySeedArray = (size) => {
+  const seedArray = []
+  for (var i = 0; i < size; i++) {
+    seedArray.push('')
+  }
+  return seedArray
+}
 
 export {
   SATOSHIS_IN_BTC,
   MICROSTACKS_IN_STACKS,
   getPrivateKeyAddress,
+  mnemonicToPrivateKey,
+  mnemonicToStxAddress,
   sumUTXOs,
   microToStacks,
   stacksToMicro,
   btcToSatoshis,
   satoshisToBtc,
   toBigInt,
-  formatMicroStxValue
+  formatMicroStxValue,
+  emptySeedArray
 };

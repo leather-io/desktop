@@ -83,6 +83,13 @@ app.on("ready", async () => {
     mainWindow.focus();
   });
 
+  mainWindow.webContents.on('new-window', function(event, url){
+    if (!url.startsWith('https://connect.trezor.io')) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
+  
   mainWindow.on("closed", () => {
     mainWindow = null;
   });

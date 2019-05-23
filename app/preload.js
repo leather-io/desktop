@@ -28,6 +28,7 @@ const moduleWhiteList = [
 	'@ledgerhq/hw-transport-node-hid',
 	'bitcoinjs-lib',
 	'bigi',
+	'bignumber.js',
 	'crypto',
 	'ablankstein-ledger-hw-app-btc',
 	'rwlock',
@@ -35,6 +36,7 @@ const moduleWhiteList = [
 	'connected-react-router',
 	'electron-store',
 	'bip32',
+	'bip39',
 	'buffer',
 	'stream',
 	'string_decoder',
@@ -44,7 +46,8 @@ const moduleWhiteList = [
 	'dayjs',
 	'qrcode.react',
 	'redux',
-	'redux-thunk'
+	'redux-thunk',
+	'lodash.debounce'
 ]
 
 if (process.env.NODE_ENV === 'development') {

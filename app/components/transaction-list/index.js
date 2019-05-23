@@ -15,7 +15,7 @@ import {
 
 const Empty = ({ isFetching, ...rest }) => {
   const Icon = isFetching ? Spinner : LayersOffOutlineIcon;
-  const message = isFetching ? "Loading..." : "No Transaction History";
+  const message = isFetching ? "Loading..." : "No transactions found for this address.";
   return (
     <Flex
       flexGrow={1}

@@ -51,8 +51,8 @@ const TopUpSection = connect(state => ({
       <Card>
         <Flex p={4} borderRight={1} borderColor="blue.mid" flexGrow={1}>
           <Type>
-            You need very small amounts of Bitcoin (BTC) to send Stacks (STX). You
-            currently have {satoshisToBtc(balance)} BTC available.
+            You need very small amounts of Bitcoin (BTC) to send Stacks (STX). The transaction cost varies with the BTC market price. The cost is per transaction and not related to the amount of Stacks sent. You
+            currently have <strong>{satoshisToBtc(balance)}</strong> BTC available.
           </Type>
         </Flex>
         <Flex justifyContent="center" p={4}>

@@ -7,7 +7,7 @@ import { BtcField } from "@containers/fields/btc-address";
 
 const TxFeesModal = ({ hide }) => (
   <Modal
-    title="Add BTC"
+    title="Add BTC for transaction fees"
     hide={hide}
     maxWidth={"560px"}
     p={0}

@@ -391,7 +391,7 @@ const doSignTransaction = (
       doNotifyWarning({
         title: "Not enough BTC",
         message:
-          "Looks like you don't have enough BTC to pay the associated transaction fees for this transaction."
+          "Looks like you don't have enough BTC to pay the fee for this transaction."
       })(dispatch);
       return;
     }

@@ -7,7 +7,7 @@ import { BtcField } from "@containers/fields/btc-address";
 
 const TxFeesModal = ({ hide }) => (
   <Modal
-    title="Top Up"
+    title="Add BTC for transaction fees"
     hide={hide}
     maxWidth={"560px"}
     p={0}
@@ -27,7 +27,7 @@ const TxFeesModal = ({ hide }) => (
             alignItems="center"
             justifyContent="center"
             flexDirection="column"
-            textAlign="center"
+            textAlign="left"
             transition={"0.5s all cubic-bezier(.19,1,.22,1)"}
             opacity={state.view === "warning" ? 1 : 0}
             style={{
@@ -37,8 +37,7 @@ const TxFeesModal = ({ hide }) => (
             py={4}
           >
             <Type pb={4} fontSize={4} lineHeight={1.5}>
-              Bitcoin (BTC) is only used to pay fees for Stacks (STX) transactions. You cannot
-              send BTC from this wallet.
+            You cannot send Bitcoin (BTC) from this wallet. BTC is only used to pay a transaction fees for sending Stacks (STX). The BTC is per transaction and not related to the amount of Stacks sent. 
             </Type>
             <Button
               onClick={() =>

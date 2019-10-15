@@ -55,7 +55,7 @@ const TermsPage = ({ quit, doAcceptTerms, history, next, style }) => {
       >
         <Title>Terms of Use</Title>
       </Flex>
-      <Flex flexGrow={1} justifyContent="center">
+      <Flex flexGrow={1} flexShrink={0} flexBasis={'auto'} justifyContent="center">
         <Box mx="auto" maxWidth="700px">
           <TermsOfUse />
         </Box>

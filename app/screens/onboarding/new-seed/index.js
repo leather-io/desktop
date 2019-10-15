@@ -49,6 +49,8 @@ class NewSeedScreen extends Component {
       <Page
         alignItems="center"
         justifyContent="center"
+        flexShrink={0}
+        flexBasis={'auto'}
         {...rest}
       >
         <Flex

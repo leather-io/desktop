@@ -108,7 +108,7 @@ const BalanceSection = connect(state => ({
               <Type color="hsl(205, 30%, 70%)">Unlocked</Type>
             </Type>
           ) : null}
-          {pendingBalance ? (
+          {(pendingBalance != null) ? (
             <Type fontWeight="500">
               <Type color="hsl(205, 30%, 70%)">Pending Balance:</Type>{" "}
               {formatMicroStxValue(microToStacks(pendingBalance))}{" "}

@@ -63,7 +63,7 @@ const Navigation = ({ next, secondary }) => (
 );
 const mapStateToProps = state => ({
   balance: microToStacks(selectWalletBalance(state)),
-  pendingBalance: microToStacks(selectPendingBalance(state)),
+  pendingBalance: selectPendingBalance(state),
   type: selectWalletType(state),
   sender: selectWalletStacksAddress(state),
   error: selectWalletError(state)

@@ -3,7 +3,7 @@ import { validateStacksAddress } from "@utils/validation";
 import produce from "immer";
 import { prepareTransaction } from "@common/lib/transactions";
 import bip39 from 'bip39';
-import { mnemonicToStxAddress, emptySeedArray } from '@utils/utils'
+import { mnemonicToStxAddress, emptySeedArray, microToStacks } from '@utils/utils'
 
 const handleValidation = (
   sender,
@@ -17,8 +17,8 @@ const handleValidation = (
   const { recipient, amount, memo } = values;
 
   const availableBalance =
-    pendingBalance && pendingBalance < currentBalance
-      ? pendingBalance
+    pendingBalance != null && pendingBalance < currentBalance
+      ? microToStacks(pendingBalance)
       : currentBalance;
 
   let errors = {};

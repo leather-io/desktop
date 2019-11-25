@@ -150,7 +150,7 @@ const Field = ({
 
 const BalanceField = connect(mapStateToProps)(({ balance, pendingBalance }) => {
   const visibleBalance =
-    pendingBalance && pendingBalance < balance ? pendingBalance : balance;
+  pendingBalance != null && pendingBalance < balance ? pendingBalance : balance;
 
   return (
     <Flex flexDirection={"column"} flexShrink={0} pb={5}>

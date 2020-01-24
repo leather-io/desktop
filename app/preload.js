@@ -47,7 +47,8 @@ const moduleWhiteList = [
 	'qrcode.react',
 	'redux',
 	'redux-thunk',
-	'lodash.debounce'
+	'lodash.debounce',
+	'semver'
 ]
 
 if (process.env.NODE_ENV === 'development') {

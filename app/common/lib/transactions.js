@@ -111,8 +111,9 @@ const prepareTransaction = async (
       difference: estimate - btcBalance
     };
   }
+  
   // not enough stacks (should be impossible to get here)
-  if (currentAccountBalance.compareTo(tokenAmount) < 0) {
+  if (currentAccountBalance < tokenAmount) {
     return ERRORS.INSUFFICIENT_STX_BALANCE;
   }
 

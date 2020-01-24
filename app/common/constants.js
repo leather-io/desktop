@@ -5,7 +5,7 @@ const BSKPK =
 
 const PATH = `m/44'/5757'/0'/0/0`;
 
-const CORE_NODE_URI = "http://testnet.blockstack.org:16268";
+const CORE_NODE_URI = "https://core.blockstack.org";
 
 const CORE_NODE_URI_TEST_NET = "http://testnet.blockstack.org:16268";
 
@@ -28,6 +28,8 @@ const HAS_WINDOW = typeof window !== "undefined";
 const IS_BROWSER = HAS_WINDOW || typeof self !== "undefined";
 
 const IS_PROD = process.env.NODE_ENV === "production";
+
+const STACKS_BLOCKCHAIN_VERSION = "1.0"
 
 const ROUTES = {
   TERMS: "/",
@@ -56,5 +58,6 @@ export {
   HAS_WINDOW,
   IS_BROWSER,
   IS_PROD,
-  ROUTES
+  ROUTES,
+  STACKS_BLOCKCHAIN_VERSION
 };

@@ -16,7 +16,7 @@ import {
 } from "@stores/selectors/wallet";
 import { ReceiveButton } from "@containers/balance";
 import { ButtonCombo } from "@containers/buttons/onboarding-navigation";
-import { doRefreshData } from "@stores/actions/wallet";
+import { doRefreshData, doCompatibilityCheck } from "@stores/actions/wallet";
 import debounce from "lodash.debounce";
 import { Spinner } from "@components/spinner";
 

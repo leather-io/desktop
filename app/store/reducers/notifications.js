@@ -30,9 +30,7 @@ const doRemoveNotification = item => dispatch =>
   });
 
 const doCancelNotification = (cancelMap, item, secondPass = false) => {
-  console.log("doCancelNotification");
   if (cancelMap.has(item)) {
-    console.log("doCancelNotification has item");
     const fn = cancelMap.get(item);
     fn();
     if (secondPass) fn();

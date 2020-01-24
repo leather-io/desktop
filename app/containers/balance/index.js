@@ -15,10 +15,12 @@ import {
   selectWalletBalance,
   selectPendingBalance
 } from "@stores/selectors/wallet";
+import { selectAppUpdateRequired } from "@stores/selectors/app";
 import { microToStacks } from "stacks-utils";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { Notice } from "@components/notice";
 import { formatMicroStxValue } from "@utils/utils";
+import { shell } from "electron";
 
 const funct = ({ visible, hide }) => (
   <ReceiveModal hide={hide} visible={visible} />
@@ -122,8 +124,9 @@ const BalanceSection = connect(state => ({
 });
 
 const Balance = connect(state => ({
-  type: selectWalletType(state)
-}))(({ type, ...rest }) => (
+  type: selectWalletType(state),
+  updateRequired: selectAppUpdateRequired(state)
+}))(({ type, updateRequired, ...rest }) => (
   <Flex
     flexShrink={0}
     width={1}
@@ -132,17 +135,31 @@ const Balance = connect(state => ({
     {...rest}
   >
     <BalanceSection pt={6} pb={5} />
+    {type === WALLET_TYPES.WATCH_ONLY ?       
+      <Notice>
+        This is a watch only wallet, you can view your balance and transaction
+        history only.
+      </Notice>
+      : null }
     {type !== WALLET_TYPES.WATCH_ONLY ? (
       <Buttons pb={5}>
         <SendButton />
         <ReceiveButton />
       </Buttons>
-    ) : (
+    ) : null}
+    {updateRequired ? (
       <Notice>
-        This is a watch only wallet, you can view your balance and transaction
-        history only.
+        Your wallet software needs to be updated in order to send
+        transactions. &nbsp;
+        <Type 
+          cursor="pointer" 
+          fontWeight="bold"
+          onClick={() => {shell.openExternal("https://wallet.blockstack.org/")}}
+        >
+        Download Update
+        </Type>
       </Notice>
-    )}
+    ) : null}
   </Flex>
 ));
 

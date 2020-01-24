@@ -22,6 +22,10 @@ import {
   WALLET_BROADCAST_TRANSACTION_ERROR,
   WALLET_CLEAR_ERROR
 } from "@stores/reducers/wallet";
+import {
+  APP_UPDATE_REQUIRED,
+  APP_UPDATE_NOT_REQUIRED
+} from "@stores/reducers/app";
 import { ERRORS } from "@common/lib/transactions";
 import { fetchStxAddressDetails } from "@common/lib";
 import { push } from "connected-react-router";
@@ -47,11 +51,12 @@ import {
   TOGGLE_MODAL_KEEP_OPEN,
   TOGGLE_MODAL_CLOSE
 } from "@stores/reducers/app";
-import { ROUTES } from "@common/constants";
+import { ROUTES, CORE_NODE_URI, STACKS_BLOCKCHAIN_VERSION } from "@common/constants";
 import { fetchStacksAddressData } from "stacks-utils";
 import { mnemonicToStxAddress, mnemonicToPrivateKey } from '@utils/utils'
 import crypto from 'crypto'
 import bip39 from 'bip39'
+import semver from 'semver'
 
 const doClearError = () => dispatch =>
   dispatch({
@@ -279,6 +284,7 @@ const doRefreshData = (notify = true) => (dispatch, state) => {
   notify && doNotify("Refreshing data!")(dispatch);
   doFetchBalances({ stx, btc })(dispatch, state);
   doFetchStxAddressData(stx)(dispatch, state);
+  doCompatibilityCheck()(dispatch, state);
 };
 
 /**
@@ -410,11 +416,25 @@ const doSignTransaction = (
 
 const doBroadcastTransaction = rawTx => async (dispatch, state) => {
   try {
-    // start our process
+    // prevent transaction broadcast if app update is required
+    if (state().app.updateRequired) {
+      doNotifyWarning({
+        title: "Error sending transaction",
+        message: "Your wallet software needs to be updated in order to send transactions."
+      })(dispatch);
+      dispatch({
+        type: WALLET_BROADCAST_TRANSACTION_ERROR,
+        payload: "App update is required."
+      });
+      return null
+    }
+
     dispatch({
       type: WALLET_BROADCAST_TRANSACTION_STARTED
     });
+
     const txHash = await broadcastTransaction(rawTx);
+
     dispatch({
       type: WALLET_BROADCAST_TRANSACTION_FINISHED,
       payload: txHash
@@ -439,6 +459,29 @@ const doBroadcastTransaction = rawTx => async (dispatch, state) => {
   }
 };
 
+const doCompatibilityCheck = () => async (dispatch, state) => {
+  try {
+    const coreNodeInfoURI = `${CORE_NODE_URI}/v1/info`;
+    const res = await fetch(coreNodeInfoURI);
+    const info = await res.json();
+    
+    if (info.blockchain_version) {
+      if (semver.eq(semver.coerce(STACKS_BLOCKCHAIN_VERSION), 
+                    semver.coerce(info.blockchain_version))
+        ) {
+        dispatch({ type: APP_UPDATE_NOT_REQUIRED });
+      } else {
+        dispatch({ type: APP_UPDATE_REQUIRED });
+      }
+    } else {
+      dispatch({ type: APP_UPDATE_NOT_REQUIRED });
+    }
+  } catch (e) {
+    console.log('error')
+    console.log(e)
+  } 
+}
+
 export {
   doClearError,
   doGenerateNewSeed,
@@ -453,6 +496,7 @@ export {
   doAddHardwareWallet,
   doFetchBalances,
   doRefreshData,
+  doCompatibilityCheck,
   doSignTransaction,
   doBroadcastTransaction,
 };

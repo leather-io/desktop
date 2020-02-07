@@ -227,7 +227,7 @@ const TxItem = ({ last, item, length, stx, ...rest }) => {
       {({ bind }) => (
         <Item {...bind} last={last} length={length} {...rest}>
           {blockUnixTime || time || received ? (
-            <Date date={blockUnixTime || time * 1000 || received} />
+            <Date date={blockUnixTime*1000 || time * 1000 || received} />
           ) : null}
           <TypeIcon mr={3} item={item} stx={stx} />
           <Details

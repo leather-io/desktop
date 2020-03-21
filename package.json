@@ -279,7 +279,7 @@
     "webpack"
   ],
   "main": "./app/main.prod.js",
-  "license": "GPLv3",
+  "license": "GPL-3.0-only",
   "productName": "Stacks Wallet",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",

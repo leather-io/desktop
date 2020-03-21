@@ -4,7 +4,8 @@
   "version": "3.0.0",
   "author": {
     "name": "Blockstack PBC",
-    "url": "https://www.blockstack.org"
+    "url": "https://www.blockstack.org",
+    "email": "hello@stackstoken.com"
   },
   "browserslist": "electron 1.6",
   "build": {

@@ -37,11 +37,35 @@
         "nsis"
       ]
     },
-    "linux": {
+    "linux-all": {
       "target": [
         "deb",
         "rpm",
         "snap",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "linux-deb": {
+      "target": [
+        "deb"
+      ],
+      "category": "Development"
+    },
+    "linux-rpm": {
+      "target": [
+        "rpm"
+      ],
+      "category": "Development"
+    },
+    "linux-snap": {
+      "target": [
+        "snap"
+      ],
+      "category": "Development"
+    },
+    "linux-appimage": {
+      "target": [
         "AppImage"
       ],
       "category": "Development"

@@ -1,3 +1,3 @@
 # Stacks Wallet
 
-WIP: This repo is will be home to Stacking
+This branch is home to the WIP "stacking" functionality.

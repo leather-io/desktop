@@ -1,19 +1,24 @@
 import React from 'react';
 import { Text, Input } from '@blockstack/ui';
 
-import { OnboardingContainer } from '../../../components/onboarding-wrap';
-import { OnboardingTitle } from '../../../components/onboarding-title';
-import { OnboardingButton } from '../../../components/onboarding-button';
 import { Hr } from '../../../components/hr';
+import {
+  Onboarding,
+  OnboardingTitle,
+  OnboardingButton,
+  OnboardingText,
+  OnboardingFooter,
+  OnboardingFooterLink,
+} from '../../../components/onboarding';
 
 export const RestoreWallet = () => {
   return (
-    <OnboardingContainer>
+    <Onboarding>
       <OnboardingTitle>Restore your wallet</OnboardingTitle>
-      <Text display="block" textStyle="body.large" textAlign="center" color="ink" mt="base">
+      <OnboardingText>
         Restore your wallet by connecting your Ledger hardware wallet or a by entering your Secret
         Key
-      </Text>
+      </OnboardingText>
       <OnboardingButton mt="extra-loose">Continue with Ledger</OnboardingButton>
       <Hr my="extra-loose" />
       <Text textStyle="body.small.medium">Secret Key</Text>
@@ -25,6 +30,9 @@ export const RestoreWallet = () => {
         style={{ resize: 'none' }}
       />
       <OnboardingButton mt="loose">Continue with Secret Key</OnboardingButton>
-    </OnboardingContainer>
+      <OnboardingFooter>
+        <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink>
+      </OnboardingFooter>
+    </Onboarding>
   );
 };

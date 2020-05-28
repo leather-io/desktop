@@ -3,7 +3,16 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import routes from './constants/routes.json';
 import App from './pages/app';
 
-import { Welcome, CreateWallet, RestoreWallet } from './pages/onboarding';
+import {
+  Welcome,
+  CreateWallet,
+  RestoreWallet,
+  GeneratingSecret,
+  SecretKey,
+  SaveKey,
+  VerifyKey,
+  SetPassword,
+} from './pages/onboarding';
 
 export const routerConfig = [
   {
@@ -17,6 +26,26 @@ export const routerConfig = [
   {
     path: routes.RESTORE,
     component: RestoreWallet,
+  },
+  {
+    path: routes.GENERATING,
+    component: GeneratingSecret,
+  },
+  {
+    path: routes.SECRET_KEY,
+    component: SecretKey,
+  },
+  {
+    path: routes.SAVE_KEY,
+    component: SaveKey,
+  },
+  {
+    path: routes.VERIFY_KEY,
+    component: VerifyKey,
+  },
+  {
+    path: routes.SET_PASSWORD,
+    component: SetPassword,
   },
 ];
 

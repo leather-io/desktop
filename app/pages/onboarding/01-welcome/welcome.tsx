@@ -1,26 +1,27 @@
 import React from 'react';
-import { Text } from '@blockstack/ui';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import routes from '../../../constants/routes.json';
-import { OnboardingContainer } from '../../../components/onboarding-wrap';
-import { OnboardingButton } from '../../../components/onboarding-button';
-import { OnboardingTitle } from '../../../components/onboarding-title';
+import {
+  Onboarding,
+  OnboardingTitle,
+  OnboardingButton,
+  OnboardingText,
+} from '../../../components/onboarding';
 
 export const Welcome = () => {
-  const history = useHistory();
   return (
-    <OnboardingContainer>
+    <Onboarding>
       <OnboardingTitle>Stacks Wallet</OnboardingTitle>
-      <Text display="block" textStyle="body.large" textAlign="center" color="ink" mt="base">
-        Send, receive, and and earn Bitcoin rewards
-      </Text>
+      <OnboardingText>Send, receive, and and earn Bitcoin rewards</OnboardingText>
       <Link to={routes.CREATE}>
         <OnboardingButton mt="extra-loose">Create a new wallet</OnboardingButton>
       </Link>
-      <OnboardingButton mt="base" variant="outline" onClick={() => history.push(routes.CREATE)}>
-        I already have a wallet
-      </OnboardingButton>
-    </OnboardingContainer>
+      <Link to={routes.RESTORE}>
+        <OnboardingButton mt="base" variant="outline">
+          I already have a wallet
+        </OnboardingButton>
+      </Link>
+    </Onboarding>
   );
 };

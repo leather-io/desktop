@@ -1,20 +1,31 @@
 import React from 'react';
-import { Text } from '@blockstack/ui';
+import { Link } from 'react-router-dom';
 
-import { OnboardingContainer } from '../../../components/onboarding-wrap';
-import { OnboardingTitle } from '../../../components/onboarding-title';
-import { OnboardingButton } from '../../../components/onboarding-button';
+import routes from '../../../constants/routes.json';
+import {
+  Onboarding,
+  OnboardingTitle,
+  OnboardingButton,
+  OnboardingText,
+  OnboardingFooter,
+  OnboardingFooterLink,
+} from '../../../components/onboarding';
 
 export const CreateWallet = () => {
   return (
-    <OnboardingContainer>
+    <Onboarding>
       <OnboardingTitle>Create a new wallet</OnboardingTitle>
-      <Text display="block" textStyle="body.large" textAlign="center" color="ink" mt="base">
+      <OnboardingText>
         Please choose whether you’d like to connect a Ledger hardware wallet or to create a software
         wallet
-      </Text>
+      </OnboardingText>
       <OnboardingButton mt="extra-loose">Use a Ledger wallet</OnboardingButton>
-      <OnboardingButton>Create a software wallet</OnboardingButton>
-    </OnboardingContainer>
+      <Link to={routes.GENERATING}>
+        <OnboardingButton>Create a software wallet</OnboardingButton>
+      </Link>
+      <OnboardingFooter>
+        <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink>
+      </OnboardingFooter>
+    </Onboarding>
   );
 };

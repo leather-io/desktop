@@ -1,5 +1,10 @@
 {
   "WELCOME": "/onboard/welcome",
   "CREATE": "/onboard/create",
-  "RESTORE": "/onboard/restore"
+  "RESTORE": "/onboard/restore",
+  "GENERATING": "/onboard/generating",
+  "SECRET_KEY": "/onboard/secret-key",
+  "SAVE_KEY": "/onboard/save-your-key",
+  "VERIFY_KEY": "/onboard/verify-key",
+  "SET_PASSWORD": "/onboard/set-password"
 }

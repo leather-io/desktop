@@ -2,7 +2,7 @@ function getFontAssetPath(name: string) {
   return `url(assets/fonts/${name}.woff2)`;
 }
 
-export async function loadFonts() {
+export async function loadFonts(): Promise<void> {
   const interRegular = new FontFace('Inter', getFontAssetPath('Inter-Regular'), {
     weight: '400',
   });

@@ -4,7 +4,7 @@ interface AppProps {
   children: ReactNode;
 }
 
-export default function App(props: AppProps) {
+export default function App(props: AppProps): JSX.Element {
   const { children } = props;
   return <>{children}</>;
 }

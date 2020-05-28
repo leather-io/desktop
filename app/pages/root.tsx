@@ -19,10 +19,12 @@ const GlobalStyle = createGlobalStyle`
 
 function DevFooter() {
   return (
-    <Box position="absolute" bottom="base" left="loose">
+    <Box position="absolute" top="base" left="loose">
       {routerConfig.map((route, i) => (
         <Link key={i} to={route.path}>
-          <Text mr="base">{route.component.name}</Text>
+          <Text mr="base" fontSize="12px">
+            {route.component.name}
+          </Text>
         </Link>
       ))}
     </Box>
@@ -36,7 +38,7 @@ interface RootProps {
 
 function Root({ store, history }: RootProps) {
   useEffect(() => {
-    loadFonts();
+    void loadFonts();
   }, []);
   return (
     <Provider store={store}>

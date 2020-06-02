@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/ban-ts-ignore: off */
 import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
@@ -27,7 +26,7 @@ export default class MenuBuilder {
     return menu;
   }
 
-  setupDevelopmentEnvironment() {
+  setupDevelopmentEnvironment(): void {
     this.mainWindow.webContents.on('context-menu', (_, props) => {
       const { x, y } = props;
 
@@ -147,25 +146,25 @@ export default class MenuBuilder {
         {
           label: 'Learn More',
           click() {
-            shell.openExternal('https://electronjs.org');
+            void shell.openExternal('https://electronjs.org');
           },
         },
         {
           label: 'Documentation',
           click() {
-            shell.openExternal('https://github.com/electron/electron/tree/master/docs#readme');
+            void shell.openExternal('https://github.com/electron/electron/tree/master/docs#readme');
           },
         },
         {
           label: 'Community Discussions',
           click() {
-            shell.openExternal('https://www.electronjs.org/community');
+            void shell.openExternal('https://www.electronjs.org/community');
           },
         },
         {
           label: 'Search Issues',
           click() {
-            shell.openExternal('https://github.com/electron/electron/issues');
+            void shell.openExternal('https://github.com/electron/electron/issues');
           },
         },
       ],
@@ -240,25 +239,27 @@ export default class MenuBuilder {
           {
             label: 'Learn More',
             click() {
-              shell.openExternal('https://electronjs.org');
+              void shell.openExternal('https://electronjs.org');
             },
           },
           {
             label: 'Documentation',
             click() {
-              shell.openExternal('https://github.com/electron/electron/tree/master/docs#readme');
+              void shell.openExternal(
+                'https://github.com/electron/electron/tree/master/docs#readme'
+              );
             },
           },
           {
             label: 'Community Discussions',
             click() {
-              shell.openExternal('https://www.electronjs.org/community');
+              void shell.openExternal('https://www.electronjs.org/community');
             },
           },
           {
             label: 'Search Issues',
             click() {
-              shell.openExternal('https://github.com/electron/electron/issues');
+              void shell.openExternal('https://github.com/electron/electron/issues');
             },
           },
         ],

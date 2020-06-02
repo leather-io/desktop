@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /**
  * Webpack config for production electron main process
  */
@@ -32,6 +34,7 @@ export default merge.smart(baseConfig, {
     minimizer: process.env.E2E_BUILD
       ? []
       : [
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           new TerserPlugin({
             parallel: true,
             sourceMap: true,
@@ -41,6 +44,7 @@ export default merge.smart(baseConfig, {
   },
 
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     new BundleAnalyzerPlugin({
       analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
       openAnalyzer: process.env.OPEN_ANALYZER === 'true',

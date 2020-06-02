@@ -11,9 +11,8 @@
   "javascript.format.enable": false,
   "typescript.format.enable": false,
   "files.exclude": {
-      "app/node_modules/": true,
-      "app/dist/": true,
-      "dll": true,
+    "app/node_modules/": true,
+    "app/dist/": true
   },
   "search.exclude": {
     ".git": true,

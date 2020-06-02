@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
@@ -9,10 +11,7 @@ import { counterStateType } from './reducers/types';
 
 declare global {
   interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: (
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      obj: Record<string, any>
-    ) => Function;
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: (obj: Record<string, unknown>) => typeof compose;
   }
   interface NodeModule {
     hot?: {
@@ -61,21 +60,16 @@ const configureStore = (initialState?: counterStateType) => {
         actionCreators,
       })
     : compose;
-  /* eslint-enable no-underscore-dangle */
 
   // Apply Middleware & Compose Enhancers
   enhancers.push(applyMiddleware(...middleware));
-  const enhancer = composeEnhancers(...enhancers);
+  const enhancer = composeEnhancers<any>(...enhancers);
 
   // Create Store
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {
-    module.hot.accept(
-      './reducers',
-      // eslint-disable-next-line global-require
-      () => store.replaceReducer(require('./reducers').default)
-    );
+    module.hot.accept('./reducers', () => store.replaceReducer(require('./reducers').default));
   }
 
   return store;

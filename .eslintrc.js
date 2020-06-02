@@ -8,4 +8,7 @@ module.exports = {
     sourceType: 'module',
     createDefaultProgram: true,
   },
+  rules: {
+    '@typescript-eslint/explicit-module-boundary-types': 0,
+  },
 };

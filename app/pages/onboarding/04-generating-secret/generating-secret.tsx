@@ -12,7 +12,8 @@ export const GeneratingSecret = () => {
 
   useEffect(() => {
     setTimeout(() => history.push(routes.SECRET_KEY), GENERATION_TIME);
-  }, []);
+  }, [history]);
+
   return (
     <Onboarding pt="152px">
       <Spinner size="lg" color="blue" alignSelf="center" />

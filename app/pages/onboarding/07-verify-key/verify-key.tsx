@@ -26,7 +26,7 @@ export const VerifyKey: React.FC = () => {
         style={{ resize: 'none' }}
       />
       <ErrorLabel>
-        {/* TODO: Create a UI library type of `caption.error` */}
+        {/* TODO: Create a UI library type of ``caption.error` */}
         <Text textAlign="left" display="block" textStyle="caption" color="feedback.error">
           The Secret Key you've entered doesn't match
         </Text>

@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint global-require: off, no-console: off */
 
 /**
@@ -18,7 +23,7 @@ export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
+    void autoUpdater.checkForUpdatesAndNotify();
   }
 }
 
@@ -58,11 +63,13 @@ const createWindow = async () => {
             nodeIntegration: true,
           }
         : {
+            nodeIntegration: false,
+            webSecurity: true,
             preload: path.join(__dirname, 'dist/renderer.prod.js'),
           },
   });
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  void mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
@@ -93,7 +100,6 @@ const createWindow = async () => {
 /**
  * Add event listeners...
  */
-
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -102,10 +108,11 @@ app.on('window-all-closed', () => {
   }
 });
 
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.on('ready', createWindow);
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) createWindow();
+  if (mainWindow === null) void createWindow();
 });

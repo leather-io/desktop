@@ -14,6 +14,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -32,6 +33,9 @@
     "app/dist",
     "dll",
     "app/main.js",
-    "app/main.js.map"
-  ]
+    "app/main.js.map",
+    "node_modules/**",
+    "app/node_modules/**"
+  ],
+  "typeRoots": ["./node_modules"]
 }

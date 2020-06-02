@@ -1,0 +1,15 @@
+name: Commitlint
+on:
+  push:
+    branches: ['release/stacking']
+  pull_request:
+    branches:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v1

@@ -58,6 +58,7 @@ const createWindow = async () => {
     width: 1024,
     height: 728,
     webPreferences:
+      // SECURITY: Remove node env
       process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
         ? {
             nodeIntegration: true,

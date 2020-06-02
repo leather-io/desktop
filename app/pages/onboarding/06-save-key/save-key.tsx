@@ -10,7 +10,7 @@ import {
 } from '../../../components/onboarding';
 import { Collapse, onboardingFaq } from '../../../components/secret-key-faq';
 
-export const SaveKey = () => {
+export const SaveKey: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Save your Secret Key</OnboardingTitle>

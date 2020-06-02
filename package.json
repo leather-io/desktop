@@ -26,8 +26,8 @@
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "StacksWallet",
+    "appId": "org.blockstack.StacksWallet",
     "files": [
       "dist/",
       "node_modules/",
@@ -128,6 +128,9 @@
     "@babel/preset-react": "^7.10.1",
     "@babel/preset-typescript": "^7.10.1",
     "@babel/register": "^7.10.1",
+    "@blockstack/eslint-config": "^1.0.5",
+    "@blockstack/prettier-config": "^0.0.6",
+    "@commitlint/config-conventional": "^8.3.4",
     "@types/css-font-loading-module": "^0.0.4",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
@@ -197,8 +200,6 @@
     "yarn": "^1.21.1"
   },
   "dependencies": {
-    "@blockstack/eslint-config": "^1.0.4",
-    "@blockstack/prettier-config": "^0.0.6",
     "@blockstack/ui": "^1.6.1",
     "@hot-loader/react-dom": "^16.13.0",
     "connected-react-router": "^6.8.0",
@@ -207,6 +208,7 @@
     "electron-debug": "^3.1.0",
     "electron-log": "4.2.0",
     "electron-updater": "^4.3.1",
+    "eslint": "^7.1.0",
     "eslint-plugin-import-helpers": "^1.0.2",
     "history": "^4.10.1",
     "minimist": "^1.2.5",

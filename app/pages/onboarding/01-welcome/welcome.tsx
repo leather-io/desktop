@@ -9,7 +9,7 @@ import {
   OnboardingText,
 } from '../../../components/onboarding';
 
-export const Welcome = () => {
+export const Welcome: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Stacks Wallet</OnboardingTitle>

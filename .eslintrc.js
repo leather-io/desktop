@@ -10,5 +10,6 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 0,
+    'no-warning-comments': ['warn', { terms: ['SECURITY'], location: 'anywhere' }],
   },
 };

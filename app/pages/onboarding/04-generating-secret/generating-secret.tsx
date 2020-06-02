@@ -7,7 +7,7 @@ import { Onboarding, OnboardingTitle } from '../../../components/onboarding';
 
 const GENERATION_TIME = 2_500;
 
-export const GeneratingSecret = () => {
+export const GeneratingSecret: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {

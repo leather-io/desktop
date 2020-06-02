@@ -11,7 +11,7 @@ import {
   OnboardingFooterLink,
 } from '../../../components/onboarding';
 
-export const RestoreWallet = () => {
+export const RestoreWallet: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Restore your wallet</OnboardingTitle>

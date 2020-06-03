@@ -1,13 +1,58 @@
-import React from 'react';
-import { Onboarding, OnboardingTitle, OnboardingButton } from '../../../components/onboarding';
+import React, { useState } from 'react';
 import { Input } from '@blockstack/ui';
 
-export const SetPassword = () => {
+import { Onboarding, OnboardingTitle, OnboardingButton } from '../../../components/onboarding';
+import { ErrorLabel } from '../../../components/error-label';
+import { ErrorText } from '../../../components/error-text';
+import {
+  validatePassword,
+  blankPasswordValidation,
+  ValidatedPassword,
+} from '../../../crypto/validate-password';
+
+const weakPasswordWarningMessage = (result: ValidatedPassword) => {
+  if (result.feedback.warning) {
+    return `${result.feedback.warning} ${result.feedback.suggestions.join(' ')}`;
+  }
+  if (!result.meetsScoreRequirement) {
+    return 'Your password is too weak, making it vulnerable to brute force attacks. Try using a stronger password at least 12 characters in length';
+  }
+  if (!result.meetsLengthRequirement) {
+    return 'Your password must also be at least 12 characters long.';
+  }
+  return 'Consider using a password generator to ensure your funds are sufficiently secure';
+};
+
+export const SetPassword: React.FC = () => {
+  const [password, setPassword] = useState<string | null>(null);
+  const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pass = e.currentTarget.value;
+    setPassword(pass);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === null) return;
+    setHasSubmitted(true);
+    setStrengthResult(validatePassword(password));
+  };
+
   return (
-    <Onboarding>
+    <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Set a password</OnboardingTitle>
-      <Input mt="extra-loose" />
-      <OnboardingButton mt="loose">Continue</OnboardingButton>
+      <Input type="text" mt="extra-loose" onChange={handlePasswordInput} />
+      {!strengthResult.meetsAllStrengthRequirements && hasSubmitted && (
+        <ErrorLabel>
+          <ErrorText>{weakPasswordWarningMessage(strengthResult)}</ErrorText>
+        </ErrorLabel>
+      )}
+      <OnboardingButton type="submit" mt="loose">
+        Continue
+      </OnboardingButton>
     </Onboarding>
   );
 };

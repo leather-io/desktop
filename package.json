@@ -150,6 +150,7 @@
     "@types/terser-webpack-plugin": "3.0.0",
     "@types/vfile-message": "2.0.0",
     "@types/webpack": "4.41.17",
+    "@types/zxcvbn": "4.4.0",
     "@typescript-eslint/eslint-plugin": "3.1.0",
     "@typescript-eslint/parser": "3.1.0",
     "babel-core": "7.0.0-bridge.0",
@@ -203,6 +204,7 @@
   "dependencies": {
     "@blockstack/ui": "1.6.1",
     "@hot-loader/react-dom": "16.13.0",
+    "bignumber.js": "9.0.0",
     "connected-react-router": "6.8.0",
     "core-js": "3.6.5",
     "devtron": "1.4.0",
@@ -222,7 +224,8 @@
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
     "source-map-support": "0.5.16",
-    "styled-components": "5.1.1"
+    "styled-components": "5.1.1",
+    "zxcvbn": "4.4.2"
   },
   "devEngines": {
     "node": ">=7.x",

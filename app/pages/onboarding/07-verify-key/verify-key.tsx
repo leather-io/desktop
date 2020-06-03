@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Text, Input } from '@blockstack/ui';
+import { Input } from '@blockstack/ui';
 
 import routes from '../../../constants/routes.json';
 import { ErrorLabel } from '../../../components/error-label';
+import { ErrorText } from '../../../components/error-text';
 import {
   Onboarding,
   OnboardingTitle,
@@ -27,9 +28,7 @@ export const VerifyKey: React.FC = () => {
       />
       <ErrorLabel>
         {/* TODO: Create a UI library type of ``caption.error` */}
-        <Text textAlign="left" display="block" textStyle="caption" color="feedback.error">
-          The Secret Key you've entered doesn't match
-        </Text>
+        <ErrorText>The Secret Key you've entered doesn't match</ErrorText>
       </ErrorLabel>
       <OnboardingButton mt="loose">Continue</OnboardingButton>
       <OnboardingFooter>

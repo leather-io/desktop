@@ -1,13 +1,10 @@
 name: Commitlint
-on:
-  push:
-    branches: ['release/stacking']
-  pull_request:
-    branches:
-
+on: [pull_request]
 jobs:
   lint:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
         with:

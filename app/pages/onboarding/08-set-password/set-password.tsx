@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import { Input } from '@blockstack/ui';
 
+import routes from '../../../constants/routes.json';
 import { Onboarding, OnboardingTitle, OnboardingButton } from '../../../components/onboarding';
 import { ErrorLabel } from '../../../components/error-label';
 import { ErrorText } from '../../../components/error-text';
@@ -24,6 +26,7 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
 };
 
 export const SetPassword: React.FC = () => {
+  const history = useHistory();
   const [password, setPassword] = useState<string | null>(null);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -38,13 +41,17 @@ export const SetPassword: React.FC = () => {
     e.preventDefault();
     if (password === null) return;
     setHasSubmitted(true);
-    setStrengthResult(validatePassword(password));
+    const result = validatePassword(password);
+    setStrengthResult(result);
+    if (result.meetsAllStrengthRequirements) {
+      history.push(routes.HOME);
+    }
   };
 
   return (
     <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Set a password</OnboardingTitle>
-      <Input type="text" mt="extra-loose" onChange={handlePasswordInput} />
+      <Input type="password" mt="extra-loose" onChange={handlePasswordInput} />
       {!strengthResult.meetsAllStrengthRequirements && hasSubmitted && (
         <ErrorLabel>
           <ErrorText>{weakPasswordWarningMessage(strengthResult)}</ErrorText>

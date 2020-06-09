@@ -1,8 +1,9 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+
 import routes from './constants/routes.json';
 import App from './pages/app';
-
+import { Home } from './pages/home/home';
 import {
   Welcome,
   CreateWallet,
@@ -15,6 +16,10 @@ import {
 } from './pages/onboarding';
 
 export const routerConfig = [
+  {
+    path: routes.HOME,
+    component: Home,
+  },
   {
     path: routes.WELCOME,
     component: Welcome,
@@ -47,6 +52,10 @@ export const routerConfig = [
     path: routes.SET_PASSWORD,
     component: SetPassword,
   },
+  {
+    path: routes.SET_PASSWORD,
+    component: SetPassword,
+  },
 ];
 
 export function Routes() {
@@ -54,7 +63,7 @@ export function Routes() {
     <App>
       <Switch>
         {routerConfig.map((route, i) => (
-          <Route key={i} {...route} />
+          <Route key={i} exact {...route} />
         ))}
       </Switch>
       <Redirect exact from="/" to={routes.WELCOME} />

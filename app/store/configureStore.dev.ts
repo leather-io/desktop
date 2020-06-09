@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
-import createRootReducer from './reducers';
-import * as counterActions from './actions/counter';
-import { counterStateType } from './reducers/types';
+import { RootState, createRootReducer } from './reducers';
 
 declare global {
   interface Window {
@@ -20,11 +18,11 @@ declare global {
   }
 }
 
-const history = createHashHistory();
+export const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (initialState?: counterStateType) => {
+export const configureStore = (initialState?: RootState) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -49,7 +47,6 @@ const configureStore = (initialState?: counterStateType) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...counterActions,
     ...routerActions,
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
@@ -74,5 +71,3 @@ const configureStore = (initialState?: counterStateType) => {
 
   return store;
 };
-
-export default { configureStore, history };

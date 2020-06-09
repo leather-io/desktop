@@ -13,6 +13,7 @@ export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
       borderColor="#E5E5EC"
       boxShadow="mid"
       textAlign="center"
+      width="100%"
       {...rest}
     >
       <Flex
@@ -26,8 +27,8 @@ export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
           {title}
         </Text>
       </Flex>
-      <Box px={10} py={5}>
-        <Text>{children}</Text>
+      <Box my="base" mx="base">
+        {children}
       </Box>
     </Box>
   );

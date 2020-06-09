@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import routes from '../../../constants/routes.json';
 import {
@@ -10,18 +10,17 @@ import {
 } from '../../../components/onboarding';
 
 export const Welcome: React.FC = () => {
+  const history = useHistory();
   return (
     <Onboarding>
       <OnboardingTitle>Stacks Wallet</OnboardingTitle>
       <OnboardingText>Send, receive, and and earn Bitcoin rewards</OnboardingText>
-      <Link to={routes.CREATE}>
-        <OnboardingButton mt="extra-loose">Create a new wallet</OnboardingButton>
-      </Link>
-      <Link to={routes.RESTORE}>
-        <OnboardingButton mt="base" variant="outline">
-          I already have a wallet
-        </OnboardingButton>
-      </Link>
+      <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CREATE)}>
+        Create a new wallet
+      </OnboardingButton>
+      <OnboardingButton onClick={() => history.push(routes.RESTORE)} mt="base" mode="alternate">
+        I already have a wallet
+      </OnboardingButton>
     </Onboarding>
   );
 };

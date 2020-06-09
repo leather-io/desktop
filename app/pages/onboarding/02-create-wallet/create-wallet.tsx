@@ -1,6 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
+import { onboardingMnemonicGenerationStep } from '../../../store/keys/keys.actions';
 import routes from '../../../constants/routes.json';
 import {
   Onboarding,
@@ -12,6 +14,14 @@ import {
 } from '../../../components/onboarding';
 
 export const CreateWallet: React.FC = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const createSoftwareWallet = () => {
+    dispatch(onboardingMnemonicGenerationStep({ stepDelayMs: 1_500 }));
+    history.push(routes.GENERATING);
+  };
+
   return (
     <Onboarding>
       <OnboardingTitle>Create a new wallet</OnboardingTitle>
@@ -20,9 +30,11 @@ export const CreateWallet: React.FC = () => {
         wallet
       </OnboardingText>
       <OnboardingButton mt="extra-loose">Use a Ledger wallet</OnboardingButton>
-      <Link to={routes.GENERATING}>
-        <OnboardingButton>Create a software wallet</OnboardingButton>
-      </Link>
+
+      <OnboardingButton onClick={createSoftwareWallet} mode="alternate">
+        Create a software wallet
+      </OnboardingButton>
+
       <OnboardingFooter>
         <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink>
       </OnboardingFooter>

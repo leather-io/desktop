@@ -1,31 +1,41 @@
-import { useClipboard } from '@blockstack/ui';
-import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import log from 'electron-log';
+import { useClipboard } from '@blockstack/ui';
 
 import routes from '../../../constants/routes.json';
 import { Card } from '../../../components/card';
 import { Toast } from '../../../components/toast';
-import { SeedTextarea } from '../../../components/seed-textarea';
+
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
 } from '../../../components/onboarding';
+import { selectMnemonic } from '../../../store/keys/keys.reducer';
 
-const COPY_TOAST_TIMEOUT = 3_000;
+const COPY_TOAST_TIMEOUT = 2_500;
 
 export const SecretKey: React.FC = () => {
   const history = useHistory();
   const [copied, setCopiedState] = useState(false);
-  const phrase =
-    'future act silly correct hold endorse essay save prefer filter donate clap future act silly correct hold endorse essay save prefer filter donate clap';
-  const { onCopy } = useClipboard(phrase);
+  const mnemonic = useSelector(selectMnemonic);
+
+  if (!mnemonic) {
+    const err = 'Component `SecretKey` should not render without pre-generated mnemonic';
+    log.error(err);
+    throw new Error(err);
+  }
+
+  const { onCopy } = useClipboard(mnemonic);
   const copyToClipboard = () => {
-    onCopy && onCopy();
+    onCopy?.();
     setCopiedState(true);
     setTimeout(() => history.push(routes.SAVE_KEY), COPY_TOAST_TIMEOUT);
   };
+
   return (
     <Onboarding>
       <OnboardingTitle>Your Secret Key</OnboardingTitle>
@@ -34,14 +44,7 @@ export const SecretKey: React.FC = () => {
         Once lost, it’s lost forever, so save it somewhere you won’t forget.
       </OnboardingText>
       <Card title="Your Secret Key" mt="extra-loose">
-        <SeedTextarea
-          readOnly
-          spellCheck="false"
-          autoCapitalize="false"
-          value={phrase}
-          className="hidden-secret-key"
-          data-test="textarea-seed-phrase"
-        />
+        {mnemonic}
       </Card>
       <OnboardingButton mt="loose" onClick={() => copyToClipboard()}>
         Copy Secret Key

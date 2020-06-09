@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 
-import { Store } from '../store/reducers/types';
+import { Store } from '../store/reducers';
 import { Routes, routerConfig } from '../routes';
 import { loadFonts } from '../utils/load-fonts';
 
@@ -45,7 +45,7 @@ function Root({ store, history }: RootProps) {
       <CSSReset />
       <GlobalStyle />
       <ConnectedRouter history={history}>
-        <DevFooter />
+        {/* <DevFooter /> */}
         <Routes />
       </ConnectedRouter>
     </Provider>

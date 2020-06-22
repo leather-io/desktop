@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 
-import { Store } from '../store/reducers';
+import { Store } from '../store';
 import { Routes, routerConfig } from '../routes';
 import { loadFonts } from '../utils/load-fonts';
 
@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-function DevFooter() {
+export function DevFooter() {
   return (
     <Box position="absolute" top="base" left="loose">
       {routerConfig.map((route, i) => (
@@ -40,12 +40,12 @@ function Root({ store, history }: RootProps) {
   useEffect(() => {
     void loadFonts();
   }, []);
+
   return (
     <Provider store={store}>
       <CSSReset />
       <GlobalStyle />
       <ConnectedRouter history={history}>
-        {/* <DevFooter /> */}
         <Routes />
       </ConnectedRouter>
     </Provider>

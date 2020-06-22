@@ -1,9 +1,8 @@
 import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 import { combineReducers } from '@reduxjs/toolkit';
 import { connectRouter } from 'connected-react-router';
-import { History } from 'history';
 
-import { KeysState, keyReducer } from '../keys';
+import { KeysState, createKeysReducer } from './keys';
 
 export interface RootState {
   router: any;
@@ -16,9 +15,14 @@ export type Dispatch = ReduxDispatch<Action<string>>;
 
 export type Store = ReduxStore<RootState, Action<string>>;
 
-export function createRootReducer(history: History) {
+interface RootReducerArgs {
+  history: any;
+  keys: Partial<KeysState>;
+}
+
+export function createRootReducer({ history, keys }: RootReducerArgs) {
   return combineReducers({
     router: connectRouter(history),
-    keys: keyReducer,
+    keys: createKeysReducer(keys),
   });
 }

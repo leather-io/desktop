@@ -1,9 +1,11 @@
 import React from 'react';
+import { useStore } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import routes from './constants/routes.json';
-import App from './pages/app';
 import { Home } from './pages/home/home';
+import { selectKeysSlice } from './store/keys/keys.reducer';
+import { SignIn } from './pages/sign-in/sign-in';
 import {
   Welcome,
   CreateWallet,
@@ -19,6 +21,10 @@ export const routerConfig = [
   {
     path: routes.HOME,
     component: Home,
+  },
+  {
+    path: routes.SIGN_IN,
+    component: SignIn,
   },
   {
     path: routes.WELCOME,
@@ -58,15 +64,20 @@ export const routerConfig = [
   },
 ];
 
+const getAppStartingRoute = (salt?: string) => (!!salt ? routes.SIGN_IN : routes.WELCOME);
+
 export function Routes() {
+  // `useStore` required as we only want the value on initial render
+  const store = useStore();
+  const { salt } = selectKeysSlice(store.getState());
   return (
-    <App>
+    <>
       <Switch>
         {routerConfig.map((route, i) => (
           <Route key={i} exact {...route} />
         ))}
       </Switch>
-      <Redirect exact from="/" to={routes.WELCOME} />
-    </App>
+      <Redirect exact from="/" to={getAppStartingRoute(salt)} />
+    </>
   );
 }

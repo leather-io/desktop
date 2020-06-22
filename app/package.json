@@ -9,5 +9,8 @@
     "postinstall": "yarn electron-rebuild"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "@blockstack/keychain": "^0.5.0",
+    "blockstack": "21.1.0"
+  }
 }

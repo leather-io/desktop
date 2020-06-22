@@ -5,7 +5,8 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
-import { RootState, createRootReducer } from './reducers';
+import { RootState, createRootReducer } from '.';
+import { getInitialStateFromDisk } from '../utils/disk-store';
 
 declare global {
   interface Window {
@@ -20,7 +21,7 @@ declare global {
 
 export const history = createHashHistory();
 
-const rootReducer = createRootReducer(history);
+const rootReducer = createRootReducer({ history, keys: getInitialStateFromDisk() });
 
 export const configureStore = (initialState?: RootState) => {
   // Redux Configuration
@@ -66,7 +67,7 @@ export const configureStore = (initialState?: RootState) => {
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {
-    module.hot.accept('./reducers', () => store.replaceReducer(require('./reducers').default));
+    module.hot.accept('./index', () => store.replaceReducer(require('./index').default));
   }
 
   return store;

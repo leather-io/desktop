@@ -27,6 +27,7 @@ export default merge.smart(baseConfig, {
   /**
    * Use `module` from `webpack.config.renderer.dev.js`
    */
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   module: require('./webpack.config.renderer.dev.babel').default.module,
 
   entry: {

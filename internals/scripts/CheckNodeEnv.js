@@ -8,6 +8,7 @@ export default function CheckNodeEnv(expectedEnv) {
   if (process.env.NODE_ENV !== expectedEnv) {
     console.log(
       chalk.whiteBright.bgRed.bold(
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `"process.env.NODE_ENV" must be "${expectedEnv}" to use this webpack config`
       )
     );

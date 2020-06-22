@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   extends: ['@blockstack/eslint-config', 'plugin:react-hooks/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -11,6 +12,8 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/no-unsafe-member-access': 0,
+    '@typescript-eslint/no-unsafe-assignment': 0,
+    '@typescript-eslint/no-unsafe-call': 0,
     'no-warning-comments': ['warn', { terms: ['SECURITY'], location: 'anywhere' }],
   },
 };

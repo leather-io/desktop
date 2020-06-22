@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Input } from '@blockstack/ui';
 
-import routes from '../../../constants/routes.json';
+import { setPassword as setPasswordAction } from '../../../store/keys';
 import { Onboarding, OnboardingTitle, OnboardingButton } from '../../../components/onboarding';
 import { ErrorLabel } from '../../../components/error-label';
 import { ErrorText } from '../../../components/error-text';
@@ -27,9 +28,11 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
 
 export const SetPassword: React.FC = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [password, setPassword] = useState<string | null>(null);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -44,7 +47,8 @@ export const SetPassword: React.FC = () => {
     const result = validatePassword(password);
     setStrengthResult(result);
     if (result.meetsAllStrengthRequirements) {
-      history.push(routes.HOME);
+      setBtnDisabled(true);
+      dispatch(setPasswordAction({ password, history }));
     }
   };
 
@@ -57,7 +61,7 @@ export const SetPassword: React.FC = () => {
           <ErrorText>{weakPasswordWarningMessage(strengthResult)}</ErrorText>
         </ErrorLabel>
       )}
-      <OnboardingButton type="submit" mt="loose">
+      <OnboardingButton type="submit" mt="loose" isDisabled={btnDisabled}>
         Continue
       </OnboardingButton>
     </Onboarding>

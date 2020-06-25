@@ -10,7 +10,7 @@ export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
     <Box
       borderRadius="6px"
       border="1px solid"
-      borderColor="#E5E5EC"
+      borderColor="#E1E3E8"
       boxShadow="mid"
       textAlign="center"
       width="100%"

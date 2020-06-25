@@ -71,6 +71,8 @@ const createWindow = async () => {
 
   void mainWindow.loadURL(`file://${__dirname}/app.html`);
 
+  let hasFocusedOnInitialLoad = false;
+
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
   mainWindow.webContents.on('did-finish-load', () => {
@@ -80,8 +82,10 @@ const createWindow = async () => {
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
+      if (hasFocusedOnInitialLoad) return;
       mainWindow.show();
       mainWindow.focus();
+      hasFocusedOnInitialLoad = true;
     }
   });
 

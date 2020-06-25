@@ -1,9 +1,14 @@
 import { push } from 'connected-react-router';
 import { createAction, Dispatch } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router';
+import log from 'electron-log';
 import bcryptjs from 'bcryptjs';
 import { memoizeWith, identity } from 'ramda';
-import { generateMnemonicRootKeychain } from '@blockstack/keychain';
+import {
+  generateMnemonicRootKeychain,
+  deriveRootKeychainFromMnemonic,
+  deriveStxAddressChain,
+} from '@blockstack/keychain';
 import { encryptMnemonic, decryptMnemonic } from 'blockstack';
 
 import routes from '../../constants/routes.json';
@@ -11,8 +16,8 @@ import { MNEMONIC_ENTROPY } from '../../constants';
 import { RootState } from '../index';
 import { persistSalt, persistEncryptedMnemonic } from '../../utils/disk-store';
 import { safeAwait } from '../../utils/safe-await';
-import log from 'electron-log';
-import { selectMnemonic } from './keys.reducer';
+import { selectMnemonic, selectKeysSlice } from './keys.reducer';
+import { ChainID } from '@blockstack/stacks-transactions';
 
 type History = ReturnType<typeof useHistory>;
 
@@ -28,7 +33,7 @@ interface SetPasswordSuccess {
 }
 export const setPasswordSuccess = createAction<SetPasswordSuccess>('keys/set-password-success');
 
-export function onboardingMnemonicGenerationStep({ stepDelayMs }: { stepDelayMs: string }) {
+export function onboardingMnemonicGenerationStep({ stepDelayMs }: { stepDelayMs: number }) {
   return async (dispatch: Dispatch) => {
     const key = await generateMnemonicRootKeychain(MNEMONIC_ENTROPY);
     dispatch(persistMnemonicSafe(key.plaintextMnemonic));
@@ -45,29 +50,30 @@ const generateSalt = memoizeWith(identity, async () => await bcryptjs.genSalt(12
 
 export function setPassword({ password, history }: { password: string; history: History }) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
-    const state = getState();
-    const mnemonic = selectMnemonic(state);
+    const mnemonic = selectMnemonic(getState());
     const salt = await generateSalt();
-
     const derivedEncryptionKey = await generateDerivedKey({ password, salt });
+
     if (!mnemonic) {
       log.error('Cannot derive encryption key unless a mnemonic has been generated');
       return;
     }
+
     const encryptedMnemonicBuffer = await encryptMnemonic(mnemonic, derivedEncryptionKey);
     const encryptedMnemonic = encryptedMnemonicBuffer.toString('hex');
-    // TEMP: to remove, useful for debugging
-    dispatch(setPasswordSuccess({ salt, encryptedMnemonic }));
     persistSalt(salt);
     persistEncryptedMnemonic(encryptedMnemonic);
+    dispatch(setPasswordSuccess({ salt, encryptedMnemonic }));
     history.push(routes.HOME);
   };
 }
 
 export const attemptWalletDecrypt = createAction('keys/attempt-wallet-decrypt');
-export const attemptWalletDecryptSuccess = createAction<{ salt: string; mnemonic: string }>(
-  'keys/attempt-wallet-decrypt-success'
-);
+export const attemptWalletDecryptSuccess = createAction<{
+  salt: string;
+  mnemonic: string;
+  address: string;
+}>('keys/attempt-wallet-decrypt-success');
 export const attemptWalletDecryptFailed = createAction<{ decryptionError: string }>(
   'keys/attempt-wallet-decrypt-failed'
 );
@@ -75,8 +81,13 @@ export const attemptWalletDecryptFailed = createAction<{ decryptionError: string
 export function decryptWallet({ password, history }: { password: string; history: History }) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch(attemptWalletDecrypt());
-    const salt = (getState().keys as any).salt as string;
-    const encryptedMnemonic = (getState().keys as any).encryptedMnemonic as string;
+    const { salt, encryptedMnemonic } = selectKeysSlice(getState());
+
+    if (!salt || !encryptMnemonic) {
+      log.error('Cannot decrypt wallet if no `salt` or `encryptedMnemonic` exists');
+      return;
+    }
+
     const key = await generateDerivedKey({ password, salt });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -89,8 +100,13 @@ export function decryptWallet({ password, history }: { password: string; history
     }
 
     if (mnemonic) {
+      const { rootNode } = await deriveRootKeychainFromMnemonic(mnemonic, '');
+      console.log({ rootNode });
+      const { address } = deriveStxAddressChain(ChainID.Mainnet)(rootNode);
+      // const pubkey = pubKeyfromPrivKey(rootNode.privateKey);
+      // console.log({ addressKeychain });
+      dispatch(attemptWalletDecryptSuccess({ salt, mnemonic, address }));
       history.push(routes.HOME);
-      dispatch(attemptWalletDecryptSuccess({ salt, mnemonic }));
     }
   };
 }

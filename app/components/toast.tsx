@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex, Box, Text } from '@blockstack/ui';
-import { SuccessCheckmark } from './success-checkmark';
+import { SuccessCheckmark } from './icons/success-checkmark';
 
 interface ToastProps {
   show?: boolean;

@@ -1,49 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Flex, Box } from '@blockstack/ui';
-import { ChainID } from '@blockstack/stacks-transactions';
-import { deriveRootKeychainFromMnemonic, deriveStxAddressChain } from '@blockstack/keychain';
+import { deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
 
-import { selectMnemonic, selectKeysSlice } from '../../store/keys';
+import { selectMnemonic } from '../../store/keys';
 import { BIP32Interface } from '../../types';
+import { TransactionList } from '../../components/transaction-list/transaction-list';
+import { StackingPromoCard } from '../../components/stacking-promo-card';
+import { StackingRewardCard } from '../../components/stacking-rewards-card';
+import { BalanceCard } from '../../components/balance-card';
+import { HomeLayout } from './home-layout';
 
 //
 // Placeholder component
 export const Home: React.FC = () => {
   const mnemonic = useSelector(selectMnemonic);
-  const keys = useSelector(selectKeysSlice);
   const [keychain, setKeychain] = useState<{ rootNode: BIP32Interface } | null>(null);
 
   useEffect(() => {
     const deriveMasterKeychain = async () => {
       if (!mnemonic) return;
-      const resp = await deriveRootKeychainFromMnemonic(mnemonic, '');
-      setKeychain(resp);
+      const { rootNode } = await deriveRootKeychainFromMnemonic(mnemonic, '');
+      setKeychain({ rootNode });
     };
     void deriveMasterKeychain();
   }, [mnemonic]);
 
-  if (keychain === null) return <div>Homepage, but no keychain can be derived</div>;
-
-  const rootNode = deriveStxAddressChain(ChainID.Testnet)(keychain.rootNode);
-
-  const privateKey = rootNode.privateKey;
-
-  const base58 = rootNode.childKey.toBase58();
-
-  if (!mnemonic) return <>How you get to homepage without a mnemonic?</>;
-
-  // console.log(keychain);
+  if (keychain === null) return <></>;
 
   return (
-    <Flex pt="120px" flexDirection="column" mx="loose">
-      <Box>Mnemonic: {mnemonic}</Box>
-      <Box mt="loose">MnemonicEncryptedHex: {privateKey}</Box>
-      <Box mt="loose">Private key: {privateKey}</Box>
-      <Box mt="loose">Base58: {base58}</Box>
-      <Box mt="loose">Salt: {(keys as any).salt}</Box>
-      <Box mt="loose">Password: {(keys as any).password}</Box>
-      <Box mt="loose">Stretched Key: {(keys as any).derivedEncryptionKey}</Box>
-    </Flex>
+    <HomeLayout
+      balanceCard={<BalanceCard balance="124,000.1003 STX" />}
+      transactionList={<TransactionList txs={[]} />}
+      stackingPromoCard={<StackingPromoCard />}
+      stackingRewardCard={
+        <StackingRewardCard lifetime="0.0281 Bitcoin" lastCycle="0.000383 Bitcoin" />
+      }
+    />
   );
 };

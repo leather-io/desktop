@@ -15,7 +15,8 @@ export interface KeysState {
   decrypting: boolean;
   salt?: string;
   decryptionError?: string;
-  encryptMnemonic?: string;
+  encryptedMnemonic?: string;
+  address?: string;
 }
 
 const initialState: Readonly<KeysState> = Object.freeze({
@@ -46,7 +47,9 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
       .addCase(attemptWalletDecryptSuccess, (state, { payload }) => ({
         ...state,
         salt: payload.salt,
+        decrypting: false,
         mnemonic: payload.mnemonic,
+        address: payload.address,
       }))
   );
 

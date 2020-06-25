@@ -33,13 +33,4 @@ describe('keysReducer', () => {
       expect(result).toEqual({ mnemonic: 'test mnemonic' });
     });
   });
-
-  describe('persistMnemonic', () => {
-    test('it saves mnemonic, regardless', () => {
-      const state = { mnemonic: 'twenty four words blah' } as KeysState;
-      const action = persistMnemonic('test mnemonic');
-      const result = reducer(state, action);
-      expect(result).toEqual({ mnemonic: 'test mnemonic' });
-    });
-  });
 });

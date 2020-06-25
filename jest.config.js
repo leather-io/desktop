@@ -12,4 +12,12 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
   moduleDirectories: ['node_modules', 'app/node_modules'],
   setupFiles: ['./internals/scripts/CheckBuildsExist.js'],
+  globals: {
+    'ts-jest': {
+      tsConfig: 'tsconfig.tests.json',
+      diagnostics: {
+        ignoreCodes: [6133],
+      },
+    },
+  },
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box, FlexProps } from '@blockstack/ui';
 
-import { ExclamationMark } from './exclamation-mark';
+import { ExclamationMark } from './icons/exclamation-mark';
 
 type ErrorLabelProps = FlexProps;
 

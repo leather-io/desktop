@@ -30,21 +30,32 @@ export default class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
+  import('source-map-support')
+    .then(sourceMapSupport => sourceMapSupport.install())
+    .catch(err => {
+      throw err;
+    });
 }
 
 if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  require('electron-debug')();
+  import('electron-debug')
+    .then(electronDebug => electronDebug.default())
+    .catch(error => console.error(error));
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
+  try {
+    const installer = await import('electron-devtools-installer');
+    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+    const extensions = [installer.REACT_DEVELOPER_TOOLS, installer.REDUX_DEVTOOLS];
+
+    return Promise.all(
+      extensions.map(extension => installer.default(extension, forceDownload))
+    ).catch(error => new Error(`Error while installing extensions\n${error}`));
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 const createWindow = async () => {

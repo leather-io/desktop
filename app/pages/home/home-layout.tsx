@@ -36,14 +36,6 @@ export const HomeLayout: React.FC<HomeLayout> = ({
           {stackingRewardCard}
         </Flex>
       </Flex>
-      {/* <Button onClick={openModal}>Open a modal</Button> */}
-      {/* <Box>Mnemonic: {mnemonic}</Box>
-      <Box mt="loose">MnemonicEncryptedHex: {privateKey}</Box>
-      <Box mt="loose">Private key: {privateKey}</Box>
-      <Box mt="loose">Base58: {base58}</Box>
-      <Box mt="loose">Salt: {(keys as any).salt}</Box>
-      <Box mt="loose">Password: {(keys as any).password}</Box>
-      <Box mt="loose">Stretched Key: {(keys as any).derivedEncryptionKey}</Box> */}
     </Flex>
   );
 };

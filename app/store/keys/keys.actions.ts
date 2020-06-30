@@ -9,6 +9,7 @@ import {
   deriveRootKeychainFromMnemonic,
   deriveStxAddressChain,
 } from '@blockstack/keychain';
+import { ChainID } from '@blockstack/stacks-transactions';
 import { encryptMnemonic, decryptMnemonic } from 'blockstack';
 
 import routes from '../../constants/routes.json';
@@ -17,7 +18,6 @@ import { RootState } from '../index';
 import { persistSalt, persistEncryptedMnemonic } from '../../utils/disk-store';
 import { safeAwait } from '../../utils/safe-await';
 import { selectMnemonic, selectKeysSlice } from './keys.reducer';
-import { ChainID } from '@blockstack/stacks-transactions';
 
 type History = ReturnType<typeof useHistory>;
 

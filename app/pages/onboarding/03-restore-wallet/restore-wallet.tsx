@@ -32,7 +32,7 @@ export const RestoreWallet: React.FC = () => {
   const handleSecretKeyRestore = async (e: React.FormEvent) => {
     e.preventDefault();
     if (mnemonic.split(' ').length !== 24) {
-      setError('The Stacks Wallet can only be used with 24-word Secret Keys');
+      setError('The Stacks Wallet can only be used with a 24-word Secret Key');
       return;
     }
     const [error] = await safeAwait(deriveRootKeychainFromMnemonic(mnemonic, ''));
@@ -69,7 +69,7 @@ export const RestoreWallet: React.FC = () => {
           <ErrorText>{error}</ErrorText>
         </ErrorLabel>
       )}
-      <OnboardingButton mt="loose" type="submit" mode="alternate">
+      <OnboardingButton mt="loose" type="submit" mode="secondary">
         Continue with Secret Key
       </OnboardingButton>
       <OnboardingFooter>

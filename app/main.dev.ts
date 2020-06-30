@@ -51,7 +51,7 @@ const installExtensions = async () => {
 
     return Promise.all(
       extensions.map(extension => installer.default(extension, forceDownload))
-    ).catch(error => new Error(`Error while installing extensions\n${error}`));
+    ).catch(error => new Error(`Error while installing extensions\n${String(error)}`));
   } catch (error) {
     console.error(error);
     throw error;

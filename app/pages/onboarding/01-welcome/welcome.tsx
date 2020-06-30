@@ -18,7 +18,7 @@ export const Welcome: React.FC = () => {
       <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CREATE)}>
         Create a new wallet
       </OnboardingButton>
-      <OnboardingButton onClick={() => history.push(routes.RESTORE)} mt="base" mode="alternate">
+      <OnboardingButton onClick={() => history.push(routes.RESTORE)} mt="base" mode="secondary">
         I already have a wallet
       </OnboardingButton>
     </Onboarding>

@@ -14,7 +14,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 0,
     '@typescript-eslint/no-unsafe-assignment': 0,
     '@typescript-eslint/no-unsafe-call': 0,
+    '@typescript-eslint/unbound-method': 0,
     'no-warning-comments': ['warn', { terms: ['SECURITY'], location: 'anywhere' }],
-    '@typescript-eslint/no-unused-variable': [true, { 'ignore-pattern': '^_' }],
   },
 };

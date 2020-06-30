@@ -56,3 +56,7 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
 export const selectKeysSlice = (state: RootState) => state.keys;
 
 export const selectMnemonic = createSelector(selectKeysSlice, state => state.mnemonic);
+export const selectAddress = createSelector(selectKeysSlice, state => {
+  // if (!state.address) throw new Error('Address must always be generated prior to read.');
+  return state.address;
+});

@@ -1,23 +1,22 @@
+import { useHistory } from 'react-router';
 import { push } from 'connected-react-router';
 import { createAction, Dispatch } from '@reduxjs/toolkit';
-import { useHistory } from 'react-router';
 import log from 'electron-log';
-import bcryptjs from 'bcryptjs';
-import { memoizeWith, identity } from 'ramda';
 import {
   generateMnemonicRootKeychain,
   deriveRootKeychainFromMnemonic,
   deriveStxAddressChain,
 } from '@blockstack/keychain';
-import { ChainID } from '@blockstack/stacks-transactions';
 import { encryptMnemonic, decryptMnemonic } from 'blockstack';
+import { ChainID } from '@blockstack/stacks-transactions';
 
+import { RootState } from '..';
 import routes from '../../constants/routes.json';
 import { MNEMONIC_ENTROPY } from '../../constants';
-import { RootState } from '../index';
 import { persistSalt, persistEncryptedMnemonic } from '../../utils/disk-store';
 import { safeAwait } from '../../utils/safe-await';
 import { selectMnemonic, selectKeysSlice } from './keys.reducer';
+import { generateSalt, generateDerivedKey } from '../../crypto/key-generation';
 
 type History = ReturnType<typeof useHistory>;
 
@@ -38,13 +37,6 @@ export function onboardingMnemonicGenerationStep({ stepDelayMs }: { stepDelayMs:
     setTimeout(() => dispatch(push(routes.SECRET_KEY)), stepDelayMs);
   };
 }
-
-// 980aa096dd224bd69685583b363de2be
-export async function generateDerivedKey({ password, salt }: { password: string; salt: string }) {
-  return bcryptjs.hash(password, salt);
-}
-
-const generateSalt = memoizeWith(identity, async () => await bcryptjs.genSalt(12));
 
 export function setPassword({ password, history }: { password: string; history: History }) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
@@ -81,16 +73,19 @@ export function decryptWallet({ password, history }: { password: string; history
     dispatch(attemptWalletDecrypt());
     const { salt, encryptedMnemonic } = selectKeysSlice(getState());
 
-    if (!salt || !encryptMnemonic) {
+    if (!salt || !encryptedMnemonic) {
       log.error('Cannot decrypt wallet if no `salt` or `encryptedMnemonic` exists');
       return;
     }
 
     const key = await generateDerivedKey({ password, salt });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const [error, mnemonic] = await safeAwait(decryptMnemonic(encryptedMnemonic, key));
+    //
+    // TODO: remove casting within blockstack.js library
+    // https://github.com/blockstack/blockstack.js/pull/797
+    const [error, mnemonic] = await safeAwait(
+      decryptMnemonic(encryptedMnemonic, key, undefined as any)
+    );
 
     if (error) {
       dispatch(attemptWalletDecryptFailed({ decryptionError: 'Password incorrect' }));

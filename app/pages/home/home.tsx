@@ -28,12 +28,11 @@ export const Home: FC = () => {
   // ST2K2GK11JDC2DT8M9B5T28P2FHMXMECKDGDNCQCN
   useEffect(() => {
     if (!address) return;
-    // Demo address
-    // ST2K2GK11JDC2DT8M9B5T28P2FHMXMECKDGDNCQCN
-    dispatch(getTransactions(address));
+    dispatch(getAddressTransactions('ST2K2GK11JDC2DT8M9B5T28P2FHMXMECKDGDNCQCN'));
+    dispatch(getAddressDetails('ST2K2GK11JDC2DT8M9B5T28P2FHMXMECKDGDNCQCN'));
   }, [dispatch, address]);
 
-  if (address === undefined) return <Spinner />;
+  if (!address) return <Spinner />;
 
   const openInExplorer = (txId: string) =>
     shell.openExternal(`https://testnet-explorer.blockstack.org/txid/${txId}`);
@@ -48,7 +47,7 @@ export const Home: FC = () => {
   const balanceCard = <BalanceCard balance={balance === null ? '–' : balance} />;
   const stackingPromoCard = <StackingPromoCard />;
   const stackingRewardCard = (
-    <StackingRewardCard lifetime="0.0281 Bitcoin" lastCycle="0.000383 Bitcoin" />
+    <StackingRewardCard lifetime="0.0281 Bitcoin (sample)" lastCycle="0.000383 Bitcoin (sample)" />
   );
 
   return (

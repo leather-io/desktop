@@ -4,11 +4,13 @@ import { connectRouter } from 'connected-react-router';
 
 import { KeysState, createKeysReducer } from './keys';
 import { TransactionState, transactionReducer } from './transaction/transaction.reducer';
+import { addressReducer, AddressState } from './address';
 
 export interface RootState {
   router: any;
   keys: KeysState;
   transaction: TransactionState;
+  address: AddressState;
 }
 
 export type GetState = () => RootState;
@@ -27,5 +29,6 @@ export function createRootReducer({ history, keys }: RootReducerArgs) {
     router: connectRouter(history),
     keys: createKeysReducer(keys),
     transaction: transactionReducer,
+    address: addressReducer,
   });
 }

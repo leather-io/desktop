@@ -12,7 +12,7 @@ export const BalanceCard: FC<BalanceCardProps> = ({ balance }) => {
         Total balance
       </Text>
       <Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em">
-        {balance}
+        {balance} STX
       </Text>
       <Box mt="loose">
         <Button size="md">Send</Button>

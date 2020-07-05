@@ -25,8 +25,6 @@ export const persistMnemonicSafe = createAction<string>('keys/save-mnemonic-safe
 
 export const persistMnemonic = createAction<string>('keys/save-mnemonic');
 
-export const addData = createAction<any>('keys/add-all');
-
 interface SetPasswordSuccess {
   salt: string;
   encryptedMnemonic: string;
@@ -103,8 +101,6 @@ export function decryptWallet({ password, history }: { password: string; history
       const { rootNode } = await deriveRootKeychainFromMnemonic(mnemonic, '');
       console.log({ rootNode });
       const { address } = deriveStxAddressChain(ChainID.Mainnet)(rootNode);
-      // const pubkey = pubKeyfromPrivKey(rootNode.privateKey);
-      // console.log({ addressKeychain });
       dispatch(attemptWalletDecryptSuccess({ salt, mnemonic, address }));
       history.push(routes.HOME);
     }

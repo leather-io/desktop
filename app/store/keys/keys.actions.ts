@@ -93,9 +93,8 @@ export function decryptWallet({ password, history }: { password: string; history
     }
 
     if (mnemonic) {
-      const { rootNode } = await deriveRootKeychainFromMnemonic(mnemonic, '');
-      console.log({ rootNode });
-      const { address } = deriveStxAddressChain(ChainID.Mainnet)(rootNode);
+      const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
+      const { address } = deriveStxAddressChain(ChainID.Testnet)(rootNode);
       dispatch(attemptWalletDecryptSuccess({ salt, mnemonic, address }));
       history.push(routes.HOME);
     }

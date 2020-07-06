@@ -1,15 +1,26 @@
-import { Dispatch } from '../index';
+import { shell } from 'electron';
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import { deriveRootKeychainFromMnemonic, deriveStxAddressChain } from '@blockstack/keychain';
+import {
+  ChainID,
+  StacksTestnet,
+  makeSTXTokenTransfer,
+  broadcastTransaction,
+} from '@blockstack/stacks-transactions';
+import BN from 'bn.js';
 
+import { Dispatch, RootState } from '../index';
 import { Api } from '../../api/get-account-details';
+import { selectMnemonic } from '../keys/keys.reducer';
 
-export const fetchTransactions = createAction('transactions/fetch-transactions');
-export const fetchTransactionsDone = createAction<Transaction[]>(
-  'transactions/fetch-transactions-done'
-);
-export const fetchTransactionsFail = createAction('transactions/fetch-transactions-fail');
+export const addPendingTransaction = createAction<string>('transactions/add-pending');
+
+const fetchTxName = 'transactions/fetch-transactions';
+export const fetchTransactions = createAction(fetchTxName);
+export const fetchTransactionsDone = createAction<Transaction[]>(fetchTxName + '-done');
+export const fetchTransactionsFail = createAction(fetchTxName + '-fail');
 
 export function getAddressTransactions(address: string) {
   return async (dispatch: Dispatch) => {
@@ -24,4 +35,39 @@ export function getAddressTransactions(address: string) {
       dispatch(fetchTransactionsDone(transactions));
     }
   };
+}
+
+export const broadcastTx = createAction('transactions/broadcast-transactions');
+export const broadcastTxDone = createAction('transactions/broadcast-transactions-done');
+export const broadcastTxFail = createAction('transactions/broadcast-transactions-fail');
+
+interface BroadcastStxTxArgs {
+  amount: BN;
+  recipient: string;
+}
+
+export function broadcastStxTransaction({ amount, recipient }: BroadcastStxTxArgs) {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const state = getState();
+    const mnemonic = selectMnemonic(state);
+    if (!mnemonic) throw new Error('Cannot broadcast tx without decrypted mnemonic');
+    const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
+    const { privateKey } = deriveStxAddressChain(ChainID.Testnet)(rootNode);
+    const network = new StacksTestnet();
+    const txOptions = {
+      recipient,
+      amount,
+      senderKey: privateKey,
+      network,
+    };
+    const tx = await makeSTXTokenTransfer(txOptions);
+    // console.log(tx.txid());
+    const pendingTransactionId = await broadcastTransaction(tx, network);
+    console.log(pendingTransactionId);
+    dispatch(addPendingTransaction(pendingTransactionId));
+  };
+}
+
+export async function openInExplorer(txId: string) {
+  return await shell.openExternal(`https://testnet-explorer.blockstack.org/txid/${txId}`);
 }

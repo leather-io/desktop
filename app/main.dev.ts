@@ -18,6 +18,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import contextMenu from 'electron-context-menu';
 
 export default class AppUpdater {
   constructor() {
@@ -26,6 +27,30 @@ export default class AppUpdater {
     void autoUpdater.checkForUpdatesAndNotify();
   }
 }
+
+contextMenu({
+  prepend: (defaultActions, params, browserWindow) => [
+    // {
+    //   label: 'Rainbow',
+    //   // Only show it when right-clicking images
+    //   visible: params.mediaType === 'image',
+    // },
+    {
+      label: 'Search Google for “{selection}”',
+      // Only show it when right-clicking text
+      visible: params.selectionText.trim().length > 0,
+      click: (menuItem, browserWindow, event) => {
+        console.log({ menuItem, browserWindow, event });
+        // shell.openExternal(
+        //   `https://google.com/search?q=${encodeURIComponent(params.selectionText)}`
+        // );
+      },
+    },
+    // {
+    //   label: 'Open in Explorer',
+    // }
+  ],
+});
 
 let mainWindow: BrowserWindow | null = null;
 

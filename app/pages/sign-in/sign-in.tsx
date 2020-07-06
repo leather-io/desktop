@@ -11,7 +11,8 @@ import { decryptWallet, selectKeysSlice } from '../../store/keys';
 export const SignIn: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [password, setPassword] = useState<string | null>(null);
+  // const [password, setPassword] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>('980aa096dd224bd69685583b363de2be');
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const keysState = useSelector(selectKeysSlice);
 
@@ -31,7 +32,7 @@ export const SignIn: React.FC = () => {
   return (
     <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Enter your password</OnboardingTitle>
-      <Input type="password" mt="extra-loose" onChange={handlePasswordInput} />
+      <Input autoFocus type="password" mt="extra-loose" onChange={handlePasswordInput} />
       {hasSubmitted && keysState.decryptionError && (
         <ErrorLabel>
           <ErrorText>Password entered is incorrect</ErrorText>

@@ -3,9 +3,9 @@ import { useHover } from 'use-events';
 import { Box, Flex, Text } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
 
-import { capitalize } from '../../utils/capitalize';
-import { getStxTxDirection } from '../../utils/get-stx-transfer-direction';
-import { sumStxTxTotal } from '../../utils/sum-stx-tx-total';
+import { capitalize } from '../../../utils/capitalize';
+import { getStxTxDirection } from '../../../utils/get-stx-transfer-direction';
+import { sumStxTxTotal } from '../../../utils/sum-stx-tx-total';
 import { listHoverProps, EnableBefore } from './transaction-list-item-hover';
 import { TransactionIcon } from './transaction-icon';
 
@@ -32,7 +32,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = ({ tx, address,
   const memo =
     tx.tx_type === 'token_transfer' &&
     Buffer.from(tx.token_transfer.memo.replace('0x', ''), 'hex').toString('utf8');
-  const txDate = new Date((tx?.burn_block_time as number) * 1000);
+  const txDate = new Date(tx.burn_block_time * 1000);
   const txDateFormatted = new Intl.DateTimeFormat('en-US', dateOptions).format(txDate);
 
   return (
@@ -43,9 +43,10 @@ export const TransactionListItem: FC<TransactionListItemProps> = ({ tx, address,
       position="relative"
       _before={listHoverProps(hovered)}
       onClick={() => onSelectTx(tx.tx_id)}
+      data-txid={tx.tx_id}
       {...bind}
     >
-      <TransactionIcon direction={direction} mr="base-loose" />
+      <TransactionIcon variant={direction} mr="base-loose" />
       <Box flex={1}>
         <Text textStyle="body.large.medium" display="block">
           {capitalize(direction)}

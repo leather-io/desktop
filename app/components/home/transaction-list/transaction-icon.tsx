@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { Flex, FlexProps } from '@blockstack/ui';
-import { SentArrow } from '../icons/sent-arrow';
-import { ReceivedArrow } from '../icons/received-arrow';
+import { Flex, FlexProps, Spinner } from '@blockstack/ui';
+import { SentArrow } from '../../icons/sent-arrow';
+import { ReceivedArrow } from '../../icons/received-arrow';
 
 type TransactionDirection = 'sent' | 'received';
 
@@ -15,11 +15,17 @@ function getDirectionalArrowIcon(direction: TransactionDirection) {
   return <Icon />;
 }
 
-interface TransactionIconProps extends Omit<FlexProps, 'direction'> {
-  direction: TransactionDirection;
+interface TransactionIconProps extends FlexProps {
+  variant: TransactionDirection | 'pending';
 }
 
-export const TransactionIcon: FC<TransactionIconProps> = ({ direction, ...props }) => {
+export const TransactionIcon: FC<TransactionIconProps> = ({ variant, ...props }) => {
+  const contents =
+    variant === 'pending' ? (
+      <Spinner size="xs" color="#5548FF" />
+    ) : (
+      getDirectionalArrowIcon(variant)
+    );
   return (
     <Flex
       justifyContent="center"
@@ -29,9 +35,11 @@ export const TransactionIcon: FC<TransactionIconProps> = ({ direction, ...props 
       borderRadius="8px"
       minWidth="48px"
       minHeight="48px"
+      maxWidth="48px"
+      maxHeight="48px"
       {...props}
     >
-      {getDirectionalArrowIcon(direction)}
+      {contents}
     </Flex>
   );
 };

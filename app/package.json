@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@blockstack/keychain": "^0.5.0",
+    "@blockstack/keychain": "0.8.5",
     "blockstack": "21.1.0"
   }
 }

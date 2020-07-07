@@ -162,7 +162,7 @@
     "cross-spawn": "6.0.5",
     "css-loader": "2.1.1",
     "detect-port": "1.2.3",
-    "electron": "2.0.6",
+    "electron": "7.2.4",
     "electron-builder": "20.37.0",
     "electron-builder-squirrel-windows": "20.37.0",
     "electron-devtools-installer": "2.2.4",

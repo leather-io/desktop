@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@blockstack/keychain@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.5.0.tgz#bf4fcaa0055c7aa61370017847c5d224fea153d9"
-  integrity sha512-21Zu8j5FkI8dzPGaMn1vB0efcNtBCJ8Pg1dYQLgnpFyH8OhfAsVWuHRCReXtS3xxMVjnEZebs0YIIZzfAxZQ0A==
+"@blockstack/keychain@0.8.5":
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.8.5.tgz#b25b38e97db2853f05f3d8905a12f981e74f454b"
+  integrity sha512-bVlLrgdlst9Beb7hPcJB0C/Hy0sOXDP2zMf8e9ppFEdR6gZStLx2tuEkLa+mGuWluTLHLscmeOXTxbyn9xf1rQ==
   dependencies:
     "@blockstack/stacks-transactions" "^0.4.6"
     bip39 "^3.0.2"

@@ -10,10 +10,8 @@ import {
 import { selectAddress } from '../../store/keys/keys.reducer';
 import { getAddressDetails } from '../../store/address/address.actions';
 import { selectAddressBalance } from '../../store/address/address.reducer';
-import {
-  selectTransactions,
-  selectPendingTransactions,
-} from '../../store/transaction/transaction.reducer';
+import { selectTransactions } from '../../store/transaction/transaction.reducer';
+import { selectPendingTransactions } from '../../store/pending-transaction/pending-transaction.reducer';
 import { homeActions } from '../../store/home/home.reducer';
 import {
   TransactionList,
@@ -23,47 +21,74 @@ import {
   BalanceCard,
 } from '../../components/home';
 import { TransactionModal } from '../../modals/transaction/transaction-modal';
-import { HomeLayout } from './home-layout';
+import { ReceiveStxModal } from '../../modals/receive-stx/receive-stx-modal';
+import { useInterval } from '../../hooks/use-interval';
 import { TransactionListItemPending } from '../../components/home/transaction-list/transaction-list-item-pending';
+import { pendingTransactionSuccessful } from '../../store/transaction/transaction.actions';
+import { Api } from '../../api/api';
+import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
+import { safeAwait } from '../../utils/safe-await';
+import { HomeLayout } from './home-layout';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
-  const { address, balance, transactions, pendingTransactions } = useSelector(
-    (state: RootState) => ({
-      address: selectAddress(state),
-      transactions: selectTransactions(state),
-      balance: selectAddressBalance(state),
-      pendingTransactions: selectPendingTransactions(state),
-    })
-  );
+  const { address, balance, txs, pendingTxs } = useSelector((state: RootState) => ({
+    address: selectAddress(state),
+    txs: selectTransactions(state),
+    balance: selectAddressBalance(state),
+    pendingTxs: selectPendingTransactions(state),
+  }));
+
+  const checkIfPendingTxIsComplete = async (address: string) => {
+    console.log({ pending: address });
+    const [error, txResponse] = await safeAwait(Api.getTxDetails(address));
+    if (error || !txResponse || txResponse.data.tx_status === 'pending') {
+      console.log('Error, it do not exist');
+      return;
+    }
+    if (txResponse.data.tx_status === 'success') {
+      dispatch(pendingTransactionSuccessful(txResponse.data));
+    }
+  };
 
   useInterval(() => {
     if (!address) return;
-    dispatch(getAddressTransactions(address));
-    dispatch(getAddressDetails(address));
-  }, 10_000);
+    pendingTxs.forEach(tx => void checkIfPendingTxIsComplete(safelyFormatHexTxid(tx.txId)));
+    // dispatch(getAddressTransactions(address));
+    // dispatch(getAddressDetails(address));
+  }, 5_000);
 
   useEffect(() => {
     if (!address) return;
-    // STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6
+    // STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6s
     dispatch(getAddressTransactions(address));
-    dispatch(getAddressDetails(address));
+    // dispatch(getAddressDetails(address));
   }, [dispatch, address]);
 
   if (!address) return <Spinner />;
 
   const transactionList = (
-    <TransactionList txCount={transactions.length}>
-      {transactions.map(tx => (
-        <TransactionListItem key={tx.tx_id} tx={tx} address={address} onSelectTx={openInExplorer} />
-      ))}
-    </TransactionList>
+    <>
+      <TransactionList txCount={txs.length + pendingTxs.length}>
+        {pendingTxs.map(pTx => (
+          <TransactionListItemPending key={pTx.txId} tx={pTx} onSelectTx={openInExplorer} />
+        ))}
+        {txs.map(tx => (
+          <TransactionListItem
+            key={tx.tx_id}
+            tx={tx}
+            address={address}
+            onSelectTx={openInExplorer}
+          />
+        ))}
+      </TransactionList>
+    </>
   );
   const balanceCard = (
     <BalanceCard
       balance={balance}
-      onSelectSend={() => dispatch(homeActions.openModal())}
-      onSelectReceive={() => ({})}
+      onSelectSend={() => dispatch(homeActions.openTxModal())}
+      onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
     />
   );
   const stackingPromoCard = <StackingPromoCard />;
@@ -73,6 +98,7 @@ export const Home: FC = () => {
 
   return (
     <>
+      <ReceiveStxModal address={address} />
       <TransactionModal balance={balance || '0'} address={address} />
       <HomeLayout
         transactionList={transactionList}

@@ -2,7 +2,7 @@ import { Dispatch } from '../index';
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@blockstack/ui';
 
-import { Api, AddressBalanceResponse } from '../../api/get-account-details';
+import { Api, AddressBalanceResponse } from '../../api/api';
 
 export const fetchAddress = createAction('address/fetch-address');
 export const fetchAddressDone = createAction<AddressBalanceResponse>('address/fetch-address-done');

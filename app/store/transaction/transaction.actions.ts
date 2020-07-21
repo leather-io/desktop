@@ -12,10 +12,13 @@ import {
 import BN from 'bn.js';
 
 import { Dispatch, RootState } from '../index';
-import { Api } from '../../api/get-account-details';
+import { Api } from '../../api/api';
 import { selectMnemonic } from '../keys/keys.reducer';
+// import { addPendingTransaction } from '../pending-transaction';
 
-export const addPendingTransaction = createAction<string>('transactions/add-pending');
+export const pendingTransactionSuccessful = createAction<Transaction>(
+  'transactions/pending-transaction-successful'
+);
 
 const fetchTxName = 'transactions/fetch-transactions';
 export const fetchTransactions = createAction(fetchTxName);
@@ -41,33 +44,8 @@ export const broadcastTx = createAction('transactions/broadcast-transactions');
 export const broadcastTxDone = createAction('transactions/broadcast-transactions-done');
 export const broadcastTxFail = createAction('transactions/broadcast-transactions-fail');
 
-interface BroadcastStxTxArgs {
-  amount: BN;
-  recipient: string;
-}
-
-export function broadcastStxTransaction({ amount, recipient }: BroadcastStxTxArgs) {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
-    const state = getState();
-    const mnemonic = selectMnemonic(state);
-    if (!mnemonic) throw new Error('Cannot broadcast tx without decrypted mnemonic');
-    const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
-    const { privateKey } = deriveStxAddressChain(ChainID.Testnet)(rootNode);
-    const network = new StacksTestnet();
-    const txOptions = {
-      recipient,
-      amount,
-      senderKey: privateKey,
-      network,
-    };
-    const tx = await makeSTXTokenTransfer(txOptions);
-    // console.log(tx.txid());
-    const pendingTransactionId = await broadcastTransaction(tx, network);
-    console.log(pendingTransactionId);
-    dispatch(addPendingTransaction(pendingTransactionId));
-  };
-}
-
 export async function openInExplorer(txId: string) {
-  return await shell.openExternal(`https://testnet-explorer.blockstack.org/txid/${txId}`);
+  return await shell.openExternal(
+    `https://testnet-explorer.blockstack.org/txid/${txId}?wallet=true`
+  );
 }

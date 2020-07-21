@@ -6,11 +6,16 @@ import { KeysState, createKeysReducer } from './keys';
 import { TransactionState, transactionReducer } from './transaction/transaction.reducer';
 import { addressReducer, AddressState } from './address';
 import { HomeState, homeSlice } from './home/home.reducer';
+import {
+  pendingTransactionReducer,
+  PendingTransactionState,
+} from './pending-transaction/pending-transaction.reducer';
 
 export interface RootState {
   router: any;
   keys: KeysState;
   transaction: TransactionState;
+  pendingTransaction: PendingTransactionState;
   address: AddressState;
   home: HomeState;
 }
@@ -31,6 +36,7 @@ export function createRootReducer({ history, keys }: RootReducerArgs) {
     router: connectRouter(history),
     keys: createKeysReducer(keys),
     transaction: transactionReducer,
+    pendingTransaction: pendingTransactionReducer,
     address: addressReducer,
     home: homeSlice.reducer,
   });

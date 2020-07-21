@@ -28,29 +28,7 @@ export default class AppUpdater {
   }
 }
 
-contextMenu({
-  prepend: (defaultActions, params, browserWindow) => [
-    // {
-    //   label: 'Rainbow',
-    //   // Only show it when right-clicking images
-    //   visible: params.mediaType === 'image',
-    // },
-    {
-      label: 'Search Google for “{selection}”',
-      // Only show it when right-clicking text
-      visible: params.selectionText.trim().length > 0,
-      click: (menuItem, browserWindow, event) => {
-        console.log({ menuItem, browserWindow, event });
-        // shell.openExternal(
-        //   `https://google.com/search?q=${encodeURIComponent(params.selectionText)}`
-        // );
-      },
-    },
-    // {
-    //   label: 'Open in Explorer',
-    // }
-  ],
-});
+contextMenu();
 
 let mainWindow: BrowserWindow | null = null;
 

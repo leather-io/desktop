@@ -1680,10 +1680,10 @@
     "@blockstack/stacks-transactions" "0.3.0-alpha.5"
     cross-fetch "^3.0.4"
 
-"@blockstack/stacks-blockchain-sidecar-types@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-sidecar-types/-/stacks-blockchain-sidecar-types-0.0.19.tgz#569ed8e94a00c62b1bbfec806d2e06cade9ef464"
-  integrity sha512-xuXw+TOzxqC/Bcj2Ob7Svp5ukDaKVuoV5OiNDaC3mF4rkt+HvKxj1loGmPrsIT0mbsjHTf0pxfHuEZvvugZdQw==
+"@blockstack/stacks-blockchain-sidecar-types@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-sidecar-types/-/stacks-blockchain-sidecar-types-0.0.20.tgz#d84e13dc56a2573707ba88dcb043ab7481d4e91d"
+  integrity sha512-bEoUh8eyYAempTj48KaF+94ecmXXfYsALlT7eqwhhivIPv+069IcYSGoLK0pvcACKLV6gyomBSu4dv7B+r5fuw==
 
 "@blockstack/stacks-transactions@0.3.0-alpha.5":
   version "0.3.0-alpha.5"
@@ -4362,6 +4362,11 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+circular-dependency-plugin@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/circular-dependency-plugin/-/circular-dependency-plugin-5.2.0.tgz#e09dbc2dd3e2928442403e2d45b41cea06bc0a93"
+  integrity sha512-7p4Kn/gffhQaavNfyDFg7LS5S/UT1JAjyGd4UqR2+jzoYF02eDkj0Ec3+48TsIa4zghjLY87nQHIh/ecK9qLdw==
 
 class-utils@^0.3.5:
   version "0.3.6"

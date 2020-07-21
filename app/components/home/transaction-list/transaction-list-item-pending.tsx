@@ -2,16 +2,17 @@ import React, { FC } from 'react';
 import { useHover } from 'use-events';
 import { Box, Flex, Text } from '@blockstack/ui';
 
+import { PendingTransaction } from '../../../store/pending-transaction';
 import { listHoverProps, EnableBefore } from './transaction-list-item-hover';
 import { TransactionIcon } from './transaction-icon';
 
 interface TransactionListItemPendingProps {
-  txId: string;
+  tx: PendingTransaction;
   onSelectTx: (txId: string) => void;
 }
 
 export const TransactionListItemPending: FC<TransactionListItemPendingProps> = ({
-  txId,
+  tx,
   onSelectTx,
 }) => {
   const [hovered, bind] = useHover();
@@ -23,22 +24,22 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = (
       cursor="pointer"
       position="relative"
       _before={listHoverProps(hovered)}
-      onClick={() => onSelectTx(txId)}
-      data-txid={txId}
+      onClick={() => onSelectTx(tx.txId)}
+      data-txid={tx.txId}
       {...bind}
     >
       <TransactionIcon variant="pending" mr="base-loose" />
       <Box flex={1}>
         <Text textStyle="body.large.medium" display="block">
-          Pending
+          Sending
         </Text>
         <Text textStyle="body.small" color="ink.600">
-          {'0x' + txId.substr(0, 14)}
+          {tx.txId.substr(0, 28)}
         </Text>
       </Box>
       <Box textAlign="right">
         <Text textStyle="body.large" color="ink.900" display="block">
-          xxx STX
+          {tx.amount} STX
         </Text>
         <Text textStyle="body.small" color="ink.600">
           Pending

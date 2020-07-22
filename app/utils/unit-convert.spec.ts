@@ -1,4 +1,4 @@
-import { humanReadableStx, microStxToStx, stxToMicroStx } from './format-stx';
+import { humanReadableStx, microStxToStx, stxToMicroStx } from './unit-convert';
 import BN from 'bn.js';
 
 describe(microStxToStx.name, () => {

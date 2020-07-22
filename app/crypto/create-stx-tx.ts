@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js';
 import { deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
 import { makeSTXTokenTransfer } from '@blockstack/stacks-transactions';
 
-import { stacksNetwork } from './environment';
+import { stacksNetwork } from '../environment';
 import { deriveStxAddressKeychain } from './derive-address-keychain';
 
 interface CreateStxTxArgs {

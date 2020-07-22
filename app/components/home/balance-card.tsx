@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Button, Text, ArrowIcon } from '@blockstack/ui';
-import { humanReadableStx } from '../../utils/format-stx';
+import { humanReadableStx } from '../../utils/unit-convert';
 
 interface BalanceCardProps {
   balance: string | null;

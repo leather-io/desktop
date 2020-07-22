@@ -4,7 +4,7 @@ import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 import { FormikProps } from 'formik';
 import { capitalize } from '../../utils/capitalize';
-import { humanReadableStx } from '../../utils/format-stx';
+import { humanReadableStx } from '../../utils/unit-convert';
 
 interface TxModalFormProps {
   balance: string;

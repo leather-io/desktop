@@ -4,7 +4,7 @@ import {
   StacksTestnet,
   StacksMainnet,
 } from '@blockstack/stacks-transactions';
-import { ENV } from '../constants';
+import { ENV } from './constants';
 
 export { ChainID };
 

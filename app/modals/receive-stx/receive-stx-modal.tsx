@@ -18,7 +18,7 @@ export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
   const onCopyAddress = () => {
     copyAddressToClipboard.onCopy();
     setButtonText('Copied');
-    setTimeout(() => setButtonText('Copy address'), 1000);
+    setTimeout(() => setButtonText('Copy address'), 800);
   };
   const closeModal = () => dispatch(homeActions.closeReceiveModal());
   if (!modalOpen) return null;

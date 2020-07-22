@@ -21,6 +21,5 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ hashFiles('**/yarn.lock') }}
-
-      - name: Audit dependencies
-        run: yarn audit
+      # - name: Audit dependencies
+      #   run: yarn audit

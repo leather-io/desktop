@@ -1,6 +1,17 @@
 import Store from 'electron-store';
 
-const store = new Store();
+const store = new Store({
+  schema: {
+    salt: {
+      type: 'string',
+      maxLength: 29,
+      minLength: 29,
+    },
+    encryptedMnemonic: {
+      type: 'string',
+    },
+  },
+});
 
 export const persistEncryptedMnemonic = (encryptedMnemonic: string) => {
   store.set('encryptedMnemonic', encryptedMnemonic);
@@ -9,8 +20,6 @@ export const persistEncryptedMnemonic = (encryptedMnemonic: string) => {
 export const persistSalt = (salt: string) => {
   store.set('salt', salt);
 };
-
-export const getPrivateKey = () => (store.get('privateKey') || null) as string | null;
 
 export const getInitialStateFromDisk = () => {
   return {

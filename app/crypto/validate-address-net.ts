@@ -1,4 +1,4 @@
-import { chain, ChainID } from './environment';
+import { chain, ChainID } from '../environment';
 
 export function validateAddressChain(address: string) {
   const prefix = address.substr(0, 2);

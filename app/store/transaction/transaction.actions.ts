@@ -5,10 +5,10 @@ import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
 
 import { broadcastTransaction, StacksTransaction } from '@blockstack/stacks-transactions';
 
-import { Dispatch, RootState } from '../index';
+import { Dispatch } from '../index';
 import { Api } from '../../api/api';
 
-import { stacksNetwork } from '../../crypto/environment';
+import { stacksNetwork } from '../../environment';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'

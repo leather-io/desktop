@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
+import { BigNumber } from 'bignumber.js';
 import { Modal, Text, Button } from '@blockstack/ui';
 import { StacksTransaction } from '@blockstack/stacks-transactions';
 
@@ -23,8 +24,7 @@ import {
 import { createStxTransaction } from '../../crypto/create-stx-tx';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { broadcastStxTransaction } from '../../store/transaction';
-import { humanReadableStx, stxToMicroStx } from '../../utils/format-stx';
-import { BigNumber } from 'bignumber.js';
+import { humanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
 
 interface TxModalProps {
   balance: string;

@@ -27,16 +27,9 @@ async function getAddressTransactions(address: string) {
   return await axios.get<TransactionResults>(api + `/v1/address/${address}/transactions`);
 }
 
-type AnyTransaction = Transaction | MempoolTransaction;
-
 async function getTxDetails(txid: string) {
-  return await axios.get<AnyTransaction>(api + `/v1/tx/${txid}/transactions`);
+  return await axios.get<Transaction | MempoolTransaction>(api + `/v1/tx/${txid}/transactions`);
 }
-// async function getStxPriceInDollars() {
-//   return await axios.get(
-//     'https://api.coingecko.com/api/v3/simple/price?ids=blockstack&vs_currencies=usd'
-//   );
-// }
 
 export const Api = {
   getAddressBalance,

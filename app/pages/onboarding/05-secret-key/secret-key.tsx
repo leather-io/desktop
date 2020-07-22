@@ -13,6 +13,7 @@ import {
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
+  OnboardingBackButton,
 } from '../../../components/onboarding';
 import { selectMnemonic } from '../../../store/keys/keys.reducer';
 
@@ -39,6 +40,7 @@ export const SecretKey: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Your Secret Key</OnboardingTitle>
+      <OnboardingBackButton onClick={() => history.push(routes.CREATE)} />
       <OnboardingText>
         Here’s your Secret Key: 24 words that prove it’s you when you want to access your wallet.
         Once lost, it’s lost forever, so save it somewhere you won’t forget.

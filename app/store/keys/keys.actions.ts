@@ -17,6 +17,7 @@ import { persistSalt, persistEncryptedMnemonic } from '../../utils/disk-store';
 import { safeAwait } from '../../utils/safe-await';
 import { selectMnemonic, selectKeysSlice } from './keys.reducer';
 import { generateSalt, generateDerivedKey } from '../../crypto/key-generation';
+import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 
 type History = ReturnType<typeof useHistory>;
 
@@ -27,6 +28,7 @@ export const persistMnemonic = createAction<string>('keys/save-mnemonic');
 interface SetPasswordSuccess {
   salt: string;
   encryptedMnemonic: string;
+  address: string;
 }
 export const setPasswordSuccess = createAction<SetPasswordSuccess>('keys/set-password-success');
 
@@ -51,9 +53,11 @@ export function setPassword({ password, history }: { password: string; history: 
 
     const encryptedMnemonicBuffer = await encryptMnemonic(mnemonic, derivedEncryptionKey);
     const encryptedMnemonic = encryptedMnemonicBuffer.toString('hex');
+    const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
+    const { address } = deriveStxAddressKeychain(rootNode);
     persistSalt(salt);
     persistEncryptedMnemonic(encryptedMnemonic);
-    dispatch(setPasswordSuccess({ salt, encryptedMnemonic }));
+    dispatch(setPasswordSuccess({ salt, encryptedMnemonic, address }));
     history.push(routes.HOME);
   };
 }
@@ -94,7 +98,7 @@ export function decryptWallet({ password, history }: { password: string; history
 
     if (mnemonic) {
       const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
-      const { address } = deriveStxAddressChain(ChainID.Testnet)(rootNode);
+      const { address } = deriveStxAddressKeychain(rootNode);
       dispatch(attemptWalletDecryptSuccess({ salt, mnemonic, address }));
       history.push(routes.HOME);
     }

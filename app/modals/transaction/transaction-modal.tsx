@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
-import { Modal, Text, Button, safeAwait } from '@blockstack/ui';
-import { broadcastTransaction, StacksTransaction } from '@blockstack/stacks-transactions';
+import { Modal, Text, Button } from '@blockstack/ui';
+import { StacksTransaction } from '@blockstack/stacks-transactions';
 
-import { RootState, Dispatch } from '../../store';
+import { RootState } from '../../store';
 import { validateStacksAddress } from '../../utils/get-stx-transfer-direction';
-// import { broadcastStxTransaction } from '../../store/transaction/transaction.actions';
+
 import { selectTxModalOpen, homeActions } from '../../store/home/home.reducer';
 import { TxModalForm } from './transaction-form';
 import { selectMnemonic } from '../../store/keys';
@@ -20,9 +20,11 @@ import {
   TxModalPreviewItem,
   modalStyle,
 } from './transaction-modal-layout';
-import { stacksNetwork } from '../../crypto/environment';
 import { createStxTransaction } from '../../crypto/create-stx-tx';
 import { validateAddressChain } from '../../crypto/validate-address-net';
+import { broadcastStxTransaction } from '../../store/transaction';
+import { humanReadableStx, stxToMicroStx } from '../../utils/format-stx';
+import { BigNumber } from 'bignumber.js';
 
 interface TxModalProps {
   balance: string;
@@ -42,6 +44,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(TxModalStep.DescribeTx);
   const [fee, setFee] = useState(new BN(0));
+  const [amount, setAmount] = useState(new BigNumber(0));
+  const [total, setTotal] = useState(new BigNumber(0));
   const [tx, setTx] = useState<null | StacksTransaction>(null);
   const [loading, setLoading] = useState(false);
   const { mnemonic, txModalOpen } = useSelector((state: RootState) => ({
@@ -51,11 +55,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const form = useFormik({
     initialValues: {
-      address: '',
+      recipient: '',
       amount: '',
     },
     validationSchema: yup.object().shape({
-      address: yup
+      recipient: yup
         .string()
         .test('test-is-stx-address', 'Must be a valid Stacks Address', (value = '') =>
           validateStacksAddress(value)
@@ -73,6 +77,14 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         .positive('You cannot send a negative amount of STX')
         .typeError('Amount of STX must be described as number')
         .min(1, 'Smallest transaction is 1 STX')
+        .test(
+          'test-has-less-than-or-equal-to-6-decimal-places',
+          'STX cannot have more than 6 decimal places',
+          (value: number) => {
+            const decimals = new BigNumber(value).toString().split('.')[1];
+            return decimals === undefined || decimals.length <= 6;
+          }
+        )
         .required(),
     }),
     onSubmit: async () => {
@@ -80,12 +92,17 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       setLoading(true);
       const tx = await createStxTransaction({
         mnemonic,
-        recipient: form.values.address,
-        amount: new BN(form.values.amount),
+        recipient: form.values.recipient,
+        amount: stxToMicroStx(form.values.amount),
       });
-      // handle errors
+      const { amount, fee } = {
+        amount: stxToMicroStx(form.values.amount),
+        fee: tx.auth.spendingCondition?.fee as BN,
+      };
       setTx(tx);
-      setFee(tx.auth.spendingCondition?.fee as BN);
+      setFee(fee);
+      setTotal(amount.plus(fee.toString()));
+      setAmount(amount);
       setStep(TxModalStep.PreviewAndSend);
       setLoading(false);
     },
@@ -98,34 +115,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     setStep(TxModalStep.DescribeTx);
     form.resetForm();
   };
-
-  interface BroadcastStxTxArgs {
-    amount: BN;
-    recipient: string;
-  }
-
-  function broadcastStxTransaction({ tx }: { tx: StacksTransaction }) {
-    return async (dispatch: Dispatch, getState: () => RootState) => {
-      const [error, blockchainResponse] = await safeAwait(broadcastTransaction(tx, stacksNetwork));
-
-      if (error || !blockchainResponse) return null;
-      console.log({ error });
-      // anything but string of id === error
-      console.log(blockchainResponse);
-      if (typeof blockchainResponse !== 'string') {
-        // setError for ui
-        return;
-      }
-      // dispatch(
-      //   addPendingTransaction({
-      //     txId: pendingTxId as string,
-      //     amount: amount.toString(),
-      //     time: +new Date(),
-      //   })
-      // );
-      return blockchainResponse;
-    };
-  }
 
   const broadcastTx = () => {
     if (tx === null) return;
@@ -157,12 +146,14 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       body: (
         <TxModalPreview>
           <TxModalPreviewItem label="To">
-            <Text fontSize="13px">{form.values.address}</Text>
+            <Text fontSize="13px">{form.values.recipient}</Text>
           </TxModalPreviewItem>
-          <TxModalPreviewItem label="Amount">{form.values.amount}</TxModalPreviewItem>
-          <TxModalPreviewItem label="Fee">{fee.toString()} µSTX</TxModalPreviewItem>
+          <TxModalPreviewItem label="Amount">
+            {humanReadableStx(amount.toString())}
+          </TxModalPreviewItem>
+          <TxModalPreviewItem label="Fee">{humanReadableStx(fee)}</TxModalPreviewItem>
           <TxModalPreviewItem label="Total">
-            {new BN(form.values.amount).add(fee).toString()} µSTX
+            {humanReadableStx(total.toString())}
           </TxModalPreviewItem>
         </TxModalPreview>
       ),

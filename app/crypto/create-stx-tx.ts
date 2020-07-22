@@ -1,4 +1,5 @@
 import BN from 'bn.js';
+import BigNumber from 'bignumber.js';
 import { deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
 import { makeSTXTokenTransfer } from '@blockstack/stacks-transactions';
 
@@ -8,7 +9,7 @@ import { deriveStxAddressKeychain } from './derive-address-keychain';
 interface CreateStxTxArgs {
   mnemonic: string;
   recipient: string;
-  amount: BN;
+  amount: BigNumber;
 }
 
 export async function createStxTransaction({ mnemonic, recipient, amount }: CreateStxTxArgs) {
@@ -16,7 +17,7 @@ export async function createStxTransaction({ mnemonic, recipient, amount }: Crea
   const { privateKey } = deriveStxAddressKeychain(rootNode);
   return await makeSTXTokenTransfer({
     recipient,
-    amount,
+    amount: new BN(amount.toString()),
     senderKey: privateKey,
     network: stacksNetwork,
   });

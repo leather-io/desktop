@@ -40,10 +40,8 @@ export const Home: FC = () => {
   }));
 
   const checkIfPendingTxIsComplete = async (address: string) => {
-    console.log({ pending: address });
     const [error, txResponse] = await safeAwait(Api.getTxDetails(address));
     if (error || !txResponse || txResponse.data.tx_status === 'pending') {
-      console.log('Error, it do not exist');
       return;
     }
     if (txResponse.data.tx_status === 'success') {

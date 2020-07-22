@@ -2,19 +2,13 @@ import { shell } from 'electron';
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
-import { deriveRootKeychainFromMnemonic, deriveStxAddressChain } from '@blockstack/keychain';
-import {
-  ChainID,
-  StacksTestnet,
-  makeSTXTokenTransfer,
-  broadcastTransaction,
-} from '@blockstack/stacks-transactions';
-import BN from 'bn.js';
+
+import { broadcastTransaction, StacksTransaction } from '@blockstack/stacks-transactions';
 
 import { Dispatch, RootState } from '../index';
 import { Api } from '../../api/api';
-import { selectMnemonic } from '../keys/keys.reducer';
-// import { addPendingTransaction } from '../pending-transaction';
+
+import { stacksNetwork } from '../../crypto/environment';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'

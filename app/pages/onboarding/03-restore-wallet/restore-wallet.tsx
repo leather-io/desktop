@@ -17,6 +17,7 @@ import {
   OnboardingText,
   OnboardingFooter,
   OnboardingFooterLink,
+  OnboardingBackButton,
 } from '../../../components/onboarding';
 
 export const RestoreWallet: React.FC = () => {
@@ -47,6 +48,7 @@ export const RestoreWallet: React.FC = () => {
   return (
     <Onboarding as="form" onSubmit={handleSecretKeyRestore}>
       <OnboardingTitle>Restore your wallet</OnboardingTitle>
+      <OnboardingBackButton onClick={() => history.push(routes.WELCOME)} />
       <OnboardingText>
         Restore your wallet by connecting your Ledger hardware wallet or a by entering your Secret
         Key

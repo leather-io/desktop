@@ -4,10 +4,11 @@ import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 import { FormikProps } from 'formik';
 import { capitalize } from '../../utils/capitalize';
+import { humanReadableStx } from '../../utils/format-stx';
 
 interface TxModalFormProps {
   balance: string;
-  form: FormikProps<{ address: string; amount: string }>;
+  form: FormikProps<{ recipient: string; amount: string }>;
 }
 
 export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
@@ -16,7 +17,7 @@ export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
       <Flex flexDirection="column" alignItems="center" mt="48px">
         <Text textStyle="body.large.medium">Available balance</Text>
         <Text textStyle="body.large.medium" fontWeight={600} mt="tight" fontSize="32px">
-          {balance}
+          {humanReadableStx(balance)}
         </Text>
       </Flex>
       <Flex flexDirection="column" mt="40px" mx="extra-loose">
@@ -25,16 +26,16 @@ export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
         </Text>
         <Input
           id="stxAddress"
-          name="address"
+          name="recipient"
           autoFocus
           mt="base-tight"
           placeholder="STX address"
           onChange={form.handleChange}
-          value={form.values.address}
+          value={form.values.recipient}
         />
-        {form.touched.address && form.errors.address && (
+        {form.touched.recipient && form.errors.recipient && (
           <ErrorLabel>
-            <ErrorText>{form.errors.address}</ErrorText>
+            <ErrorText>{form.errors.recipient}</ErrorText>
           </ErrorLabel>
         )}
         <Text textStyle="body.small.medium" mt="base-loose" as="label">
@@ -46,7 +47,7 @@ export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
           inputMode="numeric"
           pattern="[0-9]*"
           mt="base-tight"
-          placeholder="0.00000 STX"
+          placeholder="0.000000 STX"
           onChange={form.handleChange}
           value={form.values.amount}
         />

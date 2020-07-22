@@ -15,6 +15,7 @@ import {
   OnboardingButton,
   OnboardingFooter,
   OnboardingFooterLink,
+  OnboardingBackButton,
 } from '../../../components/onboarding';
 
 export const VerifyKey: React.FC = () => {
@@ -41,6 +42,7 @@ export const VerifyKey: React.FC = () => {
   return (
     <Onboarding as="form" onSubmit={handleMnemonicValidation}>
       <OnboardingTitle>Verify Secret Key</OnboardingTitle>
+      <OnboardingBackButton onClick={() => history.push(routes.SECRET_KEY)} />
       <OnboardingText>Enter your Secret Key to confirm you’ve saved it</OnboardingText>
       <Input
         as="textarea"

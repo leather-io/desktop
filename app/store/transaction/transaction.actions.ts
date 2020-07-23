@@ -38,6 +38,29 @@ export const broadcastTx = createAction('transactions/broadcast-transactions');
 export const broadcastTxDone = createAction('transactions/broadcast-transactions-done');
 export const broadcastTxFail = createAction('transactions/broadcast-transactions-fail');
 
+export function broadcastStxTransaction({ tx }: { tx: StacksTransaction }) {
+  return async (dispatch: Dispatch, getState: () => RootState) => {
+    const [error, blockchainResponse] = await safeAwait(broadcastTransaction(tx, stacksNetwork));
+
+    if (error || !blockchainResponse) return null;
+    console.log({ error });
+    // anything but string of id === error
+    console.log(blockchainResponse);
+    if (typeof blockchainResponse !== 'string') {
+      // setError for ui
+      return;
+    }
+    // dispatch(
+    //   addPendingTransaction({
+    //     txId: pendingTxId as string,
+    //     amount: amount.toString(),
+    //     time: +new Date(),
+    //   })
+    // );
+    // return blockchainResponse;
+  };
+}
+
 export async function openInExplorer(txId: string) {
   return await shell.openExternal(
     `https://testnet-explorer.blockstack.org/txid/${txId}?wallet=true`

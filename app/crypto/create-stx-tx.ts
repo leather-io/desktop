@@ -15,7 +15,7 @@ interface CreateStxTxArgs {
 export async function createStxTransaction({ mnemonic, recipient, amount }: CreateStxTxArgs) {
   const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
   const { privateKey } = deriveStxAddressKeychain(rootNode);
-  return await makeSTXTokenTransfer({
+  return makeSTXTokenTransfer({
     recipient,
     amount: new BN(amount.toString()),
     senderKey: privateKey,

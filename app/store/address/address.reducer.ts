@@ -9,7 +9,7 @@ export interface AddressState {
 
 const initialState: AddressState = {
   // balance: null,
-  balance: '100900',
+  balance: '1000000000001',
 };
 
 export const addressReducer = createReducer(initialState, builder =>

@@ -43,8 +43,8 @@ export function onboardingMnemonicGenerationStep({ stepDelayMs }: { stepDelayMs:
 export function setPassword({ password, history }: { password: string; history: History }) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const mnemonic = selectMnemonic(getState());
-    const salt = await generateSalt();
-    const derivedEncryptionKey = await generateDerivedKey({ password, salt });
+    const salt = generateSalt();
+    const derivedEncryptionKey = await generateDerivedKey({ pass: password, salt });
 
     if (!mnemonic) {
       log.error('Cannot derive encryption key unless a mnemonic has been generated');
@@ -82,7 +82,7 @@ export function decryptWallet({ password, history }: { password: string; history
       return;
     }
 
-    const key = await generateDerivedKey({ password, salt });
+    const key = await generateDerivedKey({ pass: password, salt });
 
     //
     // TODO: remove casting within blockstack.js library

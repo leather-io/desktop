@@ -4,6 +4,10 @@
   "version": "1.1.0",
   "description": "",
   "main": "./main.prod.js",
+  "author": {
+    "email": "info@blockstack.com",
+    "name": "Blockstack PBC"
+  },
   "scripts": {
     "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
     "postinstall": "yarn electron-rebuild"

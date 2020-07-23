@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Flex, Text, Button } from '@blockstack/ui';
+import btcPodium from '../../assets/images/btc-podium.svg';
 
 export const StackingPromoCard = () => {
   return (
@@ -10,7 +11,7 @@ export const StackingPromoCard = () => {
       border="1px solid #F0F0F5"
     >
       <Flex flexDirection="column" mt="40px" mb="extra-loose">
-        <img src="assets/images/btc-podium.svg" />
+        <img src={btcPodium} />
         <Text display="block" textAlign="center" textStyle="display.small" mt="loose">
           Earn Bitcoin rewards
         </Text>

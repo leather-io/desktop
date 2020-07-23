@@ -1,8 +1,20 @@
-import bcryptjs from 'bcryptjs';
 import { memoizeWith, identity } from 'ramda';
+import argon2 from 'argon2-browser';
 
-export async function generateDerivedKey({ password, salt }: { password: string; salt: string }) {
-  return bcryptjs.hash(password, salt);
+export async function generateDerivedKey({ pass, salt }: { pass: string; salt: string }) {
+  const { hashHex } = await argon2.hash({
+    pass,
+    salt,
+    hashLen: 64,
+    type: argon2.ArgonType.Argon2id,
+  });
+  return hashHex;
 }
 
-export const generateSalt = memoizeWith(identity, async () => await bcryptjs.genSalt(12));
+export function generateRandomHexString() {
+  const size = 16;
+  const randomValues = [...crypto.getRandomValues(new Uint8Array(size))];
+  return randomValues.map(val => ('00' + val.toString(16)).slice(-2)).join('');
+}
+
+export const generateSalt = memoizeWith(identity, () => generateRandomHexString());

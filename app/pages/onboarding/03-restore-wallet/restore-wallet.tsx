@@ -36,7 +36,7 @@ export const RestoreWallet: React.FC = () => {
       setError('The Stacks Wallet can only be used with a 24-word Secret Key');
       return;
     }
-    const [error] = await safeAwait(deriveRootKeychainFromMnemonic(mnemonic, ''));
+    const [error] = await safeAwait(deriveRootKeychainFromMnemonic(mnemonic));
     if (error) {
       setError('Not a valid bip39 mnemonic');
       return;

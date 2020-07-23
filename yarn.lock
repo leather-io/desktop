@@ -1750,10 +1750,10 @@
     "@blockstack/stacks-transactions" "0.3.0-alpha.5"
     cross-fetch "^3.0.4"
 
-"@blockstack/stacks-blockchain-sidecar-types@0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-sidecar-types/-/stacks-blockchain-sidecar-types-0.0.20.tgz#d84e13dc56a2573707ba88dcb043ab7481d4e91d"
-  integrity sha512-bEoUh8eyYAempTj48KaF+94ecmXXfYsALlT7eqwhhivIPv+069IcYSGoLK0pvcACKLV6gyomBSu4dv7B+r5fuw==
+"@blockstack/stacks-blockchain-sidecar-types@0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-sidecar-types/-/stacks-blockchain-sidecar-types-0.0.21.tgz#f6027560120380ffaec5afb27d926f7a2c67c0e7"
+  integrity sha512-5g1XHA1Ov6QUOp7iCXF6s9eZMM+toLJ7WoUcGOoMG9A/rIc5JPXKUuJ+LSLODWPO2X3nd7f+6LECwIJcLZqIEA==
 
 "@blockstack/stacks-transactions@0.3.0-alpha.5":
   version "0.3.0-alpha.5"

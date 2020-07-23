@@ -76,7 +76,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         .number()
         .positive('You cannot send a negative amount of STX')
         .typeError('Amount of STX must be described as number')
-        .min(1, 'Smallest transaction is 1 STX')
         .test(
           'test-has-less-than-or-equal-to-6-decimal-places',
           'STX cannot have more than 6 decimal places',

@@ -28,7 +28,7 @@ async function getAddressTransactions(address: string) {
 }
 
 async function getTxDetails(txid: string) {
-  return await axios.get<Transaction | MempoolTransaction>(api + `/v1/tx/${txid}/transactions`);
+  return await axios.get<Transaction | MempoolTransaction>(api + `/v1/tx/${txid}`);
 }
 
 export const Api = {

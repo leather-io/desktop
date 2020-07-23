@@ -10,6 +10,7 @@ export default {
   externals: [...Object.keys(externals || {})],
 
   module: {
+    noParse: /\.wasm$/,
     rules: [
       {
         test: /\.tsx?$/,
@@ -21,7 +22,26 @@ export default {
           },
         },
       },
+      // Rule added to support `argon2-browser` library
+      {
+        test: /\.wasm$/,
+        // Tells WebPack that this module should be included as
+        // base64-encoded binary file and not as code
+        loaders: ['base64-loader'],
+        // Disables WebPack's opinion where WebAssembly should be,
+        // makes it think that it's not WebAssembly
+        //
+        // Error: WebAssembly module is included in initial chunk.
+        type: 'javascript/auto',
+      },
     ],
+  },
+
+  node: {
+    __dirname: false,
+    fs: 'empty',
+    Buffer: false,
+    process: false,
   },
 
   output: {

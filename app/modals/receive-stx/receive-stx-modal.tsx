@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Qr from 'qrcode.react';
 import { Text, Modal, Button, Flex, Box, useClipboard } from '@blockstack/ui';
@@ -13,13 +13,7 @@ interface ReceiveStxModalProps {
 export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
   const dispatch = useDispatch();
   const modalOpen = useSelector(selectReceiveModalOpen);
-  const copyAddressToClipboard = useClipboard(address);
-  const [buttonText, setButtonText] = useState('Copy address');
-  const onCopyAddress = () => {
-    copyAddressToClipboard.onCopy();
-    setButtonText('Copied');
-    setTimeout(() => setButtonText('Copy address'), 800);
-  };
+  const { hasCopied, onCopy } = useClipboard(address);
   const closeModal = () => dispatch(homeActions.closeReceiveModal());
   if (!modalOpen) return null;
   return (
@@ -55,8 +49,8 @@ export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
             {address}
           </Text>
         </Flex>
-        <Button variant="link" mt="tight" mb="loose" onClick={onCopyAddress}>
-          {buttonText}
+        <Button variant="link" mt="tight" mb="loose" onClick={onCopy}>
+          {hasCopied ? 'Copied' : 'Copy address'}
         </Button>
       </Flex>
     </Modal>

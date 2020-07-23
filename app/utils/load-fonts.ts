@@ -1,15 +1,19 @@
+import InterUiMedium from '../assets/fonts/Inter-Medium.woff2';
+import InterUiRegular from '../assets/fonts/Inter-Regular.woff2';
+import InterUiSemiBold from '../assets/fonts/Inter-SemiBold.woff2';
+
 function getFontAssetPath(name: string) {
-  return `url(assets/fonts/${name}.woff2)`;
+  return `url(${name})`;
 }
 
 export async function loadFonts(): Promise<void> {
-  const interRegular = new FontFace('Inter', getFontAssetPath('Inter-Regular'), {
+  const interRegular = new FontFace('Inter', getFontAssetPath(InterUiRegular), {
     weight: '400',
   });
-  const interMedium = new FontFace('Inter', getFontAssetPath('Inter-Medium'), {
+  const interMedium = new FontFace('Inter', getFontAssetPath(InterUiMedium), {
     weight: '500',
   });
-  const interSemiBold = new FontFace('Inter', getFontAssetPath('Inter-SemiBold'), {
+  const interSemiBold = new FontFace('Inter', getFontAssetPath(InterUiSemiBold), {
     weight: '600',
   });
 

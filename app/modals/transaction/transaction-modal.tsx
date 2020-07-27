@@ -24,7 +24,7 @@ import {
 import { createStxTransaction } from '../../crypto/create-stx-tx';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { broadcastStxTransaction } from '../../store/transaction';
-import { humanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
+import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
 
 interface TxModalProps {
   balance: string;
@@ -80,7 +80,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           'test-has-less-than-or-equal-to-6-decimal-places',
           'STX cannot have more than 6 decimal places',
           (value: number) => {
-            const decimals = new BigNumber(value).toString().split('.')[1];
+            // Explicit base ensures BigNumber doesn't use exponential notation
+            const decimals = new BigNumber(value).toString(10).split('.')[1];
             return decimals === undefined || decimals.length <= 6;
           }
         )
@@ -117,7 +118,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const broadcastTx = () => {
     if (tx === null) return;
-    dispatch(broadcastStxTransaction({ tx }));
+    dispatch(broadcastStxTransaction({ signedTx: tx, amount }));
   };
 
   const txFormStepMap: { [step in TxModalStep]: ModalComponents } = {
@@ -148,11 +149,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             <Text fontSize="13px">{form.values.recipient}</Text>
           </TxModalPreviewItem>
           <TxModalPreviewItem label="Amount">
-            {humanReadableStx(amount.toString())}
+            {toHumanReadableStx(amount.toString())}
           </TxModalPreviewItem>
-          <TxModalPreviewItem label="Fee">{humanReadableStx(fee)}</TxModalPreviewItem>
+          <TxModalPreviewItem label="Fee">{toHumanReadableStx(fee)}</TxModalPreviewItem>
           <TxModalPreviewItem label="Total">
-            {humanReadableStx(total.toString())}
+            {toHumanReadableStx(total.toString())}
           </TxModalPreviewItem>
         </TxModalPreview>
       ),

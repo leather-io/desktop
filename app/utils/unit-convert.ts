@@ -14,7 +14,7 @@ export function stxToMicroStx(microStx: string | number | BN) {
   return amount.multipliedBy(1000000);
 }
 
-export function humanReadableStx(microStx: string | number | BN): string {
+export function toHumanReadableStx(microStx: string | number | BN): string {
   const amount = microStxToStx(microStx);
   return amount.toFormat() + ' STX';
 }

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Button, Text, ArrowIcon } from '@blockstack/ui';
-import { humanReadableStx } from '../../utils/unit-convert';
+import { toHumanReadableStx } from '../../utils/unit-convert';
 
 interface BalanceCardProps {
   balance: string | null;
@@ -15,7 +15,7 @@ export const BalanceCard: FC<BalanceCardProps> = ({ balance, onSelectReceive, on
         Total balance
       </Text>
       <Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em">
-        {balance === null ? '–' : humanReadableStx(balance)}
+        {balance === null ? '–' : toHumanReadableStx(balance)}
       </Text>
       <Box mt="loose">
         <Button size="md" onClick={onSelectSend} isDisabled={balance === '0' || balance === null}>

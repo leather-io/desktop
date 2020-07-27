@@ -80,7 +80,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           'test-has-less-than-or-equal-to-6-decimal-places',
           'STX cannot have more than 6 decimal places',
           (value: number) => {
-            const decimals = new BigNumber(value).toString().split('.')[1];
+            // Explicit base ensures BigNumber doesn't use exponential notation
+            const decimals = new BigNumber(value).toString(10).split('.')[1];
             return decimals === undefined || decimals.length <= 6;
           }
         )
@@ -117,7 +118,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const broadcastTx = () => {
     if (tx === null) return;
-    dispatch(broadcastStxTransaction({ tx }));
+    dispatch(broadcastStxTransaction({ signedTx: tx, amount }));
   };
 
   const txFormStepMap: { [step in TxModalStep]: ModalComponents } = {

@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityState, createSlice } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import { pendingTransactionSuccessful } from '../transaction';
+import type { pendingTransactionSuccessful } from '../transaction';
 
 export interface PendingTransaction {
   txId: string;
@@ -16,18 +16,7 @@ const pendingTransactionAdapter = createEntityAdapter<PendingTransaction>({
   sortComparer: (pTx1, pTx2) => pTx2.time - pTx1.time,
 });
 
-const initialState = pendingTransactionAdapter.getInitialState({
-  //
-  // TODO: remove demo content when faucet is working
-  // ids: ['58bc2c34c70184e36023d55eda7e3fd17c695833c3b4fdc0187cd09d929c15e201'],
-  // entities: {
-  //   '58bc2c34c70184e36023d55eda7e3fd17c695833c3b4fdc0187cd09d929c15e201': {
-  //     txId: '58bc2c34c70184e36023d55eda7e3fd17c695833c3b4fdc0187cd09d929c15e201',
-  //     time: 2342342,
-  //     amount: '384',
-  //   } as PendingTransaction,
-  // },
-});
+const initialState = pendingTransactionAdapter.getInitialState();
 
 const pendingTransactionSlice = createSlice({
   name: 'pendingTransactions',
@@ -37,7 +26,8 @@ const pendingTransactionSlice = createSlice({
     removePendingTransaction: pendingTransactionAdapter.removeOne,
   },
   extraReducers: {
-    [pendingTransactionSuccessful.type]: (
+    // cannot import owing to circular dependency
+    'transactions/pending-transaction-successful': (
       state,
       action: ReturnType<typeof pendingTransactionSuccessful>
     ) => pendingTransactionAdapter.removeOne(state, action.payload.tx_id),

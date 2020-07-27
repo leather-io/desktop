@@ -1,12 +1,12 @@
 import { Dispatch } from '../index';
 import { createAction } from '@reduxjs/toolkit';
-import { AccountBalance } from '@blockstack/stacks-blockchain-sidecar-types';
+import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-sidecar-types';
 import { safeAwait } from '@blockstack/ui';
 
 import { Api } from '../../api/api';
 
 export const fetchAddress = createAction('address/fetch-address');
-export const fetchAddressDone = createAction<AccountBalance>('address/fetch-address-done');
+export const fetchAddressDone = createAction<AddressBalanceResponse>('address/fetch-address-done');
 export const fetchAddressFail = createAction('address/fetch-address-fail');
 
 export function getAddressDetails(address: string) {

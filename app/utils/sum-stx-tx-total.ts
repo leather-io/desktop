@@ -1,12 +1,15 @@
 import type { Transaction, TransactionEvent } from '@blockstack/stacks-blockchain-sidecar-types';
 import BigNumber from 'bignumber.js';
+import { getStxTxDirection } from './get-stx-transfer-direction';
 
-export function sumStxTxTotal(tx: Transaction) {
+export function sumStxTxTotal(address: string, tx: Transaction) {
+  const dir = getStxTxDirection(address, tx);
   if (tx.tx_type === 'token_transfer') {
-    return new BigNumber(tx.token_transfer.amount).plus(tx.fee_rate);
+    return new BigNumber(tx.token_transfer.amount).plus(dir === 'sent' ? tx.fee_rate : 0);
   }
-  if (tx.tx_type === 'coinbase' || tx.tx_type === 'poison_microblock')
+  if (tx.tx_type === 'coinbase' || tx.tx_type === 'poison_microblock') {
     return new BigNumber(tx.fee_rate);
+  }
 
   const initialValue = new BigNumber(0);
   const sumEventTransferHandler = (prev: BigNumber, current: TransactionEvent) =>

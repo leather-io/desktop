@@ -24,7 +24,7 @@ import {
 import { createStxTransaction } from '../../crypto/create-stx-tx';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { broadcastStxTransaction } from '../../store/transaction';
-import { humanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
+import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
 
 interface TxModalProps {
   balance: string;
@@ -149,11 +149,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             <Text fontSize="13px">{form.values.recipient}</Text>
           </TxModalPreviewItem>
           <TxModalPreviewItem label="Amount">
-            {humanReadableStx(amount.toString())}
+            {toHumanReadableStx(amount.toString())}
           </TxModalPreviewItem>
-          <TxModalPreviewItem label="Fee">{humanReadableStx(fee)}</TxModalPreviewItem>
+          <TxModalPreviewItem label="Fee">{toHumanReadableStx(fee)}</TxModalPreviewItem>
           <TxModalPreviewItem label="Total">
-            {humanReadableStx(total.toString())}
+            {toHumanReadableStx(total.toString())}
           </TxModalPreviewItem>
         </TxModalPreview>
       ),

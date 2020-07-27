@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, CloseIcon, Box, Button } from '@blockstack/ui';
+import { Flex, Text, CloseIcon, Button } from '@blockstack/ui';
 
 export const modalStyle = {
   minWidth: ['100%', '488px'],
@@ -26,6 +26,7 @@ export const TxModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose 
       {children}
     </Text>
     <Button
+      right="-16px"
       onClick={onSelectClose}
       variant="unstyled"
       cursor="pointer"

@@ -55,7 +55,7 @@ interface TxModalPreviewItemProps {
 
 export const TxModalPreviewItem: FC<TxModalPreviewItemProps> = ({ label, children }) => (
   <Flex alignItems="center" height="64px" borderBottom="1px solid #F0F0F5">
-    <Text textStyle="body.small.medium" width="78px">
+    <Text textStyle="body.small.medium" width="70px">
       {label}
     </Text>
     <Text>{children}</Text>

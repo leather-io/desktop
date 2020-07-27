@@ -8,7 +8,7 @@ import { getStxTxDirection } from '../../../utils/get-stx-transfer-direction';
 import { sumStxTxTotal } from '../../../utils/sum-stx-tx-total';
 import { listHoverProps, EnableBefore } from './transaction-list-item-hover';
 import { TransactionIcon } from './transaction-icon';
-import { humanReadableStx } from '../../../utils/unit-convert';
+import { toHumanReadableStx } from '../../../utils/unit-convert';
 import { useLayoutEffect, useRef } from 'react';
 import {
   createTxListContextMenu,
@@ -89,10 +89,10 @@ export const TransactionListItem: FC<TransactionListItemProps> = ({ tx, address,
         <Text
           textStyle="body.large"
           color="ink.900"
-          title={`Fee: ${humanReadableStx(tx.fee_rate)}`}
+          title={`Fee: ${toHumanReadableStx(tx.fee_rate)}`}
           display="block"
         >
-          {sumPrefix + humanReadableStx(sumStxTxTotal(address, tx).toString())}
+          {sumPrefix + toHumanReadableStx(sumStxTxTotal(address, tx).toString())}
         </Text>
         <Text textStyle="body.small" color="ink.600">
           {memo}

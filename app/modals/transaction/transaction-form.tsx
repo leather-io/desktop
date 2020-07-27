@@ -4,7 +4,7 @@ import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 import { FormikProps } from 'formik';
 import { capitalize } from '../../utils/capitalize';
-import { humanReadableStx } from '../../utils/unit-convert';
+import { toHumanReadableStx } from '../../utils/unit-convert';
 
 interface TxModalFormProps {
   balance: string;
@@ -17,7 +17,7 @@ export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
       <Flex flexDirection="column" alignItems="center" mt="48px">
         <Text textStyle="body.large.medium">Available balance</Text>
         <Text textStyle="body.large.medium" fontWeight={600} mt="tight" fontSize="32px">
-          {humanReadableStx(balance)}
+          {toHumanReadableStx(balance)}
         </Text>
       </Flex>
       <Flex flexDirection="column" mt="40px" mx="extra-loose">

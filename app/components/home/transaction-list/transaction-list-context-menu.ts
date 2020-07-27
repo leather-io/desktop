@@ -6,7 +6,7 @@ import { hasMemo, getRecipientAddress } from '../../../utils/tx-utils';
 
 export function registerHandler(el: HTMLDivElement | null, handler: (e: Event) => void) {
   if (el === null) return;
-  el.addEventListener('contextmenu', handler, false);
+  el.addEventListener('contextmenu', handler, { passive: true });
 }
 
 export function deregisterHandler(el: HTMLDivElement | null, handler: (e: Event) => void) {
@@ -32,53 +32,41 @@ export function createTxListContextMenu({ tx, copy }: TxListContextMenu) {
   const { Menu, MenuItem } = remote;
   const menu = new Menu();
 
-  menu.append(
-    new MenuItem({
+  const menuItems: Electron.MenuItemConstructorOptions[] = [
+    {
       label: 'Copy to clipboard',
       enabled: false,
-    })
-  );
-  menu.append(new MenuItem({ type: 'separator' }));
-  menu.append(
-    new MenuItem({
+    },
+    { type: 'separator' },
+    {
       label: 'Transaction ID',
       click: () => copy.txid.onCopy(),
-    })
-  );
-  if (getRecipientAddress(tx)) {
-    menu.append(
-      new MenuItem({
-        label: 'Recipient address',
-        click: () => copy.recipientAddress.onCopy(),
-      })
-    );
-  }
-  menu.append(
-    new MenuItem({
+    },
+    {
+      label: 'Recipient address',
+      visible: !!getRecipientAddress(tx),
+      click: () => copy.recipientAddress.onCopy(),
+    },
+    {
+      label: 'Memo',
+      visible: hasMemo(tx),
+      click: () => copy.memo.onCopy(),
+    },
+    {
       label: 'Timestamp',
       click: () => copy.date.onCopy(),
-    })
-  );
-  if (hasMemo(tx)) {
-    menu.append(
-      new MenuItem({
-        label: 'Memo',
-        click: () => copy.memo.onCopy(),
-      })
-    );
-  }
-  menu.append(
-    new MenuItem({
+    },
+    {
       label: 'Transaction (as JSON)',
       click: () => copy.txDetails.onCopy(),
-    })
-  );
-  menu.append(
-    new MenuItem({
+    },
+    {
       label: 'Explorer link',
       click: () => copy.explorerLink.onCopy(),
-    })
-  );
+    },
+  ];
+
+  menuItems.forEach(item => menu.append(new MenuItem(item)));
 
   menu.popup({
     window: remote.getCurrentWindow(),

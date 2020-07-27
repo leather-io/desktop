@@ -14,7 +14,7 @@ export const Welcome: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Stacks Wallet</OnboardingTitle>
-      <OnboardingText>Send, receive, and and earn Bitcoin rewards</OnboardingText>
+      <OnboardingText>Send STX, receive STX, and earn Bitcoin rewards</OnboardingText>
       <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CREATE)}>
         Create a new wallet
       </OnboardingButton>

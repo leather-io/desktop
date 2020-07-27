@@ -4,7 +4,12 @@ import { useHistory } from 'react-router';
 import { Input } from '@blockstack/ui';
 
 import { setPassword as setPasswordAction } from '../../../store/keys';
-import { Onboarding, OnboardingTitle, OnboardingButton } from '../../../components/onboarding';
+import {
+  Onboarding,
+  OnboardingTitle,
+  OnboardingText,
+  OnboardingButton,
+} from '../../../components/onboarding';
 import { ErrorLabel } from '../../../components/error-label';
 import { ErrorText } from '../../../components/error-text';
 import {
@@ -55,6 +60,7 @@ export const SetPassword: React.FC = () => {
   return (
     <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Set a password</OnboardingTitle>
+      <OnboardingText>You'll use your password when confirming transactions</OnboardingText>
       <Input type="password" mt="extra-loose" onChange={handlePasswordInput} />
       {!strengthResult.meetsAllStrengthRequirements && hasSubmitted && (
         <ErrorLabel>

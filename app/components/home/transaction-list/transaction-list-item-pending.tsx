@@ -5,6 +5,7 @@ import { Box, Flex, Text } from '@blockstack/ui';
 import { PendingTransaction } from '../../../store/pending-transaction';
 import { listHoverProps, EnableBefore } from './transaction-list-item-hover';
 import { TransactionIcon } from './transaction-icon';
+import { humanReadableStx } from '../../../utils/unit-convert';
 
 interface TransactionListItemPendingProps {
   tx: PendingTransaction;
@@ -39,7 +40,7 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = (
       </Box>
       <Box textAlign="right">
         <Text textStyle="body.large" color="ink.900" display="block">
-          {tx.amount} STX
+          {humanReadableStx(tx.amount)}
         </Text>
         <Text textStyle="body.small" color="ink.600">
           Pending

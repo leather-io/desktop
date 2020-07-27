@@ -3,10 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@blockstack/ui';
 
 import { RootState } from '../../store';
-import {
-  getAddressTransactions,
-  openInExplorer,
-} from '../../store/transaction/transaction.actions';
+import { getAddressTransactions } from '../../store/transaction/transaction.actions';
+import { openInExplorer } from '../../utils/explorer';
 import { selectAddress } from '../../store/keys/keys.reducer';
 import { getAddressDetails } from '../../store/address/address.actions';
 import { selectAddressBalance } from '../../store/address/address.reducer';
@@ -52,15 +50,14 @@ export const Home: FC = () => {
   useInterval(() => {
     if (!address) return;
     pendingTxs.forEach(tx => void checkIfPendingTxIsComplete(safelyFormatHexTxid(tx.txId)));
-    // dispatch(getAddressTransactions(address));
-    // dispatch(getAddressDetails(address));
+    dispatch(getAddressTransactions(address));
+    dispatch(getAddressDetails(address));
   }, 5_000);
 
   useEffect(() => {
     if (!address) return;
-    // STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6s
     dispatch(getAddressTransactions(address));
-    // dispatch(getAddressDetails(address));
+    dispatch(getAddressDetails(address));
   }, [dispatch, address]);
 
   if (!address) return <Spinner />;

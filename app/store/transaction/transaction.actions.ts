@@ -1,14 +1,15 @@
-import { shell } from 'electron';
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
-
+import BigNumber from 'bignumber.js';
 import { broadcastTransaction, StacksTransaction } from '@blockstack/stacks-transactions';
 
-import { Dispatch } from '../index';
 import { Api } from '../../api/api';
-
 import { stacksNetwork } from '../../environment';
+import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
+import { addPendingTransaction } from '../pending-transaction';
+import { Dispatch } from '../index';
+import { homeActions } from '../home/home.reducer';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'
@@ -38,31 +39,30 @@ export const broadcastTx = createAction('transactions/broadcast-transactions');
 export const broadcastTxDone = createAction('transactions/broadcast-transactions-done');
 export const broadcastTxFail = createAction('transactions/broadcast-transactions-fail');
 
-export function broadcastStxTransaction({ tx }: { tx: StacksTransaction }) {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
-    const [error, blockchainResponse] = await safeAwait(broadcastTransaction(tx, stacksNetwork));
+interface BroadcastStxTransactionArgs {
+  signedTx: StacksTransaction;
+  amount: BigNumber;
+}
+
+export function broadcastStxTransaction({ signedTx, amount }: BroadcastStxTransactionArgs) {
+  return async (dispatch: Dispatch) => {
+    const [error, blockchainResponse] = await safeAwait(
+      broadcastTransaction(signedTx, stacksNetwork)
+    );
 
     if (error || !blockchainResponse) return null;
-    console.log({ error });
-    // anything but string of id === error
-    console.log(blockchainResponse);
     if (typeof blockchainResponse !== 'string') {
       // setError for ui
       return;
     }
-    // dispatch(
-    //   addPendingTransaction({
-    //     txId: pendingTxId as string,
-    //     amount: amount.toString(),
-    //     time: +new Date(),
-    //   })
-    // );
-    // return blockchainResponse;
+    dispatch(homeActions.closeTxModal());
+    dispatch(
+      addPendingTransaction({
+        txId: safelyFormatHexTxid(blockchainResponse),
+        amount: amount.toString(),
+        time: +new Date(),
+      })
+    );
+    return blockchainResponse;
   };
-}
-
-export async function openInExplorer(txId: string) {
-  return await shell.openExternal(
-    `https://testnet-explorer.blockstack.org/txid/${txId}?wallet=true`
-  );
 }

@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import BigNumber from 'bignumber.js';
 import { deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
 import { makeSTXTokenTransfer } from '@blockstack/stacks-transactions';
+import packageJson from '../../package.json';
 
 import { stacksNetwork } from '../environment';
 import { deriveStxAddressKeychain } from './derive-address-keychain';
@@ -20,5 +21,6 @@ export async function createStxTransaction({ mnemonic, recipient, amount }: Crea
     amount: new BN(amount.toString()),
     senderKey: privateKey,
     network: stacksNetwork,
+    memo: 'Sent from testnet wallet v' + packageJson.version,
   });
 }

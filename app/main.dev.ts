@@ -18,7 +18,6 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import contextMenu from 'electron-context-menu';
 
 export default class AppUpdater {
   constructor() {
@@ -27,8 +26,6 @@ export default class AppUpdater {
     void autoUpdater.checkForUpdatesAndNotify();
   }
 }
-
-contextMenu();
 
 let mainWindow: BrowserWindow | null = null;
 

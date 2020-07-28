@@ -68,9 +68,8 @@ export function createTxListContextMenu({ tx, copy }: TxListContextMenu) {
 
   menuItems.forEach(item => menu.append(new MenuItem(item)));
 
-  menu.popup({
-    window: remote.getCurrentWindow(),
-  });
+  menu.popup({ window: remote.getCurrentWindow() });
+
   menu.once('menu-will-close', () => {
     // `destroy` call untyped
     (menu as any).destroy();

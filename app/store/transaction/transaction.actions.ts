@@ -9,7 +9,6 @@ import { stacksNetwork } from '../../environment';
 import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
 import { addPendingTransaction } from '../pending-transaction';
 import { Dispatch } from '../index';
-import { homeActions } from '../home/home.reducer';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'
@@ -42,20 +41,24 @@ export const broadcastTxFail = createAction('transactions/broadcast-transactions
 interface BroadcastStxTransactionArgs {
   signedTx: StacksTransaction;
   amount: BigNumber;
+  onBroadcastSuccess: () => void;
 }
 
-export function broadcastStxTransaction({ signedTx, amount }: BroadcastStxTransactionArgs) {
+export function broadcastStxTransaction({
+  amount,
+  signedTx,
+  onBroadcastSuccess,
+}: BroadcastStxTransactionArgs) {
   return async (dispatch: Dispatch) => {
     const [error, blockchainResponse] = await safeAwait(
       broadcastTransaction(signedTx, stacksNetwork)
     );
-
     if (error || !blockchainResponse) return null;
     if (typeof blockchainResponse !== 'string') {
       // setError for ui
       return;
     }
-    dispatch(homeActions.closeTxModal());
+    onBroadcastSuccess();
     dispatch(
       addPendingTransaction({
         txId: safelyFormatHexTxid(blockchainResponse),

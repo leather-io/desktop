@@ -113,12 +113,19 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const closeModalResetForm = () => {
     dispatch(homeActions.closeTxModal());
     setStep(TxModalStep.DescribeTx);
+    setLoading(false);
+    setTx(null);
+    setFee(new BN(0));
+    setAmount(new BigNumber(0));
     form.resetForm();
   };
 
   const broadcastTx = () => {
     if (tx === null) return;
-    dispatch(broadcastStxTransaction({ signedTx: tx, amount }));
+    setLoading(true);
+    dispatch(
+      broadcastStxTransaction({ signedTx: tx, amount, onBroadcastSuccess: closeModalResetForm })
+    );
   };
 
   const txFormStepMap: { [step in TxModalStep]: ModalComponents } = {
@@ -162,7 +169,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           <Button mode="tertiary" onClick={() => setStep(TxModalStep.DescribeTx)} {...buttonStyle}>
             Go back
           </Button>
-          <Button ml="base-tight" {...buttonStyle} onClick={broadcastTx}>
+          <Button ml="base-tight" {...buttonStyle} isLoading={loading} onClick={broadcastTx}>
             Confirm and send
           </Button>
         </TxModalFooter>

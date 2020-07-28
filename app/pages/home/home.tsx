@@ -10,7 +10,11 @@ import { getAddressDetails } from '../../store/address/address.actions';
 import { selectAddressBalance } from '../../store/address/address.reducer';
 import { selectTransactions } from '../../store/transaction/transaction.reducer';
 import { selectPendingTransactions } from '../../store/pending-transaction/pending-transaction.reducer';
-import { homeActions } from '../../store/home/home.reducer';
+import {
+  homeActions,
+  selectTxModalOpen,
+  selectReceiveModalOpen,
+} from '../../store/home/home.reducer';
 import {
   TransactionList,
   StackingPromoCard,
@@ -30,12 +34,16 @@ import { HomeLayout } from './home-layout';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
-  const { address, balance, txs, pendingTxs } = useSelector((state: RootState) => ({
-    address: selectAddress(state),
-    txs: selectTransactions(state),
-    balance: selectAddressBalance(state),
-    pendingTxs: selectPendingTransactions(state),
-  }));
+  const { address, balance, txs, pendingTxs, txModalOpen, receiveModalOpen } = useSelector(
+    (state: RootState) => ({
+      address: selectAddress(state),
+      txs: selectTransactions(state),
+      balance: selectAddressBalance(state),
+      pendingTxs: selectPendingTransactions(state),
+      txModalOpen: selectTxModalOpen(state),
+      receiveModalOpen: selectReceiveModalOpen(state),
+    })
+  );
 
   const checkIfPendingTxIsComplete = async (address: string) => {
     const [error, txResponse] = await safeAwait(Api.getTxDetails(address));
@@ -93,8 +101,8 @@ export const Home: FC = () => {
 
   return (
     <>
-      <ReceiveStxModal address={address} />
-      <TransactionModal balance={balance || '0'} address={address} />
+      {receiveModalOpen && <ReceiveStxModal address={address} />}
+      {txModalOpen && <TransactionModal balance={balance || '0'} address={address} />}
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}

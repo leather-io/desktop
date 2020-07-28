@@ -6,6 +6,7 @@ import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
 import { Modal, Text, Button, Box } from '@blockstack/ui';
 import { StacksTransaction } from '@blockstack/stacks-transactions';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
 import { validateStacksAddress } from '../../utils/get-stx-transfer-direction';
@@ -44,6 +45,7 @@ type ModalComponents = () => {
 
 export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const dispatch = useDispatch();
+  useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
   const [step, setStep] = useState(TxModalStep.DescribeTx);
   const [fee, setFee] = useState(new BN(0));
   const [amount, setAmount] = useState(new BigNumber(0));
@@ -210,7 +212,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const { header, body, footer } = txFormStepMap[step]();
 
   return (
-    <Modal isOpen={txModalOpen} headerComponent={header} footerComponent={footer} {...modalStyle}>
+    <Modal isOpen headerComponent={header} footerComponent={footer} {...modalStyle}>
       {body}
     </Modal>
   );

@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook';
 import Qr from 'qrcode.react';
 import { Text, Modal, Button, Flex, Box, useClipboard } from '@blockstack/ui';
 
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
-import { homeActions, selectReceiveModalOpen } from '../../store/home/home.reducer';
+import { homeActions } from '../../store/home/home.reducer';
 
 interface ReceiveStxModalProps {
   address: string;
@@ -12,14 +13,13 @@ interface ReceiveStxModalProps {
 
 export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
   const dispatch = useDispatch();
-  const modalOpen = useSelector(selectReceiveModalOpen);
+  useHotkeys('esc', () => void dispatch(homeActions.closeReceiveModal()));
   const { hasCopied, onCopy } = useClipboard(address);
   const closeModal = () => dispatch(homeActions.closeReceiveModal());
-  if (!modalOpen) return null;
   return (
     <Modal
       minWidth="488px"
-      isOpen={modalOpen}
+      isOpen
       headerComponent={<TxModalHeader onSelectClose={closeModal}>Receive STX</TxModalHeader>}
       footerComponent={
         <TxModalFooter>

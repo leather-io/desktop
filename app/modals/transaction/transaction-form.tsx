@@ -27,7 +27,6 @@ export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
         <Input
           id="stxAddress"
           name="recipient"
-          autoFocus
           mt="base-tight"
           placeholder="STX address"
           onChange={form.handleChange}

@@ -5,3 +5,4 @@
 *.ico binary
 *.icns binary
 *.wasm binary
+*.woff2 binary

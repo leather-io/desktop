@@ -1,6 +1,6 @@
 import { remote } from 'electron';
 import { useClipboard } from '@blockstack/ui';
-import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { hasMemo, getRecipientAddress } from '../../../utils/tx-utils';
 

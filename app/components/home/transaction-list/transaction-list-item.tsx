@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useHover } from 'use-events';
 import { Box, Flex, Text, useClipboard } from '@blockstack/ui';
-import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { capitalize } from '../../../utils/capitalize';
 import { getStxTxDirection } from '../../../utils/get-stx-transfer-direction';

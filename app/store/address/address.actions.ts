@@ -1,6 +1,6 @@
 import { Dispatch } from '../index';
 import { createAction } from '@reduxjs/toolkit';
-import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-sidecar-types';
+import { AddressBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
 import { safeAwait } from '@blockstack/ui';
 
 import { Api } from '../../api/api';

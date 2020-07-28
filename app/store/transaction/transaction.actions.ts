@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@blockstack/ui';
-import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 import BigNumber from 'bignumber.js';
 import { broadcastTransaction, StacksTransaction } from '@blockstack/stacks-transactions';
 

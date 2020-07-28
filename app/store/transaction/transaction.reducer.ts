@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityState, createReducer } from '@reduxjs/toolkit';
-import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { RootState } from '..';
 import { fetchTransactionsDone, pendingTransactionSuccessful } from './transaction.actions';

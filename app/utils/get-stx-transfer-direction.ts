@@ -1,4 +1,4 @@
-import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 import { c32addressDecode } from 'c32check';
 
 type StxTxDirection = 'sent' | 'received';

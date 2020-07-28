@@ -4,7 +4,7 @@ import {
   TransactionResults,
   MempoolTransaction,
   AccountBalance,
-} from '@blockstack/stacks-blockchain-sidecar-types';
+} from '@blockstack/stacks-blockchain-api-types';
 
 const api = 'https://sidecar.staging.blockstack.xyz/sidecar';
 

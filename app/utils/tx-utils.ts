@@ -1,4 +1,4 @@
-import { Transaction } from '@blockstack/stacks-blockchain-sidecar-types';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 export function hasMemo(tx: Transaction): boolean {
   if (tx.tx_type !== 'token_transfer') return false;

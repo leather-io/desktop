@@ -40,7 +40,7 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = (
       </Box>
       <Box textAlign="right">
         <Text textStyle="body.large" color="ink.900" display="block">
-          {toHumanReadableStx(tx.amount)}
+          −{toHumanReadableStx(tx.amount)}
         </Text>
         <Text textStyle="body.small" color="ink.600">
           Pending

@@ -44,7 +44,7 @@ export const TxModalFooter: FC = ({ children }) => (
 );
 
 export const TxModalPreview: FC = ({ children }) => (
-  <Flex flexDirection="column" fontSize="14px" mx="extra-loose" mt="tight" mb="extra-loose">
+  <Flex flexDirection="column" fontSize="14px" mx="extra-loose" mt="tight">
     {children}
   </Flex>
 );

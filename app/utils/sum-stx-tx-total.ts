@@ -1,4 +1,4 @@
-import type { Transaction, TransactionEvent } from '@blockstack/stacks-blockchain-sidecar-types';
+import type { Transaction, TransactionEvent } from '@blockstack/stacks-blockchain-api-types';
 import BigNumber from 'bignumber.js';
 import { getStxTxDirection } from './get-stx-transfer-direction';
 

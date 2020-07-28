@@ -11,7 +11,8 @@ import { decryptWallet, selectKeysSlice } from '../../store/keys';
 export const SignIn: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [password, setPassword] = useState<string | null>(null);
+  // const [password, setPassword] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>('71c97e5e6b4b4213822066d5561cdda3');
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const keysState = useSelector(selectKeysSlice);
 

@@ -4,8 +4,8 @@ const store = new Store({
   schema: {
     salt: {
       type: 'string',
-      // maxLength: 29,
-      // minLength: 29,
+      minLength: 32,
+      maxLength: 32,
     },
     encryptedMnemonic: {
       type: 'string',

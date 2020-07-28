@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
-import { Modal, Text, Button } from '@blockstack/ui';
+import { Modal, Text, Button, Box } from '@blockstack/ui';
 import { StacksTransaction } from '@blockstack/stacks-transactions';
 
 import { RootState } from '../../store';
@@ -25,6 +25,8 @@ import { createStxTransaction } from '../../crypto/create-stx-tx';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { broadcastStxTransaction } from '../../store/transaction';
 import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
+import { ErrorLabel } from '../../components/error-label';
+import { ErrorText } from '../../components/error-text';
 
 interface TxModalProps {
   balance: string;
@@ -53,6 +55,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     mnemonic: selectMnemonic(state),
   }));
 
+  const totalIsMoreThanBalance = total.isGreaterThan(balance);
+
   const form = useFormik({
     initialValues: {
       recipient: '',
@@ -74,15 +78,26 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         ),
       amount: yup
         .number()
-        .positive('You cannot send a negative amount of STX')
         .typeError('Amount of STX must be described as number')
+        .positive('You cannot send a negative amount of STX')
         .test(
           'test-has-less-than-or-equal-to-6-decimal-places',
-          'STX cannot have more than 6 decimal places',
+          'STX do not have more than 6 decimal places',
           (value: number) => {
             // Explicit base ensures BigNumber doesn't use exponential notation
             const decimals = new BigNumber(value).toString(10).split('.')[1];
             return decimals === undefined || decimals.length <= 6;
+          }
+        )
+        .test(
+          'test-address-has-enough-balance',
+          'Cannot send more STX than available balance',
+          (value: number) => {
+            // If there's no input, pass this test,
+            // otherwise it'll render the error for this test
+            if (value === undefined) return true;
+            const enteredAmount = stxToMicroStx(value);
+            return enteredAmount.isLessThanOrEqualTo(balance);
           }
         )
         .required(),
@@ -162,6 +177,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           <TxModalPreviewItem label="Total">
             {toHumanReadableStx(total.toString())}
           </TxModalPreviewItem>
+          <Box minHeight="24px">
+            {totalIsMoreThanBalance && (
+              <ErrorLabel size="md" my="base-loose">
+                <ErrorText fontSize="14px" lineHeight="20px">
+                  You have insufficient balance to complete this transfer.
+                </ErrorText>
+              </ErrorLabel>
+            )}
+          </Box>
         </TxModalPreview>
       ),
       footer: (
@@ -169,7 +193,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           <Button mode="tertiary" onClick={() => setStep(TxModalStep.DescribeTx)} {...buttonStyle}>
             Go back
           </Button>
-          <Button ml="base-tight" {...buttonStyle} isLoading={loading} onClick={broadcastTx}>
+          <Button
+            ml="base-tight"
+            {...buttonStyle}
+            isLoading={loading}
+            isDisabled={totalIsMoreThanBalance}
+            onClick={broadcastTx}
+          >
             Confirm and send
           </Button>
         </TxModalFooter>

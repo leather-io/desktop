@@ -24,9 +24,7 @@ interface RootProps {
 }
 
 function Root({ store, history }: RootProps) {
-  useEffect(() => {
-    void loadFonts();
-  }, []);
+  useEffect(() => void loadFonts(), []);
 
   return (
     <Provider store={store}>

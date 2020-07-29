@@ -2,13 +2,7 @@ import { useHistory } from 'react-router';
 import { push } from 'connected-react-router';
 import { createAction, Dispatch } from '@reduxjs/toolkit';
 import log from 'electron-log';
-import {
-  generateMnemonicRootKeychain,
-  deriveRootKeychainFromMnemonic,
-  deriveStxAddressChain,
-} from '@blockstack/keychain';
-import { encryptMnemonic, decryptMnemonic } from 'blockstack';
-import { ChainID } from '@blockstack/stacks-transactions';
+import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
 
 import { RootState } from '..';
 import routes from '../../constants/routes.json';
@@ -16,8 +10,9 @@ import { MNEMONIC_ENTROPY } from '../../constants';
 import { persistSalt, persistEncryptedMnemonic } from '../../utils/disk-store';
 import { safeAwait } from '../../utils/safe-await';
 import { selectMnemonic, selectKeysSlice } from './keys.reducer';
-import { generateSalt, generateDerivedKey } from '../../crypto/key-generation';
+import { generateSalt, deriveKey } from '../../crypto/key-generation';
 import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
+import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
 
 type History = ReturnType<typeof useHistory>;
 
@@ -44,15 +39,14 @@ export function setPassword({ password, history }: { password: string; history: 
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const mnemonic = selectMnemonic(getState());
     const salt = generateSalt();
-    const derivedEncryptionKey = await generateDerivedKey({ pass: password, salt });
+    const { derivedKeyHash } = await deriveKey({ pass: password, salt });
 
     if (!mnemonic) {
       log.error('Cannot derive encryption key unless a mnemonic has been generated');
       return;
     }
 
-    const encryptedMnemonicBuffer = await encryptMnemonic(mnemonic, derivedEncryptionKey);
-    const encryptedMnemonic = encryptedMnemonicBuffer.toString('hex');
+    const encryptedMnemonic = await encryptMnemonic({ derivedKeyHash, mnemonic });
     const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
     const { address } = deriveStxAddressKeychain(rootNode);
     persistSalt(salt);
@@ -82,13 +76,10 @@ export function decryptWallet({ password, history }: { password: string; history
       return;
     }
 
-    const key = await generateDerivedKey({ pass: password, salt });
+    const { derivedKeyHash } = await deriveKey({ pass: password, salt });
 
-    //
-    // TODO: remove casting within blockstack.js library
-    // https://github.com/blockstack/blockstack.js/pull/797
     const [error, mnemonic] = await safeAwait(
-      decryptMnemonic(encryptedMnemonic, key, undefined as any)
+      decryptMnemonic({ encryptedMnemonic, derivedKeyHash })
     );
 
     if (error) {

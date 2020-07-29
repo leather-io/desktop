@@ -83,7 +83,7 @@ export const SetPassword: React.FC = () => {
           {weakPasswordWarningMessage(strengthResult)}
         </Text>
       )}
-      <OnboardingButton type="submit" mt="loose" isDisabled={btnDisabled}>
+      <OnboardingButton type="submit" mt="loose" isLoading={btnDisabled} isDisabled={btnDisabled}>
         Continue
       </OnboardingButton>
     </Onboarding>

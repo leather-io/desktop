@@ -1,4 +1,4 @@
-import { generateSalt, generateDerivedKey } from './key-generation';
+import { generateSalt, deriveKey } from './key-generation';
 
 import crypto from 'crypto';
 // https://stackoverflow.com/a/52612372/1141891
@@ -8,14 +8,62 @@ Object.defineProperty(global, 'crypto', {
   },
 });
 
-describe(generateDerivedKey.name, () => {
+describe(deriveKey.name, () => {
   test('a argon2id hash is returned', async () => {
     const salt = '$2a$12$BwnByfKrfRbpxsazN712T.';
     const pass = 'f255cadb0af84854819c63f26c53e1a9';
-    const result = await generateDerivedKey({ salt, pass });
-    expect(result).toEqual(
-      '5d46ddfd7273e1a74ba1db937693bfd59de4881d58b86ed4002ee24abf156a77cf12885ee0e50de19af8c67e0115eb0a82576b11864226a6c157aac8a500e9f8'
-    );
+    const { derivedKeyHash } = await deriveKey({ salt, pass });
+    const expectedResultArray = [
+      94,
+      0,
+      166,
+      167,
+      20,
+      189,
+      146,
+      233,
+      48,
+      163,
+      248,
+      178,
+      48,
+      11,
+      140,
+      87,
+      82,
+      126,
+      73,
+      82,
+      237,
+      166,
+      232,
+      173,
+      90,
+      192,
+      67,
+      200,
+      149,
+      147,
+      30,
+      223,
+      60,
+      15,
+      133,
+      99,
+      89,
+      142,
+      223,
+      116,
+      131,
+      24,
+      169,
+      157,
+      157,
+      245,
+      159,
+      140,
+    ];
+    expect(derivedKeyHash).toEqual(Uint8Array.from(expectedResultArray));
   });
 });
 

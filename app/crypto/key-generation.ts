@@ -1,14 +1,15 @@
 import { memoizeWith, identity } from 'ramda';
-import argon2 from 'argon2-browser';
+import { hash, ArgonType } from 'argon2-browser';
 
-export async function generateDerivedKey({ pass, salt }: { pass: string; salt: string }) {
-  const { hashHex } = await argon2.hash({
+export async function deriveKey({ pass, salt }: { pass: string; salt: string }) {
+  const result = await hash({
     pass,
     salt,
-    hashLen: 64,
-    type: argon2.ArgonType.Argon2id,
+    hashLen: 48,
+    time: 400,
+    type: ArgonType.Argon2id,
   });
-  return hashHex;
+  return { derivedKeyHash: result.hash };
 }
 
 export function generateRandomHexString() {

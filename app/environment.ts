@@ -1,10 +1,4 @@
-import {
-  ChainID,
-  StacksNetwork,
-  StacksTestnet,
-  StacksMainnet,
-} from '@blockstack/stacks-transactions';
-import { ENV } from './constants';
+import { ChainID, StacksTestnet } from '@blockstack/stacks-transactions';
 
 export { ChainID };
 

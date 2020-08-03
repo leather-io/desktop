@@ -3,13 +3,13 @@ import {
   Transaction,
   TransactionResults,
   MempoolTransaction,
-  AccountBalance,
+  AddressBalanceResponse,
 } from '@blockstack/stacks-blockchain-api-types';
 
 const api = 'https://sidecar.staging.blockstack.xyz/sidecar';
 
 async function getAddressBalance(address: string) {
-  return axios.get<AccountBalance>(api + `/v1/address/${address}/balances`);
+  return axios.get<AddressBalanceResponse>(api + `/v1/address/${address}/balances`);
 }
 
 async function getAddressTransactions(address: string) {

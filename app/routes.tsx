@@ -4,13 +4,15 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import routes from './constants/routes.json';
 import { Home } from './pages/home/home';
-import { selectKeysSlice } from './store/keys/keys.reducer';
+import { selectAddress } from './store/keys/keys.reducer';
 import { SignIn } from './pages/sign-in/sign-in';
+
 import {
   Welcome,
   CreateWallet,
   RestoreWallet,
   GeneratingSecret,
+  ConnectLedger,
   SecretKey,
   SaveKey,
   VerifyKey,
@@ -43,6 +45,10 @@ export const routerConfig = [
     component: GeneratingSecret,
   },
   {
+    path: routes.CONNECT_LEDGER,
+    component: ConnectLedger,
+  },
+  {
     path: routes.SECRET_KEY,
     component: SecretKey,
   },
@@ -64,12 +70,12 @@ export const routerConfig = [
   },
 ];
 
-const getAppStartingRoute = (salt?: string) => (!!salt ? routes.SIGN_IN : routes.WELCOME);
+const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.WELCOME);
 
 export function Routes() {
   // `useStore` required as we only want the value on initial render
   const store = useStore();
-  const { salt } = selectKeysSlice(store.getState());
+  const address = selectAddress(store.getState());
   return (
     <>
       <Switch>
@@ -77,7 +83,7 @@ export function Routes() {
           <Route key={i} exact {...route} />
         ))}
       </Switch>
-      <Redirect exact from="/" to={getAppStartingRoute(salt)} />
+      <Redirect exact from="/" to={getAppStartingRoute(address)} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 
-const algorithmName = 'AES-CBC';
+const algorithmName = 'AES-CBC' as const;
 
 function extractEncryptionKey(hash: Uint8Array) {
   return hash.slice(0, 32);
@@ -13,7 +13,7 @@ function extractEncryptionInitVector(hash: Uint8Array) {
 async function deriveWebCryptoKey(derivedKeyHash: Uint8Array) {
   const format = 'raw';
   const key = extractEncryptionKey(derivedKeyHash);
-  const algorithm = { name: algorithmName };
+  const algorithm = algorithmName;
   const extractable = false;
   const keyUsages: KeyUsage[] = ['encrypt', 'decrypt'];
   return crypto.subtle.importKey(format, key, algorithm, extractable, keyUsages);

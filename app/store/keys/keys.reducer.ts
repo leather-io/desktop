@@ -2,7 +2,11 @@ import { createReducer, createSelector } from '@reduxjs/toolkit';
 import log from 'electron-log';
 
 import { RootState } from '..';
-import { setPasswordSuccess, attemptWalletDecryptSuccess } from './keys.actions';
+import {
+  setPasswordSuccess,
+  attemptWalletDecryptSuccess,
+  updateLedgerAddress,
+} from './keys.actions';
 import {
   persistMnemonicSafe,
   persistMnemonic,
@@ -11,17 +15,19 @@ import {
 } from './keys.actions';
 
 export interface KeysState {
+  walletType: 'ledger' | 'software';
   mnemonic: string | null;
   decrypting: boolean;
   salt?: string;
   decryptionError?: string;
   encryptedMnemonic?: string;
-  address?: string;
+  stxAddress?: string;
 }
 
 const initialState: Readonly<KeysState> = Object.freeze({
   mnemonic: null,
   decrypting: false,
+  walletType: 'software',
 });
 
 export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
@@ -49,14 +55,26 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
         salt: payload.salt,
         decrypting: false,
         mnemonic: payload.mnemonic,
-        address: payload.address,
+        stxAddress: payload.address,
+      }))
+      .addCase(updateLedgerAddress, (state, { payload }) => ({
+        ...state,
+        stxAddress: payload,
+        walletType: 'ledger',
       }))
   );
 
 export const selectKeysSlice = (state: RootState) => state.keys;
+export const selectDecryptionError = createSelector(
+  selectKeysSlice,
+  state => state.decryptionError
+);
+export const selectIsDecrypting = createSelector(selectKeysSlice, state => state.decrypting);
 
 export const selectMnemonic = createSelector(selectKeysSlice, state => state.mnemonic);
-export const selectAddress = createSelector(selectKeysSlice, state => {
-  // if (!state.address) throw new Error('Address must always be generated prior to read.');
-  return state.address;
-});
+export const selectEncryptedMnemonic = createSelector(
+  selectKeysSlice,
+  state => state.encryptedMnemonic
+);
+export const selectAddress = createSelector(selectKeysSlice, state => state.stxAddress);
+export const selectSalt = createSelector(selectKeysSlice, state => state.salt);

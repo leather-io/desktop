@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Input } from '@blockstack/ui';
 
+import routes from '../../constants/routes.json';
 import { Onboarding, OnboardingTitle, OnboardingButton } from '../../components/onboarding';
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
@@ -26,7 +27,7 @@ export const SignIn: React.FC = () => {
     e.preventDefault();
     setHasSubmitted(true);
     if (!password) return;
-    dispatch(decryptWallet({ password, history }));
+    dispatch(decryptWallet({ password, onDecryptSuccess: () => history.push(routes.HOME) }));
   };
 
   return (

@@ -4,6 +4,7 @@
   "WELCOME": "/onboard/welcome",
   "CREATE": "/onboard/create",
   "RESTORE": "/onboard/restore",
+  "CONNECT_LEDGER": "/onboard/connect-ledger",
   "GENERATING": "/onboard/generating",
   "SECRET_KEY": "/onboard/secret-key",
   "SAVE_KEY": "/onboard/save-your-key",

@@ -61,7 +61,9 @@ export const RestoreWallet: React.FC = () => {
         Restore your wallet by connecting your Ledger hardware wallet or a by entering your Secret
         Key
       </OnboardingText>
-      <OnboardingButton mt="extra-loose">Continue with Ledger</OnboardingButton>
+      <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
+        Continue with Ledger
+      </OnboardingButton>
 
       <Hr my="extra-loose" />
 

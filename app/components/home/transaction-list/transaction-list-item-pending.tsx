@@ -35,7 +35,7 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = (
           Sending
         </Text>
         <Text textStyle="body.small" color="ink.600">
-          {tx.txId.substr(0, 28)}
+          {tx.txId.substr(0, 28)}…
         </Text>
       </Box>
       <Box textAlign="right">

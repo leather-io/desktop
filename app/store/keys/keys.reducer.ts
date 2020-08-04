@@ -2,11 +2,7 @@ import { createReducer, createSelector } from '@reduxjs/toolkit';
 import log from 'electron-log';
 
 import { RootState } from '..';
-import {
-  setPasswordSuccess,
-  attemptWalletDecryptSuccess,
-  updateLedgerAddress,
-} from './keys.actions';
+import { setPasswordSuccess, updateLedgerAddress } from './keys.actions';
 import {
   persistMnemonicSafe,
   persistMnemonic,
@@ -43,19 +39,16 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
         return { ...state, mnemonic: action.payload };
       })
       .addCase(persistMnemonic, (state, action) => ({ ...state, mnemonic: action.payload }))
-      .addCase(setPasswordSuccess, (state, action) => ({ ...state, ...action.payload }))
+      .addCase(setPasswordSuccess, (state, { payload }) => ({
+        ...state,
+        ...payload,
+        mnemonic: null,
+      }))
       .addCase(attemptWalletDecrypt, state => ({ ...state, decrypting: true }))
       .addCase(attemptWalletDecryptFailed, (state, action) => ({
         ...state,
         decrypting: false,
         decryptionError: action.payload.decryptionError,
-      }))
-      .addCase(attemptWalletDecryptSuccess, (state, { payload }) => ({
-        ...state,
-        salt: payload.salt,
-        decrypting: false,
-        mnemonic: payload.mnemonic,
-        stxAddress: payload.address,
       }))
       .addCase(updateLedgerAddress, (state, { payload }) => ({
         ...state,
@@ -70,7 +63,6 @@ export const selectDecryptionError = createSelector(
   state => state.decryptionError
 );
 export const selectIsDecrypting = createSelector(selectKeysSlice, state => state.decrypting);
-
 export const selectMnemonic = createSelector(selectKeysSlice, state => state.mnemonic);
 export const selectEncryptedMnemonic = createSelector(
   selectKeysSlice,

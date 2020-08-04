@@ -235,6 +235,7 @@
     "redux-thunk": "2.3.0",
     "source-map-support": "0.5.19",
     "styled-components": "5.1.1",
+    "typescript": "3.9.7",
     "yup": "0.29.1",
     "zxcvbn": "4.4.2"
   },

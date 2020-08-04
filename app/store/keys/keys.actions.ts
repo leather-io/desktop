@@ -14,7 +14,7 @@ import {
   persistWalletType,
 } from '../../utils/disk-store';
 import { safeAwait } from '../../utils/safe-await';
-import { selectMnemonic, selectKeysSlice } from './keys.reducer';
+import { selectKeysSlice, selectMnemonic } from './keys.reducer';
 import { generateSalt, deriveKey } from '../../crypto/key-generation';
 import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
@@ -45,7 +45,7 @@ export function setLedgerAddress({ address, onSuccess }: SetLedgerAddress) {
 interface SetPasswordSuccess {
   salt: string;
   encryptedMnemonic: string;
-  address: string;
+  stxAddress: string;
 }
 
 export const setPasswordSuccess = createAction<SetPasswordSuccess>('keys/set-password-success');
@@ -76,10 +76,10 @@ export function setSoftwareWalletPassword({ password, history }: SetSoftwareWall
     const encryptedMnemonic = await encryptMnemonic({ derivedKeyHash, mnemonic });
     const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
     const { address } = deriveStxAddressKeychain(rootNode);
+    persistStxAddress(address);
     persistSalt(salt);
     persistEncryptedMnemonic(encryptedMnemonic);
-    persistStxAddress(address);
-    dispatch(setPasswordSuccess({ salt, encryptedMnemonic, address }));
+    dispatch(setPasswordSuccess({ salt, encryptedMnemonic, stxAddress: address }));
     history.push(routes.HOME);
   };
 }
@@ -94,36 +94,18 @@ export const attemptWalletDecryptFailed = createAction<{ decryptionError: string
   'keys/attempt-wallet-decrypt-failed'
 );
 
-interface DecryptWallet {
+interface DecryptSoftwareWalletArgs {
   password: string;
-  onDecryptSuccess: () => void;
+  salt: string;
+  ciphertextMnemonic: string;
 }
-export function decryptWallet({ password, onDecryptSuccess }: DecryptWallet) {
-  return async (dispatch: Dispatch, getState: () => RootState) => {
-    dispatch(attemptWalletDecrypt());
-    const { salt, encryptedMnemonic } = selectKeysSlice(getState());
-
-    if (!salt || !encryptedMnemonic) {
-      log.error('Cannot decrypt wallet if no `salt` or `encryptedMnemonic` exists');
-      return;
-    }
-
-    const { derivedKeyHash } = await deriveKey({ pass: password, salt });
-
-    const [error, mnemonic] = await safeAwait(
-      decryptMnemonic({ encryptedMnemonic, derivedKeyHash })
-    );
-
-    if (error) {
-      dispatch(attemptWalletDecryptFailed({ decryptionError: 'Password incorrect' }));
-      return;
-    }
-
-    if (mnemonic) {
-      const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
-      const { address } = deriveStxAddressKeychain(rootNode);
-      dispatch(attemptWalletDecryptSuccess({ salt, mnemonic, address }));
-      onDecryptSuccess();
-    }
-  };
+export async function decryptSoftwareWallet(args: DecryptSoftwareWalletArgs) {
+  const { password, salt, ciphertextMnemonic } = args;
+  const { derivedKeyHash } = await deriveKey({ pass: password, salt });
+  const plaintextMnemonic = await decryptMnemonic({
+    encryptedMnemonic: ciphertextMnemonic,
+    derivedKeyHash,
+  });
+  const rootNode = await deriveRootKeychainFromMnemonic(plaintextMnemonic);
+  return deriveStxAddressKeychain(rootNode);
 }

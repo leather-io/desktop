@@ -4,8 +4,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
-import { Modal, Text, Button, Box, Input, useForceUpdate } from '@blockstack/ui';
-import { StacksTransaction, makeSTXTokenTransfer } from '@blockstack/stacks-transactions';
+import { Modal, Text, Button, Box } from '@blockstack/ui';
+import { makeSTXTokenTransfer } from '@blockstack/stacks-transactions';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
@@ -13,14 +13,7 @@ import { validateStacksAddress } from '../../utils/get-stx-transfer-direction';
 
 import { selectTxModalOpen, homeActions } from '../../store/home/home.reducer';
 import { TxModalForm } from './transaction-form';
-import {
-  selectMnemonic,
-  decryptWallet,
-  selectDecryptionError,
-  selectIsDecrypting,
-  selectEncryptedMnemonic,
-  selectSalt,
-} from '../../store/keys';
+import { selectEncryptedMnemonic, selectSalt, decryptSoftwareWallet } from '../../store/keys';
 import {
   TxModalHeader,
   buttonStyle,
@@ -29,7 +22,6 @@ import {
   TxModalPreviewItem,
   modalStyle,
 } from './transaction-modal-layout';
-import { createStxTransaction } from '../../crypto/create-stx-tx';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { broadcastStxTransaction } from '../../store/transaction';
 import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
@@ -37,11 +29,6 @@ import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 import { stacksNetwork } from '../../environment';
 import { DecryptWalletForm } from './decrypt-wallet-form';
-import { deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
-import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
-import { deriveKey } from '../../crypto/key-generation';
-import { safeAwait } from '../../utils/safe-await';
-import { decryptMnemonic } from '../../crypto/key-encryption';
 
 interface TxModalProps {
   balance: string;
@@ -66,18 +53,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [amount, setAmount] = useState(new BigNumber(0));
   const [password, setPassword] = useState('');
   const [total, setTotal] = useState(new BigNumber(0));
-  // const [tx, setTx] = useState<null | StacksTransaction>(null);
+  const [decryptionError, setDecryptionError] = useState('');
+  const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { txModalOpen, decryptionError, isDecrypting, encryptedMnemonic, salt } = useSelector(
-    (state: RootState) => ({
-      txModalOpen: selectTxModalOpen(state),
-      decryptionError: selectDecryptionError(state),
-      isDecrypting: selectIsDecrypting(state),
-      salt: selectSalt(state),
-      encryptedMnemonic: selectEncryptedMnemonic(state),
-    })
-  );
-  const forceUpdate = useForceUpdate();
+  const { txModalOpen, encryptedMnemonic, salt } = useSelector((state: RootState) => ({
+    txModalOpen: selectTxModalOpen(state),
+    salt: selectSalt(state),
+    encryptedMnemonic: selectEncryptedMnemonic(state),
+  }));
+  // const forceUpdate = useForceUpdate();
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
@@ -87,29 +71,16 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   };
 
   const broadcastTx = async () => {
-    if (!password) return;
+    if (!password || !encryptedMnemonic || !salt) return;
     setHasSubmitted(true);
-    dispatch(decryptWallet({ password, onDecryptSuccess: () => ({}) }));
-    // forceUpdate();
+    setIsDecrypting(true);
+    try {
+      const { privateKey } = await decryptSoftwareWallet({
+        ciphertextMnemonic: encryptedMnemonic,
+        salt,
+        password,
+      });
 
-    if (!encryptedMnemonic || !salt) {
-      console.log('there is no encrypted mnemonic or salt');
-      return;
-    }
-    console.log(encryptedMnemonic);
-    const { derivedKeyHash } = await deriveKey({ pass: password, salt });
-
-    const [error, mnemonic] = await safeAwait(
-      decryptMnemonic({ encryptedMnemonic, derivedKeyHash })
-    );
-    if (error) {
-      console.log('there an error with decrypting mnemonic');
-      return;
-    }
-
-    if (mnemonic) {
-      const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
-      const { privateKey } = deriveStxAddressKeychain(rootNode);
       const tx = await makeSTXTokenTransfer({
         recipient: form.values.recipient,
         network: stacksNetwork,
@@ -120,7 +91,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       dispatch(
         broadcastStxTransaction({ signedTx: tx, amount, onBroadcastSuccess: closeModalResetForm })
       );
+    } catch (e) {
+      console.log('');
+      setDecryptionError(e);
     }
+    setIsDecrypting(false);
   };
 
   const totalIsMoreThanBalance = total.isGreaterThan(balance);
@@ -173,11 +148,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     onSubmit: async () => {
       // if (!mnemonic) return;
       setLoading(true);
-      // const tx = await createStxTransaction({
-      //   mnemonic,
-      //   recipient: form.values.recipient,
-      //   amount: stxToMicroStx(form.values.amount),
-      // });
       const demoTx = await makeSTXTokenTransfer({
         recipient: form.values.recipient,
         network: stacksNetwork,
@@ -199,10 +169,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   if (!txModalOpen) return null;
 
   const closeModalResetForm = () => {
-    setStep(TxModalStep.DescribeTx);
-    setLoading(false);
-    setFee(new BN(0));
-    setAmount(new BigNumber(0));
     dispatch(homeActions.closeTxModal());
     form.resetForm();
   };

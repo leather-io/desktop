@@ -1,8 +1,8 @@
 import { memoizeWith, identity } from 'ramda';
-import { hash, ArgonType } from 'argon2-browser';
+import argon2, { ArgonType } from 'argon2-browser';
 
 export async function deriveKey({ pass, salt }: { pass: string; salt: string }) {
-  const result = await hash({
+  const result = await argon2.hash({
     pass,
     salt,
     hashLen: 48,

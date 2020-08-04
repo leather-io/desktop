@@ -5,7 +5,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import routes from './constants/routes.json';
 import { Home } from './pages/home/home';
 import { selectAddress } from './store/keys/keys.reducer';
-import { SignIn } from './pages/sign-in/sign-in';
 
 import {
   Welcome,
@@ -23,10 +22,6 @@ export const routerConfig = [
   {
     path: routes.HOME,
     component: Home,
-  },
-  {
-    path: routes.SIGN_IN,
-    component: SignIn,
   },
   {
     path: routes.WELCOME,

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Flex, Text, useForceUpdate } from '@blockstack/ui';
+import { Box, Flex, Text, CheckmarkCircleIcon } from '@blockstack/ui';
 import BlockstackApp from '@zondax/ledger-blockstack';
 import Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
@@ -17,119 +17,114 @@ import {
 import { setLedgerAddress } from '../../../store/keys';
 import { useInterval } from '../../../hooks/use-interval';
 import { ERROR_CODE } from '../../../../../ledger-blockstack/js/src/common';
-const EXAMPLE_PATH = "m/44'/5757'/0/0/0";
+import { delay } from '../../../utils/delay';
+import { LedgerConnectInstructions } from '../../../components/ledger/ledger-connect-instructions';
+
+const STX_DERIVATION_PATH = `m/44'/5757'/0/0/0`;
+
+export enum LedgerConnectStep {
+  Disconnected,
+  ConnectedAppClosed,
+  ConnectedAppOpen,
+  HasAddress,
+}
 
 export const ConnectLedger: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const forceUpdate = useForceUpdate();
 
+  const [step, setStep] = useState(LedgerConnectStep.Disconnected);
   const [loading, setLoading] = useState(false);
-  const [transportError, setTransportError] = useState<Error>();
   const transport = useRef<Transport | null>(null);
+  const disconnectTimeouts = useRef<number>(0);
+  const listeningForAddEvent = useRef(true);
 
-  async function getTransport() {
-    // if (!transport.current) {
-    //   console.log('No ref to transport, creating new');
-    //   return TransportNodeHid.create(100, 100);
-    // }
-    return Promise.resolve(transport.current);
-  }
+  const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 1000;
+  const POLL_LEDGER_INTERVAL = 250;
 
-  function createListener() {
-    console.log('creatingListener');
+  const createListener = useCallback(() => {
+    console.log('creating listener');
     const tHid = TransportNodeHid.listen({
       next: async (event: any) => {
-        console.log({ event });
         if (event.type === 'add') {
+          console.log('clearing timeout id', disconnectTimeouts.current);
+          clearTimeout(disconnectTimeouts.current);
           tHid.unsubscribe();
           const t = await TransportNodeHid.open(event.descriptor);
-          console.log({ t });
+          listeningForAddEvent.current = false;
           transport.current = t;
-          // forceUpdate();
-
-          transport.current.on('disconnect', async (event: any) => {
-            console.log('device disconnected, relisten', event);
+          t.on('disconnect', async () => {
+            console.log('disconnect event');
+            listeningForAddEvent.current = true;
             transport.current = null;
             await t.close();
+            console.log('starting timeout');
+            const timer = setTimeout(() => {
+              console.log('running disconnect timeout');
+              setStep(LedgerConnectStep.Disconnected);
+            }, SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME);
+            console.log('timeout timer', timer);
+            disconnectTimeouts.current = timer;
             createListener();
           });
         }
       },
-      error: (error: any) => {
-        setTransportError(error);
-        console.log({ error });
-      },
-      complete: () => console.log('complete'),
+      error: () => ({}),
+      complete: () => ({}),
     });
     return tHid;
-  }
+  }, []);
 
   useEffect(() => {
     const subscription = createListener();
-
     return () => {
-      console.log('tear down component');
       subscription.unsubscribe();
       if (transport.current) {
         void transport.current.close();
         transport.current = null;
       }
     };
-  }, []);
+  }, [createListener]);
 
   useInterval(() => {
-    if (transport.current) {
-      console.log('Ping device');
+    if (
+      transport.current &&
+      step !== LedgerConnectStep.HasAddress &&
+      !listeningForAddEvent.current
+    ) {
+      console.log('Polling');
       // There's a bug with the node-hid library where it doesn't
       // fire disconnect event until next time an operation using it is called.
       // Here we poll a request to ensure the event is fired
-      void new BlockstackApp(transport.current).getAppInfo().catch(() => ({}));
+      void new BlockstackApp(transport.current)
+        .getVersion()
+        .then(resp => {
+          if (resp.returnCode === 0x6e00) return setStep(LedgerConnectStep.ConnectedAppClosed);
+          if (resp.returnCode === 0x9000) return setStep(LedgerConnectStep.ConnectedAppOpen);
+        })
+        .catch(() => ({}));
     }
-  }, 2_000);
-
-  const testLedger = async () => {
-    await getInfo();
-  };
-
-  async function getInfo() {
-    // const transport = await TransportNodeHid.create();
-    const transport = await getTransport();
-
-    if (transport === null) {
-      console.log('tried to show address but transport null');
-      return;
-    }
-
-    const app = new BlockstackApp(transport);
-    console.log(app);
-    forceUpdate();
-  }
+  }, POLL_LEDGER_INTERVAL);
 
   async function handleLedger() {
-    const transport = await getTransport();
+    const usbTransport = transport.current;
 
-    if (transport === null) {
-      console.log('tried to show address but transport null');
-      return;
-    }
+    if (usbTransport === null) return;
 
-    const app = new BlockstackApp(transport);
-    console.log(app);
+    const app = new BlockstackApp(usbTransport);
 
     try {
-      const response = await app.getVersion();
-      console.log({ response });
+      void app.getVersion();
 
-      // now it is possible to access all commands in the app
-      // this.log('Please click in the device');
-      const confirmedResponse = await app.showAddressAndPubKey(EXAMPLE_PATH);
+      const confirmedResponse = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
       if (confirmedResponse.returnCode !== ERROR_CODE.NoError) {
         console.log(`Error [${confirmedResponse.returnCode}] ${confirmedResponse.errorMessage}`);
         return;
       }
       if (confirmedResponse.address) {
         setLoading(true);
+        setStep(LedgerConnectStep.HasAddress);
+        await delay(1250);
         dispatch(
           setLedgerAddress({
             address: confirmedResponse.address,
@@ -142,38 +137,16 @@ export const ConnectLedger: React.FC = () => {
     }
   }
 
-  const ledgerConnected = !!transport.current;
-
   return (
     <Onboarding>
       <OnboardingTitle>Connect your Ledger</OnboardingTitle>
       <OnboardingBackButton onClick={() => history.push(routes.CREATE)} />
-      <OnboardingText>Follow these steps to connect your Ledger device</OnboardingText>
-      <Box border="1px solid #F0F0F5" mt="extra-loose" borderRadius="8px">
-        <Flex height="56px" alignItems="center" mx="extra-loose">
-          <Text>1. Connect your Ledger to your computer</Text>
-        </Flex>
-        <Flex height="56px" alignItems="center" mx="extra-loose">
-          <Text>2. Install the Stacks app on your Ledger</Text>
-        </Flex>
-        <Flex height="56px" alignItems="center" mx="extra-loose">
-          <Text>3. Open the Stacks app on your Ledger</Text>
-        </Flex>
-      </Box>
-      <Box my="extra-loose">
-        Some instructions
-        {!ledgerConnected && (
-          <Box>
-            Your ledger isn't connected. Plug it in to a USB port on your computer and enter your
-            PIN number.
-          </Box>
-        )}
-        <pre>error: {transportError && JSON.stringify(transportError)}</pre>
-        {/* <pre>transport: {transport && JSON.stringify(transport)}</pre> */}
-      </Box>
-      <OnboardingButton onClick={testLedger}>Test ledger</OnboardingButton>
-      <OnboardingButton onClick={handleLedger} isDisabled={!ledgerConnected} isLoading={loading}>
-        Connect ledger
+      <OnboardingText>Follow these steps to connect your Ledger S or X</OnboardingText>
+
+      <LedgerConnectInstructions step={step} />
+
+      <OnboardingButton mt="loose" onClick={handleLedger} isDisabled={step < 2} isLoading={loading}>
+        Continue
       </OnboardingButton>
     </Onboarding>
   );

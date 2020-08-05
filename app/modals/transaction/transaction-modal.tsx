@@ -23,7 +23,7 @@ import {
   modalStyle,
 } from './transaction-modal-layout';
 import { validateAddressChain } from '../../crypto/validate-address-net';
-import { broadcastStxTransaction } from '../../store/transaction';
+import { broadcastStxTransaction, selectMostRecentlyTxError } from '../../store/transaction';
 import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
@@ -52,23 +52,19 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [fee, setFee] = useState(new BN(0));
   const [amount, setAmount] = useState(new BigNumber(0));
   const [password, setPassword] = useState('');
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const [total, setTotal] = useState(new BigNumber(0));
-  const [decryptionError, setDecryptionError] = useState('');
+  const [decryptionError, setDecryptionError] = useState<string | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { txModalOpen, encryptedMnemonic, salt } = useSelector((state: RootState) => ({
-    txModalOpen: selectTxModalOpen(state),
-    salt: selectSalt(state),
-    encryptedMnemonic: selectEncryptedMnemonic(state),
-  }));
-  // const forceUpdate = useForceUpdate();
-
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-  const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const pass = e.currentTarget.value;
-    setPassword(pass);
-  };
+  const { txModalOpen, encryptedMnemonic, salt, broadcastError } = useSelector(
+    (state: RootState) => ({
+      txModalOpen: selectTxModalOpen(state),
+      salt: selectSalt(state),
+      encryptedMnemonic: selectEncryptedMnemonic(state),
+      broadcastError: selectMostRecentlyTxError(state),
+    })
+  );
 
   const broadcastTx = async () => {
     if (!password || !encryptedMnemonic || !salt) return;
@@ -92,7 +88,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         broadcastStxTransaction({ signedTx: tx, amount, onBroadcastSuccess: closeModalResetForm })
       );
     } catch (e) {
-      console.log('');
+      console.log(e);
       setDecryptionError(e);
     }
     setIsDecrypting(false);
@@ -146,12 +142,14 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         .required(),
     }),
     onSubmit: async () => {
-      // if (!mnemonic) return;
       setLoading(true);
+      setDecryptionError(null);
       const demoTx = await makeSTXTokenTransfer({
         recipient: form.values.recipient,
         network: stacksNetwork,
         amount: new BN(stxToMicroStx(form.values.amount).toString()),
+        //
+        // TODO: find common burn address
         senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
       });
       const { amount, fee } = {
@@ -176,7 +174,12 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const txFormStepMap: { [step in TxModalStep]: ModalComponents } = {
     [TxModalStep.DescribeTx]: () => ({
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Send STX</TxModalHeader>,
-      body: <TxModalForm balance={balance} form={form} />,
+      body: (
+        <>
+          ST4VFKC1WG386T43ZSMWTVM9TQGCXHR3R1VF99RV
+          <TxModalForm balance={balance} form={form} />
+        </>
+      ),
       footer: (
         <TxModalFooter>
           <Button mode="tertiary" onClick={closeModalResetForm} {...buttonStyle}>
@@ -240,23 +243,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     [TxModalStep.ConfirmAndSend]: () => ({
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Confirm and send</TxModalHeader>,
       body: (
-        // <Box mx="extra-loose" mt="extra-loose">
-        //   <Text textStyle="body.large">Enter your password to confirm your transaction</Text>
-        //   <Input onChange={handlePasswordInput} mt="base-loose" />
-        //   {hasSubmitted && decryptionError && (
-        //     <ErrorLabel>
-        //       <ErrorText>Password entered is incorrect</ErrorText>
-        //     </ErrorLabel>
-        //   )}
-        //   <Text textStyle="body.small" mt="base-tight" mb="base-loose" display="block">
-        //     Forgot password? Reset your wallet to set a new password.
-        //   </Text>
-        // </Box>
-        <DecryptWalletForm
-          onSetPassword={password => setPassword(password)}
-          hasSubmitted={hasSubmitted}
-          decryptionError={decryptionError}
-        />
+        <>
+          2b458638acb14f46af49384fe1d4b913
+          <DecryptWalletForm
+            onSetPassword={password => setPassword(password)}
+            hasSubmitted={hasSubmitted}
+            decryptionError={decryptionError}
+          />
+          {JSON.stringify(broadcastError)}
+        </>
       ),
       footer: (
         <TxModalFooter>

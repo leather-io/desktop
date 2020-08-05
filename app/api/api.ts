@@ -6,7 +6,7 @@ import {
   AddressBalanceResponse,
 } from '@blockstack/stacks-blockchain-api-types';
 
-const api = 'https://sidecar.staging.blockstack.xyz/sidecar';
+const api = 'https://stacks-node-api-latest.argon.blockstack.xyz/extended';
 
 async function getAddressBalance(address: string) {
   return axios.get<AddressBalanceResponse>(api + `/v1/address/${address}/balances`);

@@ -36,26 +36,34 @@ export function getAddressTransactions(address: string) {
 
 export const broadcastTx = createAction('transactions/broadcast-transactions');
 export const broadcastTxDone = createAction('transactions/broadcast-transactions-done');
-export const broadcastTxFail = createAction('transactions/broadcast-transactions-fail');
+interface BroadcastTxFail {
+  reason: string;
+  message: string;
+}
+export const broadcastTxFail = createAction<BroadcastTxFail>(
+  'transactions/broadcast-transactions-fail'
+);
 
 interface BroadcastStxTransactionArgs {
   signedTx: StacksTransaction;
   amount: BigNumber;
   onBroadcastSuccess: () => void;
 }
-
-export function broadcastStxTransaction({
-  amount,
-  signedTx,
-  onBroadcastSuccess,
-}: BroadcastStxTransactionArgs) {
+export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
+  const { amount, signedTx, onBroadcastSuccess } = args;
   return async (dispatch: Dispatch) => {
+    dispatch(broadcastTx());
+
     const [error, blockchainResponse] = await safeAwait(
       broadcastTransaction(signedTx, stacksNetwork)
     );
-    if (error || !blockchainResponse) return null;
+    if (error || !blockchainResponse) {
+      dispatch(broadcastTxFail(error as any));
+      return;
+    }
     if (typeof blockchainResponse !== 'string') {
       // setError for ui
+      dispatch(broadcastTxFail(error as any));
       return;
     }
     onBroadcastSuccess();

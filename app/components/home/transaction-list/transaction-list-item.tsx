@@ -15,7 +15,7 @@ import {
   registerHandler,
   deregisterHandler,
 } from './transaction-list-context-menu';
-import { makeExplorerLink } from '../../../utils/explorer';
+import { makeExplorerLink } from '../../../utils/external-links';
 import { getRecipientAddress } from '../../../utils/tx-utils';
 
 const dateOptions = {
@@ -56,10 +56,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = ({ tx, address,
 
   useLayoutEffect(() => {
     const el = containerRef.current;
-    const contextMenuHandler = (e: Event) => {
-      e.preventDefault();
-      createTxListContextMenu({ tx, copy });
-    };
+    const contextMenuHandler = () => createTxListContextMenu({ tx, copy });
     registerHandler(el, contextMenuHandler);
     return () => deregisterHandler(el, contextMenuHandler);
   }, [tx, copy]);

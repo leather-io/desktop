@@ -4,7 +4,7 @@ import { Spinner } from '@blockstack/ui';
 
 import { RootState } from '../../store';
 import { getAddressTransactions } from '../../store/transaction/transaction.actions';
-import { openInExplorer } from '../../utils/explorer';
+import { openInExplorer } from '../../utils/external-links';
 import { selectAddress } from '../../store/keys/keys.reducer';
 import { getAddressDetails } from '../../store/address/address.actions';
 import { selectAddressBalance } from '../../store/address/address.reducer';

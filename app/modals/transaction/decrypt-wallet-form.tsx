@@ -2,13 +2,10 @@ import React, { FC } from 'react';
 import { Box, Input, Text } from '@blockstack/ui';
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
-import { useSelector } from 'react-redux';
-import { selectDecryptionError } from '../../store/keys';
-import { RootState } from '../../store';
 
 interface DecryptWalletFormProps {
   hasSubmitted: boolean;
-  decryptionError?: string;
+  decryptionError: string | null;
   onSetPassword(password: string): void;
 }
 

@@ -64,7 +64,6 @@ export const selectEncryptedMnemonic = createSelector(
 );
 export const selectAddress = createSelector(selectKeysSlice, state => state.stxAddress);
 export const selectSalt = createSelector(selectKeysSlice, state => state.salt);
-export const selectPublicKey = createSelector(
-  selectKeysSlice,
-  state => state.publicKey && Buffer.from(state.publicKey, 'hex')
+export const selectPublicKey = createSelector(selectKeysSlice, state =>
+  state.publicKey ? Buffer.from(state.publicKey, 'hex') : null
 );

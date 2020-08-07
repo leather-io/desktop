@@ -5,15 +5,28 @@ import * as yup from 'yup';
 import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
 import { Modal, Text, Button, Box } from '@blockstack/ui';
-import { makeSTXTokenTransfer } from '@blockstack/stacks-transactions';
+import {
+  makeSTXTokenTransfer,
+  makeUnsignedSTXTokenTransfer,
+  pubKeyfromPrivKey,
+} from '@blockstack/stacks-transactions';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
 import { validateStacksAddress } from '../../utils/get-stx-transfer-direction';
-
 import { selectTxModalOpen, homeActions } from '../../store/home/home.reducer';
-import { TxModalForm } from './transaction-form';
-import { selectEncryptedMnemonic, selectSalt, decryptSoftwareWallet } from '../../store/keys';
+import {
+  selectEncryptedMnemonic,
+  selectSalt,
+  decryptSoftwareWallet,
+  selectWalletType,
+} from '../../store/keys';
+import { validateAddressChain } from '../../crypto/validate-address-net';
+import { broadcastStxTransaction, selectMostRecentlyTxError } from '../../store/transaction';
+import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
+import { ErrorLabel } from '../../components/error-label';
+import { ErrorText } from '../../components/error-text';
+import { stacksNetwork } from '../../environment';
 import {
   TxModalHeader,
   buttonStyle,
@@ -22,13 +35,13 @@ import {
   TxModalPreviewItem,
   modalStyle,
 } from './transaction-modal-layout';
-import { validateAddressChain } from '../../crypto/validate-address-net';
-import { broadcastStxTransaction, selectMostRecentlyTxError } from '../../store/transaction';
-import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
-import { ErrorLabel } from '../../components/error-label';
-import { ErrorText } from '../../components/error-text';
-import { stacksNetwork } from '../../environment';
+import { TxModalForm } from './transaction-form';
 import { DecryptWalletForm } from './decrypt-wallet-form';
+import { SignTxWithLedger } from './sign-tx-with-ledger';
+import { StacksTransaction } from '@blockstack/stacks-transactions';
+import BlockstackApp from '../../../../ledger-blockstack/js/src/index';
+import { MessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
+import { selectPublicKey } from '../../store/keys/keys.reducer';
 
 interface TxModalProps {
   balance: string;
@@ -38,7 +51,8 @@ interface TxModalProps {
 enum TxModalStep {
   DescribeTx,
   PreviewTx,
-  ConfirmAndSend,
+  DecryptWalletAndSend,
+  SignWithLedgerAndSend,
 }
 
 type ModalComponents = () => {
@@ -57,40 +71,131 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { txModalOpen, encryptedMnemonic, salt, broadcastError } = useSelector(
-    (state: RootState) => ({
-      txModalOpen: selectTxModalOpen(state),
-      salt: selectSalt(state),
-      encryptedMnemonic: selectEncryptedMnemonic(state),
-      broadcastError: selectMostRecentlyTxError(state),
-    })
-  );
+  const {
+    txModalOpen,
+    encryptedMnemonic,
+    salt,
+    walletType,
+    publicKey,
+    broadcastError,
+  } = useSelector((state: RootState) => ({
+    txModalOpen: selectTxModalOpen(state),
+    salt: selectSalt(state),
+    encryptedMnemonic: selectEncryptedMnemonic(state),
+    broadcastError: selectMostRecentlyTxError(state),
+    walletType: selectWalletType(state),
+    publicKey: selectPublicKey(state),
+  }));
 
-  const broadcastTx = async () => {
-    if (!password || !encryptedMnemonic || !salt) return;
+  const broadcastTx = async (blockstackApp?: BlockstackApp) => {
+    console.log('broadcasting');
     setHasSubmitted(true);
-    setIsDecrypting(true);
-    try {
-      const { privateKey } = await decryptSoftwareWallet({
-        ciphertextMnemonic: encryptedMnemonic,
-        salt,
-        password,
-      });
 
-      const tx = await makeSTXTokenTransfer({
-        recipient: form.values.recipient,
-        network: stacksNetwork,
-        amount: new BN(stxToMicroStx(form.values.amount).toString()),
-        senderKey: privateKey,
-      });
+    if (walletType === 'software') {
+      if (!password || !encryptedMnemonic || !salt) return;
+      setIsDecrypting(true);
+      try {
+        const { privateKey } = await decryptSoftwareWallet({
+          ciphertextMnemonic: encryptedMnemonic,
+          salt,
+          password,
+        });
 
-      dispatch(
-        broadcastStxTransaction({ signedTx: tx, amount, onBroadcastSuccess: closeModalResetForm })
-      );
-    } catch (e) {
-      console.log(e);
-      setDecryptionError(e);
+        const tx = await makeSTXTokenTransfer({
+          recipient: form.values.recipient,
+          network: stacksNetwork,
+          amount: new BN(stxToMicroStx(form.values.amount).toString()),
+          senderKey: privateKey,
+        });
+        dispatch(
+          broadcastStxTransaction({ signedTx: tx, amount, onBroadcastSuccess: closeModalResetForm })
+        );
+      } catch (e) {
+        console.log(e);
+        setDecryptionError(e);
+      }
     }
+
+    if (walletType === 'ledger') {
+      try {
+        if (!publicKey || !blockstackApp) {
+          console.log('no public key saved??');
+          return;
+        }
+
+        const demoTx = await makeSTXTokenTransfer({
+          recipient: form.values.recipient,
+          network: stacksNetwork,
+          amount: new BN(stxToMicroStx(form.values.amount).toString()),
+          senderKey: '5db4f7bb20960c6b1ceaa599576c3f01ec96448dc33d7894cc187b941f15cd3201',
+        });
+
+        console.log('signed with pk', demoTx.serialize().toString('hex'));
+
+        const generatedPubkey = pubKeyfromPrivKey(
+          '5db4f7bb20960c6b1ceaa599576c3f01ec96448dc33d7894cc187b941f15cd3201'
+        );
+        console.log({ generatedPubkey: generatedPubkey.data.toString('hex') });
+
+        console.log({ persistedPubkey: publicKey.toString('hex') });
+
+        console.log({ demoTx });
+
+        const tx = await makeUnsignedSTXTokenTransfer({
+          recipient: form.values.recipient,
+          network: stacksNetwork,
+          amount: new BN(stxToMicroStx(form.values.amount).toString()),
+          publicKey,
+        });
+
+        console.log({ unsignedTx: tx });
+        console.log('unsigned pubkey', tx.serialize().toString('hex'));
+
+        const resp = (await blockstackApp.sign(`m/44'/5757'/0'/0/0`, tx.serialize())) as {
+          signatureCompact: Buffer;
+        };
+
+        console.log({ ...resp, string: resp.signatureCompact.toString('hex') });
+
+        // const message = Buffer.from(
+        //   '00000000010400149be4d6c4667e4fb6d461e7c8378fa5a5e10c9f000000000000000a00000000000004e200010e997280fe04c9976e70d90a93b9f86507247f5e9fa78ec95cd4eebb27b23f3338a13f549bee779b646bffff41611c9eae53b65e6b7a911b00c906a36ad5920a0302000000000005169eb0a31b22af43679e4f58ce400ed641c28113a6000000000000138800000000000000000000000000000000000000000000000000000000000000000000',
+        //   'hex'
+        // );
+
+        // const d = deserializeTransaction(new BufferReader(message));
+
+        // console.log({ d });
+        // const signedTx = await blockstackApp.sign(`m/44'/5757'/0'/0/0`, message);
+
+        // console.log({ ...signedTx });
+
+        // console.log({ tx });
+        // const resp = await blockstackApp.sign(`m/44'/5757'/0'/0/0`, tx.serialize());
+        // console.log({ ...resp, string: resp.signatureCompact.toString('hex') });
+        const lastTwoBytes = resp.signatureCompact.slice(
+          resp.signatureCompact.length - 2,
+          resp.signatureCompact.length
+        );
+        const reformattedBuffer = Buffer.concat([
+          lastTwoBytes,
+          resp.signatureCompact.slice(0, resp.signatureCompact.length - 2),
+        ]);
+
+        if (tx.auth.spendingCondition) {
+          tx.auth.spendingCondition.signature = new MessageSignature(
+            reformattedBuffer.toString('hex')
+          );
+        }
+        console.log('tx after changing signature', tx.serialize().toString('hex'));
+
+        dispatch(
+          broadcastStxTransaction({ signedTx: tx, amount, onBroadcastSuccess: closeModalResetForm })
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     setIsDecrypting(false);
   };
 
@@ -171,6 +276,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     form.resetForm();
   };
 
+  const proceedToSignTransactionStep = () =>
+    walletType === 'software'
+      ? setStep(TxModalStep.DecryptWalletAndSend)
+      : setStep(TxModalStep.SignWithLedgerAndSend);
+
   const txFormStepMap: { [step in TxModalStep]: ModalComponents } = {
     [TxModalStep.DescribeTx]: () => ({
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Send STX</TxModalHeader>,
@@ -233,14 +343,14 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             {...buttonStyle}
             isLoading={loading}
             isDisabled={totalIsMoreThanBalance}
-            onClick={() => setStep(TxModalStep.ConfirmAndSend)}
+            onClick={proceedToSignTransactionStep}
           >
             Sign transaction and send
           </Button>
         </TxModalFooter>
       ),
     }),
-    [TxModalStep.ConfirmAndSend]: () => ({
+    [TxModalStep.DecryptWalletAndSend]: () => ({
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Confirm and send</TxModalHeader>,
       body: (
         <>
@@ -262,10 +372,26 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             ml="base-tight"
             isLoading={isDecrypting}
             isDisabled={isDecrypting}
-            onClick={broadcastTx}
+            onClick={() => broadcastTx()}
             {...buttonStyle}
           >
             Send transaction
+          </Button>
+        </TxModalFooter>
+      ),
+    }),
+    [TxModalStep.SignWithLedgerAndSend]: () => ({
+      header: (
+        <TxModalHeader onSelectClose={closeModalResetForm}>Confirm on your Ledger</TxModalHeader>
+      ),
+      body: <SignTxWithLedger onLedgerConnect={blockstackApp => broadcastTx(blockstackApp)} />,
+      footer: (
+        <TxModalFooter>
+          <Button mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)} {...buttonStyle}>
+            Go back
+          </Button>
+          <Button ml="base-tight" {...buttonStyle}>
+            Sign transaction
           </Button>
         </TxModalFooter>
       ),

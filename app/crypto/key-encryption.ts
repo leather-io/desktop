@@ -43,7 +43,7 @@ export async function decryptMnemonic({ encryptedMnemonic, derivedKeyHash }: Dec
   const key = await deriveWebCryptoKey(derivedKeyHash);
   const iv = extractEncryptionInitVector(derivedKeyHash);
   const algorithm = { name: algorithmName, iv };
-  const encryptedBuffer = new Buffer(encryptedMnemonic, 'hex');
+  const encryptedBuffer = Buffer.from(encryptedMnemonic, 'hex');
   const decrypted = await crypto.subtle.decrypt(algorithm, key, encryptedBuffer);
   const textDecoder = new TextDecoder();
   return textDecoder.decode(decrypted);

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Flex, Text, CheckmarkCircleIcon } from '@blockstack/ui';
 import BlockstackApp from '@zondax/ledger-blockstack';
-import Transport from '@ledgerhq/hw-transport';
+import type Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import { useDispatch } from 'react-redux';
 
@@ -14,13 +13,13 @@ import {
   OnboardingButton,
   OnboardingBackButton,
 } from '../../../components/onboarding';
-import { setLedgerAddress } from '../../../store/keys';
+import { setLedgerWallet } from '../../../store/keys';
 import { useInterval } from '../../../hooks/use-interval';
 import { ERROR_CODE } from '../../../../../ledger-blockstack/js/src/common';
 import { delay } from '../../../utils/delay';
 import { LedgerConnectInstructions } from '../../../components/ledger/ledger-connect-instructions';
 
-const STX_DERIVATION_PATH = `m/44'/5757'/0/0/0`;
+const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
 
 export enum LedgerConnectStep {
   Disconnected,
@@ -114,7 +113,7 @@ export const ConnectLedger: React.FC = () => {
     const app = new BlockstackApp(usbTransport);
 
     try {
-      void app.getVersion();
+      await app.getVersion();
 
       const confirmedResponse = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
       if (confirmedResponse.returnCode !== ERROR_CODE.NoError) {
@@ -126,8 +125,9 @@ export const ConnectLedger: React.FC = () => {
         setStep(LedgerConnectStep.HasAddress);
         await delay(1250);
         dispatch(
-          setLedgerAddress({
+          setLedgerWallet({
             address: confirmedResponse.address,
+            publicKey: confirmedResponse.publicKey,
             onSuccess: () => history.push(routes.HOME),
           })
         );

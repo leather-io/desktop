@@ -1,52 +1,70 @@
 import Store from 'electron-store';
 
-enum PersistedValues {
+enum StoreIndex {
   Salt = 'salt',
   EncryptedMnemonic = 'encryptedMnemonic',
   StxAddress = 'stxAddress',
+  PublicKey = 'publicKey',
   WalletType = 'walletType',
 }
 
-export interface DiskStore {
-  [PersistedValues.Salt]?: string;
-  [PersistedValues.EncryptedMnemonic]?: string;
-  [PersistedValues.WalletType]: 'ledger' | 'software';
-  [PersistedValues.StxAddress]: string;
+interface SoftwareWallet {
+  [StoreIndex.WalletType]: 'software';
+  [StoreIndex.Salt]: string;
+  [StoreIndex.EncryptedMnemonic]: string;
+  [StoreIndex.StxAddress]: string;
 }
+
+interface LedgerWallet {
+  [StoreIndex.WalletType]: 'ledger';
+  [StoreIndex.StxAddress]: string;
+  [StoreIndex.PublicKey]: string;
+}
+
+export type DiskStore = LedgerWallet | SoftwareWallet;
 
 const store = new Store({
   schema: {
-    [PersistedValues.Salt]: {
+    [StoreIndex.Salt]: {
       type: 'string',
       minLength: 32,
       maxLength: 32,
     },
-    [PersistedValues.EncryptedMnemonic]: {
+    [StoreIndex.EncryptedMnemonic]: {
       type: 'string',
     },
-    [PersistedValues.StxAddress]: {
+    [StoreIndex.StxAddress]: {
       type: 'string',
     },
-    [PersistedValues.WalletType]: {
+    [StoreIndex.PublicKey]: {
+      type: 'string',
+      minLength: 66,
+      maxLength: 66,
+    },
+    [StoreIndex.WalletType]: {
       enum: ['ledger', 'software'],
     },
   },
 });
 
 export const persistEncryptedMnemonic = (encryptedMnemonic: string) => {
-  store.set(PersistedValues.EncryptedMnemonic, encryptedMnemonic);
+  store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
 };
 
 export const persistStxAddress = (stxAddress: string) => {
-  store.set(PersistedValues.StxAddress, stxAddress);
+  store.set(StoreIndex.StxAddress, stxAddress);
+};
+
+export const persistPublicKey = (publicKey: string) => {
+  store.set(StoreIndex.PublicKey, publicKey);
 };
 
 export const persistSalt = (salt: string) => {
-  store.set(PersistedValues.Salt, salt);
+  store.set(StoreIndex.Salt, salt);
 };
 
 export const persistWalletType = (walletType: 'ledger' | 'software') => {
-  store.set(PersistedValues.WalletType, walletType);
+  store.set(StoreIndex.WalletType, walletType);
 };
 
 export const getInitialStateFromDisk = () => {

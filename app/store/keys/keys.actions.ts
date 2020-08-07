@@ -13,12 +13,11 @@ import {
   persistStxAddress,
   persistWalletType,
 } from '../../utils/disk-store';
-import { safeAwait } from '../../utils/safe-await';
-import { selectKeysSlice, selectMnemonic } from './keys.reducer';
 import { generateSalt, deriveKey } from '../../crypto/key-generation';
 import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
-import { delay } from '../../utils/delay';
+import { persistPublicKey } from '../../utils/disk-store';
+import { selectMnemonic } from './keys.reducer';
 
 type History = ReturnType<typeof useHistory>;
 
@@ -26,18 +25,25 @@ export const persistMnemonicSafe = createAction<string>('keys/save-mnemonic-safe
 
 export const persistMnemonic = createAction<string>('keys/save-mnemonic');
 
-export const updateLedgerAddress = createAction<string>('keys/set-ledger-address');
+interface PersistLedgerWalletAction {
+  address: string;
+  publicKey: string;
+}
+export const persistLedgerWallet = createAction<PersistLedgerWalletAction>(
+  'keys/persist-ledger-wallet'
+);
 
 interface SetLedgerAddress {
   address: string;
+  publicKey: Buffer;
   onSuccess: () => void;
 }
-export function setLedgerAddress({ address, onSuccess }: SetLedgerAddress) {
-  return async (dispatch: Dispatch) => {
-    await delay(1000);
+export function setLedgerWallet({ address, publicKey, onSuccess }: SetLedgerAddress) {
+  return (dispatch: Dispatch) => {
     persistStxAddress(address);
+    persistPublicKey(publicKey.toString('hex'));
     persistWalletType('ledger');
-    dispatch(updateLedgerAddress(address));
+    dispatch(persistLedgerWallet({ address, publicKey: publicKey.toString('hex') }));
     onSuccess();
   };
 }
@@ -58,11 +64,11 @@ export function onboardingMnemonicGenerationStep({ stepDelayMs }: { stepDelayMs:
   };
 }
 
-interface SetSoftwareWalletPassword {
+interface SetSoftwareWallet {
   password: string;
   history: History;
 }
-export function setSoftwareWalletPassword({ password, history }: SetSoftwareWalletPassword) {
+export function setSoftwareWallet({ password, history }: SetSoftwareWallet) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const mnemonic = selectMnemonic(getState());
     const salt = generateSalt();
@@ -83,16 +89,6 @@ export function setSoftwareWalletPassword({ password, history }: SetSoftwareWall
     history.push(routes.HOME);
   };
 }
-
-export const attemptWalletDecrypt = createAction('keys/attempt-wallet-decrypt');
-export const attemptWalletDecryptSuccess = createAction<{
-  salt: string;
-  mnemonic: string;
-  address: string;
-}>('keys/attempt-wallet-decrypt-success');
-export const attemptWalletDecryptFailed = createAction<{ decryptionError: string }>(
-  'keys/attempt-wallet-decrypt-failed'
-);
 
 interface DecryptSoftwareWalletArgs {
   password: string;

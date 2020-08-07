@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Text, Input } from '@blockstack/ui';
 
-import { setSoftwareWalletPassword as setPasswordAction } from '../../../store/keys';
+import { setSoftwareWallet } from '../../../store/keys';
 import {
   Onboarding,
   OnboardingTitle,
@@ -53,7 +53,7 @@ export const SetPassword: React.FC = () => {
     setStrengthResult(result);
     if (result.meetsAllStrengthRequirements) {
       setBtnDisabled(true);
-      dispatch(setPasswordAction({ password, history }));
+      dispatch(setSoftwareWallet({ password, history }));
     }
   };
 

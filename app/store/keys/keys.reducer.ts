@@ -2,14 +2,11 @@ import { createReducer, createSelector } from '@reduxjs/toolkit';
 import log from 'electron-log';
 
 import { RootState } from '..';
-import { setPasswordSuccess, updateLedgerAddress } from './keys.actions';
-import {
-  persistMnemonicSafe,
-  persistMnemonic,
-  attemptWalletDecryptFailed,
-  attemptWalletDecrypt,
-} from './keys.actions';
+import { setPasswordSuccess, persistLedgerWallet } from './keys.actions';
+import { persistMnemonicSafe, persistMnemonic } from './keys.actions';
 
+//
+// TODO: create separate state slices per wallet type
 export interface KeysState {
   walletType: 'ledger' | 'software';
   mnemonic: string | null;
@@ -18,6 +15,7 @@ export interface KeysState {
   decryptionError?: string;
   encryptedMnemonic?: string;
   stxAddress?: string;
+  publicKey?: string;
 }
 
 const initialState: Readonly<KeysState> = Object.freeze({
@@ -44,15 +42,10 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
         ...payload,
         mnemonic: null,
       }))
-      .addCase(attemptWalletDecrypt, state => ({ ...state, decrypting: true }))
-      .addCase(attemptWalletDecryptFailed, (state, action) => ({
+      .addCase(persistLedgerWallet, (state, { payload }) => ({
         ...state,
-        decrypting: false,
-        decryptionError: action.payload.decryptionError,
-      }))
-      .addCase(updateLedgerAddress, (state, { payload }) => ({
-        ...state,
-        stxAddress: payload,
+        stxAddress: payload.address,
+        publicKey: payload.publicKey,
         walletType: 'ledger',
       }))
   );
@@ -64,9 +57,14 @@ export const selectDecryptionError = createSelector(
 );
 export const selectIsDecrypting = createSelector(selectKeysSlice, state => state.decrypting);
 export const selectMnemonic = createSelector(selectKeysSlice, state => state.mnemonic);
+export const selectWalletType = createSelector(selectKeysSlice, state => state.walletType);
 export const selectEncryptedMnemonic = createSelector(
   selectKeysSlice,
   state => state.encryptedMnemonic
 );
 export const selectAddress = createSelector(selectKeysSlice, state => state.stxAddress);
 export const selectSalt = createSelector(selectKeysSlice, state => state.salt);
+export const selectPublicKey = createSelector(
+  selectKeysSlice,
+  state => state.publicKey && Buffer.from(state.publicKey, 'hex')
+);

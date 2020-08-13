@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { Input } from '@blockstack/ui';
+import { Text, Input } from '@blockstack/ui';
 
 import { setPassword as setPasswordAction } from '../../../store/keys';
 import {
@@ -10,8 +10,6 @@ import {
   OnboardingText,
   OnboardingButton,
 } from '../../../components/onboarding';
-import { ErrorLabel } from '../../../components/error-label';
-import { ErrorText } from '../../../components/error-text';
 import {
   validatePassword,
   blankPasswordValidation,
@@ -19,11 +17,11 @@ import {
 } from '../../../crypto/validate-password';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
-  if (result.feedback.warning) {
-    return `${result.feedback.warning} ${result.feedback.suggestions.join(' ')}`;
+  if (result.feedback.suggestions.length > 0) {
+    return `${result.feedback.suggestions.join(' ')}`;
   }
   if (!result.meetsScoreRequirement) {
-    return 'Your password is too weak, making it vulnerable to brute force attacks. Try using a stronger password at least 12 characters in length';
+    return 'Your password is vulnerable to brute force attacks. Try using a stronger password at least 12 characters in length';
   }
   if (!result.meetsLengthRequirement) {
     return 'Your password must also be at least 12 characters long.';
@@ -43,6 +41,8 @@ export const SetPassword: React.FC = () => {
     e.preventDefault();
     const pass = e.currentTarget.value;
     setPassword(pass);
+    const result = validatePassword(pass);
+    setStrengthResult(result);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -57,15 +57,31 @@ export const SetPassword: React.FC = () => {
     }
   };
 
+  const strengthText = (result: ValidatedPassword) =>
+    result.meetsAllStrengthRequirements ? 'Strong' : 'Not strong enough';
+
+  const strengthColor = (result: ValidatedPassword) =>
+    result.meetsAllStrengthRequirements ? 'feedback.success' : 'feedback.error';
+
   return (
     <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Set a password</OnboardingTitle>
-      <OnboardingText>You'll use your password when confirming transactions</OnboardingText>
+      <OnboardingText>You’ll use your password to confirm transactions</OnboardingText>
       <Input type="password" mt="extra-loose" onChange={handlePasswordInput} />
+      <Text textStyle="body.small" color="ink.600" mt="base">
+        Password strength:
+        <Text
+          textStyle="body.small.medium"
+          color={password === null ? undefined : strengthColor(strengthResult)}
+          ml="tight"
+        >
+          {password === null ? '—' : strengthText(strengthResult)}
+        </Text>
+      </Text>
       {!strengthResult.meetsAllStrengthRequirements && hasSubmitted && (
-        <ErrorLabel>
-          <ErrorText>{weakPasswordWarningMessage(strengthResult)}</ErrorText>
-        </ErrorLabel>
+        <Text textStyle="body.small" color="ink.600" mt="tight">
+          {weakPasswordWarningMessage(strengthResult)}
+        </Text>
       )}
       <OnboardingButton type="submit" mt="loose" isDisabled={btnDisabled}>
         Continue

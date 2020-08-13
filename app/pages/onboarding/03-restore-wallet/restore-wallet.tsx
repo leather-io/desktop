@@ -32,8 +32,16 @@ export const RestoreWallet: React.FC = () => {
 
   const handleSecretKeyRestore = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (mnemonic.split(' ').length !== 24) {
-      setError('The Stacks Wallet can only be used with a 24-word Secret Key');
+
+    const mnemonicLength = mnemonic.trim().split(' ').length;
+    if (mnemonicLength === 12) {
+      setError(
+        'You’ve entered a 12-word Secret Key. Please enter the 24-word Secret Key you received when creating this wallet.'
+      );
+      return;
+    }
+    if (mnemonicLength !== 24) {
+      setError('The Stacks Wallet can only be used with 24-word Secret Keys');
       return;
     }
     const [error] = await safeAwait(deriveRootKeychainFromMnemonic(mnemonic));
@@ -41,7 +49,7 @@ export const RestoreWallet: React.FC = () => {
       setError('Not a valid bip39 mnemonic');
       return;
     }
-    dispatch(persistMnemonic(mnemonic));
+    dispatch(persistMnemonic(mnemonic.trim()));
     history.push(routes.SET_PASSWORD);
   };
 
@@ -64,7 +72,10 @@ export const RestoreWallet: React.FC = () => {
         mt="base-tight"
         minHeight="88px"
         placeholder="24-word Secret Key"
-        style={{ resize: 'none' }}
+        style={{
+          resize: 'none',
+          border: error ? '2px solid #D4001A' : '',
+        }}
       />
       {error && (
         <ErrorLabel>

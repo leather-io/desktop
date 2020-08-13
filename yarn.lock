@@ -1172,10 +1172,10 @@
     "@blockstack/stacks-transactions" "0.5.1"
     cross-fetch "^3.0.4"
 
-"@blockstack/stacks-blockchain-api-types@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.3.0.tgz#db3f822bc92a7a1071a88b7797dcca024f5b20c9"
-  integrity sha512-0dapmM8INuv+a45mqqh7Kvp/TCqWCkfJ1OfiHFDIsBjqXvNmxBbH1Cn2WTFlGzMFCOWLM+6PNh1euBQL+MfegQ==
+"@blockstack/stacks-blockchain-api-types@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.4.0.tgz#aa730d8665bedc902209fbf94a2bf47632258051"
+  integrity sha512-G1KZMSz8dmog72RkqjI1WddEZNo02rCKoYa+r6UV+fwYJL1FDdjrpkKjC9ri7qL1Cv7sq07aEs/rgAbtF3X3ew==
 
 "@blockstack/stacks-transactions@0.5.1":
   version "0.5.1"
@@ -2900,10 +2900,10 @@ are-we-there-yet@~1.1.2:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
 
-argon2-browser@1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/argon2-browser/-/argon2-browser-1.13.0.tgz#8b59b159f6d84a6a0d96806793edbc68d1b0456c"
-  integrity sha512-N96O9SUCzBL4EfPjkfjbeUTGSua6ULMwo8P3pWUhvu2HQcPKQBbEVhT7s3Ffp9G6Z+v21qh6wcwYKPRjVROChA==
+argon2-browser@1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/argon2-browser/-/argon2-browser-1.14.0.tgz#cd173f5f5e4ebe6bdb9bc54492949e216456b415"
+  integrity sha512-Y/sIQd15JsDXMOFC+bWaq7JfCLwem13duG/gpFf0VKusIwCfgrKUdMoRv2w4t+Z+zZgLYyltd0Jp9A278SAG/Q==
 
 argparse@^1.0.7:
   version "1.0.10"

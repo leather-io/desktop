@@ -8,7 +8,7 @@ import { toHumanReadableStx } from '../../utils/unit-convert';
 
 interface TxModalFormProps {
   balance: string;
-  form: FormikProps<{ recipient: string; amount: string }>;
+  form: FormikProps<{ recipient: string; amount: string; memo: string }>;
 }
 
 export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
@@ -53,6 +53,23 @@ export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
         {form.touched.amount && form.errors.amount && (
           <ErrorLabel>
             <ErrorText>{capitalize(form.errors.amount)}</ErrorText>
+          </ErrorLabel>
+        )}
+        <Text textStyle="body.small.medium" mt="base-loose" as="label">
+          <label htmlFor="stxAmount">Memo</label>
+        </Text>
+        <Input
+          id="memo"
+          name="memo"
+          inputMode="numeric"
+          mt="base-tight"
+          placeholder="Memo"
+          onChange={form.handleChange}
+          value={form.values.memo}
+        />
+        {form.touched.memo && form.errors.memo && (
+          <ErrorLabel>
+            <ErrorText>{capitalize(form.errors.memo)}</ErrorText>
           </ErrorLabel>
         )}
       </Flex>

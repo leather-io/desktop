@@ -14,7 +14,6 @@ import {
 } from '../../../components/onboarding';
 import { setLedgerWallet } from '../../../store/keys';
 
-import { ERROR_CODE } from '../../../../../ledger-blockstack/js/src/common';
 import { delay } from '../../../utils/delay';
 import { LedgerConnectInstructions } from '../../../components/ledger/ledger-connect-instructions';
 import { useLedger } from '../../../hooks/use-ledger';
@@ -53,7 +52,8 @@ export const ConnectLedger: React.FC = () => {
       console.log(version);
 
       const confirmedResponse = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
-      if (confirmedResponse.returnCode !== ERROR_CODE.NoError) {
+      // TODO: Replace with ref to LedgerError
+      if (confirmedResponse.returnCode !== 0x90000) {
         console.log('resp', confirmedResponse);
         setDeviceError('Has your Ledger device locked itself?');
         return;

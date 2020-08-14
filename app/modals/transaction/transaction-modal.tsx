@@ -7,8 +7,8 @@ import { BigNumber } from 'bignumber.js';
 import { Modal, Text, Button, Box } from '@blockstack/ui';
 import {
   makeSTXTokenTransfer,
-  makeUnsignedSTXTokenTransfer,
   pubKeyfromPrivKey,
+  MEMO_MAX_LENGTH_BYTES,
 } from '@blockstack/stacks-transactions';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -38,7 +38,6 @@ import {
 import { TxModalForm } from './transaction-form';
 import { DecryptWalletForm } from './decrypt-wallet-form';
 import { SignTxWithLedger } from './sign-tx-with-ledger';
-import { StacksTransaction } from '@blockstack/stacks-transactions';
 import BlockstackApp from '../../../../ledger-blockstack/js/src/index';
 import { MessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 import { selectPublicKey } from '../../store/keys/keys.reducer';
@@ -200,11 +199,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   };
 
   const totalIsMoreThanBalance = total.isGreaterThan(balance);
-
+  const exceedsMaxLengthBytes = (string: string, maxLengthBytes: number): boolean =>
+    string ? Buffer.from(string).length > maxLengthBytes : false;
   const form = useFormik({
     initialValues: {
       recipient: '',
       amount: '',
+      memo: '',
     },
     validationSchema: yup.object().shape({
       recipient: yup
@@ -245,6 +246,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           }
         )
         .required(),
+      memo: yup
+        .string()
+        .test(
+          'test-max-memo-length',
+          'Transaction memo cannot exceed 34 bytes',
+          (value = '') => !exceedsMaxLengthBytes(value, MEMO_MAX_LENGTH_BYTES)
+        ),
     }),
     onSubmit: async () => {
       setLoading(true);

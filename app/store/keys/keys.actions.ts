@@ -18,6 +18,7 @@ import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
 import { persistPublicKey } from '../../utils/disk-store';
 import { selectMnemonic } from './keys.reducer';
+import { BIP32Interface } from '../../types/bip32';
 
 type History = ReturnType<typeof useHistory>;
 
@@ -103,5 +104,9 @@ export async function decryptSoftwareWallet(args: DecryptSoftwareWalletArgs) {
     derivedKeyHash,
   });
   const rootNode = await deriveRootKeychainFromMnemonic(plaintextMnemonic);
-  return deriveStxAddressKeychain(rootNode);
+  return deriveStxAddressKeychain(rootNode) as {
+    childKey: BIP32Interface;
+    address: string;
+    privateKey: string;
+  };
 }

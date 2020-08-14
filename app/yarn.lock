@@ -20,9 +20,9 @@
     zone-file "^1.0.0"
 
 "@blockstack/rpc-client@^0.3.0-alpha.11":
-  version "0.3.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/@blockstack/rpc-client/-/rpc-client-0.3.0-alpha.11.tgz#205c33df3d3a6d0c1f45f7dfbc675a297818a032"
-  integrity sha512-Gy/UlL9wjJh4GFdlFlmGT0wA/K7x4AK5Y5Y+N+qNnvE1FJipfsB3l5eE5aYamBEiTp1MRQPRi08+YUrhpPnHSQ==
+  version "0.3.0-alpha.12"
+  resolved "https://registry.yarnpkg.com/@blockstack/rpc-client/-/rpc-client-0.3.0-alpha.12.tgz#b09e8b98309de1d80d5198afe14ae7884adf4a35"
+  integrity sha512-kWdI3+TqEPFDdNUwfWOiYokztPOUqbNT6+2ZnzriveBjMrMRb1F1lUTPC/OjLRyUDNxPRrnjhSQdqXQCm+EeNA==
   dependencies:
     "@blockstack/stacks-transactions" "0.5.1"
     cross-fetch "^3.0.4"

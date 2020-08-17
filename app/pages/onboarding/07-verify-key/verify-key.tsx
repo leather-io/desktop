@@ -8,6 +8,7 @@ import routes from '../../../constants/routes.json';
 import { selectMnemonic } from '../../../store/keys';
 import { ErrorLabel } from '../../../components/error-label';
 import { ErrorText } from '../../../components/error-text';
+import { useBackButton } from '../../../hooks/use-back-url.hook';
 import {
   Onboarding,
   OnboardingTitle,
@@ -20,6 +21,7 @@ import {
 
 export const VerifyKey: React.FC = () => {
   const history = useHistory();
+  useBackButton(routes.SECRET_KEY);
   const mnemonic = useSelector(selectMnemonic);
   const [inputMnemonic, setInputMnemonic] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);

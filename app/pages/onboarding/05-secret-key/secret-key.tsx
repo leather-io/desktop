@@ -16,11 +16,13 @@ import {
   OnboardingBackButton,
 } from '../../../components/onboarding';
 import { selectMnemonic } from '../../../store/keys/keys.reducer';
+import { useBackButton } from '../../../hooks/use-back-url.hook';
 
 const COPY_TOAST_TIMEOUT = 2_500;
 
 export const SecretKey: React.FC = () => {
   const history = useHistory();
+  useBackButton(routes.CREATE);
   const [copied, setCopiedState] = useState(false);
   const mnemonic = useSelector(selectMnemonic);
 

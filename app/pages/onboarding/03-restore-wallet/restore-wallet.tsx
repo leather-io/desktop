@@ -10,6 +10,7 @@ import { ErrorLabel } from '../../../components/error-label';
 import { ErrorText } from '../../../components/error-text';
 import { persistMnemonic } from '../../../store/keys/keys.actions';
 import { safeAwait } from '../../../utils/safe-await';
+import { useBackButton } from '../../../hooks/use-back-url.hook';
 import {
   Onboarding,
   OnboardingTitle,
@@ -24,6 +25,7 @@ export const RestoreWallet: React.FC = () => {
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState<string | null>(null);
   const history = useHistory();
+  useBackButton(routes.WELCOME);
   const dispatch = useDispatch();
 
   const handleMnemonicInput = (e: React.FormEvent<HTMLInputElement>) => {

@@ -10,7 +10,7 @@ export const OnboardingBackButton: React.FC<OnboardingBackButton> = props => (
     width="32px"
     height="32px"
     type="button"
-    top="20px"
+    top="60px"
     left="20px"
     style={{
       position: 'absolute',

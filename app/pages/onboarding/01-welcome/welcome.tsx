@@ -8,9 +8,11 @@ import {
   OnboardingButton,
   OnboardingText,
 } from '../../../components/onboarding';
+import { useBackButton } from '../../../hooks/use-back-url.hook';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();
+  useBackButton(null);
   return (
     <Onboarding>
       <OnboardingTitle>Stacks Wallet</OnboardingTitle>

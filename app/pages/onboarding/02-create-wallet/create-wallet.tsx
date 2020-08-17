@@ -13,10 +13,12 @@ import {
   OnboardingFooterLink,
   OnboardingBackButton,
 } from '../../../components/onboarding';
+import { useBackButton } from '../../../hooks/use-back-url.hook';
 
 export const CreateWallet: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  useBackButton(routes.WELCOME);
 
   const createSoftwareWallet = () => {
     dispatch(onboardingMnemonicGenerationStep({ stepDelayMs: 1_500 }));

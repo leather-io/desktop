@@ -10,9 +10,11 @@ import {
   OnboardingBackButton,
 } from '../../../components/onboarding';
 import { Collapse, onboardingFaq } from '../../../components/secret-key-faq';
+import { useBackButton } from '../../../hooks/use-back-url.hook';
 
 export const SaveKey: React.FC = () => {
   const history = useHistory();
+  useBackButton(routes.SECRET_KEY);
   return (
     <Onboarding>
       <OnboardingTitle>Save your Secret Key</OnboardingTitle>

@@ -9,13 +9,13 @@ import { CSSReset } from '@blockstack/ui';
 import { Store } from '../store';
 import { Routes } from '../routes';
 import { loadFonts } from '../utils/load-fonts';
-import { NetworkMessage } from '../components/network-message';
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
     min-height: 100vh;
     max-height: 100vh;
   }
+  #root {padding-top: 44px;}
   .draggable-bar {
     position: absolute;
     height: 44px;
@@ -54,7 +54,6 @@ function Root({ store, history }: RootProps) {
       <BackContext.Provider value={{ backUrl, setBackUrl }}>
         <CSSReset />
         <GlobalStyle />
-        <NetworkMessage />
         <ConnectedRouter history={history}>
           <Routes />
         </ConnectedRouter>

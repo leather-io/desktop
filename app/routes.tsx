@@ -1,9 +1,6 @@
-import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import { useStore } from 'react-redux';
-import { Button, ArrowIcon } from '@blockstack/ui';
 
 import routes from './constants/routes.json';
 import { Home } from './pages/home/home';
@@ -20,11 +17,9 @@ import {
   VerifyKey,
   SetPassword,
 } from './pages/onboarding';
-<<<<<<< HEAD
-=======
-import { BackContext } from './pages/root';
-import { BackButton } from './components/back-button';
->>>>>>> refactor: break TitleBar, BackButton into components
+
+import { App } from './pages/app';
+import { Settings } from './pages/settings/settings';
 
 export const routerConfig = [
   {
@@ -71,6 +66,10 @@ export const routerConfig = [
     path: routes.SET_PASSWORD,
     component: SetPassword,
   },
+  {
+    path: routes.SETTINGS,
+    component: Settings,
+  },
 ];
 
 const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.WELCOME);
@@ -80,13 +79,13 @@ export function Routes() {
   const store = useStore();
   const address = selectAddress(store.getState());
   return (
-    <>
+    <App>
       <Switch>
         {routerConfig.map((route, i) => (
           <Route key={i} exact {...route} />
         ))}
       </Switch>
       <Redirect exact from="/" to={getAppStartingRoute(address)} />
-    </>
+    </App>
   );
 }

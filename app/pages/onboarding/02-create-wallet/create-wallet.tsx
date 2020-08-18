@@ -11,7 +11,6 @@ import {
   OnboardingText,
   OnboardingFooter,
   OnboardingFooterLink,
-  OnboardingBackButton,
 } from '../../../components/onboarding';
 import { useBackButton } from '../../../hooks/use-back-url.hook';
 
@@ -28,7 +27,6 @@ export const CreateWallet: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Create a new wallet</OnboardingTitle>
-      <OnboardingBackButton onClick={() => history.push(routes.WELCOME)} />
       <OnboardingText>
         Please choose whether you’d like to connect a Ledger hardware wallet or to create a software
         wallet

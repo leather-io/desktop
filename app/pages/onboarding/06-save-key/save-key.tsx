@@ -7,7 +7,6 @@ import {
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
-  OnboardingBackButton,
 } from '../../../components/onboarding';
 import { Collapse, onboardingFaq } from '../../../components/secret-key-faq';
 import { useBackButton } from '../../../hooks/use-back-url.hook';
@@ -18,7 +17,6 @@ export const SaveKey: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Save your Secret Key</OnboardingTitle>
-      <OnboardingBackButton onClick={() => history.push(routes.SECRET_KEY)} />
       <OnboardingText>
         Paste your Secret Key wherever you keep critical, private, information such as passwords.
         Once lost, it’s lost forever. So save it somewhere you won’t forget.

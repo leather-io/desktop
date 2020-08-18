@@ -18,6 +18,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import windowState from 'electron-window-state';
 
 export default class AppUpdater {
   constructor() {
@@ -63,11 +64,18 @@ const createWindow = async () => {
     await installExtensions();
   }
 
+  const mainWindowState = windowState({
+    defaultWidth: 1024,
+    defaultHeight: 728,
+  });
+
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
-    titleBarStyle: 'hiddenInset',
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
     webPreferences:
       // SECURITY: Remove node env
       process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
@@ -81,7 +89,13 @@ const createWindow = async () => {
           },
   });
 
+  mainWindowState.manage(mainWindow);
+
   void mainWindow.loadURL(`file://${__dirname}/app.html`);
+
+  if (process.platform === 'win32') {
+    mainWindow.setMenuBarVisibility(false);
+  }
 
   let hasFocusedOnInitialLoad = false;
 

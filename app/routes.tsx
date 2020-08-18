@@ -20,6 +20,11 @@ import {
   VerifyKey,
   SetPassword,
 } from './pages/onboarding';
+<<<<<<< HEAD
+=======
+import { BackContext } from './pages/root';
+import { BackButton } from './components/back-button';
+>>>>>>> refactor: break TitleBar, BackButton into components
 
 export const routerConfig = [
   {

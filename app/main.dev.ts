@@ -75,7 +75,8 @@ const createWindow = async () => {
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height,
-    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
+    frame: process.platform !== 'darwin',
+    titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     webPreferences:
       // SECURITY: Remove node env
       process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
@@ -88,6 +89,8 @@ const createWindow = async () => {
             preload: path.join(__dirname, 'dist/renderer.prod.js'),
           },
   });
+
+  mainWindow.setTrafficLightPosition({ x: 10, y: 28 });
 
   mainWindowState.manage(mainWindow);
 

@@ -10,7 +10,6 @@ import {
   OnboardingTitle,
   OnboardingText,
   OnboardingButton,
-  OnboardingBackButton,
 } from '../../../components/onboarding';
 import { setLedgerWallet } from '../../../store/keys';
 
@@ -19,6 +18,7 @@ import { LedgerConnectInstructions } from '../../../components/ledger/ledger-con
 import { useLedger } from '../../../hooks/use-ledger';
 import { ErrorLabel } from '../../../components/error-label';
 import { ErrorText } from '../../../components/error-text';
+import { useBackButton } from '../../../hooks/use-back-url.hook';
 
 const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
 
@@ -33,6 +33,7 @@ export const ConnectLedger: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [hasConfirmedAddress, setHasConfirmedAddress] = useState(false);
   const [deviceError, setDeviceError] = useState<string | null>(null);
+  useBackButton(routes.CREATE);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -53,7 +54,7 @@ export const ConnectLedger: React.FC = () => {
 
       const confirmedResponse = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
       // TODO: Replace with ref to LedgerError
-      if (confirmedResponse.returnCode !== 0x90000) {
+      if (confirmedResponse.returnCode !== 0x9000) {
         console.log('resp', confirmedResponse);
         setDeviceError('Has your Ledger device locked itself?');
         return;
@@ -78,7 +79,6 @@ export const ConnectLedger: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Connect your Ledger</OnboardingTitle>
-      <OnboardingBackButton onClick={() => history.push(routes.CREATE)} />
       <OnboardingText>Follow these steps to connect your Ledger S or X</OnboardingText>
 
       <LedgerConnectInstructions step={hasConfirmedAddress ? LedgerConnectStep.HasAddress : step} />

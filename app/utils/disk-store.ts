@@ -70,3 +70,5 @@ export const persistWalletType = (walletType: 'ledger' | 'software') => {
 export const getInitialStateFromDisk = () => {
   return store.store as DiskStore;
 };
+
+export const clearDiskStorage = () => store.clear();

@@ -4,9 +4,9 @@ import { Text, Box } from '@blockstack/ui';
 import { ENV } from '../constants/index';
 
 export const NetworkMessage = () => {
-  if (ENV === 'production') return null;
+  // if (ENV === 'production') return null;
   return (
-    <Box position="relative" mt="tight">
+    <Box display={['none', 'block']} position="absolute" ml="50%" left="-45px" mt="tight">
       <Box
         width="8px"
         height="8px"

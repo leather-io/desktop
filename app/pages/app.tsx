@@ -34,7 +34,7 @@ export function App(props: Props) {
   return (
     <>
       <TitleBar>
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="space-between" height="100%">
           <BackButton backUrl={backUrl} onClick={handleHistoryBack} />
           <NetworkMessage />
           <Box>

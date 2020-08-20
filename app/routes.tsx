@@ -13,7 +13,6 @@ import {
   GeneratingSecret,
   ConnectLedger,
   SecretKey,
-  SaveKey,
   VerifyKey,
   SetPassword,
 } from './pages/onboarding';
@@ -49,10 +48,6 @@ export const routerConfig = [
   {
     path: routes.SECRET_KEY,
     component: SecretKey,
-  },
-  {
-    path: routes.SAVE_KEY,
-    component: SaveKey,
   },
   {
     path: routes.VERIFY_KEY,

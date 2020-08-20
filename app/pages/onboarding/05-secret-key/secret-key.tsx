@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import log from 'electron-log';
-import { useClipboard } from '@blockstack/ui';
+import { Box, useClipboard, Text, Button } from '@blockstack/ui';
 
 import routes from '../../../constants/routes.json';
 import { Card } from '../../../components/card';
@@ -17,13 +17,11 @@ import {
 import { selectMnemonic } from '../../../store/keys/keys.reducer';
 import { useBackButton } from '../../../hooks/use-back-url.hook';
 
-const COPY_TOAST_TIMEOUT = 2_500;
-
 export const SecretKey: React.FC = () => {
   const history = useHistory();
   useBackButton(routes.CREATE);
-  const [copied, setCopiedState] = useState(false);
   const mnemonic = useSelector(selectMnemonic);
+  const [hasSavedMnemonic, setHasSavedMnemonic] = useState(false);
 
   if (!mnemonic) {
     const err = 'Component `SecretKey` should not render without pre-generated mnemonic';
@@ -31,12 +29,7 @@ export const SecretKey: React.FC = () => {
     throw new Error(err);
   }
 
-  const { onCopy } = useClipboard(mnemonic);
-  const copyToClipboard = () => {
-    onCopy?.();
-    setCopiedState(true);
-    setTimeout(() => history.push(routes.SAVE_KEY), COPY_TOAST_TIMEOUT);
-  };
+  const { onCopy, hasCopied } = useClipboard(mnemonic);
 
   return (
     <Onboarding>
@@ -46,12 +39,29 @@ export const SecretKey: React.FC = () => {
         Once lost, it’s lost forever, so save it somewhere you won’t forget.
       </OnboardingText>
       <Card title="Your Secret Key" mt="extra-loose">
-        {mnemonic}
+        <Text textStyle="body.small" mt="loose" mx="loose" lineHeight="20px" display="block">
+          {mnemonic}
+        </Text>
+        <Button variant="link" mt="tight">
+          <Text textStyle="caption.medium" fontSize="12px" onClick={onCopy}>
+            Copy to clipboard
+          </Text>
+        </Button>
       </Card>
-      <OnboardingButton mt="loose" onClick={() => copyToClipboard()}>
-        Copy Secret Key
+      <Box as="label" mt="loose">
+        <input type="checkbox" onChange={e => setHasSavedMnemonic(e.currentTarget.checked)} />
+        <Text textStyle="body.small" color="#42444E" ml="base-tight">
+          I have saved my Secret Key
+        </Text>
+      </Box>
+      <OnboardingButton
+        mt="loose"
+        isDisabled={!hasSavedMnemonic}
+        onClick={() => history.push(routes.VERIFY_KEY)}
+      >
+        Continue
       </OnboardingButton>
-      <Toast show={copied}>Copied to clipboard</Toast>
+      <Toast show={hasCopied}>Copied to clipboard</Toast>
     </Onboarding>
   );
 };

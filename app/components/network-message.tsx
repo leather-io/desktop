@@ -10,7 +10,7 @@ interface NetworkMessageProps {
 export const NetworkMessage: FC<NetworkMessageProps> = ({ textColor }) => {
   // if (ENV === 'production') return null;
   return (
-    <Box display={['none', 'block']} position="absolute" ml="50%" left="-45px" mt="tight">
+    <Box display={['none', 'block']} position="absolute" ml="50%" left="-45px" top="9px">
       <Box
         width="8px"
         height="8px"

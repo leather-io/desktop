@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
-import { Box, Input, Text } from '@blockstack/ui';
+import { Box, Input, Text, Button } from '@blockstack/ui';
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 
 interface DecryptWalletFormProps {
   hasSubmitted: boolean;
   decryptionError: string | null;
+  onForgottenPassword(): void;
   onSetPassword(password: string): void;
 }
 
 type Props = FC<DecryptWalletFormProps>;
 
-export const DecryptWalletForm: Props = ({ onSetPassword, decryptionError, hasSubmitted }) => {
+export const DecryptWalletForm: Props = args => {
+  const { onSetPassword, decryptionError, hasSubmitted, onForgottenPassword } = args;
+
   const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pass = e.currentTarget.value;
@@ -27,7 +30,11 @@ export const DecryptWalletForm: Props = ({ onSetPassword, decryptionError, hasSu
         </ErrorLabel>
       )}
       <Text textStyle="body.small" mt="base-tight" mb="base-loose" display="block">
-        Forgot password? Reset your wallet to set a new password.
+        Forgot password?{' '}
+        <Button variant="link" onClick={onForgottenPassword}>
+          Reset your wallet
+        </Button>{' '}
+        to set a new password.
       </Text>
     </Box>
   );

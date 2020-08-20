@@ -17,7 +17,10 @@ const GlobalStyle = createGlobalStyle`
   }
   #root {padding-top: 44px;}
   .draggable-bar {
-    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 44px;
     width: 100%;
     z-index: 9;

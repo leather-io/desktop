@@ -21,7 +21,6 @@ const GlobalStyle = createGlobalStyle`
     height: 44px;
     width: 100%;
     z-index: 9;
-    padding-left: 90px;
     box-shadow: 0px 1px 2px rgba(15, 17, 23, 0.08);
     -webkit-user-select: none;
     -webkit-app-region: drag;

@@ -2,10 +2,12 @@ import React, { ReactNode, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory, useLocation, matchPath } from 'react-router';
 import { Flex, Box } from '@blockstack/ui';
-import { BackContext } from './root';
+
 import { NetworkMessage } from '../components/network-message';
 import { BackButton } from '../components/back-button';
 import routes from '../constants/routes.json';
+import { BackContext } from './root';
+import { useWindowFocus } from '../hooks/use-window-focus';
 
 function TitleBar({ children }: any) {
   const el = document.querySelector('.draggable-bar');
@@ -22,6 +24,8 @@ export function App(props: Props) {
   const { backUrl } = useContext(BackContext);
   const routerHistory = useHistory();
 
+  const winState = useWindowFocus();
+
   const handleHistoryBack = () => {
     if (backUrl === null) return;
     routerHistory.push(backUrl);
@@ -34,9 +38,14 @@ export function App(props: Props) {
   return (
     <>
       <TitleBar>
-        <Flex justifyContent="space-between" height="100%">
+        <Flex
+          justifyContent="space-between"
+          pl="90px"
+          height="100%"
+          backgroundColor={winState === 'focused' ? null : '#FAFAFC'}
+        >
           <BackButton backUrl={backUrl} onClick={handleHistoryBack} />
-          <NetworkMessage />
+          <NetworkMessage textColor={winState === 'blurred' ? '#A1A7B3' : undefined} />
           <Box>
             {!isOnboarding && (
               <Box

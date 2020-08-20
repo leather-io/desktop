@@ -6,6 +6,7 @@ import { Text, Modal, Button, Flex, Box, useClipboard } from '@blockstack/ui';
 
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
 import { homeActions } from '../../store/home/home.reducer';
+import { useWindowFocus } from '../../pages/app';
 
 interface ReceiveStxModalProps {
   address: string;

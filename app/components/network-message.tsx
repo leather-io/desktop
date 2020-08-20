@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Text, Box } from '@blockstack/ui';
 
-import { ENV } from '../constants/index';
+// import { ENV } from '../constants/index';
 
-export const NetworkMessage = () => {
+interface NetworkMessageProps {
+  textColor?: string;
+}
+
+export const NetworkMessage: FC<NetworkMessageProps> = ({ textColor }) => {
   // if (ENV === 'production') return null;
   return (
     <Box display={['none', 'block']} position="absolute" ml="50%" left="-45px" mt="tight">
@@ -11,12 +15,12 @@ export const NetworkMessage = () => {
         width="8px"
         height="8px"
         borderRadius="50%"
-        backgroundColor="#F9A14D"
+        backgroundColor={textColor ? textColor : '#F9A14D'}
         position="absolute"
         left="-14px"
         top="9px"
       />
-      <Text as="h3" textStyle="body.small.medium" color="#F9A14D">
+      <Text as="h3" textStyle="body.small.medium" color={textColor ? textColor : '#F9A14D'}>
         Testnet mode
       </Text>
     </Box>

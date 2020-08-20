@@ -13,7 +13,9 @@ import {
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
+import routes from '../../constants/routes.json';
 import { validateStacksAddress } from '../../utils/get-stx-transfer-direction';
+import { MessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 import { selectTxModalOpen, homeActions } from '../../store/home/home.reducer';
 import {
   selectEncryptedMnemonic,
@@ -39,8 +41,8 @@ import { TxModalForm } from './transaction-form';
 import { DecryptWalletForm } from './decrypt-wallet-form';
 import { SignTxWithLedger } from './sign-tx-with-ledger';
 import BlockstackApp from '../../../../ledger-blockstack/js/src/index';
-import { MessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 import { selectPublicKey } from '../../store/keys/keys.reducer';
+import { useHistory } from 'react-router-dom';
 
 interface TxModalProps {
   balance: string;
@@ -60,6 +62,7 @@ type ModalComponents = () => {
 
 export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
   const [step, setStep] = useState(TxModalStep.DescribeTx);
   const [fee, setFee] = useState(new BN(0));
@@ -362,9 +365,12 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Confirm and send</TxModalHeader>,
       body: (
         <>
-          2b458638acb14f46af49384fe1d4b913
           <DecryptWalletForm
             onSetPassword={password => setPassword(password)}
+            onForgottenPassword={() => {
+              closeModalResetForm();
+              history.push(routes.SETTINGS);
+            }}
             hasSubmitted={hasSubmitted}
             decryptionError={decryptionError}
           />

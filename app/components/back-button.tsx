@@ -3,11 +3,12 @@ import { Button, ArrowIcon, ButtonProps } from '@blockstack/ui';
 
 interface BackButtonProps extends Omit<ButtonProps, 'children'> {
   backUrl: string | null;
+  hasFocus: boolean;
 }
 
 // Cannot use cursor pointer in top bar area of window
 // https://github.com/electron/electron/issues/5723
-export const BackButton: FC<BackButtonProps> = ({ backUrl, ...props }) => {
+export const BackButton: FC<BackButtonProps> = ({ backUrl, hasFocus, ...props }) => {
   return (
     <Button
       variant="unstyled"
@@ -26,7 +27,7 @@ export const BackButton: FC<BackButtonProps> = ({ backUrl, ...props }) => {
         padding: 0,
       }}
     >
-      <ArrowIcon direction="left" color={backUrl === null ? '#C1C3CC' : 'ink'} />
+      <ArrowIcon direction="left" color={backUrl === null || !hasFocus ? '#C1C3CC' : 'ink'} />
     </Button>
   );
 };

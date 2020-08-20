@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Flex, Text, Button } from '@blockstack/ui';
-
-import { useBackButton } from '../../hooks/use-back-url.hook';
-import routes from '../../constants/routes.json';
-import { ResetWalletModal } from '../../modals/reset-wallet/reset-wallet-modal';
 import { useSelector } from 'react-redux';
+
+import routes from '../../constants/routes.json';
+import { useBackButton } from '../../hooks/use-back-url.hook';
 import { selectWalletType } from '../../store/keys/keys.reducer';
+import { ResetWalletModal } from '../../modals/reset-wallet/reset-wallet-modal';
 
 export const Settings = () => {
   const [resetModalOpen, setResetModalOpen] = useState(false);

@@ -34,6 +34,7 @@ export function App(props: Props) {
   const location = useLocation();
 
   const isOnboarding = matchPath(location.pathname, { path: '/onboard' }) !== null;
+  const dulledTextColor = winState === 'blurred' ? '#A1A7B3' : undefined;
 
   return (
     <>
@@ -44,20 +45,24 @@ export function App(props: Props) {
           height="100%"
           backgroundColor={winState === 'focused' ? null : '#FAFAFC'}
         >
-          <BackButton backUrl={backUrl} onClick={handleHistoryBack} />
-          <NetworkMessage textColor={winState === 'blurred' ? '#A1A7B3' : undefined} />
+          <BackButton
+            backUrl={backUrl}
+            hasFocus={winState === 'focused'}
+            onClick={handleHistoryBack}
+          />
+          <NetworkMessage textColor={dulledTextColor} />
           <Box>
             {!isOnboarding && (
               <Box
                 as="button"
                 onClick={() => routerHistory.push(routes.SETTINGS)}
                 fontWeight="regular"
-                style={{ color: '#677282' }}
+                style={{ color: dulledTextColor || '#677282' }}
                 textStyle="body.small"
                 p="tight"
                 mt="4px"
                 mr="tight"
-                _hover={{ cursor: 'pointer' }}
+                cursor="default"
                 _focus={{ textDecoration: 'underline', outline: 0 }}
               >
                 Settings

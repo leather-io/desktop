@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -25,7 +25,7 @@ import {
 } from '../../store/keys';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { broadcastStxTransaction, selectMostRecentlyTxError } from '../../store/transaction';
-import { toHumanReadableStx, stxToMicroStx } from '../../utils/unit-convert';
+import { toHumanReadableStx, stxToMicroStx, microStxToStx } from '../../utils/unit-convert';
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 import { stacksNetwork } from '../../environment';
@@ -73,6 +73,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
+  const interactedWithSendAllBtn = useRef(false);
   const {
     txModalOpen,
     encryptedMnemonic,
@@ -205,6 +206,9 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const exceedsMaxLengthBytes = (string: string, maxLengthBytes: number): boolean =>
     string ? Buffer.from(string).length > maxLengthBytes : false;
   const form = useFormik({
+    validateOnChange: true,
+    validateOnMount: !interactedWithSendAllBtn.current,
+    validateOnBlur: !interactedWithSendAllBtn.current,
     initialValues: {
       recipient: '',
       amount: '',
@@ -280,11 +284,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     },
   });
 
+  console.log('errors', form.errors);
+
+  const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
+
   if (!txModalOpen) return null;
 
   const closeModalResetForm = () => {
-    dispatch(homeActions.closeTxModal());
     form.resetForm();
+    dispatch(homeActions.closeTxModal());
   };
 
   const proceedToSignTransactionStep = () =>
@@ -292,13 +300,46 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       ? setStep(TxModalStep.DecryptWalletAndSend)
       : setStep(TxModalStep.SignWithLedgerAndSend);
 
+  const updateAmountFieldToMaxBalance = async () => {
+    interactedWithSendAllBtn.current = true;
+    // if (!form.values.recipient) return;
+    setCalculatingMaxSpend(true);
+    const demoTx = await makeSTXTokenTransfer({
+      recipient: form.values.recipient || 'ST3NR0TBES0A94R38EJ8TC1TGWPN9T1SHVW03ZBD7',
+      network: stacksNetwork,
+      amount: new BN(stxToMicroStx(form.values.amount).toString()),
+      //
+      // TODO: find common burn address
+      senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
+    });
+    const fee = demoTx.auth.spendingCondition?.fee as BN;
+    const balanceLessFee = new BigNumber(balance).minus(fee.toString());
+    if (balanceLessFee.isLessThanOrEqualTo(0)) {
+      form.setFieldTouched('amount');
+      form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');
+      setCalculatingMaxSpend(false);
+      return;
+    }
+    form.setValues({
+      ...form.values,
+      amount: microStxToStx(balanceLessFee.toString()).toString(),
+    });
+    setCalculatingMaxSpend(false);
+    setTimeout(() => (interactedWithSendAllBtn.current = false), 1000);
+  };
+
   const txFormStepMap: { [step in TxModalStep]: ModalComponents } = {
     [TxModalStep.DescribeTx]: () => ({
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Send STX</TxModalHeader>,
       body: (
         <>
-          ST4VFKC1WG386T43ZSMWTVM9TQGCXHR3R1VF99RV
-          <TxModalForm balance={balance} form={form} />
+          {/* ST4VFKC1WG386T43ZSMWTVM9TQGCXHR3R1VF99RV */}
+          <TxModalForm
+            balance={balance}
+            form={form}
+            isCalculatingMaxSpend={calculatingMaxSpend}
+            onSendEntireBalance={updateAmountFieldToMaxBalance}
+          />
         </>
       ),
       footer: (

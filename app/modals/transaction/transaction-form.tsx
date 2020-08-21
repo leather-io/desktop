@@ -43,21 +43,36 @@ export const TxModalForm: FC<TxModalFormProps> = args => {
         <Text textStyle="body.small.medium" mt="base-loose" as="label">
           <label htmlFor="stxAmount">Amount</label>
         </Text>
-        <Input
-          id="stxAmount"
-          name="amount"
-          inputMode="numeric"
-          pattern="[0-9]*"
-          mt="base-tight"
-          placeholder="0.000000 STX"
-          onChange={form.handleChange}
-          value={form.values.amount}
-        />
-        {form.touched.amount && form.errors.amount && (
-          <ErrorLabel>
-            <ErrorText>{capitalize(form.errors.amount)}</ErrorText>
-          </ErrorLabel>
-        )}
+        <Box position="relative">
+          <Input
+            id="stxAmount"
+            name="amount"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            mt="base-tight"
+            placeholder="0.000000 STX"
+            onChange={form.handleChange}
+            value={form.values.amount}
+          />
+          {form.touched.amount && form.errors.amount && (
+            <ErrorLabel>
+              <ErrorText>{capitalize(form.errors.amount)}</ErrorText>
+            </ErrorLabel>
+          )}
+          <Button
+            mode="tertiary"
+            size="sm"
+            height="28px"
+            right="12px"
+            top="22px"
+            style={{ position: 'absolute' }}
+            width="80px"
+            onClick={onSendEntireBalance}
+            isLoading={isCalculatingMaxSpend}
+          >
+            Send max
+          </Button>
+        </Box>
         <Text textStyle="body.small.medium" mt="base-loose" as="label">
           <label htmlFor="stxAmount">Memo</label>
         </Text>

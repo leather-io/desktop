@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, Input, Box } from '@blockstack/ui';
+import { Flex, Text, Input, Box, Button } from '@blockstack/ui';
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 import { FormikProps } from 'formik';
@@ -9,9 +9,12 @@ import { toHumanReadableStx } from '../../utils/unit-convert';
 interface TxModalFormProps {
   balance: string;
   form: FormikProps<{ recipient: string; amount: string; memo: string }>;
+  isCalculatingMaxSpend: boolean;
+  onSendEntireBalance(): void;
 }
 
-export const TxModalForm: FC<TxModalFormProps> = ({ balance, form }) => {
+export const TxModalForm: FC<TxModalFormProps> = args => {
+  const { balance, form, isCalculatingMaxSpend, onSendEntireBalance } = args;
   return (
     <Box mb="extra-loose">
       <Flex flexDirection="column" alignItems="center" mt="48px">

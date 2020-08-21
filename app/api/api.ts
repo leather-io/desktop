@@ -20,8 +20,13 @@ async function getTxDetails(txid: string) {
   return axios.get<Transaction | MempoolTransaction>(api + `/v1/tx/${txid}`);
 }
 
+async function getFaucetStx(address: string) {
+  return axios.post(api + `/v1/debug/faucet?address=${address}`, { address });
+}
+
 export const Api = {
   getAddressBalance,
   getAddressTransactions,
   getTxDetails,
+  getFaucetStx,
 };

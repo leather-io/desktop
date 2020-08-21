@@ -43,7 +43,7 @@ export function App(props: Props) {
           justifyContent="space-between"
           pl="90px"
           height="100%"
-          backgroundColor={winState === 'focused' ? null : '#FAFAFC'}
+          backgroundColor={winState === 'focused' ? 'white' : '#FAFAFC'}
         >
           <BackButton
             backUrl={backUrl}

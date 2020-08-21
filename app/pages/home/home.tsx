@@ -92,6 +92,7 @@ export const Home: FC = () => {
       balance={balance}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
+      onRequestTestnetStx={async () => Api.getFaucetStx(address)}
     />
   );
   const stackingPromoCard = <StackingPromoCard />;

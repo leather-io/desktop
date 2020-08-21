@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Input, Text, Button } from '@blockstack/ui';
+import { Box, Input, Text } from '@blockstack/ui';
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 
@@ -31,9 +31,15 @@ export const DecryptWalletForm: Props = args => {
       )}
       <Text textStyle="body.small" mt="base-tight" mb="base-loose" display="block">
         Forgot password?{' '}
-        <Button variant="link" onClick={onForgottenPassword}>
+        <Text
+          as="button"
+          color="blue"
+          fontWeight={500}
+          onClick={onForgottenPassword}
+          _focus={{ textDecoration: 'underline', outline: 0 }}
+        >
           Reset your wallet
-        </Button>{' '}
+        </Text>{' '}
         to set a new password.
       </Text>
     </Box>

@@ -4,12 +4,12 @@ import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { hasMemo, getRecipientAddress } from '../../../utils/tx-utils';
 
-export function registerHandler(el: HTMLDivElement | null, handler: (e: Event) => void) {
+export function registerHandler(el: HTMLButtonElement | null, handler: (e: Event) => void) {
   if (el === null) return;
   el.addEventListener('contextmenu', handler, { passive: true });
 }
 
-export function deregisterHandler(el: HTMLDivElement | null, handler: (e: Event) => void) {
+export function deregisterHandler(el: HTMLButtonElement | null, handler: (e: Event) => void) {
   if (el === null) return;
   el.removeEventListener('contextmenu', handler);
 }

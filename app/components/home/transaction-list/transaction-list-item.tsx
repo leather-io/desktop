@@ -1,15 +1,14 @@
-import React, { FC } from 'react';
-import { useHover } from 'use-events';
-import { Box, Flex, Text, useClipboard } from '@blockstack/ui';
+import React, { FC, MutableRefObject, RefObject } from 'react';
+import { useHover, useFocus } from 'use-events';
+import { Box, Text, useClipboard } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { capitalize } from '../../../utils/capitalize';
 import { getStxTxDirection } from '../../../utils/get-stx-transfer-direction';
 import { sumStxTxTotal } from '../../../utils/sum-stx-tx-total';
-import { listHoverProps, EnableBefore } from './transaction-list-item-hover';
 import { TransactionIcon } from './transaction-icon';
 import { toHumanReadableStx } from '../../../utils/unit-convert';
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useEffect } from 'react';
 import {
   createTxListContextMenu,
   registerHandler,
@@ -17,6 +16,7 @@ import {
 } from './transaction-list-context-menu';
 import { makeExplorerLink } from '../../../utils/external-links';
 import { getRecipientAddress } from '../../../utils/tx-utils';
+import { TransactionListItemContainer } from './transaction-list-item-container';
 
 const dateOptions = {
   year: 'numeric',
@@ -30,20 +30,35 @@ const dateOptions = {
 interface TransactionListItemProps {
   tx: Transaction;
   address: string;
+  activeTxIdRef: MutableRefObject<any>;
+  domNodeMapRef: MutableRefObject<any>;
   onSelectTx: (txId: string) => void;
 }
 
-export const TransactionListItem: FC<TransactionListItemProps> = ({ tx, address, onSelectTx }) => {
+export const TransactionListItem: FC<TransactionListItemProps> = args => {
+  const { tx, address, onSelectTx, activeTxIdRef, domNodeMapRef } = args;
+
   const direction = getStxTxDirection(address, tx);
   const sumPrefix = direction === 'sent' ? '−' : '';
   const memo =
     tx.tx_type === 'token_transfer' &&
     Buffer.from(tx.token_transfer.memo.replace('0x', ''), 'hex').toString('utf8');
-  const txDate = new Date(tx.burn_block_time * 1000);
+  const txDate = new Date(tx.burn_block_time_iso);
   const txDateFormatted = new Intl.DateTimeFormat('en-US', dateOptions).format(txDate);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [hovered, bind] = useHover();
+  const containerRef = useRef<HTMLButtonElement>(null);
+  const [hovered, bindHover] = useHover();
+  const [focused, bindFocus] = useFocus();
+
+  useEffect(() => {
+    if (containerRef.current !== null && domNodeMapRef !== null) {
+      domNodeMapRef.current[tx.tx_id] = containerRef.current;
+    }
+  }, [domNodeMapRef, tx.tx_id]);
+
+  if (focused && activeTxIdRef !== null) {
+    activeTxIdRef.current = tx.tx_id;
+  }
 
   const copy = {
     txid: useClipboard(tx.tx_id),
@@ -62,16 +77,16 @@ export const TransactionListItem: FC<TransactionListItemProps> = ({ tx, address,
   }, [tx, copy]);
 
   return (
-    <Flex
-      as={EnableBefore}
-      ref={containerRef}
-      mb="loose"
-      cursor="pointer"
-      position="relative"
-      _before={listHoverProps(hovered)}
+    <TransactionListItemContainer
+      // UI library bug where it is only considered HTMLDivElement
+      // type casting here so type is correct elsewhere
+      ref={(containerRef as unknown) as RefObject<HTMLDivElement>}
       onClick={() => onSelectTx(tx.tx_id)}
-      data-txid={tx.tx_id}
-      {...bind}
+      focused={focused}
+      hovered={hovered}
+      txId={tx.tx_id}
+      {...bindHover}
+      {...bindFocus}
     >
       <TransactionIcon variant={direction} mr="base-loose" />
       <Box flex={1}>
@@ -95,6 +110,6 @@ export const TransactionListItem: FC<TransactionListItemProps> = ({ tx, address,
           {memo}
         </Text>
       </Box>
-    </Flex>
+    </TransactionListItemContainer>
   );
 };

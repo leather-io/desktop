@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Flex } from '@blockstack/ui';
 
 export function listHoverProps(hovered: boolean) {
   return hovered
@@ -17,10 +16,29 @@ export function listHoverProps(hovered: boolean) {
     : {};
 }
 
+export function listFocusedProps(focused: boolean) {
+  return focused
+    ? ({
+        position: 'absolute',
+        border: '1px solid #C5CCFF',
+        boxShadow: '0 0 0 3px rgba(170,179,255,0.75)',
+        borderRadius: '4px',
+        width: 'calc(100% + 20px)',
+        height: 'calc(100% + 16px)',
+        left: '-8px',
+        top: '-8px',
+      } as const)
+    : {};
+}
+
 // Component is required owing to glitch with ui lib
 // where content style isn't applied to _before prop
-export const EnableBefore = styled(Flex)`
+export const EnableBefore = styled.button`
+  width: 100%;
   &::before {
+    content: '';
+  }
+  &::after {
     content: '';
   }
 `;

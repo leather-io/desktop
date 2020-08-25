@@ -1,33 +1,45 @@
-import React, { FC } from 'react';
-import { useHover } from 'use-events';
-import { Box, Flex, Text } from '@blockstack/ui';
+import React, { FC, useRef, RefObject, useEffect, MutableRefObject } from 'react';
+import { useHover, useFocus } from 'use-events';
+import { Box, Text } from '@blockstack/ui';
 
 import { PendingTransaction } from '../../../store/pending-transaction';
-import { listHoverProps, EnableBefore } from './transaction-list-item-hover';
-import { TransactionIcon } from './transaction-icon';
 import { toHumanReadableStx } from '../../../utils/unit-convert';
+import { TransactionIcon } from './transaction-icon';
+import { TransactionListItemContainer } from './transaction-list-item-container';
 
 interface TransactionListItemPendingProps {
   tx: PendingTransaction;
+  domNodeMapRef: MutableRefObject<any>;
+  activeTxIdRef: MutableRefObject<string | null>;
   onSelectTx: (txId: string) => void;
 }
 
-export const TransactionListItemPending: FC<TransactionListItemPendingProps> = ({
-  tx,
-  onSelectTx,
-}) => {
-  const [hovered, bind] = useHover();
+export const TransactionListItemPending: FC<TransactionListItemPendingProps> = args => {
+  const { tx, domNodeMapRef, activeTxIdRef, onSelectTx } = args;
+  const [hovered, bindHover] = useHover();
+  const [focused, bindFocus] = useFocus();
+  const containerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current !== null && domNodeMapRef !== null) {
+      domNodeMapRef.current[tx.tx_id] = containerRef.current;
+    }
+  }, [domNodeMapRef, tx.tx_id]);
+
+  if (focused && activeTxIdRef !== null) {
+    activeTxIdRef.current = tx.tx_id;
+  }
 
   return (
-    <Flex
-      as={EnableBefore}
-      mb="loose"
-      cursor="pointer"
-      position="relative"
-      _before={listHoverProps(hovered)}
-      onClick={() => onSelectTx(tx.txId)}
-      data-txid={tx.txId}
-      {...bind}
+    <TransactionListItemContainer
+      ref={(containerRef as unknown) as RefObject<HTMLDivElement>}
+      onClick={() => onSelectTx(tx.tx_id)}
+      data-txid={tx.tx_id}
+      focused={focused}
+      hovered={hovered}
+      txId={tx.tx_id}
+      {...bindHover}
+      {...bindFocus}
     >
       <TransactionIcon variant="pending" mr="base-loose" />
       <Box flex={1}>
@@ -35,7 +47,7 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = (
           Sending
         </Text>
         <Text textStyle="body.small" color="ink.600">
-          {tx.txId.substr(0, 28)}…
+          {tx.tx_id.substr(0, 28)}…
         </Text>
       </Box>
       <Box textAlign="right">
@@ -46,6 +58,6 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = (
           Pending
         </Text>
       </Box>
-    </Flex>
+    </TransactionListItemContainer>
   );
 };

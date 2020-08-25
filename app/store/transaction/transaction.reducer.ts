@@ -31,7 +31,7 @@ export const transactionReducer = createReducer(initialState, builder =>
 const selectTxState = (state: RootState) => state.transaction;
 const selectors = transactionAdapter.getSelectors(selectTxState);
 
-export const selectTransactions = selectors.selectAll;
+export const selectTransactionList = selectors.selectAll;
 export const selectMostRecentlyTxError = createSelector(
   selectTxState,
   state => state.mostRecentBroadcastError

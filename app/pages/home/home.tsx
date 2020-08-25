@@ -1,6 +1,7 @@
-import React, { useEffect, FC } from 'react';
+import React, { useEffect, FC, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@blockstack/ui';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
 import { getAddressTransactions } from '../../store/transaction/transaction.actions';
@@ -8,7 +9,7 @@ import { openInExplorer } from '../../utils/external-links';
 import { selectAddress } from '../../store/keys/keys.reducer';
 import { getAddressDetails } from '../../store/address/address.actions';
 import { selectAddressBalance } from '../../store/address/address.reducer';
-import { selectTransactions } from '../../store/transaction/transaction.reducer';
+import { selectTransactionList } from '../../store/transaction/transaction.reducer';
 import { selectPendingTransactions } from '../../store/pending-transaction/pending-transaction.reducer';
 import {
   homeActions,
@@ -31,19 +32,42 @@ import { Api } from '../../api/api';
 import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
 import { safeAwait } from '../../utils/safe-await';
 import { HomeLayout } from './home-layout';
+import { increment, decrement } from '../../utils/mutate-numbers';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
   const { address, balance, txs, pendingTxs, txModalOpen, receiveModalOpen } = useSelector(
     (state: RootState) => ({
       address: selectAddress(state),
-      txs: selectTransactions(state),
-      balance: selectAddressBalance(state),
+      txs: selectTransactionList(state),
       pendingTxs: selectPendingTransactions(state),
+      balance: selectAddressBalance(state),
       txModalOpen: selectTxModalOpen(state),
       receiveModalOpen: selectReceiveModalOpen(state),
     })
   );
+
+  const focusedTxIdRef = useRef<string | null>(null);
+  const txDomNodeRefMap = useRef<{ [txId: string]: HTMLButtonElement }>({});
+
+  const focusTxDomNode = (shift: (i: number) => number) => {
+    const allTxs = [...pendingTxs, ...txs];
+    if (allTxs.length === 0) return;
+    if (focusedTxIdRef.current === null) {
+      const txId = allTxs[0].tx_id;
+      focusedTxIdRef.current = txId;
+      txDomNodeRefMap.current[txId].focus();
+    }
+    const nextIndex = shift(allTxs.findIndex(tx => tx.tx_id === focusedTxIdRef.current));
+    const nextTx = allTxs[nextIndex];
+    if (!nextTx) return;
+    const domNode = txDomNodeRefMap.current[nextTx.tx_id];
+    if (!domNode) return;
+    domNode.focus();
+  };
+
+  useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs]);
+  useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs]);
 
   const checkIfPendingTxIsComplete = async (address: string) => {
     const [error, txResponse] = await safeAwait(Api.getTxDetails(address));
@@ -74,10 +98,18 @@ export const Home: FC = () => {
     <>
       <TransactionList txCount={txs.length + pendingTxs.length}>
         {pendingTxs.map(pTx => (
-          <TransactionListItemPending key={pTx.txId} tx={pTx} onSelectTx={openInExplorer} />
+          <TransactionListItemPending
+            domNodeMapRef={txDomNodeRefMap}
+            activeTxIdRef={focusedTxIdRef}
+            key={pTx.tx_id}
+            tx={pTx}
+            onSelectTx={openInExplorer}
+          />
         ))}
         {txs.map(tx => (
           <TransactionListItem
+            domNodeMapRef={txDomNodeRefMap}
+            activeTxIdRef={focusedTxIdRef}
             key={tx.tx_id}
             tx={tx}
             address={address}

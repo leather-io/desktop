@@ -48,9 +48,10 @@ interface BroadcastStxTransactionArgs {
   signedTx: StacksTransaction;
   amount: BigNumber;
   onBroadcastSuccess: () => void;
+  onBroadcastFail: () => void;
 }
 export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
-  const { amount, signedTx, onBroadcastSuccess } = args;
+  const { amount, signedTx, onBroadcastSuccess, onBroadcastFail } = args;
   return async (dispatch: Dispatch) => {
     dispatch(broadcastTx());
 
@@ -64,6 +65,7 @@ export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
     if (typeof blockchainResponse !== 'string') {
       // setError for ui
       dispatch(broadcastTxFail(error as any));
+      onBroadcastFail();
       return;
     }
     onBroadcastSuccess();

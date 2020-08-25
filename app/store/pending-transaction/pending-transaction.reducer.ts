@@ -2,9 +2,9 @@ import { createEntityAdapter, EntityState, createSlice } from '@reduxjs/toolkit'
 
 import { RootState } from '..';
 import type { pendingTransactionSuccessful } from '../transaction';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
-export interface PendingTransaction {
-  txId: string;
+export interface PendingTransaction extends Pick<Transaction, 'tx_id'> {
   amount: string;
   time: number;
 }
@@ -12,7 +12,7 @@ export interface PendingTransaction {
 export type PendingTransactionState = EntityState<PendingTransaction>;
 
 const pendingTransactionAdapter = createEntityAdapter<PendingTransaction>({
-  selectId: pendingTx => pendingTx.txId,
+  selectId: pendingTx => pendingTx.tx_id,
   sortComparer: (pTx1, pTx2) => pTx2.time - pTx1.time,
 });
 

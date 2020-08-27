@@ -1,4 +1,4 @@
-import Store from "electron-store";
+// import Store from "electron-store";
 import getPersistMiddleware from "./getPersistMiddleware";
 import {
   ADD_WALLET_ADDRESS,
@@ -7,7 +7,7 @@ import {
 } from "../reducers/wallet";
 
 const storage = ({ electronStore, electronStoreOpts } = {}) => {
-  const store = electronStore || new Store(electronStoreOpts || {});
+  const store = electronStore;
 
   return {
     get: key =>
@@ -17,9 +17,9 @@ const storage = ({ electronStore, electronStoreOpts } = {}) => {
     set: (key, item) =>
       new Promise(resolve => {
         // Prevent seed from being persisted to disk
-        var filteredItem = { ...item }
-        if (key === 'wallet') {
-          filteredItem.seed = null
+        var filteredItem = { ...item };
+        if (key === "wallet") {
+          filteredItem.seed = null;
         }
         resolve(store.set(key, filteredItem));
       }),

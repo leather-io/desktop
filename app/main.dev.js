@@ -16,8 +16,8 @@ import installExtension, {
   REDUX_DEVTOOLS
 } from "electron-devtools-installer";
 
-import MenuBuilder from "./menu";
 import path from "path";
+import MenuBuilder from "./menu";
 
 process.on("uncaughtException", err => {
   console.log("error");
@@ -31,17 +31,10 @@ if (process.env.NODE_ENV === "production") {
   sourceMapSupport.install();
 }
 
-if (
-  process.env.NODE_ENV === "development" ||
-  process.env.DEBUG_PROD === "true"
-) {
-  require("electron-debug")();
-}
-
-const installExtensions = async () => {
-  await installExtension(REACT_DEVELOPER_TOOLS, true);
-  await installExtension(REDUX_DEVTOOLS, true);
-};
+// const installExtensions = async () => {
+//   await installExtension(REACT_DEVELOPER_TOOLS, true);
+//   await installExtension(REDUX_DEVTOOLS, true);
+// };
 
 /**
  * Add event listeners...
@@ -56,10 +49,10 @@ app.on("ready", async () => {
     process.env.NODE_ENV === "development" ||
     process.env.DEBUG_PROD === "true"
   ) {
-    await installExtensions();
+    // await installExtensions();
   }
 
-  const nodeIntegration = process.env.NODE_ENV === 'development'
+  // const nodeIntegration = process.env.NODE_ENV === "development";
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -67,7 +60,7 @@ app.on("ready", async () => {
     height: 760,
     titleBarStyle: "hiddenInset",
     webPreferences: {
-      nodeIntegration: nodeIntegration,
+      // nodeIntegration: nodeIntegration,
       preload: path.join(__dirname, "preload.js")
     }
   });
@@ -83,13 +76,13 @@ app.on("ready", async () => {
     mainWindow.focus();
   });
 
-  mainWindow.webContents.on('new-window', function(event, url){
-    if (!url.startsWith('https://connect.trezor.io')) {
+  mainWindow.webContents.on("new-window", function(event, url) {
+    if (!url.startsWith("https://connect.trezor.io")) {
       event.preventDefault();
       shell.openExternal(url);
     }
   });
-  
+
   mainWindow.on("closed", () => {
     mainWindow = null;
   });

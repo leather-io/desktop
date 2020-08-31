@@ -12,24 +12,42 @@ interface SignTxWithLedgerProps {
 export const SignTxWithLedger: FC<SignTxWithLedgerProps> = ({ onLedgerConnect }) => {
   const { transport, step } = useLedger();
 
-  async function handleLedger() {
-    const usbTransport = transport;
+  // async function handleLedger() {
+  //   const usbTransport = transport;
 
-    if (usbTransport === null) return;
+  //   if (usbTransport === null) return;
 
-    const app = new BlockstackApp(usbTransport);
+  //   const app = new BlockstackApp(usbTransport);
 
-    try {
-      await app.getVersion();
-      await delay(1);
-      onLedgerConnect(app);
-    } catch (e) {
-      console.log(e);
+  //   try {
+  //     await app.getVersion();
+  //     await delay(1);
+  //     onLedgerConnect(app);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+
+  useEffect(() => {
+    async function run() {
+      const usbTransport = transport;
+
+      if (usbTransport === null) return;
+
+      const app = new BlockstackApp(usbTransport);
+
+      try {
+        await app.getVersion();
+        await delay(1);
+        onLedgerConnect(app);
+      } catch (e) {
+        console.log(e);
+      }
     }
-  }
+    void run();
+  }, [transport, step, onLedgerConnect]);
   return (
     <Box mx="extra-loose" mb="extra-loose">
-      <button onClick={handleLedger}>click</button>
       <LedgerConnectInstructions step={step} />
     </Box>
   );

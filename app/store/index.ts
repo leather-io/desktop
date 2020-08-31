@@ -3,13 +3,11 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { connectRouter } from 'connected-react-router';
 
 import { KeysState, createKeysReducer } from './keys';
-import { TransactionState, transactionReducer } from './transaction/transaction.reducer';
+import { TransactionState, transactionReducer } from './transaction';
 import { addressReducer, AddressState } from './address';
-import { HomeState, homeSlice } from './home/home.reducer';
-import {
-  pendingTransactionReducer,
-  PendingTransactionState,
-} from './pending-transaction/pending-transaction.reducer';
+import { HomeState, homeSlice } from './home';
+import { pendingTransactionReducer, PendingTransactionState } from './pending-transaction';
+import { stacksNodeReducer, StacksNodeState } from './stacks-node';
 
 export interface RootState {
   router: any;
@@ -18,6 +16,7 @@ export interface RootState {
   pendingTransaction: PendingTransactionState;
   address: AddressState;
   home: HomeState;
+  stacksNode: StacksNodeState;
 }
 
 export type GetState = () => RootState;
@@ -39,5 +38,6 @@ export function createRootReducer({ history, keys }: RootReducerArgs) {
     pendingTransaction: pendingTransactionReducer,
     address: addressReducer,
     home: homeSlice.reducer,
+    stacksNode: stacksNodeReducer,
   });
 }

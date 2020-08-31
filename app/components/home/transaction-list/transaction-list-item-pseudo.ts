@@ -42,3 +42,12 @@ export const EnableBefore = styled.button`
     content: '';
   }
 `;
+
+export const templateTxBoxProps = {
+  borderRadius: '8px',
+  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.04);',
+  border: '1px solid #F0F0F5',
+  minHeight: ['152px', '152px', '300px', '416px'],
+  justifyContent: 'center',
+  alignItems: ['center', 'center', null, null],
+};

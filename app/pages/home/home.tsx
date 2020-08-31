@@ -1,15 +1,22 @@
-import React, { useEffect, FC, useRef } from 'react';
+import React, { useEffect, FC, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
-import { getAddressTransactions } from '../../store/transaction/transaction.actions';
+import { connectWebSocketClient } from '@stacks/blockchain-api-client';
+import {
+  getAddressTransactions,
+  addNewTransaction,
+} from '../../store/transaction/transaction.actions';
 import { openInExplorer } from '../../utils/external-links';
 import { selectAddress } from '../../store/keys/keys.reducer';
-import { getAddressDetails } from '../../store/address/address.actions';
+import { getAddressDetails, updateAddressBalance } from '../../store/address/address.actions';
 import { selectAddressBalance } from '../../store/address/address.reducer';
-import { selectTransactionList } from '../../store/transaction/transaction.reducer';
+import {
+  selectTransactionList,
+  selectTransactionsLoading,
+} from '../../store/transaction/transaction.reducer';
 import { selectPendingTransactions } from '../../store/pending-transaction/pending-transaction.reducer';
 import {
   homeActions,
@@ -33,19 +40,30 @@ import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
 import { safeAwait } from '../../utils/safe-await';
 import { HomeLayout } from './home-layout';
 import { increment, decrement } from '../../utils/mutate-numbers';
+import { useNavigatorOnline } from '../../hooks/use-navigator-online';
+import { useCallback } from 'react';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
-  const { address, balance, txs, pendingTxs, txModalOpen, receiveModalOpen } = useSelector(
-    (state: RootState) => ({
-      address: selectAddress(state),
-      txs: selectTransactionList(state),
-      pendingTxs: selectPendingTransactions(state),
-      balance: selectAddressBalance(state),
-      txModalOpen: selectTxModalOpen(state),
-      receiveModalOpen: selectReceiveModalOpen(state),
-    })
-  );
+  const {
+    address,
+    balance,
+    txs,
+    pendingTxs,
+    loadingTxs,
+    txModalOpen,
+    receiveModalOpen,
+  } = useSelector((state: RootState) => ({
+    address: selectAddress(state),
+    txs: selectTransactionList(state),
+    pendingTxs: selectPendingTransactions(state),
+    balance: selectAddressBalance(state),
+    txModalOpen: selectTxModalOpen(state),
+    receiveModalOpen: selectReceiveModalOpen(state),
+    loadingTxs: selectTransactionsLoading(state),
+  }));
+
+  const [webSocket, setWebSocket] = useState('Disconnected');
 
   const focusedTxIdRef = useRef<string | null>(null);
   const txDomNodeRefMap = useRef<{ [txId: string]: HTMLButtonElement }>({});
@@ -57,6 +75,7 @@ export const Home: FC = () => {
       const txId = allTxs[0].tx_id;
       focusedTxIdRef.current = txId;
       txDomNodeRefMap.current[txId].focus();
+      return;
     }
     const nextIndex = shift(allTxs.findIndex(tx => tx.tx_id === focusedTxIdRef.current));
     const nextTx = allTxs[nextIndex];
@@ -79,24 +98,38 @@ export const Home: FC = () => {
     }
   };
 
-  useInterval(() => {
-    if (!address) return;
-    pendingTxs.forEach(tx => void checkIfPendingTxIsComplete(safelyFormatHexTxid(tx.txId)));
-    dispatch(getAddressTransactions(address));
-    dispatch(getAddressDetails(address));
-  }, 5_000);
+  const connectWebSocket = async () => {
+    return connectWebSocketClient(
+      'ws://stacks-node-api-latest.argon.blockstack.xyz/extended/v1/ws'
+    );
+  };
 
   useEffect(() => {
-    if (!address) return;
-    dispatch(getAddressTransactions(address));
-    dispatch(getAddressDetails(address));
-  }, [dispatch, address]);
+    async function run() {
+      const client = await connectWebSocket().finally(() => {
+        setWebSocket('Disconnected');
+      });
+      setWebSocket('Connected');
+      if (!address) return;
+      await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
+        console.log('address balance updates', { address, balance });
+        dispatch(updateAddressBalance({ address, balance }));
+      });
+      await client.subscribeAddressTransactions(address, async ({ tx_id }) => {
+        console.log('address tx updates', tx_id);
+        const newTx = await Api.getTxDetails(tx_id);
+        if (newTx.data.tx_status !== 'success') return;
+        dispatch(addNewTransaction(newTx.data));
+      });
+    }
+    void run();
+  }, [address, dispatch]);
 
   if (!address) return <Spinner />;
 
   const transactionList = (
     <>
-      <TransactionList txCount={txs.length + pendingTxs.length}>
+      <TransactionList txCount={txs.length + pendingTxs.length} loading={loadingTxs}>
         {pendingTxs.map(pTx => (
           <TransactionListItemPending
             domNodeMapRef={txDomNodeRefMap}

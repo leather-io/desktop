@@ -1,77 +1,38 @@
-import React, { ReactNode, useContext } from 'react';
-import ReactDOM from 'react-dom';
-import { useHistory, useLocation, matchPath } from 'react-router';
-import { Flex, Box } from '@blockstack/ui';
+import React, { useCallback, useEffect, FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { NetworkMessage } from '../components/network-message';
-import { BackButton } from '../components/back-button';
-import routes from '../constants/routes.json';
-import { BackContext } from './root';
-import { useWindowFocus } from '../hooks/use-window-focus';
+import { useNavigatorOnline } from '../hooks/use-navigator-online';
+import { getAddressTransactions } from '../store/transaction';
+import { getAddressDetails } from '../store/address/address.actions';
+import { RootState } from '../store';
+import { selectAddress } from '../store/keys';
+import { TitleBar } from '../components/title-bar';
 
-function TitleBar({ children }: any) {
-  const el = document.querySelector('.draggable-bar');
-  if (!el) return null;
-  return ReactDOM.createPortal(children, el);
-}
+export const App: FC = ({ children }) => {
+  const dispatch = useDispatch();
 
-interface Props {
-  children: ReactNode;
-}
+  const { address } = useSelector((state: RootState) => ({
+    address: selectAddress(state),
+  }));
 
-export function App(props: Props) {
-  const { children } = props;
-  const { backUrl } = useContext(BackContext);
-  const routerHistory = useHistory();
+  const initAppWithStxAddressInfo = useCallback(() => {
+    if (!address) return;
+    dispatch(getAddressTransactions(address));
+    dispatch(getAddressDetails(address));
+  }, [address, dispatch]);
 
-  const winState = useWindowFocus();
+  useNavigatorOnline({
+    onReconnect: initAppWithStxAddressInfo,
+  });
 
-  const handleHistoryBack = () => {
-    if (backUrl === null) return;
-    routerHistory.push(backUrl);
-  };
-
-  const location = useLocation();
-
-  const isOnboarding = matchPath(location.pathname, { path: '/onboard' }) !== null;
-  const dulledTextColor = winState === 'blurred' ? '#A1A7B3' : undefined;
+  useEffect(() => {
+    initAppWithStxAddressInfo();
+  }, [address, initAppWithStxAddressInfo]);
 
   return (
     <>
-      <TitleBar>
-        <Flex
-          justifyContent="space-between"
-          pl="90px"
-          height="100%"
-          backgroundColor={winState === 'focused' ? 'white' : '#FAFAFC'}
-        >
-          <BackButton
-            backUrl={backUrl}
-            hasFocus={winState === 'focused'}
-            onClick={handleHistoryBack}
-          />
-          <NetworkMessage textColor={dulledTextColor} />
-          <Box>
-            {!isOnboarding && (
-              <Box
-                as="button"
-                onClick={() => routerHistory.push(routes.SETTINGS)}
-                fontWeight="regular"
-                style={{ color: dulledTextColor || '#677282' }}
-                textStyle="body.small"
-                p="tight"
-                mt="4px"
-                mr="tight"
-                cursor="default"
-                _focus={{ textDecoration: 'underline', outline: 0 }}
-              >
-                Settings
-              </Box>
-            )}
-          </Box>
-        </Flex>
-      </TitleBar>
+      <TitleBar />
       {children}
     </>
   );
-}
+};

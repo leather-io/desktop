@@ -24,8 +24,8 @@ export const TxModalForm: FC<TxModalFormProps> = args => {
         </Text>
       </Flex>
       <Flex flexDirection="column" mt="40px" mx="extra-loose">
-        <Text textStyle="body.small.medium" as="label">
-          <label htmlFor="stxAddress">Send to</label>
+        <Text textStyle="body.small.medium" as="label" {...{ htmlFor: 'stxAddress' }}>
+          Send to
         </Text>
         <Input
           id="stxAddress"
@@ -40,8 +40,13 @@ export const TxModalForm: FC<TxModalFormProps> = args => {
             <ErrorText>{form.errors.recipient}</ErrorText>
           </ErrorLabel>
         )}
-        <Text textStyle="body.small.medium" mt="base-loose" as="label">
-          <label htmlFor="stxAmount">Amount</label>
+        <Text
+          textStyle="body.small.medium"
+          mt="base-loose"
+          as="label"
+          {...{ htmlFor: 'stxAmount' }}
+        >
+          Amount
         </Text>
         <Box position="relative">
           <Input
@@ -73,8 +78,13 @@ export const TxModalForm: FC<TxModalFormProps> = args => {
             Send max
           </Button>
         </Box>
-        <Text textStyle="body.small.medium" mt="base-loose" as="label">
-          <label htmlFor="stxAmount">Memo</label>
+        <Text
+          textStyle="body.small.medium"
+          mt="base-loose"
+          as="label"
+          {...{ htmlFor: 'stxAmount' }}
+        >
+          Memo
         </Text>
         <Input
           id="memo"

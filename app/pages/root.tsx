@@ -4,6 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { createGlobalStyle } from 'styled-components';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
+import { PersistGate } from 'redux-persist/integration/react';
 import { CSSReset } from '@blockstack/ui';
 
 import { Store } from '../store';
@@ -33,6 +34,7 @@ const GlobalStyle = createGlobalStyle`
 interface RootProps {
   store: Store;
   history: History;
+  persistor: any;
 }
 
 interface BackContext {
@@ -46,20 +48,22 @@ export const BackContext = createContext<BackContext>({
   setBackUrl: (_url: string) => {},
 });
 
-function Root({ store, history }: RootProps) {
+function Root({ store, history, persistor }: RootProps) {
   const [backUrl, setBackUrl] = useState<string | null>(null);
 
   useEffect(() => void loadFonts(), []);
 
   return (
     <Provider store={store}>
-      <BackContext.Provider value={{ backUrl, setBackUrl }}>
-        <CSSReset />
-        <GlobalStyle />
-        <ConnectedRouter history={history}>
-          <Routes />
-        </ConnectedRouter>
-      </BackContext.Provider>
+      <PersistGate persistor={persistor}>
+        <BackContext.Provider value={{ backUrl, setBackUrl }}>
+          <CSSReset />
+          <GlobalStyle />
+          <ConnectedRouter history={history}>
+            <Routes />
+          </ConnectedRouter>
+        </BackContext.Provider>
+      </PersistGate>
     </Provider>
   );
 }

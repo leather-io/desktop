@@ -1,4 +1,4 @@
-import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
+import { Dispatch as ReduxDispatch, Store as ReduxStore, Action, Reducer } from 'redux';
 import { combineReducers } from '@reduxjs/toolkit';
 import { connectRouter } from 'connected-react-router';
 
@@ -8,6 +8,8 @@ import { addressReducer, AddressState } from './address';
 import { HomeState, homeSlice } from './home';
 import { pendingTransactionReducer, PendingTransactionState } from './pending-transaction';
 import { stacksNodeReducer, StacksNodeState } from './stacks-node';
+import { reduxPersistElectronStore } from './persist-middleware';
+import { PersistConfig } from 'redux-persist';
 
 export interface RootState {
   router: any;
@@ -17,6 +19,7 @@ export interface RootState {
   address: AddressState;
   home: HomeState;
   stacksNode: StacksNodeState;
+  _persist: any;
 }
 
 export type GetState = () => RootState;
@@ -24,6 +27,12 @@ export type GetState = () => RootState;
 export type Dispatch = ReduxDispatch<Action<string>>;
 
 export type Store = ReduxStore<RootState, Action<string>>;
+
+export const persistConfig: PersistConfig<RootState> = {
+  key: 'root',
+  storage: reduxPersistElectronStore(),
+  whitelist: ['stacksNode'],
+};
 
 interface RootReducerArgs {
   history: any;

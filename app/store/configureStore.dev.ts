@@ -2,10 +2,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
+import { persistStore, persistReducer } from 'redux-persist';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
-import { RootState, createRootReducer } from '.';
+
+import { RootState, createRootReducer, persistConfig } from '.';
 import { getInitialStateFromDisk } from '../utils/disk-store';
 
 declare global {
@@ -63,12 +65,16 @@ export const configureStore = (initialState?: RootState) => {
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers<any>(...enhancers);
 
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
+
   // Create Store
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(persistedReducer, initialState, enhancer);
+
+  const persistor = persistStore(store);
 
   if (module.hot) {
     module.hot.accept('./index', () => store.replaceReducer(require('./index').default));
   }
 
-  return store;
+  return { store, persistor };
 };

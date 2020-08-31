@@ -12,7 +12,7 @@ import {
 } from './transaction.actions';
 
 export interface TransactionState extends EntityState<Transaction> {
-  mostRecentBroadcastError: null | string;
+  mostRecentBroadcastError: string | null;
   loading: boolean;
 }
 
@@ -22,7 +22,7 @@ const transactionAdapter = createEntityAdapter<Transaction>({
 });
 
 const initialState = transactionAdapter.getInitialState({
-  mostRecentBroadcastError: null,
+  mostRecentBroadcastError: null as string | null,
   loading: true,
 });
 

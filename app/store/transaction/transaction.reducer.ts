@@ -3,13 +3,17 @@ import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { RootState } from '..';
 import {
+  fetchTransactionsFail,
+  addNewTransaction,
   fetchTransactionsDone,
   pendingTransactionSuccessful,
   broadcastTx,
+  fetchTransactions,
 } from './transaction.actions';
 
 export interface TransactionState extends EntityState<Transaction> {
   mostRecentBroadcastError: null | string;
+  loading: boolean;
 }
 
 const transactionAdapter = createEntityAdapter<Transaction>({
@@ -19,13 +23,20 @@ const transactionAdapter = createEntityAdapter<Transaction>({
 
 const initialState = transactionAdapter.getInitialState({
   mostRecentBroadcastError: null,
+  loading: true,
 });
 
 export const transactionReducer = createReducer(initialState, builder =>
   builder
+    .addCase(fetchTransactions, state => ({ ...state, loading: true }))
     .addCase(broadcastTx, state => ({ ...state, mostRecentBroadcastError: null }))
-    .addCase(fetchTransactionsDone, transactionAdapter.addMany)
+    .addCase(fetchTransactionsDone, (state, action) => ({
+      ...transactionAdapter.addMany({ ...state }, action),
+      loading: false,
+    }))
+    .addCase(fetchTransactionsFail, state => ({ ...state, loading: false }))
     .addCase(pendingTransactionSuccessful, transactionAdapter.addOne)
+    .addCase(addNewTransaction, transactionAdapter.addOne)
 );
 
 const selectTxState = (state: RootState) => state.transaction;
@@ -36,3 +47,4 @@ export const selectMostRecentlyTxError = createSelector(
   selectTxState,
   state => state.mostRecentBroadcastError
 );
+export const selectTransactionsLoading = createSelector(selectTxState, state => state.loading);

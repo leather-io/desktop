@@ -26,6 +26,7 @@ export const TxModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose 
       {children}
     </Text>
     <Button
+      type="button"
       right="-16px"
       onClick={onSelectClose}
       variant="unstyled"

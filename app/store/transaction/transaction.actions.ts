@@ -14,6 +14,8 @@ export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'
 );
 
+export const addNewTransaction = createAction<Transaction>('transactions/new-transaction');
+
 const fetchTxName = 'transactions/fetch-transactions';
 export const fetchTransactions = createAction(fetchTxName);
 export const fetchTransactionsDone = createAction<Transaction[]>(fetchTxName + '-done');
@@ -71,7 +73,7 @@ export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
     onBroadcastSuccess();
     dispatch(
       addPendingTransaction({
-        txId: safelyFormatHexTxid(blockchainResponse),
+        tx_id: safelyFormatHexTxid(blockchainResponse),
         amount: amount.toString(),
         time: +new Date(),
       })

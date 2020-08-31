@@ -1,18 +1,17 @@
 import React from 'react';
 import { Text, Flex } from '@blockstack/ui';
 
+import { useNavigatorOnline } from '../../../hooks/use-navigator-online';
+import { templateTxBoxProps } from './transaction-list-item-pseudo';
+
 export const TransactionListEmpty = () => {
+  const { isOnline } = useNavigatorOnline();
   return (
-    <Flex
-      borderRadius="8px"
-      boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-      border="1px solid #F0F0F5"
-      minHeight={['152px', '152px', '300px', '416px']}
-      justifyContent="center"
-      alignItems={['center', 'center', null, null]}
-    >
+    <Flex {...templateTxBoxProps}>
       <Text textStyle="body.small" display="block" textAlign="center" mb="tight">
-        You haven't made any transactions yet
+        {isOnline
+          ? `You haven't made any transactions yet`
+          : `Cannot fetch transactions. Ensure you're connected to the internet`}
       </Text>
     </Flex>
   );

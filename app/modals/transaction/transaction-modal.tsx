@@ -17,7 +17,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { RootState } from '../../store';
 import routes from '../../constants/routes.json';
 import { validateStacksAddress } from '../../utils/get-stx-transfer-direction';
-import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
+
 import { selectTxModalOpen, homeActions } from '../../store/home/home.reducer';
 import {
   selectEncryptedMnemonic,
@@ -45,6 +45,7 @@ import { SignTxWithLedger } from './sign-tx-with-ledger';
 import BlockstackApp from '../../../../ledger-blockstack/js/src/index';
 import { selectPublicKey } from '../../store/keys/keys.reducer';
 import { FailedBroadcastError } from './failed-broadcast-error';
+import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 
 interface TxModalProps {
   balance: string;
@@ -93,6 +94,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     publicKey: selectPublicKey(state),
   }));
 
+  const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
+
   const broadcastTx = async (blockstackApp?: BlockstackApp) => {
     setHasSubmitted(true);
 
@@ -124,33 +127,27 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     if (walletType === 'ledger') {
       try {
         if (!publicKey || !blockstackApp) {
-          console.log('no public key saved??');
+          console.log('no public key saved');
           return;
         }
 
         const librarySignedTx = await makeSTXTokenTransfer({
-          recipient: 'ST12KRFTX4APEB6201HY21JMSTPSSJ2QR28MSPPWK',
+          recipient: form.values.recipient,
           network: stacksNetwork,
           amount: new BN(1),
           senderKey: '5db4f7bb20960c6b1ceaa599576c3f01ec96448dc33d7894cc187b941f15cd3201',
         });
-
-        // console.log({ librarySignedTx:  });
-        console.log('tx signed with private key', librarySignedTx.serialize().toString('hex'));
 
         const generatedPubkey = pubKeyfromPrivKey(
           '5db4f7bb20960c6b1ceaa599576c3f01ec96448dc33d7894cc187b941f15cd3201'
         );
 
         const libraryUnsignedTx = await makeUnsignedSTXTokenTransfer({
-          recipient: 'ST12KRFTX4APEB6201HY21JMSTPSSJ2QR28MSPPWK',
+          recipient: form.values.recipient,
           network: stacksNetwork,
           amount: new BN(1),
           publicKey: publicKey.toString('hex'),
         });
-
-        console.log({ libraryUnsignedTx });
-        console.log('serialised tx of unsigned tx', libraryUnsignedTx.serialize().toString('hex'));
 
         // Output of the public key saved when auth-ing the wallet with the ledger
         // and derived public key from given public key to confirm they're the same key
@@ -164,20 +161,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         });
 
         const tx = await makeUnsignedSTXTokenTransfer({
-          recipient: 'ST12KRFTX4APEB6201HY21JMSTPSSJ2QR28MSPPWK',
+          recipient: form.values.recipient,
           network: stacksNetwork,
           amount: new BN(1),
           publicKey: publicKey.toString('hex'),
         });
 
-        console.log({ unsignedTx: tx });
-
         const resp = (await blockstackApp.sign(`m/44'/5757'/0'/0/0`, tx.serialize())) as {
           signatureCompact: Buffer;
         };
-
-        console.log(resp);
-        console.log({ signatureFromLedger: resp.signatureCompact.toString('hex') });
 
         if (tx.auth.spendingCondition) {
           tx.auth.spendingCondition.signature = createMessageSignature(
@@ -441,13 +433,21 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       header: (
         <TxModalHeader onSelectClose={closeModalResetForm}>Confirm on your Ledger</TxModalHeader>
       ),
-      body: <SignTxWithLedger onLedgerConnect={blockstackApp => broadcastTx(blockstackApp)} />,
+      body: <SignTxWithLedger onLedgerConnect={blockstackApp => setBlockstackApp(blockstackApp)} />,
       footer: (
         <TxModalFooter>
           <Button mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)} {...buttonStyle}>
             Go back
           </Button>
-          <Button ml="base-tight" {...buttonStyle}>
+          <Button
+            ml="base-tight"
+            isDisabled={blockstackApp === null}
+            onClick={() => {
+              if (blockstackApp === null) return;
+              void broadcastTx(blockstackApp);
+            }}
+            {...buttonStyle}
+          >
             Sign transaction
           </Button>
         </TxModalFooter>

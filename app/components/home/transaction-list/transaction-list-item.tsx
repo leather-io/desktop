@@ -60,14 +60,14 @@ export const TransactionListItem: FC<TransactionListItemProps> = args => {
     activeTxIdRef.current = tx.tx_id;
   }
 
-  const copy = {
+  const { current: copy } = useRef({
     txid: useClipboard(tx.tx_id),
     recipientAddress: useClipboard(getRecipientAddress(tx) || ''),
     memo: useClipboard(memo || ''),
     date: useClipboard(txDate.toISOString()),
     txDetails: useClipboard(JSON.stringify(tx, null, 2)),
     explorerLink: useClipboard(makeExplorerLink(tx.tx_id)),
-  };
+  });
 
   useLayoutEffect(() => {
     const el = containerRef.current;

@@ -20,7 +20,7 @@ export const addNewTransaction = createAction<Transaction>('transactions/new-tra
 const fetchTxName = 'transactions/fetch-transactions';
 export const fetchTransactions = createAction(fetchTxName);
 export const fetchTransactionsDone = createAction<Transaction[]>(fetchTxName + '-done');
-export const fetchTransactionsFail = createAction(fetchTxName + '-fail');
+export const fetchTransactionsFail = createAction<string>(fetchTxName + '-fail');
 
 export function getAddressTransactions(address: string) {
   return async (dispatch: Dispatch, getState: GetState) => {
@@ -29,7 +29,7 @@ export function getAddressTransactions(address: string) {
     const client = new Api(activeNode.url);
     const [error, response] = await safeAwait(client.getAddressTransactions(address));
     if (error) {
-      dispatch(fetchTransactionsFail());
+      dispatch(fetchTransactionsFail('Unable to fetch recent transactions'));
       return;
     }
     if (response) {

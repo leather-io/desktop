@@ -4,20 +4,16 @@ import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
-
 import { openInExplorer } from '../../utils/external-links';
-import { selectAddress } from '../../store/keys/keys.reducer';
-import { selectAddressBalance } from '../../store/address/address.reducer';
+import { selectAddress } from '../../store/keys';
+import { selectAddressBalance } from '../../store/address';
 import {
   selectTransactionList,
   selectTransactionsLoading,
-} from '../../store/transaction/transaction.reducer';
-import { selectPendingTransactions } from '../../store/pending-transaction/pending-transaction.reducer';
-import {
-  homeActions,
-  selectTxModalOpen,
-  selectReceiveModalOpen,
-} from '../../store/home/home.reducer';
+  selectTransactionListFetchError,
+} from '../../store/transaction';
+import { selectPendingTransactions } from '../../store/pending-transaction';
+import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '../../store/home';
 import {
   TransactionList,
   StackingPromoCard,
@@ -30,9 +26,9 @@ import { ReceiveStxModal } from '../../modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '../../components/home/transaction-list/transaction-list-item-pending';
 
 import { Api } from '../../api/api';
-import { HomeLayout } from './home-layout';
 import { increment, decrement } from '../../utils/mutate-numbers';
-import { selectActiveNodeApi } from '../../store/stacks-node/stacks-node.reducer';
+import { selectActiveNodeApi } from '../../store/stacks-node';
+import { HomeLayout } from './home-layout';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -43,6 +39,7 @@ export const Home: FC = () => {
     pendingTxs,
     loadingTxs,
     txModalOpen,
+    txListFetchError,
     receiveModalOpen,
     activeNode,
   } = useSelector((state: RootState) => ({
@@ -53,6 +50,7 @@ export const Home: FC = () => {
     txModalOpen: selectTxModalOpen(state),
     receiveModalOpen: selectReceiveModalOpen(state),
     loadingTxs: selectTransactionsLoading(state),
+    txListFetchError: selectTransactionListFetchError(state),
     activeNode: selectActiveNodeApi(state),
   }));
 
@@ -81,9 +79,16 @@ export const Home: FC = () => {
 
   if (!address) return <Spinner />;
 
+  const txCount = txs.length + pendingTxs.length;
+
   const transactionList = (
     <>
-      <TransactionList txCount={txs.length + pendingTxs.length} loading={loadingTxs}>
+      <TransactionList
+        txCount={txCount}
+        loading={loadingTxs}
+        node={activeNode}
+        error={txListFetchError}
+      >
         {pendingTxs.map(pTx => (
           <TransactionListItemPending
             domNodeMapRef={txDomNodeRefMap}
@@ -123,6 +128,7 @@ export const Home: FC = () => {
     <>
       {receiveModalOpen && <ReceiveStxModal address={address} />}
       {txModalOpen && <TransactionModal balance={balance || '0'} address={address} />}
+
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}

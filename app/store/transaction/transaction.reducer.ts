@@ -13,6 +13,7 @@ import {
 
 export interface TransactionState extends EntityState<Transaction> {
   mostRecentBroadcastError: string | null;
+  fetchTxError: string | null;
   loading: boolean;
 }
 
@@ -23,18 +24,23 @@ const transactionAdapter = createEntityAdapter<Transaction>({
 
 const initialState = transactionAdapter.getInitialState({
   mostRecentBroadcastError: null as string | null,
+  fetchTxError: null as string | null,
   loading: true,
 });
 
 export const transactionReducer = createReducer(initialState, builder =>
   builder
-    .addCase(fetchTransactions, state => ({ ...state, loading: true }))
+    .addCase(fetchTransactions, state => ({ ...state, fetchTxError: null, loading: true }))
     .addCase(broadcastTx, state => ({ ...state, mostRecentBroadcastError: null }))
     .addCase(fetchTransactionsDone, (state, action) => ({
       ...transactionAdapter.addMany({ ...state }, action),
       loading: false,
     }))
-    .addCase(fetchTransactionsFail, state => ({ ...state, loading: false }))
+    .addCase(fetchTransactionsFail, (state, action) => ({
+      ...state,
+      loading: false,
+      fetchTxError: action.payload,
+    }))
     .addCase(pendingTransactionSuccessful, transactionAdapter.addOne)
     .addCase(addNewTransaction, transactionAdapter.addOne)
 );
@@ -48,3 +54,7 @@ export const selectMostRecentlyTxError = createSelector(
   state => state.mostRecentBroadcastError
 );
 export const selectTransactionsLoading = createSelector(selectTxState, state => state.loading);
+export const selectTransactionListFetchError = createSelector(
+  selectTxState,
+  state => state.fetchTxError
+);

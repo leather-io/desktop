@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useFormik } from 'formik';
 import { Modal, ButtonGroup, Button, Box, Text, Input } from '@blockstack/ui';
@@ -10,6 +10,8 @@ import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-l
 import { ErrorLabel } from '../../components/error-label';
 import { ErrorText } from '../../components/error-text';
 import { capitalize } from '../../utils/capitalize';
+import { Api } from '../../api/api';
+import { safeAwait } from '../../utils/safe-await';
 
 interface AddNodeSettingsProps {
   isOpen: boolean;
@@ -20,6 +22,8 @@ interface AddNodeSettingsProps {
 
 export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => {
   const { isOpen, selectedNode, onClose, onUpdateNode } = props;
+
+  const [loading, setLoading] = useState(false);
 
   useHotkeys('esc', onClose, []);
   const nameFieldRef = useRef<any>();
@@ -32,9 +36,19 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
       name: yup.string().max(64).required(),
       url: yup.string().url().required(),
     }),
-    onSubmit() {
-      onUpdateNode({ id: uuid(), ...selectedNode, ...form.values });
-      onClose();
+    async onSubmit() {
+      setLoading(true);
+      const [error, success] = await safeAwait(new Api(form.values.url).getNodeStatus());
+      if (error) {
+        setLoading(false);
+        form.setErrors({ url: 'Unable to connect to the node' });
+        return;
+      }
+      if (success && success.data.status === 'ready') {
+        onUpdateNode({ id: uuid(), ...selectedNode, ...form.values });
+        onClose();
+        setLoading(false);
+      }
     },
   });
 
@@ -60,7 +74,9 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
         <Button type="button" mode="tertiary" onClick={onClose}>
           Cancel
         </Button>
-        <Button type="submit">{changeVerb} node</Button>
+        <Button type="submit" isLoading={loading}>
+          {changeVerb} node
+        </Button>
       </ButtonGroup>
     </TxModalFooter>
   );

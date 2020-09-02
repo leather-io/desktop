@@ -1,17 +1,12 @@
-import React, { useEffect, FC, useRef, useState } from 'react';
+import React, { FC, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '../../store';
-import { connectWebSocketClient } from '@stacks/blockchain-api-client';
-import {
-  getAddressTransactions,
-  addNewTransaction,
-} from '../../store/transaction/transaction.actions';
+
 import { openInExplorer } from '../../utils/external-links';
 import { selectAddress } from '../../store/keys/keys.reducer';
-import { getAddressDetails, updateAddressBalance } from '../../store/address/address.actions';
 import { selectAddressBalance } from '../../store/address/address.reducer';
 import {
   selectTransactionList,
@@ -32,16 +27,12 @@ import {
 } from '../../components/home';
 import { TransactionModal } from '../../modals/transaction/transaction-modal';
 import { ReceiveStxModal } from '../../modals/receive-stx/receive-stx-modal';
-import { useInterval } from '../../hooks/use-interval';
 import { TransactionListItemPending } from '../../components/home/transaction-list/transaction-list-item-pending';
-import { pendingTransactionSuccessful } from '../../store/transaction/transaction.actions';
+
 import { Api } from '../../api/api';
-import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
-import { safeAwait } from '../../utils/safe-await';
 import { HomeLayout } from './home-layout';
 import { increment, decrement } from '../../utils/mutate-numbers';
-import { useNavigatorOnline } from '../../hooks/use-navigator-online';
-import { useCallback } from 'react';
+import { selectActiveNodeApi } from '../../store/stacks-node/stacks-node.reducer';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -53,6 +44,7 @@ export const Home: FC = () => {
     loadingTxs,
     txModalOpen,
     receiveModalOpen,
+    activeNode,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
@@ -61,9 +53,8 @@ export const Home: FC = () => {
     txModalOpen: selectTxModalOpen(state),
     receiveModalOpen: selectReceiveModalOpen(state),
     loadingTxs: selectTransactionsLoading(state),
+    activeNode: selectActiveNodeApi(state),
   }));
-
-  const [webSocket, setWebSocket] = useState('Disconnected');
 
   const focusedTxIdRef = useRef<string | null>(null);
   const txDomNodeRefMap = useRef<{ [txId: string]: HTMLButtonElement }>({});
@@ -87,43 +78,6 @@ export const Home: FC = () => {
 
   useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs]);
   useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs]);
-
-  const checkIfPendingTxIsComplete = async (address: string) => {
-    const [error, txResponse] = await safeAwait(Api.getTxDetails(address));
-    if (error || !txResponse || txResponse.data.tx_status === 'pending') {
-      return;
-    }
-    if (txResponse.data.tx_status === 'success') {
-      dispatch(pendingTransactionSuccessful(txResponse.data));
-    }
-  };
-
-  const connectWebSocket = async () => {
-    return connectWebSocketClient(
-      'ws://stacks-node-api-latest.argon.blockstack.xyz/extended/v1/ws'
-    );
-  };
-
-  useEffect(() => {
-    async function run() {
-      const client = await connectWebSocket().finally(() => {
-        setWebSocket('Disconnected');
-      });
-      setWebSocket('Connected');
-      if (!address) return;
-      await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
-        console.log('address balance updates', { address, balance });
-        dispatch(updateAddressBalance({ address, balance }));
-      });
-      await client.subscribeAddressTransactions(address, async ({ tx_id }) => {
-        console.log('address tx updates', tx_id);
-        const newTx = await Api.getTxDetails(tx_id);
-        if (newTx.data.tx_status !== 'success') return;
-        dispatch(addNewTransaction(newTx.data));
-      });
-    }
-    void run();
-  }, [address, dispatch]);
 
   if (!address) return <Spinner />;
 
@@ -157,7 +111,7 @@ export const Home: FC = () => {
       balance={balance}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
-      onRequestTestnetStx={async () => Api.getFaucetStx(address)}
+      onRequestTestnetStx={async () => new Api(activeNode.url).getFaucetStx(address)}
     />
   );
   const stackingPromoCard = <StackingPromoCard />;

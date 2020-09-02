@@ -115,7 +115,8 @@ export const Settings = () => {
                           <Box
                             as="button"
                             textStyle="body.small.medium"
-                            mx="base"
+                            mr="base"
+                            ml={[null, null, 'base']}
                             color="blue"
                             outline={0}
                             mt={['tight', 'unset']}

@@ -8,7 +8,8 @@ import { Api } from '../../api/api';
 import { stacksNetwork } from '../../environment';
 import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
 import { addPendingTransaction } from '../pending-transaction';
-import { Dispatch } from '../index';
+import { Dispatch, GetState } from '../index';
+import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'
@@ -22,9 +23,11 @@ export const fetchTransactionsDone = createAction<Transaction[]>(fetchTxName + '
 export const fetchTransactionsFail = createAction(fetchTxName + '-fail');
 
 export function getAddressTransactions(address: string) {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(fetchTransactions());
-    const [error, response] = await safeAwait(Api.getAddressTransactions(address));
+    const activeNode = selectActiveNodeApi(getState());
+    const client = new Api(activeNode.url);
+    const [error, response] = await safeAwait(client.getAddressTransactions(address));
     if (error) {
       dispatch(fetchTransactionsFail());
       return;

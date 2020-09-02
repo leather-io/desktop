@@ -21,7 +21,7 @@ export interface StacksNodeState extends EntityState<StacksNode> {
 const stacksNodeAdapter = createEntityAdapter<StacksNode>();
 
 const defaultNode: StacksNode = {
-  url: 'https://unknown',
+  url: 'https://stacks-node-api-latest.argon.blockstack.xyz/extended',
   name: 'Blockstack PBC node',
   id: 'default',
 };

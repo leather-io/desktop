@@ -1,11 +1,19 @@
 import React, { FC } from 'react';
-import { Text, Flex } from '@blockstack/ui';
+import { Text, Flex, BoxProps } from '@blockstack/ui';
 import { Link } from 'react-router-dom';
 
 import { templateTxBoxProps } from './transaction-list-item-pseudo';
 import { StacksNode } from '../../../store/stacks-node';
 import { STATUS_PAGE_URL } from '../../../constants/index';
 import { openExternalLink } from '../../../utils/external-links';
+
+const linkProps: BoxProps = {
+  color: 'blue',
+  textStyle: 'caption.medium',
+  fontSize: '12px',
+  lineHeight: '22px',
+  cursor: 'pointer',
+};
 
 interface TransactionListErrorProps {
   node: StacksNode;
@@ -24,13 +32,7 @@ export const TransactionListError: FC<TransactionListErrorProps> = ({ node, erro
           <>
             Unable to connect to the Blockstack PBC hosted node.
             <br />
-            <Text
-              color="blue"
-              textStyle="caption.medium"
-              fontSize="12px"
-              lineHeight="22px"
-              onClick={() => void openExternalLink(STATUS_PAGE_URL)}
-            >
+            <Text {...linkProps} onClick={() => void openExternalLink(STATUS_PAGE_URL)}>
               Check the status page
             </Text>
           </>
@@ -42,9 +44,7 @@ export const TransactionListError: FC<TransactionListErrorProps> = ({ node, erro
             You're currently using {node.url}
             <br />
             <Link to="/settings">
-              <Text color="blue" textStyle="caption.medium" fontSize="12px" lineHeight="22px">
-                Check your Stacks Node settings.
-              </Text>
+              <Text {...linkProps}>Check your Stacks Node settings.</Text>
             </Link>
           </>
         )}

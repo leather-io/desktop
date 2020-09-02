@@ -33,7 +33,7 @@ export const App: FC = ({ children }) => {
 
   useEffect(() => {
     initAppWithStxAddressInfo();
-  }, [address, initAppWithStxAddressInfo]);
+  }, [address, activeNode, initAppWithStxAddressInfo]);
 
   // const checkIfPendingTxIsComplete = async (address: string) => {
   //   const [error, txResponse] = await safeAwait(new Api(activeNode.url).getTxDetails(address));

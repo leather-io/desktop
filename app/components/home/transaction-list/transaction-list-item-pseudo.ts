@@ -44,6 +44,7 @@ export const EnableBefore = styled.button`
 `;
 
 export const templateTxBoxProps = {
+  flexDirection: 'column' as const,
   borderRadius: '8px',
   boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.04);',
   border: '1px solid #F0F0F5',

@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
 import { Box, Button, Text, ArrowIcon } from '@blockstack/ui';
-import { toHumanReadableStx } from '../../utils/unit-convert';
-import { safeAwait } from '../../utils/safe-await';
-import { delay } from '../../utils/delay';
+
+import { toHumanReadableStx } from '@utils/unit-convert';
+import { safeAwait } from '@utils/safe-await';
+import { delay } from '@utils/delay';
 
 interface BalanceCardProps {
   balance: string | null;

@@ -4,18 +4,18 @@ import { useHistory } from 'react-router-dom';
 import log from 'electron-log';
 import { Box, useClipboard, Text, Button } from '@blockstack/ui';
 
-import routes from '../../../constants/routes.json';
-import { Card } from '../../../components/card';
-import { Toast } from '../../../components/toast';
+import routes from '@constants/routes.json';
+import { Card } from '@components/card';
+import { Toast } from '@components/toast';
 
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
-} from '../../../components/onboarding';
-import { selectMnemonic } from '../../../store/keys/keys.reducer';
-import { useBackButton } from '../../../hooks/use-back-url.hook';
+} from '@components/onboarding';
+import { selectMnemonic } from '@store/keys/keys.reducer';
+import { useBackButton } from '@hooks/use-back-url.hook';
 
 export const SecretKey: React.FC = () => {
   const history = useHistory();

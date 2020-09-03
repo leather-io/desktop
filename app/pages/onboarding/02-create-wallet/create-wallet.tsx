@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { onboardingMnemonicGenerationStep } from '../../../store/keys/keys.actions';
-import routes from '../../../constants/routes.json';
+import { onboardingMnemonicGenerationStep } from '@store/keys/keys.actions';
+import routes from '@constants/routes.json';
 import {
   Onboarding,
   OnboardingTitle,
@@ -11,8 +11,8 @@ import {
   OnboardingText,
   OnboardingFooter,
   OnboardingFooterLink,
-} from '../../../components/onboarding';
-import { useBackButton } from '../../../hooks/use-back-url.hook';
+} from '@components/onboarding';
+import { useBackButton } from '@hooks/use-back-url.hook';
 
 export const CreateWallet: React.FC = () => {
   const dispatch = useDispatch();

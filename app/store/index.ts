@@ -1,5 +1,5 @@
-import { Dispatch as ReduxDispatch, Store as ReduxStore, Action, Reducer } from 'redux';
-import { combineReducers } from '@reduxjs/toolkit';
+import { Store as ReduxStore, Action } from 'redux';
+import { combineReducers, Dispatch } from '@reduxjs/toolkit';
 import { connectRouter } from 'connected-react-router';
 
 import { KeysState, createKeysReducer } from './keys';
@@ -23,8 +23,6 @@ export interface RootState {
 }
 
 export type GetState = () => RootState;
-
-export type Dispatch = ReduxDispatch<Action<string>>;
 
 export type Store = ReduxStore<RootState, Action<string>>;
 
@@ -50,3 +48,5 @@ export function createRootReducer({ history, keys }: RootReducerArgs) {
     stacksNode: stacksNodeReducer,
   });
 }
+
+export type Dispatch = ReturnType<typeof configureStore>['store']['dispatch'];

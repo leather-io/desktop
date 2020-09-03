@@ -2,15 +2,15 @@ import React, { useCallback, useEffect, FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { connectWebSocketClient } from '@stacks/blockchain-api-client';
 
-import { useNavigatorOnline } from '../hooks/use-navigator-online';
-import { getAddressTransactions, addNewTransaction } from '../store/transaction';
-import { getAddressDetails, updateAddressBalance } from '../store/address';
-import { RootState } from '../store';
-import { TitleBar } from '../components/title-bar';
-import { selectAddress } from '../store/keys';
-import { safeAwait } from '../utils/safe-await';
+import { useNavigatorOnline } from '@hooks/use-navigator-online';
+import { getAddressTransactions, addNewTransaction } from '@store/transaction';
+import { getAddressDetails, updateAddressBalance } from '@store/address';
+import { RootState } from '@store/index';
+import { TitleBar } from '@components/title-bar';
+import { selectAddress } from '@store/keys';
+import { safeAwait } from '@utils/safe-await';
 import { Api } from '../api/api';
-import { selectActiveNodeApi } from '../store/stacks-node';
+import { selectActiveNodeApi } from '@store/stacks-node';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();

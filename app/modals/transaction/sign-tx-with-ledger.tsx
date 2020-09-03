@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from 'react';
-import { LedgerConnectInstructions } from '../../components/ledger/ledger-connect-instructions';
+import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import { Box } from '@blockstack/ui';
-import { useLedger } from '../../hooks/use-ledger';
+import { useLedger } from '@hooks/use-ledger';
 import BlockstackApp from '@zondax/ledger-blockstack';
-import { delay } from '../../utils/delay';
+import { delay } from '@utils/delay';
 
 interface SignTxWithLedgerProps {
   onLedgerConnect(app: BlockstackApp): void;

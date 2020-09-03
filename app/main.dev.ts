@@ -20,6 +20,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import windowState from 'electron-window-state';
 
+// eslint-disable-next-line import/no-default-export
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';

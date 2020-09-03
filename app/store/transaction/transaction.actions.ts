@@ -6,7 +6,7 @@ import { broadcastTransaction, StacksTransaction } from '@blockstack/stacks-tran
 
 import { Api } from '../../api/api';
 import { stacksNetwork } from '../../environment';
-import { safelyFormatHexTxid } from '../../utils/safe-handle-txid';
+import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { addPendingTransaction } from '../pending-transaction';
 import { Dispatch, GetState } from '../index';
 import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';

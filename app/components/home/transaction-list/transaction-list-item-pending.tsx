@@ -2,8 +2,8 @@ import React, { FC, useRef, RefObject, useEffect, MutableRefObject } from 'react
 import { useHover, useFocus } from 'use-events';
 import { Box, Text } from '@blockstack/ui';
 
-import { PendingTransaction } from '../../../store/pending-transaction';
-import { toHumanReadableStx } from '../../../utils/unit-convert';
+import { PendingTransaction } from '@store/pending-transaction';
+import { toHumanReadableStx } from '@utils/unit-convert';
 import { TransactionIcon } from './transaction-icon';
 import { TransactionListItemContainer } from './transaction-list-item-container';
 

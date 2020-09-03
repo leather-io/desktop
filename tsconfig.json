@@ -19,7 +19,19 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "allowJs": true
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["app/utils/*"],
+      "@components/*": ["app/components/*"],
+      "@store/*": ["app/store/*"],
+      "@modals/*": ["app/modals/*"],
+      "@crypto/*": ["app/crypto/*"],
+      "@hooks/*": ["app/hooks/*"],
+      "@api/*": ["app/api/*"],
+      "@assets/*": ["app/assets/*"],
+      "@constants/*": ["app/constants/*"]
+    }
   },
   "exclude": [
     "test",

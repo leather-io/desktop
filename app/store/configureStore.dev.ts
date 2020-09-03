@@ -8,7 +8,7 @@ import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 
 import { RootState, createRootReducer, persistConfig } from '.';
-import { getInitialStateFromDisk } from '../utils/disk-store';
+import { getInitialStateFromDisk } from '@utils/disk-store';
 
 declare global {
   interface Window {

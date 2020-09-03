@@ -3,9 +3,9 @@ import { Text, Flex, BoxProps } from '@blockstack/ui';
 import { Link } from 'react-router-dom';
 
 import { templateTxBoxProps } from './transaction-list-item-pseudo';
-import { StacksNode } from '../../../store/stacks-node';
-import { STATUS_PAGE_URL } from '../../../constants/index';
-import { openExternalLink } from '../../../utils/external-links';
+import { StacksNode } from '@store/stacks-node';
+import { STATUS_PAGE_URL } from '@constants/index';
+import { openExternalLink } from '@utils/external-links';
 
 const linkProps: BoxProps = {
   color: 'blue',

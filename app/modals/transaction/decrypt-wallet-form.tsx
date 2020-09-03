@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Input, Text } from '@blockstack/ui';
-import { ErrorLabel } from '../../components/error-label';
-import { ErrorText } from '../../components/error-text';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
 
 interface DecryptWalletFormProps {
   hasSubmitted: boolean;

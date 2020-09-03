@@ -7,14 +7,15 @@ import { History } from 'history';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CSSReset } from '@blockstack/ui';
 
-import { Store } from '../store';
+import { Store } from '@store/index';
 import { Routes } from '../routes';
-import { loadFonts } from '../utils/load-fonts';
+import { loadFonts } from '@utils/load-fonts';
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
     min-height: 100vh;
     max-height: 100vh;
+    background: white;
   }
   #root {padding-top: 44px;}
   .draggable-bar {
@@ -68,4 +69,5 @@ function Root({ store, history, persistor }: RootProps) {
   );
 }
 
+// eslint-disable-next-line import/no-default-export
 export default hot(Root);

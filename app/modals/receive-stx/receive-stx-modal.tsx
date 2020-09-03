@@ -5,7 +5,7 @@ import Qr from 'qrcode.react';
 import { Text, Modal, Button, Flex, Box, useClipboard } from '@blockstack/ui';
 
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
-import { homeActions } from '../../store/home/home.reducer';
+import { homeActions } from '@store/home/home.reducer';
 
 interface ReceiveStxModalProps {
   address: string;

@@ -2,6 +2,9 @@ name: Build/release
 
 on: [pull_request]
 
+env:
+  GITHUB_SHA: ${{ github.sha }}
+
 jobs:
   release:
     runs-on: ${{ matrix.os }}
@@ -9,30 +12,58 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: macos-latest
+            NPM_COMMAND: mac
+
+          - os: ubuntu-latest
+            NPM_COMMAND: linux
+
+          - os: windows-latest
+            NPM_COMMAND: win
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
+
+      - run: echo ${{ github.sha }}
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
           node-version: 10
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
-        with:
-          build_script_name: package-all
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
+      - name: Install package
+        run: yarn
 
+      - run: echo ${{ matrix.NPM_COMMAND }}
 
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          # release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+      - name: Build releases
+        run: yarn package-${{ matrix.NPM_COMMAND }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v2
+        name: Upload Windows build
+        if: matrix.os == 'windows-latest'
         with:
-          name: my-artifact
-          path: release/**
+          name: stacks-wallet-windows
+          path: |
+            release/**/*.exe
+            release/**/*.msi
+
+      - uses: actions/upload-artifact@v2
+        name: Upload MacOS build
+        if: matrix.os == 'macos-latest'
+        with:
+          name: stacks-wallet-macos
+          path: release/**/*.dmg
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Linux build
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: stacks-wallet-linux
+          path: |
+            release/**/*.deb
+            release/**/*.rpm

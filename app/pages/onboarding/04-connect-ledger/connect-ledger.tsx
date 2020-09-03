@@ -4,21 +4,21 @@ import BlockstackApp from '@zondax/ledger-blockstack';
 
 import { useDispatch } from 'react-redux';
 
-import routes from '../../../constants/routes.json';
+import routes from '@constants/routes.json';
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingText,
   OnboardingButton,
-} from '../../../components/onboarding';
-import { setLedgerWallet } from '../../../store/keys';
+} from '@components/onboarding';
+import { setLedgerWallet } from '@store/keys';
 
-import { delay } from '../../../utils/delay';
-import { LedgerConnectInstructions } from '../../../components/ledger/ledger-connect-instructions';
-import { useLedger } from '../../../hooks/use-ledger';
-import { ErrorLabel } from '../../../components/error-label';
-import { ErrorText } from '../../../components/error-text';
-import { useBackButton } from '../../../hooks/use-back-url.hook';
+import { delay } from '@utils/delay';
+import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
+import { useLedger } from '@hooks/use-ledger';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { useBackButton } from '@hooks/use-back-url.hook';
 
 const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
 

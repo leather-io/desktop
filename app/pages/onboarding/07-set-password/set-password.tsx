@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Text, Input } from '@blockstack/ui';
 
-import { setSoftwareWallet } from '../../../store/keys';
+import { setSoftwareWallet } from '@store/keys';
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingText,
   OnboardingButton,
-} from '../../../components/onboarding';
+} from '@components/onboarding';
 import {
   validatePassword,
   blankPasswordValidation,

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Text, Box } from '@blockstack/ui';
 
-// import { ENV } from '../constants/index';
+// import { ENV } from '@constants/index';
 
 interface NetworkMessageProps {
   textColor?: string;

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { useHistory, useLocation, matchPath } from 'react-router';
 import { Flex, Box } from '@blockstack/ui';
 
-import routes from '../constants/routes.json';
-import { useWindowFocus } from '../hooks/use-window-focus';
+import routes from '@constants/routes.json';
+import { useWindowFocus } from '@hooks/use-window-focus';
 import { BackContext } from '../pages/root';
 
 import { NetworkMessage } from './network-message';

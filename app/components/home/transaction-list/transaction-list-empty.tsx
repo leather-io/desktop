@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Flex } from '@blockstack/ui';
 
-import { useNavigatorOnline } from '../../../hooks/use-navigator-online';
+import { useNavigatorOnline } from '@hooks/use-navigator-online';
 import { templateTxBoxProps } from './transaction-list-item-pseudo';
 
 export const TransactionListEmpty = () => {

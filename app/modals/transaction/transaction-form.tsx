@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { Flex, Text, Input, Box, Button } from '@blockstack/ui';
-import { ErrorLabel } from '../../components/error-label';
-import { ErrorText } from '../../components/error-text';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
 import { FormikProps } from 'formik';
-import { capitalize } from '../../utils/capitalize';
-import { toHumanReadableStx } from '../../utils/unit-convert';
+import { capitalize } from '@utils/capitalize';
+import { toHumanReadableStx } from '@utils/unit-convert';
 
 interface TxModalFormProps {
   balance: string;

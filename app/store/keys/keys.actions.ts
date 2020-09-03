@@ -5,18 +5,19 @@ import log from 'electron-log';
 import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
 
 import { RootState } from '..';
-import routes from '../../constants/routes.json';
-import { MNEMONIC_ENTROPY } from '../../constants';
+import routes from '@constants/routes.json';
+import { MNEMONIC_ENTROPY } from '@constants/index';
 import {
   persistSalt,
   persistEncryptedMnemonic,
   persistStxAddress,
   persistWalletType,
-} from '../../utils/disk-store';
+  persistPublicKey,
+} from '@utils/disk-store';
 import { generateSalt, deriveKey } from '../../crypto/key-generation';
 import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
-import { persistPublicKey } from '../../utils/disk-store';
+
 import { selectMnemonic } from './keys.reducer';
 import { BIP32Interface } from '../../types/bip32';
 

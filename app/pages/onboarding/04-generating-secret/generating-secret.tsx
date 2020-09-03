@@ -1,7 +1,7 @@
 import React from 'react';
 import { Spinner } from '@blockstack/ui';
 
-import { Onboarding, OnboardingTitle } from '../../../components/onboarding';
+import { Onboarding, OnboardingTitle } from '@components/onboarding';
 
 export const GeneratingSecret: React.FC = () => {
   return (

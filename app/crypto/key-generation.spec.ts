@@ -1,6 +1,7 @@
+import crypto from 'crypto';
+
 import { generateSalt, deriveKey } from './key-generation';
 
-import crypto from 'crypto';
 // https://stackoverflow.com/a/52612372/1141891
 Object.defineProperty(global, 'crypto', {
   value: {

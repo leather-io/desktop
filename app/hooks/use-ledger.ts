@@ -1,8 +1,9 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
+import BlockstackApp from '@zondax/ledger-blockstack';
 import type Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
+
 import { useInterval } from './use-interval';
-import BlockstackApp from '@zondax/ledger-blockstack';
 
 export enum LedgerConnectStep {
   Disconnected,

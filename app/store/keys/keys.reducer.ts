@@ -2,8 +2,12 @@ import { createReducer, createSelector } from '@reduxjs/toolkit';
 import log from 'electron-log';
 
 import { RootState } from '..';
-import { setPasswordSuccess, persistLedgerWallet } from './keys.actions';
-import { persistMnemonicSafe, persistMnemonic } from './keys.actions';
+import {
+  setPasswordSuccess,
+  persistLedgerWallet,
+  persistMnemonicSafe,
+  persistMnemonic,
+} from './keys.actions';
 
 //
 // TODO: create separate state slices per wallet type

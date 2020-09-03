@@ -5,13 +5,13 @@ import { Modal, ButtonGroup, Button, Box, Text, Input } from '@blockstack/ui';
 import { v4 as uuid } from 'uuid';
 import * as yup from 'yup';
 
-import { StacksNode } from '../../store/stacks-node';
+import { StacksNode } from '@store/stacks-node';
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
-import { ErrorLabel } from '../../components/error-label';
-import { ErrorText } from '../../components/error-text';
-import { capitalize } from '../../utils/capitalize';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { capitalize } from '@utils/capitalize';
 import { Api } from '../../api/api';
-import { safeAwait } from '../../utils/safe-await';
+import { safeAwait } from '@utils/safe-await';
 
 interface AddNodeSettingsProps {
   isOpen: boolean;

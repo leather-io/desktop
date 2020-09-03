@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
-import { StacksNode } from '../../../store/stacks-node/stacks-node.reducer';
+import { StacksNode } from '@store/stacks-node';
+
 import { TransactionListTitle } from './transaction-list-title';
 import { TransactionListEmpty } from './transaction-list-empty';
 import { TransactionListLoading } from './transaction-list-loading';

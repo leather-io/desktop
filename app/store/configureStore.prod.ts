@@ -5,7 +5,7 @@ import { routerMiddleware } from 'connected-react-router';
 import { persistReducer, persistStore } from 'redux-persist';
 
 import { RootState, createRootReducer, persistConfig } from '.';
-import { getInitialStateFromDisk } from '../utils/disk-store';
+import { getInitialStateFromDisk } from '@utils/disk-store';
 
 export const history = createHashHistory();
 const rootReducer = createRootReducer({ history, keys: getInitialStateFromDisk() });

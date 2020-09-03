@@ -5,6 +5,7 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;
 }
 
+// eslint-disable-next-line import/no-default-export
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
 

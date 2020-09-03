@@ -14,22 +14,22 @@ import {
 } from '@blockstack/stacks-transactions';
 import { useHotkeys } from 'react-hotkeys-hook';
 
-import { RootState } from '../../store';
-import routes from '../../constants/routes.json';
-import { validateStacksAddress } from '../../utils/get-stx-transfer-direction';
+import { RootState } from '@store/index';
+import routes from '@constants/routes.json';
+import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
 
-import { selectTxModalOpen, homeActions } from '../../store/home/home.reducer';
+import { selectTxModalOpen, homeActions } from '@store/home/home.reducer';
 import {
   selectEncryptedMnemonic,
   selectSalt,
   decryptSoftwareWallet,
   selectWalletType,
-} from '../../store/keys';
+} from '@store/keys';
 import { validateAddressChain } from '../../crypto/validate-address-net';
-import { broadcastStxTransaction, selectMostRecentlyTxError } from '../../store/transaction';
-import { toHumanReadableStx, stxToMicroStx, microStxToStx } from '../../utils/unit-convert';
-import { ErrorLabel } from '../../components/error-label';
-import { ErrorText } from '../../components/error-text';
+import { broadcastStxTransaction, selectMostRecentlyTxError } from '@store/transaction';
+import { toHumanReadableStx, stxToMicroStx, microStxToStx } from '@utils/unit-convert';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
 import { stacksNetwork } from '../../environment';
 import {
   TxModalHeader,
@@ -43,7 +43,7 @@ import { TxModalForm } from './transaction-form';
 import { DecryptWalletForm } from './decrypt-wallet-form';
 import { SignTxWithLedger } from './sign-tx-with-ledger';
 import BlockstackApp from '../../../../ledger-blockstack/js/src/index';
-import { selectPublicKey } from '../../store/keys/keys.reducer';
+import { selectPublicKey } from '@store/keys/keys.reducer';
 import { FailedBroadcastError } from './failed-broadcast-error';
 import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 

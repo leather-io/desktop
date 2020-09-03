@@ -1,14 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import routes from '../../../constants/routes.json';
+import routes from '@constants/routes.json';
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
-} from '../../../components/onboarding';
-import { useBackButton } from '../../../hooks/use-back-url.hook';
+} from '@components/onboarding';
+import { useBackButton } from '@hooks/use-back-url.hook';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();

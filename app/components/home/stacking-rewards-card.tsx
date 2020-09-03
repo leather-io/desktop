@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Box, Flex, Text } from '@blockstack/ui';
 import { Hr } from '../hr';
 import { MovementArrow } from '../icons/movement-arrow';
-import { features } from '../../constants/index';
+import { features } from '@constants/index';
 
 interface StackingRewardCardProps {
   lifetime: string;

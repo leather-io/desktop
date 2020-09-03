@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import { deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
 import { Text, Input } from '@blockstack/ui';
 
-import routes from '../../../constants/routes.json';
-import { Hr } from '../../../components/hr';
-import { ErrorLabel } from '../../../components/error-label';
-import { ErrorText } from '../../../components/error-text';
-import { persistMnemonic } from '../../../store/keys/keys.actions';
-import { safeAwait } from '../../../utils/safe-await';
-import { useBackButton } from '../../../hooks/use-back-url.hook';
+import routes from '@constants/routes.json';
+import { Hr } from '@components/hr';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { persistMnemonic } from '@store/keys/keys.actions';
+import { safeAwait } from '@utils/safe-await';
+import { useBackButton } from '@hooks/use-back-url.hook';
 import {
   Onboarding,
   OnboardingTitle,
@@ -18,7 +18,7 @@ import {
   OnboardingText,
   OnboardingFooter,
   OnboardingFooterLink,
-} from '../../../components/onboarding';
+} from '@components/onboarding';
 
 export const RestoreWallet: React.FC = () => {
   const [mnemonic, setMnemonic] = useState('');

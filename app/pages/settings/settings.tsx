@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@blockstack/ui';
 
-import routes from '../../constants/routes.json';
-import { useBackButton } from '../../hooks/use-back-url.hook';
-import { selectWalletType } from '../../store/keys/keys.reducer';
-import { ResetWalletModal } from '../../modals/reset-wallet/reset-wallet-modal';
+import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url.hook';
+import { selectWalletType } from '@store/keys/keys.reducer';
+import { ResetWalletModal } from '@modals/reset-wallet/reset-wallet-modal';
 
-import { RootState } from '../../store';
+import { RootState } from '@store/index';
 import {
   selectStacksNodeApis,
   upsertStacksNodeApi,
   selectActiveNodeApi,
   setActiveStacksNode,
   removeStacksNodeApi,
-} from '../../store/stacks-node';
-import { UpsertStacksNodeSettingsModal } from '../../modals/upsert-stacks-node-api/upsert-stacks-node-api';
-import { NodeSelect } from '../../components/settings/node-select';
-import { NodeSelectItem } from '../../components/settings/node-select-item';
+} from '@store/stacks-node';
+import { UpsertStacksNodeSettingsModal } from '@modals/upsert-stacks-node-api/upsert-stacks-node-api';
+import { NodeSelect } from '@components/settings/node-select';
+import { NodeSelectItem } from '@components/settings/node-select-item';
+import { SettingSection } from '@components/settings/settings-section';
 
 import { SettingsLayout, SettingDescription } from './settings-layout';
-import { SettingSection } from '../../components/settings/settings-section';
 
 export const Settings = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,6 @@ export const Settings = () => {
     selectedNodeApi: selectActiveNodeApi(state),
     walletType: selectWalletType(state),
   }));
-
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [nodeModalOpen, setNodeModalOpen] = useState(false);
   const [operation, setOperation] = useState<'create' | 'update'>('create');

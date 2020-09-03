@@ -16,5 +16,13 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 0,
     '@typescript-eslint/unbound-method': 0,
     'no-warning-comments': ['warn', { terms: ['SECURITY'], location: 'anywhere' }],
+
+    'import/no-unresolved': ['error'],
+    'import/no-mutable-exports': ['error'],
+    'import/no-useless-path-segments': ['error'],
+    // 'import/no-cycle': ['error', { maxDepth: 2 }],
+    'import/first': ['error'],
+    'import/no-duplicates': ['error'],
+    'import/no-default-export': ['error'],
   },
 };

@@ -1,21 +1,21 @@
-import React, { FC, MutableRefObject, RefObject } from 'react';
+import React, { FC, MutableRefObject, RefObject, useLayoutEffect, useRef, useEffect } from 'react';
 import { useHover, useFocus } from 'use-events';
 import { Box, Text, useClipboard } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
-import { capitalize } from '../../../utils/capitalize';
-import { getStxTxDirection } from '../../../utils/get-stx-transfer-direction';
-import { sumStxTxTotal } from '../../../utils/sum-stx-tx-total';
+import { capitalize } from '@utils/capitalize';
+import { getStxTxDirection } from '@utils/get-stx-transfer-direction';
+import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
 import { TransactionIcon } from './transaction-icon';
-import { toHumanReadableStx } from '../../../utils/unit-convert';
-import { useLayoutEffect, useRef, useEffect } from 'react';
+import { toHumanReadableStx } from '@utils/unit-convert';
+
 import {
   createTxListContextMenu,
   registerHandler,
   deregisterHandler,
 } from './transaction-list-context-menu';
-import { makeExplorerLink } from '../../../utils/external-links';
-import { getRecipientAddress } from '../../../utils/tx-utils';
+import { makeExplorerLink } from '@utils/external-links';
+import { getRecipientAddress } from '@utils/tx-utils';
 import { TransactionListItemContainer } from './transaction-list-item-container';
 
 const dateOptions = {

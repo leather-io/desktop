@@ -2,8 +2,8 @@ import React from 'react';
 import { Box, Flex, Text, Button } from '@blockstack/ui';
 
 import btcPodium from '../../assets/images/btc-podium.svg';
-import { openExternalLink } from '../../utils/external-links';
-import { BUY_STX_URL } from '../../constants';
+import { openExternalLink } from '@utils/external-links';
+import { BUY_STX_URL } from '@constants/index';
 
 export const StackingPromoCard = () => {
   return (

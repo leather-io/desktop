@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Flex, Text } from '@blockstack/ui';
 
-import { StacksNode } from '../../store/stacks-node';
+import { StacksNode } from '@store/stacks-node';
 
 interface NodeSelectItemProps {
   node: StacksNode;

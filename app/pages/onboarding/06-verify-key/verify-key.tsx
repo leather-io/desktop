@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Input } from '@blockstack/ui';
 
-import routes from '../../../constants/routes.json';
-import { selectMnemonic } from '../../../store/keys';
-import { ErrorLabel } from '../../../components/error-label';
-import { ErrorText } from '../../../components/error-text';
-import { useBackButton } from '../../../hooks/use-back-url.hook';
+import routes from '@constants/routes.json';
+import { selectMnemonic } from '@store/keys';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { useBackButton } from '@hooks/use-back-url.hook';
 import {
   Onboarding,
   OnboardingTitle,
@@ -16,7 +16,7 @@ import {
   OnboardingButton,
   OnboardingFooter,
   OnboardingFooterLink,
-} from '../../../components/onboarding';
+} from '@components/onboarding';
 
 export const VerifyKey: React.FC = () => {
   const history = useHistory();

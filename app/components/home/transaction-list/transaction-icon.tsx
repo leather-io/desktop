@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { Flex, FlexProps, Spinner } from '@blockstack/ui';
-import { SentArrow } from '../../icons/sent-arrow';
-import { ReceivedArrow } from '../../icons/received-arrow';
+
+import { SentArrow } from '@components/icons/sent-arrow';
+import { ReceivedArrow } from '@components/icons/received-arrow';
 
 type TransactionDirection = 'sent' | 'received';
 

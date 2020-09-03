@@ -2,7 +2,7 @@ import React, { FC, useState, useRef } from 'react';
 import { Modal, ButtonGroup, Button, Box } from '@blockstack/ui';
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
 import { remote } from 'electron';
-import { clearDiskStorage } from '../../utils/disk-store';
+import { clearDiskStorage } from '@utils/disk-store';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 interface ResetWalletModalProps {

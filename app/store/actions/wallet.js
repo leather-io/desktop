@@ -41,6 +41,7 @@ import {
 } from "@stores/selectors/wallet";
 import {
   generateTransaction,
+  generateBTCTransaction,
   broadcastTransaction
 } from "@common/lib/transactions";
 import {
@@ -408,6 +409,118 @@ const doSignTransaction = (
   }
 };
 
+/**
+ * doSignBTCTransaction
+ *
+ * This signs a BTC-only tx, using seedphrase, ledger or trezor.
+ *
+ * @param {string} senderAddress - the user's BTC address
+ * @param {string} recipientAddress - the BTC address they want to send to
+ * @param {string} amountToSend - the BTC amount (satoshis)
+ * @param {string} walletType - WALLET_TYPES.SOFTWARE || WALLET_TYPES.LEDGER || WALLET_TYPES.TREZOR
+ * @param {string} seedPhrase - the seed phrase that will be used to sign the transaction
+ * @param {string} memo - an optional message (scriptData)
+ */
+const doSignBTCTransaction = (
+  senderAddress,
+  recipientAddress,
+  amountToSend,
+  walletType,
+  seedPhrase,
+  memo
+) => async (dispatch, state) => {
+  // refresh data, false to prevent a notification
+  doRefreshData(false)(dispatch, state);
+  // prevent the modal from being closed
+  doNotAllowModalToClose()(dispatch);
+  // start our process
+  dispatch({
+    type: WALLET_SIGN_TRANSACTION_STARTED
+  });
+
+  try {
+    const privateKey = ""
+
+    if (walletType === WALLET_TYPES.SOFTWARE) {
+      privateKey = mnemonicToPrivateKey(seedPhrase)
+    }
+
+    // const transaction = await generateTransaction(
+    const transaction = await generateBTCTransaction(
+      senderAddress,
+      recipientAddress,
+      amountToSend,
+      walletType,
+      privateKey,
+      memo
+    );
+
+    // if we have an error
+    if (transaction.error) {
+      // dispatch error
+      dispatch({
+        type: WALLET_SIGN_TRANSACTION_ERROR,
+        payload: transaction
+      });
+      // allow the modal to be closed if error
+      doAllowModalToClose()(dispatch);
+
+      // notification
+      doNotify({
+        type: "error",
+        message: transaction.message
+      });
+      return transaction;
+    } else {
+      // allow the modal to be closed if error
+      doAllowModalToClose()(dispatch);
+      doRefreshData(false)(dispatch, state);
+      // success
+      dispatch({
+        type: WALLET_SIGN_TRANSACTION_FINISHED,
+        payload: transaction
+      });
+      return transaction;
+    }
+  } catch (e) {
+    if (typeof e === "string") {
+      doNotifyWarning({
+        title: "Transaction Signing Failed",
+        message: e
+      })(dispatch);
+      // allow the modal to be closed
+      doAllowModalToClose()(dispatch);
+      dispatch({
+        type: WALLET_SIGN_TRANSACTION_ERROR,
+        payload: e
+      });
+    }
+    if (
+      e.type === ERRORS.INSUFFICIENT_BTC_BALANCE.type ||
+      e.message.includes("Not enough UTXOs to fund. Left to fund: ")
+    ) {
+      // allow the modal to be closed in case of error
+      doAllowModalToClose()(dispatch);
+      doNotifyWarning({
+        title: "Not enough BTC",
+        message:
+          "Looks like you don't have enough BTC to pay the associated transaction fees for this transaction."
+      })(dispatch);
+      return;
+    }
+    doNotifyWarning({
+      title: "Something went wrong.",
+      message: e.message
+    })(dispatch);
+    // allow the modal to be closed in case of error
+    doAllowModalToClose()(dispatch);
+    dispatch({
+      type: WALLET_SIGN_TRANSACTION_ERROR,
+      payload: e.message
+    });
+  }
+};
+
 const doBroadcastTransaction = rawTx => async (dispatch, state) => {
   try {
     // start our process
@@ -454,5 +567,6 @@ export {
   doFetchBalances,
   doRefreshData,
   doSignTransaction,
+  doSignBTCTransaction,
   doBroadcastTransaction,
 };

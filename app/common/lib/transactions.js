@@ -43,6 +43,127 @@ export const ERRORS = {
 };
 
 /**
+ * prepareBTCTransaction
+ *
+ * This will generate and sign a BTC transaction with either a seed phrase, ledger or trezor
+ *
+ * @param {string} senderAddress - from BTC address
+ * @param {string} recipientAddress - to BTC address
+ * @param {object} amount - the amount of BTC to send
+ * @param {string} walletType - one of WALLET_TYPES.SOFTWARE, WALLET_TYPES.TREZOR, WALLET_TYPES.LEDGER
+ * @param {string} memo - the message for the tx
+ */
+
+const prepareBTCTransaction = async (
+  senderBtcAddress,
+  recipientBtcAddress,
+  amount,
+  walletType,
+  memo = ""
+) => {
+  // define token type 
+  const tokenType = "BITCOIN";
+
+  const tokenAmount = toBigInt(amount); // convert to bigi in satoshis
+
+  // get an estimate
+  const utxos = await config.network.getUTXOs(senderBtcAddress);
+  const numUTXOs = utxos.length;
+
+  const estimate =
+    (await transactions.estimateTokenTransfer(
+      recipientBtcAddress,
+      tokenType,
+      tokenAmount,
+      memo,
+      numUTXOs
+    )) + 5500;
+
+  // current BTC balance
+  const btcBalance = sumUTXOs(utxos);
+
+  // not enough btc
+  if (btcBalance < estimate + amount) {
+    return {
+      ...ERRORS.INSUFFICIENT_BTC_BALANCE,
+      estimate,
+      btcBalance,
+      difference: estimate - btcBalance
+    };
+  }
+
+  return {
+    senderBtcAddress,
+    recipientBtcAddress,
+    tokenType,
+    tokenAmount,
+    utxos,
+    numUTXOs,
+    estimate,
+    btcBalance
+  };
+};
+
+/**
+ * generateTransaction
+ *
+ * This will generate and sign our transaction with either a ledger or trezor
+ *
+ * @param {string} senderAddress - from Stacks address
+ * @param {string} recipientAddress - to Stacks address
+ * @param {object} amount - the amount of stacks to send
+ * @param {string} walletType - one of WALLET_TYPES.TREZOR or WALLET_TYPES.LEDGER
+ * @param {string} memo - the message for the tx
+ */
+const generateBTCTransaction = async (
+  senderBtcAddress,
+  recipientBTCAddress,
+  btcAmount,
+  walletType,
+  privateKey,
+  memo = ""
+) => {
+  try {
+    const tx = await prepareBTCTransaction(
+      senderBtcAddress,
+      recipientBTCAddress,
+      btcAmount,
+      walletType,
+      memo
+    );
+
+    // if we don't have an obj from this, return generic error (should be impossible)
+    if (!tx) return ERRORS.TRANSACTION_ERROR();
+
+    // if we have an error, return it.
+    if (tx.error) {
+      return tx;
+    }
+
+    // define our signer
+    const signer = null
+    if (walletType === WALLET_TYPES.SOFTWARE) {
+      signer = privateKey
+    } else {
+      const isLedger = walletType === WALLET_TYPES.LEDGER;
+      signer = isLedger
+        ? new LedgerSigner(PATH, Transport)
+        : new TrezorSigner(PATH, tx.senderBtcAddress);
+    }
+
+    const rawTx = await transactions.makeBitcoinSpend(recipientBTCAddress, privateKey, btcAmount)
+
+    return {
+      fee: tx.estimate,
+      rawTx
+    };
+  } catch (e) {
+    console.log("ERROR", e);
+    return ERRORS.TRANSACTION_ERROR(e.message);
+  }
+};
+
+/**
  * prepareTransaction
  *
  * This will generate and sign our transaction with either a seed phrase, ledger or trezor
@@ -245,4 +366,4 @@ const broadcastTransaction = async rawTx => {
   }
 };
 
-export { generateTransaction, broadcastTransaction, prepareTransaction };
+export { prepareBTCTransaction, generateBTCTransaction, generateTransaction, broadcastTransaction, prepareTransaction };

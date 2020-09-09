@@ -91,7 +91,7 @@ const createWindow = async () => {
           },
   });
 
-  mainWindow.setTrafficLightPosition({ x: 10, y: 28 });
+  if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 28 });
 
   mainWindowState.manage(mainWindow);
 

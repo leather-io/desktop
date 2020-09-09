@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { connectWebSocketClient } from '@stacks/blockchain-api-client';
 
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
-import { getAddressTransactions, addNewTransaction } from '@store/transaction';
+import {
+  getAddressTransactions,
+  addNewTransaction,
+  pendingTransactionSuccessful,
+} from '@store/transaction';
 import { getAddressDetails, updateAddressBalance } from '@store/address';
 import { RootState } from '@store/index';
 import { TitleBar } from '@components/title-bar';
@@ -11,6 +15,7 @@ import { selectAddress } from '@store/keys';
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '../api/api';
 import { selectActiveNodeApi } from '@store/stacks-node';
+import urljoin from 'url-join';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
@@ -45,17 +50,18 @@ export const App: FC = ({ children }) => {
   //   }
   // };
 
-  const connectWebSocket = async () => {
-    return connectWebSocketClient(
-      'ws://stacks-node-api-latest.argon.blockstack.xyz/extended/v1/ws'
-    );
-  };
+  const wsUrl = new URL(activeNode.url);
+  wsUrl.protocol = 'ws:';
+
+  console.log(urljoin(wsUrl.toString(), 'v1', 'ws'));
 
   useEffect(() => {
     async function run() {
-      const client = await connectWebSocket().finally(() => {
-        setWebSocket('Disconnected');
-      });
+      const client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'v1', 'ws')).finally(
+        () => {
+          setWebSocket('Disconnected');
+        }
+      );
       setWebSocket('Connected');
       if (!address) return;
       await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
@@ -67,6 +73,7 @@ export const App: FC = ({ children }) => {
         const newTx = await new Api(activeNode.url).getTxDetails(tx_id);
         if (newTx.data.tx_status !== 'success') return;
         dispatch(addNewTransaction(newTx.data));
+        dispatch(pendingTransactionSuccessful(newTx.data));
       });
     }
     void run();

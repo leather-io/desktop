@@ -12,6 +12,7 @@ import {
   MEMO_MAX_LENGTH_BYTES,
   makeUnsignedSTXTokenTransfer,
 } from '@blockstack/stacks-transactions';
+import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { RootState } from '@store/index';
@@ -42,10 +43,10 @@ import {
 import { TxModalForm } from './transaction-form';
 import { DecryptWalletForm } from './decrypt-wallet-form';
 import { SignTxWithLedger } from './sign-tx-with-ledger';
-import BlockstackApp from '../../../../ledger-blockstack/js/src/index';
 import { selectPublicKey } from '@store/keys/keys.reducer';
 import { FailedBroadcastError } from './failed-broadcast-error';
 import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
+import { safeAwait } from '@utils/safe-await';
 
 interface TxModalProps {
   balance: string;
@@ -116,7 +117,12 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           senderKey: privateKey,
         });
         dispatch(
-          broadcastStxTransaction({ signedTx: tx, amount, onBroadcastSuccess: closeModalResetForm })
+          broadcastStxTransaction({
+            signedTx: tx,
+            amount,
+            onBroadcastSuccess: closeModalResetForm,
+            onBroadcastFail: () => setStep(TxModalStep.NetworkError),
+          })
         );
       } catch (e) {
         console.log(e);
@@ -131,35 +137,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           return;
         }
 
-        const librarySignedTx = await makeSTXTokenTransfer({
-          recipient: form.values.recipient,
-          network: stacksNetwork,
-          amount: new BN(1),
-          senderKey: '5db4f7bb20960c6b1ceaa599576c3f01ec96448dc33d7894cc187b941f15cd3201',
-        });
-
-        const generatedPubkey = pubKeyfromPrivKey(
-          '5db4f7bb20960c6b1ceaa599576c3f01ec96448dc33d7894cc187b941f15cd3201'
-        );
-
-        const libraryUnsignedTx = await makeUnsignedSTXTokenTransfer({
-          recipient: form.values.recipient,
-          network: stacksNetwork,
-          amount: new BN(1),
-          publicKey: publicKey.toString('hex'),
-        });
-
-        // Output of the public key saved when auth-ing the wallet with the ledger
-        // and derived public key from given public key to confirm they're the same key
-        console.log({ generatedPubkey: generatedPubkey.data.toString('hex') });
-        console.log({ persistedPubkey: publicKey.toString('hex') });
-
-        console.log({ librarySignedTx });
-        // Ignore type error, this is the expected signature output from the stacks transaction library
-        console.log({
-          librarySignedTxSignature: librarySignedTx.auth.spendingCondition.signature.data,
-        });
-
         const tx = await makeUnsignedSTXTokenTransfer({
           recipient: form.values.recipient,
           network: stacksNetwork,
@@ -167,15 +144,19 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           publicKey: publicKey.toString('hex'),
         });
 
-        const resp = (await blockstackApp.sign(`m/44'/5757'/0'/0/0`, tx.serialize())) as {
-          signatureCompact: Buffer;
-        };
+        const resp = await blockstackApp.sign(`m/44'/5757'/0'/0/0`, tx.serialize());
+
+        if (resp.returnCode === LedgerError.TransactionRejected) {
+          setHasSubmitted(false);
+          return;
+        }
 
         if (tx.auth.spendingCondition) {
           tx.auth.spendingCondition.signature = createMessageSignature(
-            resp.signatureCompact.toString('hex')
+            resp.signatureVRS.toString('hex')
           );
         }
+
         console.log('tx after changing signature', tx.serialize().toString('hex'));
 
         dispatch(
@@ -278,14 +259,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     },
   });
 
-  // console.log('errors', form.errors);
-
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
 
   if (!txModalOpen) return null;
 
   const closeModalResetForm = () => {
-    form.resetForm();
     dispatch(homeActions.closeTxModal());
   };
 
@@ -441,7 +419,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           </Button>
           <Button
             ml="base-tight"
-            isDisabled={blockstackApp === null}
+            isDisabled={blockstackApp === null || hasSubmitted}
+            isLoading={hasSubmitted}
             onClick={() => {
               if (blockstackApp === null) return;
               void broadcastTx(blockstackApp);

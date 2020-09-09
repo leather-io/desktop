@@ -6,9 +6,10 @@ import { LedgerStepText } from './ledger-step-text';
 
 interface LedgerConnectInstructions {
   step: LedgerConnectStep;
+  action: string;
 }
 
-export const LedgerConnectInstructions: FC<LedgerConnectInstructions> = ({ step }) => {
+export const LedgerConnectInstructions: FC<LedgerConnectInstructions> = ({ step, action }) => {
   const hasConnected = (step: LedgerConnectStep) => step > LedgerConnectStep.Disconnected;
   const hasOpenedApp = (step: LedgerConnectStep) => step > LedgerConnectStep.ConnectedAppClosed;
   const hasAddress = (step: LedgerConnectStep) => step === LedgerConnectStep.HasAddress;
@@ -26,9 +27,7 @@ export const LedgerConnectInstructions: FC<LedgerConnectInstructions> = ({ step 
         {hasOpenedApp(step) && <CheckmarkCircleIcon color="blue" size="16px" ml="tight" />}
       </Flex>
       <Flex height="56px" alignItems="center" px="extra-loose">
-        <LedgerStepText step={LedgerConnectStep.ConnectedAppOpen}>
-          Confirm your Ledger address
-        </LedgerStepText>
+        <LedgerStepText step={LedgerConnectStep.ConnectedAppOpen}>{action}</LedgerStepText>
         {hasAddress(step) && <CheckmarkCircleIcon color="blue" size="16px" ml="tight" />}
       </Flex>
     </Box>

@@ -8,7 +8,6 @@ import { Modal, Text, Button, Box } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
 import {
   makeSTXTokenTransfer,
-  pubKeyfromPrivKey,
   MEMO_MAX_LENGTH_BYTES,
   makeUnsignedSTXTokenTransfer,
 } from '@blockstack/stacks-transactions';
@@ -46,7 +45,7 @@ import { SignTxWithLedger } from './sign-tx-with-ledger';
 import { selectPublicKey } from '@store/keys/keys.reducer';
 import { FailedBroadcastError } from './failed-broadcast-error';
 import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
-import { safeAwait } from '@utils/safe-await';
+import { LedgerConnectStep } from '@hooks/use-ledger';
 
 interface TxModalProps {
   balance: string;
@@ -114,6 +113,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           recipient: form.values.recipient,
           network: stacksNetwork,
           amount: new BN(stxToMicroStx(form.values.amount).toString()),
+          memo: form.values.memo,
           senderKey: privateKey,
         });
         dispatch(
@@ -140,6 +140,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         const tx = await makeUnsignedSTXTokenTransfer({
           recipient: form.values.recipient,
           network: stacksNetwork,
+          memo: form.values.memo,
           amount: new BN(1),
           publicKey: publicKey.toString('hex'),
         });
@@ -260,6 +261,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   });
 
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
+  const [ledgerConnectStep, setLedgerConnectStep] = useState(LedgerConnectStep.Disconnected);
 
   if (!txModalOpen) return null;
 
@@ -411,7 +413,12 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       header: (
         <TxModalHeader onSelectClose={closeModalResetForm}>Confirm on your Ledger</TxModalHeader>
       ),
-      body: <SignTxWithLedger onLedgerConnect={blockstackApp => setBlockstackApp(blockstackApp)} />,
+      body: (
+        <SignTxWithLedger
+          onLedgerConnect={blockstackApp => setBlockstackApp(blockstackApp)}
+          updateStep={step => setLedgerConnectStep(step)}
+        />
+      ),
       footer: (
         <TxModalFooter>
           <Button mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)} {...buttonStyle}>
@@ -419,7 +426,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           </Button>
           <Button
             ml="base-tight"
-            isDisabled={blockstackApp === null || hasSubmitted}
+            isDisabled={
+              blockstackApp === null ||
+              hasSubmitted ||
+              ledgerConnectStep !== LedgerConnectStep.ConnectedAppOpen
+            }
             isLoading={hasSubmitted}
             onClick={() => {
               if (blockstackApp === null) return;

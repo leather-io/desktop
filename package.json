@@ -30,7 +30,7 @@
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest"
   },
   "build": {
-    "productName": "StacksWallet",
+    "productName": "Stacks Wallet Beta",
     "appId": "org.blockstack.StacksWallet",
     "files": [
       "dist/",
@@ -211,7 +211,7 @@
     "@reduxjs/toolkit": "1.4.0",
     "@stacks/blockchain-api-client": "0.13.0",
     "@styled-system/theme-get": "5.1.2",
-    "@zondax/ledger-blockstack": "0.0.1",
+    "@zondax/ledger-blockstack": "0.0.2",
     "argon2-browser": "1.14.0",
     "axios": "0.20.0",
     "bignumber.js": "9.0.0",

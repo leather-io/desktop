@@ -81,7 +81,10 @@ export const ConnectLedger: React.FC = () => {
       <OnboardingTitle>Connect your Ledger</OnboardingTitle>
       <OnboardingText>Follow these steps to connect your Ledger S or X</OnboardingText>
 
-      <LedgerConnectInstructions step={hasConfirmedAddress ? LedgerConnectStep.HasAddress : step} />
+      <LedgerConnectInstructions
+        action="Confirm your address"
+        step={hasConfirmedAddress ? LedgerConnectStep.HasAddress : step}
+      />
       {deviceError && (
         <ErrorLabel mt="base-loose">
           <ErrorText>{deviceError}</ErrorText>

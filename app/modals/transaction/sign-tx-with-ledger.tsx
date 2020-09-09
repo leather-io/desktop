@@ -48,7 +48,7 @@ export const SignTxWithLedger: FC<SignTxWithLedgerProps> = ({ onLedgerConnect })
   }, [transport, step, onLedgerConnect]);
   return (
     <Box mx="extra-loose" mb="extra-loose">
-      <LedgerConnectInstructions step={step} />
+      <LedgerConnectInstructions action="Sign transaction on Ledger" step={step} />
     </Box>
   );
 };

@@ -2,9 +2,6 @@ name: Build/release
 
 on: [pull_request]
 
-env:
-  GITHUB_SHA: ${{ github.sha }}
-
 jobs:
   release:
     runs-on: ${{ matrix.os }}
@@ -28,6 +25,10 @@ jobs:
 
       - run: echo ${{ github.sha }}
 
+      - name: Get git commit
+        id: git-commit
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
@@ -35,6 +36,12 @@ jobs:
 
       - name: Install package
         run: yarn
+
+      - name: Cache multiple paths
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - run: echo ${{ matrix.NPM_COMMAND }}
 
@@ -47,7 +54,7 @@ jobs:
         name: Upload Windows build
         if: matrix.os == 'windows-latest'
         with:
-          name: stacks-wallet-windows
+          name: stacks-wallet-${{ steps.git-commit.outputs.sha }}-windows
           path: |
             release/**/*.exe
             release/**/*.msi
@@ -56,14 +63,14 @@ jobs:
         name: Upload MacOS build
         if: matrix.os == 'macos-latest'
         with:
-          name: stacks-wallet-macos
+          name: stacks-wallet-${{ steps.git-commit.outputs.sha }}-macos
           path: release/**/*.dmg
 
       - uses: actions/upload-artifact@v2
         name: Upload Linux build
         if: matrix.os == 'ubuntu-latest'
         with:
-          name: stacks-wallet-linux
+          name: stacks-wallet-${{ steps.git-commit.outputs.sha }}-linux
           path: |
             release/**/*.deb
             release/**/*.rpm

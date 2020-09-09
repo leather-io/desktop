@@ -17,8 +17,9 @@ import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
 import windowState from 'electron-window-state';
+
+import MenuBuilder from './menu';
 
 // eslint-disable-next-line import/no-default-export
 export default class AppUpdater {
@@ -46,18 +47,13 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
 }
 
 const installExtensions = async () => {
-  try {
-    const installer = await import('electron-devtools-installer');
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-    const extensions = [installer.REACT_DEVELOPER_TOOLS, installer.REDUX_DEVTOOLS];
+  const installer = require('electron-devtools-installer');
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
-    return Promise.all(
-      extensions.map(extension => installer.default(extension, forceDownload))
-    ).catch(error => new Error(`Error while installing extensions\n${String(error)}`));
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  return Promise.all(
+    extensions.map(name => installer.default(installer[name], forceDownload))
+  ).catch(console.log);
 };
 
 const createWindow = async () => {

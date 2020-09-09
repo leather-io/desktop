@@ -53,8 +53,6 @@ export const App: FC = ({ children }) => {
   const wsUrl = new URL(activeNode.url);
   wsUrl.protocol = 'ws:';
 
-  console.log(urljoin(wsUrl.toString(), 'v1', 'ws'));
-
   useEffect(() => {
     async function run() {
       const client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'v1', 'ws')).finally(

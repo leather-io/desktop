@@ -6,6 +6,7 @@ import { Label } from "@components/field";
 import { doResetWallet } from "@stores/actions/wallet";
 import { OpenModal } from "@components/modal";
 import { TxFeesModal } from "@containers/modals/tx-fees-top-up";
+import { WithdrawBTCModal } from "@containers/modals/withdraw-btc";
 import { connect } from "react-redux";
 import {
   selectWalletType,
@@ -51,8 +52,8 @@ const TopUpSection = connect(state => ({
       <Card>
         <Flex p={4} borderRight={1} borderColor="blue.mid" flexGrow={1}>
           <Type>
-            You need very small amounts of Bitcoin (BTC) to send Stacks (STX). You
-            currently have {satoshisToBtc(balance)} BTC available.
+            You need very small amounts of Bitcoin (BTC) to send Stacks (STX).
+            You currently have {satoshisToBtc(balance)} BTC available.
           </Type>
         </Flex>
         <Flex justifyContent="center" p={4}>
@@ -69,13 +70,47 @@ const TopUpSection = connect(state => ({
   ) : null
 );
 
+const WithdrawBTCSection = connect(state => ({
+  type: selectWalletType(state),
+  balance: selectWalletBitcoinBalance(state)
+}))(({ type, balance }) =>
+  type !== WALLET_TYPES.WATCH_ONLY ? (
+    <Section>
+      <Label pb={4} fontSize={2}>
+        Withdraw BTC
+      </Label>
+      <Card>
+        <Flex p={4} borderRight={1} borderColor="blue.mid" flexGrow={1}>
+          <Type>
+            You can withdraw {satoshisToBtc(balance)} BTC used for transaction
+            fees here.
+          </Type>
+        </Flex>
+        <Flex justifyContent="center" p={4}>
+          <OpenModal
+            component={props => (
+              <WithdrawBTCModal balance={balance} {...props} />
+            )}
+          >
+            {({ bind }) => (
+              <Button height="auto" py={2} {...bind}>
+                Withdraw {satoshisToBtc(balance)} BTC
+              </Button>
+            )}
+          </OpenModal>
+        </Flex>
+      </Card>
+    </Section>
+  ) : null
+);
+
 const DangerZone = connect(
   null,
   { doResetWallet }
 )(({ doResetWallet, hide, ...rest }) => (
   <Section>
     <Label pb={4} fontSize={2}>
-    Reset wallet setup
+      Reset wallet setup
     </Label>
     <Card>
       <Flex
@@ -86,9 +121,13 @@ const DangerZone = connect(
         flexGrow={1}
       >
         <Type>
-          Resetting removes your Stacks Wallet setup. It does not affect your Stacks addresses or the STX balances on them. You need your seed phrase to gain access to them again. <strong>Make sure you have stored your seed phrase securely.</strong> </Type>
+          Resetting removes your Stacks Wallet setup. It does not affect your
+          Stacks addresses or the STX balances on them. You need your seed
+          phrase to gain access to them again.{" "}
+          <strong>Make sure you have stored your seed phrase securely.</strong>{" "}
+        </Type>
       </Flex>
-      <Flex justifyContent="center" alignItems="center" p={4} >
+      <Flex justifyContent="center" alignItems="center" p={4}>
         <State initial={{ clicked: false }}>
           {({ state, setState }) => {
             if (state.clicked) {
@@ -128,6 +167,7 @@ const SettingsModal = ({ hide, ...rest }) => {
   return (
     <Modal title="Settings" hide={hide} p={0} width="90vw">
       <TopUpSection />
+      <WithdrawBTCSection />
       <DangerZone hide={hide} />
       <Flex flexDirection="column" p={4} flexShrink={0}>
         <Buttons>

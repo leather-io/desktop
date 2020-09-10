@@ -37,8 +37,7 @@ const TxFeesModal = ({ hide }) => (
             py={4}
           >
             <Type pb={4} fontSize={4} lineHeight={1.5}>
-              Bitcoin (BTC) is only used to pay fees for Stacks (STX) transactions. You cannot
-              send BTC from this wallet.
+              Bitcoin (BTC) is only used to pay fees for Stacks (STX) transactions.
             </Type>
             <Button
               onClick={() =>

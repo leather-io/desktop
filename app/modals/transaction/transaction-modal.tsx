@@ -158,8 +158,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           );
         }
 
-        console.log('tx after changing signature', tx.serialize().toString('hex'));
-
         dispatch(
           broadcastStxTransaction({
             signedTx: tx,
@@ -245,7 +243,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         network: stacksNetwork,
         amount: new BN(stxToMicroStx(form.values.amount).toString()),
         //
-        // TODO: find common burn address
+        // SECURITY: find common burn address
         senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
       });
       const { amount, fee } = {
@@ -279,11 +277,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     // if (!form.values.recipient) return;
     setCalculatingMaxSpend(true);
     const demoTx = await makeSTXTokenTransfer({
+      // SECURITY: remove hardcoded test address
       recipient: form.values.recipient || 'ST3NR0TBES0A94R38EJ8TC1TGWPN9T1SHVW03ZBD7',
       network: stacksNetwork,
       amount: new BN(stxToMicroStx(form.values.amount).toString()),
-      //
-      // TODO: find common burn address
+      // SECURITY: find common burn address
       senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
     });
     const fee = demoTx.auth.spendingCondition?.fee as BN;
@@ -307,7 +305,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Send STX</TxModalHeader>,
       body: (
         <>
-          {/* ST4VFKC1WG386T43ZSMWTVM9TQGCXHR3R1VF99RV */}
           <TxModalForm
             balance={balance}
             form={form}

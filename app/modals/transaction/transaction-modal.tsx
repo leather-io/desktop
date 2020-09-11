@@ -389,7 +389,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             hasSubmitted={hasSubmitted}
             decryptionError={decryptionError}
           />
-          {JSON.stringify(broadcastError)}
         </>
       ),
       footer: (

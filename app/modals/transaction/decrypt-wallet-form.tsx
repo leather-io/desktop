@@ -23,7 +23,7 @@ export const DecryptWalletForm: Props = args => {
   return (
     <Box mx="extra-loose" mt="extra-loose">
       <Text textStyle="body.large">Enter your password to confirm your transaction</Text>
-      <Input onChange={handlePasswordInput} mt="base-loose" />
+      <Input onChange={handlePasswordInput} type="password" mt="base-loose" />
       {hasSubmitted && decryptionError && (
         <ErrorLabel>
           <ErrorText>Password entered is incorrect</ErrorText>

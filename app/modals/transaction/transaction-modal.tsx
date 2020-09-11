@@ -141,7 +141,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           recipient: form.values.recipient,
           network: stacksNetwork,
           memo: form.values.memo,
-          amount: new BN(1),
+          amount: new BN(stxToMicroStx(form.values.amount).toString()),
           publicKey: publicKey.toString('hex'),
         });
 

@@ -37,7 +37,7 @@ export const ConnectLedger: React.FC = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const { transport, step } = useLedger();
+  const { transport, step, error } = useLedger();
 
   async function handleLedger() {
     setDeviceError(null);
@@ -88,6 +88,11 @@ export const ConnectLedger: React.FC = () => {
       {deviceError && (
         <ErrorLabel mt="base-loose">
           <ErrorText>{deviceError}</ErrorText>
+        </ErrorLabel>
+      )}
+      {error && (
+        <ErrorLabel mt="base-loose">
+          <ErrorText>{error}</ErrorText>
         </ErrorLabel>
       )}
       <OnboardingButton

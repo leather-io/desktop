@@ -4,6 +4,7 @@ import type Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 
 import { useInterval } from './use-interval';
+import { safeAwait } from '@utils/safe-await';
 
 export enum LedgerConnectStep {
   Disconnected,
@@ -14,6 +15,7 @@ export enum LedgerConnectStep {
 
 export function useLedger() {
   const [step, setStep] = useState(LedgerConnectStep.Disconnected);
+  const [usbError, setUsbError] = useState<string | null>(null);
 
   const transport = useRef<Transport | null>(null);
   const disconnectTimeouts = useRef<number>(0);
@@ -28,19 +30,31 @@ export function useLedger() {
         if (event.type === 'add') {
           clearTimeout(disconnectTimeouts.current);
           tHid.unsubscribe();
-          const t = await TransportNodeHid.open(event.descriptor);
-          listeningForAddEvent.current = false;
-          transport.current = t;
-          t.on('disconnect', async () => {
-            listeningForAddEvent.current = true;
-            transport.current = null;
-            await t.close();
-            const timer = setTimeout(() => {
-              setStep(LedgerConnectStep.Disconnected);
-            }, SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME);
-            disconnectTimeouts.current = timer;
-            createListener();
-          });
+
+          const [error, t] = await safeAwait(TransportNodeHid.open(event.descriptor));
+
+          if (error) {
+            console.log(error);
+            setUsbError('Unable to connect to device. You may need to configure your udev rules.');
+            return;
+          }
+
+          if (t) {
+            setUsbError(null);
+            t.on('disconnect', async () => {
+              listeningForAddEvent.current = true;
+              transport.current = null;
+              await t.close();
+              const timer = setTimeout(() => {
+                setStep(LedgerConnectStep.Disconnected);
+              }, SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME);
+              disconnectTimeouts.current = timer;
+              createListener();
+            });
+
+            listeningForAddEvent.current = false;
+            transport.current = t;
+          }
         }
       },
       error: () => ({}),
@@ -80,5 +94,9 @@ export function useLedger() {
     }
   }, POLL_LEDGER_INTERVAL);
 
-  return { transport: transport.current, step };
+  return {
+    transport: transport.current,
+    step,
+    error: usbError,
+  };
 }

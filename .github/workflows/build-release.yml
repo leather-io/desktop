@@ -23,8 +23,6 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - run: echo ${{ github.sha }}
-
       - name: Get git commit
         id: git-commit
         run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
@@ -34,19 +32,19 @@ jobs:
         with:
           node-version: 10
 
-      - name: Install package
-        run: yarn
-
       - name: Cache multiple paths
         uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Install package
+        run: yarn
+
       - run: echo ${{ matrix.NPM_COMMAND }}
 
       - name: Build releases
-        run: yarn package-${{ matrix.NPM_COMMAND }}
+        run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

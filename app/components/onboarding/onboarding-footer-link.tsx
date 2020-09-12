@@ -10,7 +10,7 @@ export const OnboardingFooterLink: React.FC<BoxProps> = ({ children, ...props })
       textDecoration="underline"
       textAlign="center"
       alignSelf="bottom"
-      my="loose"
+      mt="loose"
       cursor="pointer"
       {...props}
     >

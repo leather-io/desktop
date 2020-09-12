@@ -13,6 +13,7 @@ CheckNodeEnv('development');
 
 const dist = path.join(__dirname, '..', 'dll');
 
+// eslint-disable-next-line import/no-default-export
 export default merge.smart(baseConfig, {
   context: path.join(__dirname, '..'),
 

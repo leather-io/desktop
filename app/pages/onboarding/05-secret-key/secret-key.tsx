@@ -48,7 +48,7 @@ export const SecretKey: React.FC = () => {
           </Text>
         </Button>
       </Card>
-      <Box as="label" mt="loose">
+      <Box display="block" as="label" mt="loose">
         <input type="checkbox" onChange={e => setHasSavedMnemonic(e.currentTarget.checked)} />
         <Text textStyle="body.small" color="#42444E" ml="base-tight">
           I have saved my Secret Key

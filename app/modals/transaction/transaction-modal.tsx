@@ -175,8 +175,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   };
 
   const totalIsMoreThanBalance = total.isGreaterThan(balance);
+
   const exceedsMaxLengthBytes = (string: string, maxLengthBytes: number): boolean =>
     string ? Buffer.from(string).length > maxLengthBytes : false;
+
   const form = useFormik({
     validateOnChange: true,
     validateOnMount: !interactedWithSendAllBtn.current,

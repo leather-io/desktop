@@ -16,6 +16,7 @@ import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
 CheckNodeEnv('production');
 DeleteSourceMaps();
 
+// eslint-disable-next-line import/no-default-export
 export default merge.smart(baseConfig, {
   devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
 

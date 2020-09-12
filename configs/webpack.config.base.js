@@ -7,6 +7,7 @@ import webpack from 'webpack';
 import { dependencies as externals } from '../app/package.json';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
+// eslint-disable-next-line import/no-default-export
 export default {
   externals: [...Object.keys(externals || {})],
 

@@ -38,6 +38,7 @@ if (!requiredByDLLConfig && !(fs.existsSync(dll) && fs.existsSync(manifest))) {
   execSync('yarn build-dll');
 }
 
+// eslint-disable-next-line import/no-default-export
 export default merge.smart(baseConfig, {
   devtool: 'inline-source-map',
 

@@ -68,7 +68,7 @@ export const SetPassword: React.FC = () => {
       <OnboardingTitle>Set a password</OnboardingTitle>
       <OnboardingText>You’ll use your password to confirm transactions</OnboardingText>
       <Input type="password" mt="extra-loose" onChange={handlePasswordInput} />
-      <Text textStyle="body.small" color="ink.600" mt="base">
+      <Text display="block" textStyle="body.small" color="ink.600" mt="base">
         Password strength:
         <Text
           textStyle="body.small.medium"
@@ -79,7 +79,7 @@ export const SetPassword: React.FC = () => {
         </Text>
       </Text>
       {!strengthResult.meetsAllStrengthRequirements && hasSubmitted && (
-        <Text textStyle="body.small" color="ink.600" mt="tight">
+        <Text display="block" textStyle="body.small" color="ink.600" mt="tight">
           {weakPasswordWarningMessage(strengthResult)}
         </Text>
       )}

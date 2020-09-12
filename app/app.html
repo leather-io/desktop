@@ -3,20 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <title>Stacks Wallet</title>
-    <script>
-      (() => {
-        if (
-          typeof process !== 'object' ||
-          (typeof process === 'object' && !process.env.START_HOT)
-        ) {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = './dist/style.css';
-          // HACK: Writing the script path should be done with webpack
-          document.getElementsByTagName('head')[0].appendChild(link);
-        }
-      })();
-    </script>
   </head>
   <body>
     <div class="draggable-bar"></div>
@@ -40,9 +26,7 @@
 
         if (scripts.length) {
           document.write(
-            scripts
-              .map(script => `<script defer src="${script}"><\/script>`)
-              .join('')
+            scripts.map(script => `<script defer src="${script}"><\/script>`).join('')
           );
         }
       }

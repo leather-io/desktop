@@ -40,7 +40,7 @@ if (!requiredByDLLConfig && !(fs.existsSync(dll) && fs.existsSync(manifest))) {
 
 // eslint-disable-next-line import/no-default-export
 export default merge.smart(baseConfig, {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
 
   mode: 'development',
 

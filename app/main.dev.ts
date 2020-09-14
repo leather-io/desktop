@@ -21,6 +21,10 @@ import windowState from 'electron-window-state';
 
 import MenuBuilder from './menu';
 
+// CSP enabled in production mode, don't warn in development
+delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
+
 // eslint-disable-next-line import/no-default-export
 export default class AppUpdater {
   constructor() {
@@ -91,7 +95,13 @@ const createWindow = async () => {
 
   mainWindowState.manage(mainWindow);
 
-  void mainWindow.loadURL(`file://${__dirname}/app.html`);
+  if (process.env.NODE_ENV === 'development' && process.env.DEBUG_PROD !== 'true') {
+    void mainWindow.loadURL(`file://${__dirname}/app-dev.html`);
+  }
+
+  if (process.env.NODE_ENV === 'production' || process.env.DEBUG_PROD === 'true') {
+    void mainWindow.loadURL(`file://${__dirname}/app.html`);
+  }
 
   if (process.platform === 'win32') {
     mainWindow.setMenuBarVisibility(false);

@@ -1,5 +1,5 @@
 import { Store as ReduxStore, Action } from 'redux';
-import { combineReducers, Dispatch } from '@reduxjs/toolkit';
+import { combineReducers } from '@reduxjs/toolkit';
 import { connectRouter } from 'connected-react-router';
 
 import { KeysState, createKeysReducer } from './keys';
@@ -10,6 +10,7 @@ import { pendingTransactionReducer, PendingTransactionState } from './pending-tr
 import { stacksNodeReducer, StacksNodeState } from './stacks-node';
 import { reduxPersistElectronStore } from './persist-middleware';
 import { PersistConfig } from 'redux-persist';
+import { configureStore } from './configureStore';
 
 export interface RootState {
   router: any;

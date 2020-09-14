@@ -48,7 +48,7 @@ export function useLedger() {
               const timer = setTimeout(() => {
                 setStep(LedgerConnectStep.Disconnected);
               }, SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME);
-              disconnectTimeouts.current = timer;
+              disconnectTimeouts.current = (timer as unknown) as number;
               createListener();
             });
 

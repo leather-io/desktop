@@ -3,33 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <title>Stacks Wallet</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; font-src 'self'; img-src data:; style-src 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-6ca3c3e1fcd34bbc8cfaeceaa8106e36'; connect-src *;"
+    />
   </head>
+
   <body>
     <div class="draggable-bar"></div>
     <div id="root"></div>
-    <script>
-      if (typeof process === 'object') {
-        const scripts = [];
-
-        if (process.env.NODE_ENV === 'development') {
-          // Dynamically insert the DLL script in development env in the
-          // renderer process
-          scripts.push('../dll/renderer.dev.dll.js');
-        }
-        if (process.env.START_HOT) {
-          // Dynamically insert the bundled app script in the renderer process
-          const port = process.env.PORT || 1212;
-          scripts.push(`http://localhost:${port}/dist/renderer.dev.js`);
-        } else {
-          scripts.push('./dist/renderer.prod.js');
-        }
-
-        if (scripts.length) {
-          document.write(
-            scripts.map(script => `<script defer src="${script}"><\/script>`).join('')
-          );
-        }
-      }
-    </script>
+    <script src="./dist/renderer.prod.js" nonce="6ca3c3e1fcd34bbc8cfaeceaa8106e36"></script>
   </body>
 </html>

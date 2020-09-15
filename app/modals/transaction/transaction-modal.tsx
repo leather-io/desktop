@@ -125,7 +125,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           })
         );
       } catch (e) {
-        console.log(e);
         setDecryptionError(e);
       }
     }

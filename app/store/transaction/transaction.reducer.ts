@@ -30,7 +30,11 @@ const initialState = transactionAdapter.getInitialState({
 
 export const transactionReducer = createReducer(initialState, builder =>
   builder
-    .addCase(fetchTransactions, state => ({ ...state, fetchTxError: null, loading: true }))
+    .addCase(fetchTransactions, (state, action) => ({
+      ...state,
+      fetchTxError: null,
+      loading: action.payload.displayLoading ?? true,
+    }))
     .addCase(broadcastTx, state => ({ ...state, mostRecentBroadcastError: null }))
     .addCase(fetchTransactionsDone, (state, action) => ({
       ...transactionAdapter.addMany({ ...state }, action),

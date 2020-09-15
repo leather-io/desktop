@@ -347,6 +347,9 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           <TxModalPreviewItem label="Total">
             {toHumanReadableStx(total.toString())}
           </TxModalPreviewItem>
+          {form.values.memo && (
+            <TxModalPreviewItem label="Memo">{form.values.memo}</TxModalPreviewItem>
+          )}
           <Box minHeight="24px">
             {totalIsMoreThanBalance && (
               <ErrorLabel size="md" my="base-loose">

@@ -18,13 +18,16 @@ export const pendingTransactionSuccessful = createAction<Transaction>(
 export const addNewTransaction = createAction<Transaction>('transactions/new-transaction');
 
 const fetchTxName = 'transactions/fetch-transactions';
-export const fetchTransactions = createAction(fetchTxName);
+export const fetchTransactions = createAction<{ displayLoading?: boolean }>(fetchTxName);
 export const fetchTransactionsDone = createAction<Transaction[]>(fetchTxName + '-done');
 export const fetchTransactionsFail = createAction<string>(fetchTxName + '-fail');
 
-export function getAddressTransactions(address: string) {
+export function getAddressTransactions(
+  address: string,
+  options: { displayLoading?: boolean } = {}
+) {
   return async (dispatch: Dispatch, getState: GetState) => {
-    dispatch(fetchTransactions());
+    dispatch(fetchTransactions(options));
     const activeNode = selectActiveNodeApi(getState());
     const client = new Api(activeNode.url);
     const [error, response] = await safeAwait(client.getAddressTransactions(address));

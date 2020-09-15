@@ -16,6 +16,7 @@ import { safeAwait } from '@utils/safe-await';
 import { Api } from '../api/api';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import urljoin from 'url-join';
+import { useInterval } from '../hooks/use-interval';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
@@ -32,9 +33,17 @@ export const App: FC = ({ children }) => {
     dispatch(getAddressDetails(address));
   }, [address, dispatch]);
 
+  const refreshWalletDetailsWithoutLoader = useCallback(() => {
+    if (!address) return;
+    dispatch(getAddressTransactions(address, { displayLoading: false }));
+    dispatch(getAddressDetails(address));
+  }, [address, dispatch]);
+
   useNavigatorOnline({
     onReconnect: initAppWithStxAddressInfo,
   });
+
+  useInterval(() => refreshWalletDetailsWithoutLoader(), 60_000);
 
   useEffect(() => {
     initAppWithStxAddressInfo();

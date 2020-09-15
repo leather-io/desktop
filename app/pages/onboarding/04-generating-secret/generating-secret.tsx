@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, Spinner } from '@blockstack/ui';
+import { Flex, Spinner } from '@blockstack/ui';
 
 import { Onboarding, OnboardingTitle } from '@components/onboarding';
 

@@ -5,7 +5,6 @@ import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
-import { createLogger } from 'redux-logger';
 
 import { RootState, createRootReducer, persistConfig } from '.';
 import { getInitialStateFromDisk } from '@utils/disk-store';
@@ -32,17 +31,6 @@ export const configureStore = (initialState?: RootState) => {
 
   // Thunk Middleware
   middleware.push(thunk);
-
-  // Logging Middleware
-  const logger = createLogger({
-    level: 'info',
-    collapsed: true,
-  });
-
-  // Skip redux logs in console during the tests
-  if (process.env.NODE_ENV !== 'test') {
-    middleware.push(logger);
-  }
 
   // Router Middleware
   const router = routerMiddleware(history);

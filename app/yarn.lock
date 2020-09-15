@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@blockstack/keychain@0.10.6-beta.1":
-  version "0.10.6-beta.1"
-  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.10.6-beta.1.tgz#5746ca6b30b37d04395256c658ee88a2a68984fe"
-  integrity sha512-YKPFGB1yHQv9PaxIl9S8GXRepP4AeF7TvmkCsOIK1VCeqQC/AX0dXjRkemoC+sAYwrKdRV5cT9Jmy9eh7C7bfA==
+"@blockstack/keychain@0.12.2":
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.12.2.tgz#581e0beafe1fd2fa758824b587df63847d350e22"
+  integrity sha512-72eCDteGZyE3dU9sBuksM2DUbej/6J7n78PniWbqeL2R8ejCZj0I+myls/UjqxmHksCo9tZv4gT7Ao/EZxTStw==
   dependencies:
-    "@blockstack/rpc-client" "^0.3.0-alpha.11"
+    "@blockstack/rpc-client" "^0.3.0-alpha.16"
     "@blockstack/stacks-transactions" "0.5.1"
     bip39 "^3.0.2"
     bitcoinjs-lib "^5.1.6"
@@ -19,10 +19,10 @@
     triplesec "^3.0.27"
     zone-file "^1.0.0"
 
-"@blockstack/rpc-client@^0.3.0-alpha.11":
-  version "0.3.0-alpha.15"
-  resolved "https://registry.yarnpkg.com/@blockstack/rpc-client/-/rpc-client-0.3.0-alpha.15.tgz#937e6dbd359a78dd524e2e27f156f4ed3893bef4"
-  integrity sha512-+/6Db8CLvbf676SEbPuP4rnfId+5wv+O7trypBAGE+U8jYvL/mNz6gex4YP3u/IEbGTdKzUHB2n5HNYKl/28uw==
+"@blockstack/rpc-client@^0.3.0-alpha.16":
+  version "0.3.0-alpha.16"
+  resolved "https://registry.yarnpkg.com/@blockstack/rpc-client/-/rpc-client-0.3.0-alpha.16.tgz#bfe56787df11817667d933b51240aad36bfabef9"
+  integrity sha512-UDwOqfID58c5sHuM+d9reEB/GVlQ3eNO7mAFsJCrpA4ZtmnlS3YV3xns49h6Qgy4Nf0XJDNYY3kCxcwI0a4n3g==
   dependencies:
     "@blockstack/stacks-transactions" "0.5.1"
     cross-fetch "^3.0.4"

@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@blockstack/keychain": "0.10.6-beta.1",
+    "@blockstack/keychain": "0.12.2",
     "@blockstack/stacks-transactions": "0.6.0-beta.1",
     "@ledgerhq/hw-transport-node-hid": "5.23.0"
   }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import BlockstackApp from '@zondax/ledger-blockstack';
+import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 
 import { useDispatch } from 'react-redux';
 
@@ -48,14 +48,10 @@ export const ConnectLedger: React.FC = () => {
     const app = new BlockstackApp(usbTransport);
 
     try {
-      const version = await app.getVersion();
-      // await app.getAppInfo();
-      console.log(version);
+      await app.getVersion();
 
       const confirmedResponse = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
-      // TODO: Replace with ref to LedgerError
-      if (confirmedResponse.returnCode !== 0x9000) {
-        console.log('resp', confirmedResponse);
+      if (confirmedResponse.returnCode !== LedgerError.NoErrors) {
         setDeviceError('Has your Ledger device locked itself?');
         return;
       }

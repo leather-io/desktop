@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback, useState } from 'react';
-import BlockstackApp from '@zondax/ledger-blockstack';
+import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 import type Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 
@@ -86,9 +86,10 @@ export function useLedger() {
       void new BlockstackApp(transport.current)
         .getVersion()
         .then(resp => {
-          // TODO: Refactor Ledger app to use enum rather than direct values
-          if (resp.returnCode === 0x6e00) return setStep(LedgerConnectStep.ConnectedAppClosed);
-          if (resp.returnCode === 0x9000) return setStep(LedgerConnectStep.ConnectedAppOpen);
+          if (resp.returnCode === LedgerError.AppDoesNotSeemToBeOpen)
+            return setStep(LedgerConnectStep.ConnectedAppClosed);
+          if (resp.returnCode === LedgerError.NoErrors)
+            return setStep(LedgerConnectStep.ConnectedAppOpen);
         })
         .catch(() => ({}));
     }

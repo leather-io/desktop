@@ -15,9 +15,7 @@ export const SignTxWithLedger: FC<SignTxWithLedgerProps> = ({ onLedgerConnect, u
 
   useEffect(() => {
     updateStep(step);
-  }, [step, updateStep]);
 
-  useEffect(() => {
     async function run() {
       const usbTransport = transport;
 
@@ -34,7 +32,8 @@ export const SignTxWithLedger: FC<SignTxWithLedgerProps> = ({ onLedgerConnect, u
       }
     }
     void run();
-  }, [transport, step, onLedgerConnect]);
+  }, [transport, step, onLedgerConnect, updateStep]);
+
   return (
     <Box mx="extra-loose" mb="extra-loose">
       <LedgerConnectInstructions action="Sign transaction on Ledger" step={step} />

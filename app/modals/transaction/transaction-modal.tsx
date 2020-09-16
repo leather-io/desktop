@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -18,7 +18,7 @@ import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
 import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
 
-import { selectTxModalOpen, homeActions } from '@store/home/home.reducer';
+import { homeActions } from '@store/home/home.reducer';
 import {
   selectEncryptedMnemonic,
   selectSalt,
@@ -78,21 +78,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
   const interactedWithSendAllBtn = useRef(false);
-  const {
-    txModalOpen,
-    encryptedMnemonic,
-    salt,
-    walletType,
-    publicKey,
-    broadcastError,
-  } = useSelector((state: RootState) => ({
-    txModalOpen: selectTxModalOpen(state),
-    salt: selectSalt(state),
-    encryptedMnemonic: selectEncryptedMnemonic(state),
-    broadcastError: selectMostRecentlyTxError(state),
-    walletType: selectWalletType(state),
-    publicKey: selectPublicKey(state),
-  }));
+  const { encryptedMnemonic, salt, walletType, publicKey, broadcastError } = useSelector(
+    (state: RootState) => ({
+      salt: selectSalt(state),
+      encryptedMnemonic: selectEncryptedMnemonic(state),
+      broadcastError: selectMostRecentlyTxError(state),
+      walletType: selectWalletType(state),
+      publicKey: selectPublicKey(state),
+    })
+  );
 
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
@@ -146,7 +140,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
         const resp = await blockstackApp.sign(`m/44'/5757'/0'/0/0`, tx.serialize());
 
-        if (resp.returnCode === LedgerError.TransactionRejected) {
+        if (resp.returnCode !== LedgerError.NoErrors) {
           setHasSubmitted(false);
           return;
         }
@@ -166,7 +160,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           })
         );
       } catch (e) {
-        console.log(e);
+        setHasSubmitted(false);
       }
     }
 
@@ -262,11 +256,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
   const [ledgerConnectStep, setLedgerConnectStep] = useState(LedgerConnectStep.Disconnected);
 
-  if (!txModalOpen) return null;
-
-  const closeModalResetForm = () => {
-    dispatch(homeActions.closeTxModal());
-  };
+  const closeModalResetForm = () => dispatch(homeActions.closeTxModal());
 
   const proceedToSignTransactionStep = () =>
     walletType === 'software'
@@ -275,7 +265,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const updateAmountFieldToMaxBalance = async () => {
     interactedWithSendAllBtn.current = true;
-    // if (!form.values.recipient) return;
     setCalculatingMaxSpend(true);
     const demoTx = await makeSTXTokenTransfer({
       // SECURITY: remove hardcoded test address
@@ -301,7 +290,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     setTimeout(() => (interactedWithSendAllBtn.current = false), 1000);
   };
 
-  const txFormStepMap: { [step in TxModalStep]: ModalComponents } = {
+  const setBlockstackAppCallback = useCallback(
+    blockstackApp => setBlockstackApp(blockstackApp),
+    []
+  );
+  const updateStep = useCallback(step => setLedgerConnectStep(step), []);
+
+  const txFormStepMap: Record<TxModalStep, ModalComponents> = {
     [TxModalStep.DescribeTx]: () => ({
       header: <TxModalHeader onSelectClose={closeModalResetForm}>Send STX</TxModalHeader>,
       body: (
@@ -413,12 +408,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       header: (
         <TxModalHeader onSelectClose={closeModalResetForm}>Confirm on your Ledger</TxModalHeader>
       ),
-      body: (
-        <SignTxWithLedger
-          onLedgerConnect={blockstackApp => setBlockstackApp(blockstackApp)}
-          updateStep={step => setLedgerConnectStep(step)}
-        />
-      ),
+      body: <SignTxWithLedger onLedgerConnect={setBlockstackAppCallback} updateStep={updateStep} />,
       footer: (
         <TxModalFooter>
           <Button mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)} {...buttonStyle}>

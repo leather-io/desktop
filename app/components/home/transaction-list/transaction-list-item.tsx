@@ -42,7 +42,9 @@ export const TransactionListItem: FC<TransactionListItemProps> = args => {
   const sumPrefix = direction === 'sent' ? '−' : '';
   const memo =
     tx.tx_type === 'token_transfer' &&
-    Buffer.from(tx.token_transfer.memo.replace('0x', ''), 'hex').toString('utf8');
+    Buffer.from(tx.token_transfer.memo.replace('0x', '').replace(/^0+|0+$/g, ''), 'hex').toString(
+      'utf8'
+    );
   const txDate = new Date(tx.burn_block_time_iso);
   const txDateFormatted = new Intl.DateTimeFormat('en-US', dateOptions).format(txDate);
 

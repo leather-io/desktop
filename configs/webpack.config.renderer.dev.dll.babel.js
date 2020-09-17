@@ -17,7 +17,7 @@ const dist = path.join(__dirname, '..', 'dll');
 export default merge.smart(baseConfig, {
   context: path.join(__dirname, '..'),
 
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
 
   mode: 'development',
 

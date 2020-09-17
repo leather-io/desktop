@@ -4,7 +4,6 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import merge from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
@@ -98,14 +97,6 @@ export default merge.smart(baseConfig, {
             parallel: true,
             sourceMap: true,
             cache: true,
-          }),
-          new OptimizeCSSAssetsPlugin({
-            cssProcessorOptions: {
-              map: {
-                inline: false,
-                annotation: true,
-              },
-            },
           }),
         ],
   },

@@ -26,7 +26,7 @@ export function useLedger() {
 
   const createListener = useCallback(() => {
     const tHid = TransportNodeHid.listen({
-      next: async (event: any) => {
+      next: async event => {
         if (event.type === 'add') {
           clearTimeout(disconnectTimeouts.current);
           tHid.unsubscribe();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
+import { validateMnemonic } from 'bip39';
 import { Text, Input } from '@blockstack/ui';
 
 import routes from '@constants/routes.json';
@@ -9,7 +9,6 @@ import { Hr } from '@components/hr';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { persistMnemonic } from '@store/keys/keys.actions';
-import { safeAwait } from '@utils/safe-await';
 import { useBackButton } from '@hooks/use-back-url.hook';
 import {
   Onboarding,
@@ -21,17 +20,18 @@ import {
 } from '@components/onboarding';
 
 export const RestoreWallet: React.FC = () => {
+  useBackButton(routes.WELCOME);
+
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState<string | null>(null);
   const history = useHistory();
-  useBackButton(routes.WELCOME);
   const dispatch = useDispatch();
 
   const handleMnemonicInput = (e: React.FormEvent<HTMLInputElement>) => {
     setMnemonic(e.currentTarget.value.trim());
   };
 
-  const handleSecretKeyRestore = async (e: React.FormEvent) => {
+  const handleSecretKeyRestore = (e: React.FormEvent) => {
     e.preventDefault();
 
     const mnemonicLength = mnemonic.trim().split(' ').length;
@@ -45,8 +45,8 @@ export const RestoreWallet: React.FC = () => {
       setError('The Stacks Wallet can only be used with 24-word Secret Keys');
       return;
     }
-    const [error] = await safeAwait(deriveRootKeychainFromMnemonic(mnemonic));
-    if (error) {
+
+    if (!validateMnemonic(mnemonic)) {
       setError('Not a valid bip39 mnemonic');
       return;
     }
@@ -72,7 +72,7 @@ export const RestoreWallet: React.FC = () => {
         onChange={handleMnemonicInput}
         as="textarea"
         mt="base-tight"
-        minHeight="88px"
+        minHeight="90px"
         placeholder="24-word Secret Key"
         style={{
           resize: 'none',

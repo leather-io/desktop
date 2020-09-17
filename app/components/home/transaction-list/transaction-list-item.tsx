@@ -42,7 +42,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = args => {
   const sumPrefix = direction === 'sent' ? '−' : '';
   const memo =
     tx.tx_type === 'token_transfer' &&
-    Buffer.from(tx.token_transfer.memo.replace('0x', '').replace(/^0+|0+$/g, ''), 'hex').toString(
+    Buffer.from(tx.token_transfer.memo.replace('0x', '').replace(/0+$/g, ''), 'hex').toString(
       'utf8'
     );
   const txDate = new Date(tx.burn_block_time_iso);
@@ -73,7 +73,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = args => {
 
   useLayoutEffect(() => {
     const el = containerRef.current;
-    const contextMenuHandler = () => createTxListContextMenu({ tx, copy });
+    const contextMenuHandler = (event: Event) => createTxListContextMenu(event, { tx, copy });
     registerHandler(el, contextMenuHandler);
     return () => deregisterHandler(el, contextMenuHandler);
   }, [tx, copy]);

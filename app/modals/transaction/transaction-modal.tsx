@@ -10,6 +10,7 @@ import {
   makeSTXTokenTransfer,
   MEMO_MAX_LENGTH_BYTES,
   makeUnsignedSTXTokenTransfer,
+  StacksTransaction,
 } from '@blockstack/stacks-transactions';
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -26,7 +27,7 @@ import {
   selectWalletType,
 } from '@store/keys';
 import { validateAddressChain } from '../../crypto/validate-address-net';
-import { broadcastStxTransaction, selectMostRecentlyTxError } from '@store/transaction';
+import { broadcastStxTransaction } from '@store/transaction';
 import { toHumanReadableStx, stxToMicroStx, microStxToStx } from '@utils/unit-convert';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
@@ -60,9 +61,7 @@ enum TxModalStep {
   NetworkError,
 }
 
-type ModalComponents = () => {
-  [component in 'header' | 'body' | 'footer']: JSX.Element;
-};
+type ModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
 export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const dispatch = useDispatch();
@@ -78,20 +77,27 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
   const interactedWithSendAllBtn = useRef(false);
-  const { encryptedMnemonic, salt, walletType, publicKey, broadcastError } = useSelector(
-    (state: RootState) => ({
-      salt: selectSalt(state),
-      encryptedMnemonic: selectEncryptedMnemonic(state),
-      broadcastError: selectMostRecentlyTxError(state),
-      walletType: selectWalletType(state),
-      publicKey: selectPublicKey(state),
-    })
-  );
+
+  const { encryptedMnemonic, salt, walletType, publicKey } = useSelector((state: RootState) => ({
+    salt: selectSalt(state),
+    encryptedMnemonic: selectEncryptedMnemonic(state),
+    walletType: selectWalletType(state),
+    publicKey: selectPublicKey(state),
+  }));
 
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
   const broadcastTx = async (blockstackApp?: BlockstackApp) => {
     setHasSubmitted(true);
+
+    let tx: StacksTransaction | null = null;
+
+    const txDetails = {
+      recipient: form.values.recipient,
+      network: stacksNetwork,
+      amount: new BN(stxToMicroStx(form.values.amount).toString()),
+      memo: form.values.memo,
+    };
 
     if (walletType === 'software') {
       if (!password || !encryptedMnemonic || !salt) return;
@@ -103,21 +109,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           password,
         });
 
-        const tx = await makeSTXTokenTransfer({
-          recipient: form.values.recipient,
-          network: stacksNetwork,
-          amount: new BN(stxToMicroStx(form.values.amount).toString()),
-          memo: form.values.memo,
-          senderKey: privateKey,
-        });
-        dispatch(
-          broadcastStxTransaction({
-            signedTx: tx,
-            amount,
-            onBroadcastSuccess: closeModalResetForm,
-            onBroadcastFail: () => setStep(TxModalStep.NetworkError),
-          })
-        );
+        tx = await makeSTXTokenTransfer({ ...txDetails, senderKey: privateKey });
       } catch (e) {
         setDecryptionError(e);
       }
@@ -125,16 +117,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
     if (walletType === 'ledger') {
       try {
-        if (!publicKey || !blockstackApp) {
-          console.log('no public key saved');
-          return;
-        }
+        if (!publicKey || !blockstackApp) return;
 
-        const tx = await makeUnsignedSTXTokenTransfer({
-          recipient: form.values.recipient,
-          network: stacksNetwork,
-          memo: form.values.memo,
-          amount: new BN(stxToMicroStx(form.values.amount).toString()),
+        tx = await makeUnsignedSTXTokenTransfer({
+          ...txDetails,
           publicKey: publicKey.toString('hex'),
         });
 
@@ -146,23 +132,25 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         }
 
         if (tx.auth.spendingCondition) {
-          tx.auth.spendingCondition.signature = createMessageSignature(
+          (tx.auth.spendingCondition as any).signature = createMessageSignature(
             resp.signatureVRS.toString('hex')
           );
         }
-
-        dispatch(
-          broadcastStxTransaction({
-            signedTx: tx,
-            amount,
-            onBroadcastSuccess: closeModalResetForm,
-            onBroadcastFail: () => setStep(TxModalStep.NetworkError),
-          })
-        );
       } catch (e) {
         setHasSubmitted(false);
       }
     }
+
+    if (tx === null) return;
+
+    dispatch(
+      broadcastStxTransaction({
+        signedTx: tx,
+        amount,
+        onBroadcastSuccess: closeModalResetForm,
+        onBroadcastFail: () => setStep(TxModalStep.NetworkError),
+      })
+    );
 
     setIsDecrypting(false);
   };
@@ -185,10 +173,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       recipient: yup
         .string()
         .test('test-is-stx-address', 'Must be a valid Stacks Address', (value = '') =>
-          validateStacksAddress(value)
+          value === null ? false : validateStacksAddress(value)
         )
         .test('test-is-for-valid-chain', 'Address is for incorrect network', (value = '') =>
-          validateAddressChain(value)
+          value === null ? false : validateAddressChain(value)
         )
         .test(
           'test-is-not-my-address',
@@ -202,7 +190,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         .test(
           'test-has-less-than-or-equal-to-6-decimal-places',
           'STX do not have more than 6 decimal places',
-          (value: number) => {
+          value => {
+            if (value === null || value === undefined) return false;
             // Explicit base ensures BigNumber doesn't use exponential notation
             const decimals = new BigNumber(value).toString(10).split('.')[1];
             return decimals === undefined || decimals.length <= 6;
@@ -211,7 +200,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         .test(
           'test-address-has-enough-balance',
           'Cannot send more STX than available balance',
-          (value: number) => {
+          value => {
+            if (value === null || value === undefined) return false;
             // If there's no input, pass this test,
             // otherwise it'll render the error for this test
             if (value === undefined) return true;
@@ -224,10 +214,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         .required(),
       memo: yup
         .string()
-        .test(
-          'test-max-memo-length',
-          'Transaction memo cannot exceed 34 bytes',
-          (value = '') => !exceedsMaxLengthBytes(value, MEMO_MAX_LENGTH_BYTES)
+        .test('test-max-memo-length', 'Transaction memo cannot exceed 34 bytes', (value = '') =>
+          value === null ? false : !exceedsMaxLengthBytes(value, MEMO_MAX_LENGTH_BYTES)
         ),
     }),
     onSubmit: async () => {

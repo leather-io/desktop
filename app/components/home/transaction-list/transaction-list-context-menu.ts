@@ -6,7 +6,7 @@ import { hasMemo, getRecipientAddress } from '@utils/tx-utils';
 
 export function registerHandler(el: HTMLButtonElement | null, handler: (e: Event) => void) {
   if (el === null) return;
-  el.addEventListener('contextmenu', handler, { passive: true });
+  el.addEventListener('contextmenu', handler);
 }
 
 export function deregisterHandler(el: HTMLButtonElement | null, handler: (e: Event) => void) {
@@ -28,7 +28,8 @@ interface TxListContextMenu {
   };
 }
 
-export function createTxListContextMenu({ tx, copy }: TxListContextMenu) {
+export function createTxListContextMenu(event: Event, { tx, copy }: TxListContextMenu) {
+  event.preventDefault();
   const { Menu, MenuItem } = remote;
   const menu = new Menu();
 

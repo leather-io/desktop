@@ -32,6 +32,7 @@
   "build": {
     "productName": "Stacks Wallet Beta",
     "appId": "org.blockstack.StacksWallet",
+    "icon": "./resources/icon-512x512.png",
     "files": [
       "dist/",
       "node_modules/",
@@ -61,7 +62,8 @@
       ]
     },
     "mac": {
-      "hardenedRuntime": false
+      "hardenedRuntime": false,
+      "icon": "./resources/icon.icns"
     },
     "linux": {
       "target": [
@@ -69,6 +71,7 @@
         "rpm",
         "AppImage"
       ],
+      "icon": "icon-512x512.png",
       "category": "Development"
     },
     "directories": {

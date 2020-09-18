@@ -115,6 +115,8 @@ export default merge.smart(baseConfig, {
       NODE_ENV: 'production',
       DEBUG_PROD: false,
       E2E_BUILD: false,
+      SHA: process.env.SHA,
+      BUILD_DATE: process.env.BUILD_DATE,
     }),
 
     new BundleAnalyzerPlugin({

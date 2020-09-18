@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { connectWebSocketClient } from '@stacks/blockchain-api-client';
 
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
+import { BetaNotice } from '@components/beta-notice';
 import {
   getAddressTransactions,
   addNewTransaction,
@@ -90,6 +91,7 @@ export const App: FC = ({ children }) => {
     <>
       <TitleBar />
       {children}
+      <BetaNotice />
     </>
   );
 };

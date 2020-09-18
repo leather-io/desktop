@@ -12,6 +12,7 @@ interface TransactionListItemContainerProps extends FlexProps {
 export const TransactionListItemContainer: FC<TransactionListItemContainerProps> = forwardRef(
   (args, ref) => {
     const { hovered, focused, txId, ...props } = args;
+
     return (
       <Flex
         ref={ref}
@@ -21,6 +22,7 @@ export const TransactionListItemContainer: FC<TransactionListItemContainerProps>
         textAlign="left"
         position="relative"
         outline={0}
+        zIndex={2}
         data-txid={txId}
         _before={listHoverProps(hovered)}
         _after={listFocusedProps(focused)}

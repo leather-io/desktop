@@ -23,17 +23,15 @@ import {
   WALLET_CLEAR_ERROR
 } from "@stores/reducers/wallet";
 import { ERRORS } from "@common/lib/transactions";
-import { fetchStxAddressDetails } from "@common/lib";
 import { push } from "connected-react-router";
 import { doNotify, doNotifyWarning } from "@stores/reducers/notifications";
-import { fetchBtcBalance, fetchStxBalance } from "@common/lib/balances";
+import { fetchStxBalance } from "@common/lib/balances";
 import { doPersistState } from "@stores/actions/app";
 import { clearCache } from "@stores/persist/index";
 import {
   getLedgerAddress,
   getTrezorAddress,
-  convertStxAddressToBtcAddress,
-  fetchBtcAddressData
+  convertStxAddressToBtcAddress
 } from "@common/lib/addresses";
 import {
   selectWalletBitcoinAddress,
@@ -50,9 +48,9 @@ import {
 } from "@stores/reducers/app";
 import { ROUTES } from "@common/constants";
 import { fetchStacksAddressData } from "stacks-utils";
-import { mnemonicToStxAddress, mnemonicToPrivateKey } from '@utils/utils'
-import crypto from 'crypto'
-import bip39 from 'bip39'
+import { mnemonicToStxAddress, mnemonicToPrivateKey } from "@utils/utils";
+import crypto from "crypto";
+import bip39 from "bip39";
 
 const doClearError = () => dispatch =>
   dispatch({
@@ -63,15 +61,15 @@ const doClearError = () => dispatch =>
  * Generate a new seed phrase
  */
 const doGenerateNewSeed = () => async dispatch => {
-  const entropy = crypto.randomBytes(32)
-  const seedPhrase = bip39.entropyToMnemonic(entropy)
-  
-  const address = mnemonicToStxAddress(seedPhrase)
-  const publicKey = ""
+  const entropy = crypto.randomBytes(32);
+  const seedPhrase = bip39.entropyToMnemonic(entropy);
+
+  const address = mnemonicToStxAddress(seedPhrase);
+  const publicKey = "";
 
   dispatch({
     type: TEMP_SAVE_SEED,
-    payload:  { 
+    payload: {
       seed: seedPhrase,
       address: {
         stx: address,
@@ -79,12 +77,13 @@ const doGenerateNewSeed = () => async dispatch => {
       },
       publicKey: publicKey
     }
-  })
-}
+  });
+};
 
-/** 
+/**
  * Clear seed from redux state
- */ 
+ */
+
 const doClearSeed = () => dispatch =>
   dispatch({
     type: ERASE_SEED
@@ -328,10 +327,10 @@ const doSignTransaction = (
   });
 
   try {
-    const privateKey = ""
+    const privateKey = "";
 
     if (walletType === WALLET_TYPES.SOFTWARE) {
-      privateKey = mnemonicToPrivateKey(seedPhrase)
+      privateKey = mnemonicToPrivateKey(seedPhrase);
     }
 
     const transaction = await generateTransaction(
@@ -410,7 +409,7 @@ const doSignTransaction = (
 };
 
 /**
- * doSignBTCTransaction
+ * signBTCTransaction
  *
  * This signs a BTC-only tx, using seedphrase, ledger or trezor.
  *
@@ -421,7 +420,7 @@ const doSignTransaction = (
  * @param {string} seedPhrase - the seed phrase that will be used to sign the transaction
  * @param {string} memo - an optional message (scriptData)
  */
-const doSignBTCTransaction = (
+const signBTCTransaction = (
   senderAddress,
   recipientAddress,
   amountToSend,
@@ -439,13 +438,12 @@ const doSignBTCTransaction = (
   });
 
   try {
-    const privateKey = ""
+    let privateKey = "";
 
     if (walletType === WALLET_TYPES.SOFTWARE) {
-      privateKey = mnemonicToPrivateKey(seedPhrase)
+      privateKey = mnemonicToPrivateKey(seedPhrase);
     }
 
-    // const transaction = await generateTransaction(
     const transaction = await generateBTCTransaction(
       senderAddress,
       recipientAddress,
@@ -521,7 +519,7 @@ const doSignBTCTransaction = (
   }
 };
 
-const doBroadcastTransaction = rawTx => async (dispatch, state) => {
+const broadcastBtcTransaction = rawTx => async (dispatch, state) => {
   try {
     // start our process
     dispatch({
@@ -534,7 +532,7 @@ const doBroadcastTransaction = rawTx => async (dispatch, state) => {
     });
     doRefreshData(false)(dispatch, state);
     // Set a delayed refresh action in case data pulled from API isn't up to date
-    setTimeout(() => (doRefreshData(false)(dispatch, state)), 2500)
+    setTimeout(() => doRefreshData(false)(dispatch, state), 2500);
     doNotify({
       title: "Success!",
       message: "Your transaction has been submitted!"
@@ -567,6 +565,6 @@ export {
   doFetchBalances,
   doRefreshData,
   doSignTransaction,
-  doSignBTCTransaction,
-  doBroadcastTransaction,
+  signBTCTransaction,
+  broadcastBtcTransaction
 };

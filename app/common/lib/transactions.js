@@ -47,10 +47,9 @@ export const ERRORS = {
  *
  * This will generate and sign a BTC transaction with either a seed phrase, ledger or trezor
  *
- * @param {string} senderAddress - from BTC address
- * @param {string} recipientAddress - to BTC address
+ * @param {string} senderBtcAddress - from BTC address
+ * @param {string} recipientBtcAddress - to BTC address
  * @param {object} amount - the amount of BTC to send
- * @param {string} walletType - one of WALLET_TYPES.SOFTWARE, WALLET_TYPES.TREZOR, WALLET_TYPES.LEDGER
  * @param {string} memo - the message for the tx
  */
 
@@ -58,10 +57,9 @@ const prepareBTCTransaction = async (
   senderBtcAddress,
   recipientBtcAddress,
   amount,
-  walletType,
   memo = ""
 ) => {
-  // define token type 
+  // define token type
   const tokenType = "BITCOIN";
 
   const tokenAmount = toBigInt(amount); // convert to bigi in satoshis
@@ -109,10 +107,11 @@ const prepareBTCTransaction = async (
  *
  * This will generate and sign our transaction with either a ledger or trezor
  *
- * @param {string} senderAddress - from Stacks address
- * @param {string} recipientAddress - to Stacks address
- * @param {object} amount - the amount of stacks to send
+ * @param {string} senderBtcAddress - from Stacks address
+ * @param {string} recipientBTCAddress - to Stacks address
+ * @param {object} btcAmount - the amount of stacks to send
  * @param {string} walletType - one of WALLET_TYPES.TREZOR or WALLET_TYPES.LEDGER
+ * @param {string} privateKey - one of WALLET_TYPES.TREZOR or WALLET_TYPES.LEDGER
  * @param {string} memo - the message for the tx
  */
 const generateBTCTransaction = async (
@@ -141,9 +140,9 @@ const generateBTCTransaction = async (
     }
 
     // define our signer
-    const signer = null
+    let signer = null;
     if (walletType === WALLET_TYPES.SOFTWARE) {
-      signer = privateKey
+      signer = privateKey;
     } else {
       const isLedger = walletType === WALLET_TYPES.LEDGER;
       signer = isLedger
@@ -151,7 +150,11 @@ const generateBTCTransaction = async (
         : new TrezorSigner(PATH, tx.senderBtcAddress);
     }
 
-    const rawTx = await transactions.makeBitcoinSpend(recipientBTCAddress, privateKey, btcAmount)
+    const rawTx = await transactions.makeBitcoinSpend(
+      recipientBTCAddress,
+      privateKey,
+      btcAmount
+    );
 
     return {
       fee: tx.estimate,
@@ -294,9 +297,9 @@ const generateTransaction = async (
     }
 
     // define our signer
-    const signer = null
+    const signer = null;
     if (walletType === WALLET_TYPES.SOFTWARE) {
-      signer = privateKey
+      signer = privateKey;
     } else {
       const isLedger = walletType === WALLET_TYPES.LEDGER;
       signer = isLedger
@@ -366,4 +369,10 @@ const broadcastTransaction = async rawTx => {
   }
 };
 
-export { prepareBTCTransaction, generateBTCTransaction, generateTransaction, broadcastTransaction, prepareTransaction };
+export {
+  prepareBTCTransaction,
+  generateBTCTransaction,
+  generateTransaction,
+  broadcastTransaction,
+  prepareTransaction
+};

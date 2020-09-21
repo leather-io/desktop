@@ -7,13 +7,17 @@ import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation"
 import { ROUTES } from "@common/constants";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { 
-  selectWalletLoading, 
-  selectWalletSeed, 
-  selectWalletStacksAddress 
+import {
+  selectWalletLoading,
+  selectWalletSeed,
+  selectWalletStacksAddress
 } from "@stores/selectors/wallet";
-import { doAddSoftwareWalletAddress, doClearSeed, doRefreshData } from "@stores/actions/wallet";
-import { mnemonicToStxAddress, emptySeedArray } from '@utils/utils'
+import {
+  doAddSoftwareWalletAddress,
+  doClearSeed,
+  doRefreshData
+} from "@stores/actions/wallet";
+import { mnemonicToStxAddress, emptySeedArray } from "@utils/utils";
 
 const Title = ({ ...rest }) => (
   <Type
@@ -39,34 +43,32 @@ class ConfirmSeedScreen extends Component {
   };
 
   componentWillMount = () => {
-    this.resetConfirmSeedArray()
-  }
+    this.resetConfirmSeedArray();
+  };
 
   resetConfirmSeedArray = () => {
     this.setState({
-      confirmSeedArray: emptySeedArray(24),
-    })
-  }
+      confirmSeedArray: emptySeedArray(24)
+    });
+  };
 
   validateSeed = () => {
-    const confirmSeed = this.state.confirmSeedArray.join(' ')
+    const confirmSeed = this.state.confirmSeedArray.join(" ");
     if (confirmSeed === this.props.seed) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   handleConfirmSuccess = () => {
     if (this.validateSeed()) {
-      const address = mnemonicToStxAddress(this.props.seed)
+      const address = mnemonicToStxAddress(this.props.seed);
       this.props.doAddSoftwareWalletAddress(address);
       this.props.doClearSeed();
       this.props.doRefreshData(false);
       this.resetConfirmSeedArray();
-      this.setState({
-        error: null
-      });
+      this.setState({ error: null });
       setTimeout(() => {
         this.props.history.push(ROUTES.DASHBOARD);
       }, 10);
@@ -75,39 +77,56 @@ class ConfirmSeedScreen extends Component {
         error: "The seed phrase you entered does not match."
       });
     }
-  }
+  };
 
   handleKeyPress = (event, index) => {
-    if(event.key === ' ') {
-      event.preventDefault()
+    if (event.key === " ") {
+      event.preventDefault();
     }
-  }
+  };
 
   handleInputChange = (event, index) => {
-    const newConfirmSeedArray = this.state.confirmSeedArray
-    newConfirmSeedArray[index] = event.target.value
+    const value = event.target.value;
+    if (value && value.includes(" ")) return;
+    const newConfirmSeedArray = this.state.confirmSeedArray;
+    newConfirmSeedArray[index] = value;
     this.setState({
       confirmSeed: newConfirmSeedArray
-    })
-  }
+    });
+  };
 
-  render () {
-    const { 
-      doAddSoftwareWalletAddress, 
+  handleOnPaste = (event, index) => {
+    if (index === 0) {
+      const pasted = event.clipboardData.getData("Text");
+      const split = pasted.trim().split(" ");
+      if (split.length === 24) {
+        split.forEach((word, i) => {
+          this.handleInputChange(
+            {
+              target: {
+                value: word
+              }
+            },
+            i
+          );
+        });
+      }
+    }
+  };
+
+  render() {
+    const {
+      doAddSoftwareWalletAddress,
       doClearSeed,
-      doRefreshData, 
-      loading, 
-      stxAddress, 
+      doRefreshData,
+      loading,
+      stxAddress,
       seed,
-      ...rest 
-    } = this.props
+      ...rest
+    } = this.props;
 
     return (
-      <Page
-        alignItems="center"
-        justifyContent="center"
-        {...rest}
-      >
+      <Page alignItems="center" justifyContent="center" {...rest}>
         <Flex
           flexGrow={1}
           flexDirection="column"
@@ -130,27 +149,34 @@ class ConfirmSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            Enter the 24 words of your seed phrase in the order requested below. The numbers represent each word's corresponding position in your seed phrase. 
+            Enter the 24 words of your seed phrase in the order requested below.
+            The numbers represent each word's corresponding position in your
+            seed phrase.
           </Type>
-          <Seed 
-            seedPhrase={seed} 
-            isInput={true} 
+          <Seed
+            seedPhrase={seed}
+            handleOnPaste={this.handleOnPaste}
+            isInput
             handleKeyPress={this.handleKeyPress}
             handleChange={this.handleInputChange}
             values={this.state.confirmSeedArray}
             small
           />
-          { this.state.error && 
-            <Type lineHeight={1.5} fontSize={2} pt={1} color="hsl(10, 85%, 50%)">
+          {this.state.error && (
+            <Type
+              lineHeight={1.5}
+              fontSize={2}
+              pt={1}
+              color="hsl(10, 85%, 50%)"
+            >
               {this.state.error}
             </Type>
-          }
+          )}
           <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={5}>
-            <Button outline invert onClick={this.handleConfirmSuccess}>Done</Button>
-            <OnboardingNavigation
-                  onDark
-                  back={ROUTES.NEW_SEED}
-                />
+            <Button outline invert onClick={this.handleConfirmSuccess}>
+              Done
+            </Button>
+            <OnboardingNavigation onDark back={ROUTES.NEW_SEED} />
           </Buttons>
         </Flex>
       </Page>

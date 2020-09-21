@@ -1,12 +1,13 @@
 import React from "react";
-import { Flex, Box, Type, Input, Button } from "blockstack-ui/dist";
+import { Flex, Box, Type, Input, Button, Card } from "blockstack-ui/dist";
 import { Modal } from "@components/modal";
 import { satoshisToBtc } from "@utils/utils";
 import {
   signBTCTransaction,
-  broadcastBtcTransaction,
+  doBroadcastTransaction,
   doClearError
 } from "@stores/actions/wallet";
+import { generateBTCTransaction } from "@common/lib/transactions";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import {
   selectWalletBitcoinAddress,
@@ -24,6 +25,7 @@ const SCREENS = {
   initial: "SCREENS/initial",
   seed: "SCREENS/seed",
   hardware: "SCREENS/hardware",
+  confirm: "SCREENS/confirm",
   success: "SCREENS/success"
 };
 
@@ -60,39 +62,86 @@ const BottomSection = props => (
   <Flex flexDirection="column" p={4} width={1} {...props} />
 );
 
-/**
- * TODO: replace values with real ones
- */
-const SuccessScreen = ({ hide }) => {
-  return (
-    <>
-      <TopSection>
-        <Type fontSize={4} lineHeight={1.5}>
-          Transaction Sent!
-        </Type>
-      </TopSection>
-      <BottomSection>
-        <Flex pb={4} flexDirection="column">
-          <Label>Amount Sent</Label>
-          <Type fontSize={4}>REPLACE_AMOUNT BTC</Type>
-          <Label pt={3}>Fee</Label>
-          <Type>REPLACE_FEE BTC</Type>
+const SuccessScreen = connect(state => ({
+  balance: selectWalletBitcoinBalance(state)
+}))(({ hide, recipient, rawTx, txid, balance }) => (
+  <>
+    <TopSection>
+      <Type fontSize={4} lineHeight={1.5}>
+        Transaction Sent!
+      </Type>
+    </TopSection>
+    <BottomSection>
+      <Flex pb={4} flexDirection="column">
+        <Label>Amount Sent</Label>
+        <Type fontSize={4}>{satoshisToBtc(balance - rawTx.fee)} BTC</Type>
+        <Label pt={3}>Fee</Label>
+        <Type>{satoshisToBtc(rawTx.fee)} BTC</Type>
+      </Flex>
+      <Flex flexDirection="column">
+        <StaticField label="Recipient" value={recipient} />
+        <StaticField
+          label="Tx Hash"
+          value={txid}
+          link={`https://explorer.blockstack.org/tx/${txid}`}
+        />
+      </Flex>
+      <Box mx="auto">
+        <Button onClick={hide}>Close</Button>
+      </Box>
+    </BottomSection>
+  </>
+));
+
+const ConfirmScreen = connect(
+  state => ({
+    balance: selectWalletBitcoinBalance(state)
+  }),
+  { doBroadcastBTCTransaction: doBroadcastTransaction }
+)(
+  ({
+    rawTx,
+    balance,
+    recipient,
+    handleBroadcastTx,
+    doBroadcastBTCTransaction
+  }) => {
+    const { fee } = rawTx;
+    return (
+      <>
+        <TopSection>
+          <Card p={0} width={1}>
+            <Flex flexGrow={1}>
+              <Flex
+                alignItems="center"
+                p={4}
+                borderRight={1}
+                borderColor="blue.mid"
+                width="50%"
+              >
+                <Type fontSize={3}>Please confirm your transaction.</Type>
+              </Flex>
+              <Flex p={4} flexDirection="column">
+                <Label>Amount to withdraw</Label>
+                <Type fontSize={4}>{satoshisToBtc(balance - fee)} STX</Type>
+                <Label pt={3}>Fee</Label>
+                <Type>{satoshisToBtc(fee)} BTC</Type>
+                <Label pt={3}>Recipient</Label>
+                <Type>{recipient}</Type>
+              </Flex>
+            </Flex>
+          </Card>
+        </TopSection>
+        <Flex justifyContent="center" py={4} width={1}>
+          <Button onClick={() => handleBroadcastTx(doBroadcastBTCTransaction)}>
+            Confirm withdraw
+          </Button>
         </Flex>
-        <Flex flexDirection="column">
-          <StaticField label="Recipient" value={"REPLACE_TO"} />
-          <StaticField
-            label="Tx Hash"
-            value={"REPLACE_TXID"}
-            link={`https://explorer.blockstack.org/tx/${"REPLACE_TXID"}`}
-          />
-        </Flex>
-        <Box mx="auto">
-          <Button onClick={hide}>Close</Button>
-        </Box>
-      </BottomSection>
-    </>
-  );
-};
+      </>
+    );
+  }
+);
+
 const SeedScreen = connect(
   state => ({
     sender: selectWalletBitcoinAddress(state),
@@ -102,7 +151,7 @@ const SeedScreen = connect(
   }),
   {
     doSignBTCTransaction: signBTCTransaction,
-    doBroadcastBTCTransaction: broadcastBtcTransaction,
+    doBroadcastBTCTransaction: doBroadcastTransaction,
     clearErrors: doClearError
   }
 )(
@@ -277,7 +326,9 @@ const Screens = ({
   errors,
   hide,
   setErrors,
-  handleSignTransaction
+  handleSignTransaction,
+  handleBroadcastTx,
+  rawTx
 }) => {
   if (screen === SCREENS.seed)
     return (
@@ -301,18 +352,35 @@ const Screens = ({
         setErrors={setErrors}
       />
     );
+  if (screen === SCREENS.confirm) {
+    return (
+      <ConfirmScreen
+        handleBroadcastTx={handleBroadcastTx}
+        recipient={recipient}
+        rawTx={rawTx}
+      />
+    );
+  }
   if (screen === SCREENS.success)
-    return <SuccessScreen hide={hide} navigate={setScreen} />;
+    return (
+      <SuccessScreen
+        hide={hide}
+        recipient={recipient}
+        rawTx={rawTx}
+        navigate={setScreen}
+      />
+    );
 };
 
 class WithdrawBTCModal extends React.Component {
   state = {
-    recipient: undefined,
     screen: SCREENS.initial,
+    recipient: undefined,
     seed: {},
     errors: {},
     processing: false,
-    transaction: undefined
+    transaction: undefined,
+    rawTx: undefined
   };
   setScreen = screen => this.setState({ screen });
   handleSeedChange = (value, index) => {
@@ -340,23 +408,45 @@ class WithdrawBTCModal extends React.Component {
     reduxValues
   ) => {
     const { sender, balance, walletType } = reduxValues;
-
-    const rawTx = await doSignBTCTransaction(
+    const { recipient, seed } = this.state;
+    const seedString = Object.values(seed).join(" ");
+    // Get the fee
+    const initialTx = await generateBTCTransaction(
       sender,
-      this.state.recipient,
+      recipient,
       balance,
       walletType,
-      Object.values(this.state.seed).join(" ")
+      seedString
     );
-    if (rawTx && !rawTx.error) {
-      // const finalTx = await doBroadcastBTCTransaction(rawTx);
-      // if (finalTx) {
-      //   this.handleSetTransaction(finalTx);
-      //   this.setScreen(SCREENS.success);
-      // }
+    // should always error
+    if (initialTx.error) {
+      const { btcBalance, estimate } = initialTx;
+      const adjustedBalanceWithFeeRemoved = btcBalance - estimate;
+      const rawTx = await doSignBTCTransaction(
+        sender,
+        recipient,
+        adjustedBalanceWithFeeRemoved,
+        walletType,
+        seedString
+      );
+      if (!rawTx.error) {
+        this.handleSetRawTx(rawTx);
+        this.setScreen(SCREENS.confirm);
+      }
     }
   };
 
+  handleBroadcastTx = async doBroadcastBTCTransaction => {
+    if (this.state.rawTx.rawTx) {
+      const txid = await doBroadcastBTCTransaction(this.state.rawTx.rawTx);
+      if (txid) {
+        this.handleSetTransaction(txid);
+        this.setScreen(SCREENS.success);
+      }
+    }
+  };
+
+  handleSetRawTx = rawTx => this.setState({ rawTx });
   handleSetTransaction = transaction => this.setState({ transaction });
 
   render() {
@@ -383,6 +473,9 @@ class WithdrawBTCModal extends React.Component {
           handleSignTransaction={this.handleSignTransaction}
           handleSetTransaction={this.handleSetTransaction}
           transaction={this.state.transaction}
+          handleSetRawTx={this.handleSetRawTx}
+          rawTx={this.state.rawTx}
+          handleBroadcastTx={this.handleBroadcastTx}
         />
       </Modal>
     );

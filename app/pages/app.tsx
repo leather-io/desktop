@@ -18,14 +18,16 @@ import { Api } from '../api/api';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import urljoin from 'url-join';
 import { useInterval } from '../hooks/use-interval';
+import { selectPendingTransactions } from '../store/pending-transaction/pending-transaction.reducer';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
   const [webSocket, setWebSocket] = useState('Disconnected');
 
-  const { address, activeNode } = useSelector((state: RootState) => ({
+  const { address, activeNode, pendingTxs } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     activeNode: selectActiveNodeApi(state),
+    pendingTxs: selectPendingTransactions(state),
   }));
 
   const initAppWithStxAddressInfo = useCallback(() => {
@@ -40,25 +42,27 @@ export const App: FC = ({ children }) => {
     dispatch(getAddressDetails(address));
   }, [address, dispatch]);
 
+  const checkIfPendingTxIsComplete = async (txId: string) => {
+    const [error, txResponse] = await safeAwait(new Api(activeNode.url).getTxDetails(txId));
+    if (error || !txResponse || txResponse.data.tx_status === 'pending') {
+      return;
+    }
+    if (txResponse.data.tx_status === 'success') {
+      dispatch(pendingTransactionSuccessful(txResponse.data));
+    }
+  };
+
   useNavigatorOnline({
     onReconnect: initAppWithStxAddressInfo,
   });
 
   useInterval(() => refreshWalletDetailsWithoutLoader(), 60_000);
 
+  useInterval(() => pendingTxs.forEach(tx => void checkIfPendingTxIsComplete(tx.tx_id)), 15_000);
+
   useEffect(() => {
     initAppWithStxAddressInfo();
   }, [address, activeNode, initAppWithStxAddressInfo]);
-
-  // const checkIfPendingTxIsComplete = async (address: string) => {
-  //   const [error, txResponse] = await safeAwait(new Api(activeNode.url).getTxDetails(address));
-  //   if (error || !txResponse || txResponse.data.tx_status === 'pending') {
-  //     return;
-  //   }
-  //   if (txResponse.data.tx_status === 'success') {
-  //     dispatch(pendingTransactionSuccessful(txResponse.data));
-  //   }
-  // };
 
   const wsUrl = new URL(activeNode.url);
   wsUrl.protocol = 'ws:';

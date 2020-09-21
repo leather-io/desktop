@@ -8,14 +8,18 @@ import { Hover } from "react-powerplug";
 import { ROUTES } from "@common/constants";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import bip39 from 'bip39';
-import { 
-  selectWalletLoading, 
-  selectWalletSeed, 
-  selectWalletStacksAddress 
+import bip39 from "bip39";
+import {
+  selectWalletLoading,
+  selectWalletSeed,
+  selectWalletStacksAddress
 } from "@stores/selectors/wallet";
-import { doAddSoftwareWalletAddress, doClearSeed, doRefreshData } from "@stores/actions/wallet";
-import { mnemonicToStxAddress, emptySeedArray } from '@utils/utils'
+import {
+  doAddSoftwareWalletAddress,
+  doClearSeed,
+  doRefreshData
+} from "@stores/actions/wallet";
+import { mnemonicToStxAddress, emptySeedArray } from "@utils/utils";
 
 const Title = ({ ...rest }) => (
   <Type
@@ -47,7 +51,15 @@ export const SeedLengthButton = ({
           fontSize={1}
           fontWeight={600}
           cursor={hovered && !disabled ? "pointer" : undefined}
-          color={highlighted ? "blue.light" : (hovered && !disabled ? (onDark ? "blue.light" : hoverBg) : bg)}
+          color={
+            highlighted
+              ? "blue.light"
+              : hovered && !disabled
+              ? onDark
+                ? "blue.light"
+                : hoverBg
+              : bg
+          }
           style={{
             userSelect: "none"
           }}
@@ -60,30 +72,32 @@ export const SeedLengthButton = ({
     </Hover>
   ) : null;
 
-const SeedLengthSelector = ({length, handleClick}) => {
-  const twelve = length === 12
+const SeedLengthSelector = ({ length, handleClick }) => {
+  const twelve = length === 12;
   return (
-    <Flex> 
-      <SeedLengthButton 
-        disabled={twelve} 
-        onDark 
-        highlighted={twelve} 
+    <Flex>
+      <SeedLengthButton
+        disabled={twelve}
+        onDark
+        highlighted={twelve}
         onClick={!twelve ? handleClick : null}
       >
         12 words
-      </SeedLengthButton> 
-      <Type color="blue.light" pt={1}>&nbsp;|&nbsp;</Type>
-      <SeedLengthButton 
-        disabled={!twelve} 
-        onDark 
-        highlighted={!twelve} 
+      </SeedLengthButton>
+      <Type color="blue.light" pt={1}>
+        &nbsp;|&nbsp;
+      </Type>
+      <SeedLengthButton
+        disabled={!twelve}
+        onDark
+        highlighted={!twelve}
         onClick={twelve ? handleClick : null}
       >
         24 words
       </SeedLengthButton>
     </Flex>
-  )
-}
+  );
+};
 
 class RestoreSeedScreen extends Component {
   constructor(props) {
@@ -98,28 +112,28 @@ class RestoreSeedScreen extends Component {
   };
 
   componentWillMount = () => {
-    this.resetSeedArray()
-  }
+    this.resetSeedArray();
+  };
 
   resetSeedArray = () => {
     this.setState({
       seedArray: emptySeedArray(this.state.seedLength)
-    })
-  }
+    });
+  };
 
   validateSeed = () => {
-    const seed = this.state.seedArray.join(' ')
+    const seed = this.state.seedArray.join(" ");
     if (bip39.validateMnemonic(seed)) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   handleConfirmSuccess = () => {
     if (this.validateSeed()) {
-      var seed = this.state.seedArray.join(' ')
-      const address = mnemonicToStxAddress(seed)
+      var seed = this.state.seedArray.join(" ");
+      const address = mnemonicToStxAddress(seed);
       this.props.doAddSoftwareWalletAddress(address);
       this.props.doClearSeed();
       this.props.doRefreshData(false);
@@ -127,7 +141,7 @@ class RestoreSeedScreen extends Component {
       this.setState({
         error: null
       });
-      seed = ''
+      seed = "";
       setTimeout(() => {
         this.props.history.push(ROUTES.DASHBOARD);
       }, 10);
@@ -136,45 +150,68 @@ class RestoreSeedScreen extends Component {
         error: "The seed phrase you entered is invalid."
       });
     }
-  }
+  };
 
   handleKeyPress = (event, index) => {
-    if(event.key === ' ') {
-      event.preventDefault()
+    if (event.key === " ") {
+      event.preventDefault();
     }
-  }
+  };
 
   handleInputChange = (event, index) => {
-    const newSeedArray = this.state.seedArray
-    newSeedArray[index] = event.target.value
+    const value = event && event.target && event.target.value;
+    if (value && value.includes(" ")) return;
+    if (typeof value === "undefined") {
+      return;
+    }
+    const newSeedArray = this.state.seedArray;
+    newSeedArray[index] = value;
     this.setState({
       seedArray: newSeedArray
-    })
-  }
+    });
+  };
+
+  handleOnPaste = (event, index) => {
+    if (index === 0) {
+      const pasted = event.clipboardData.getData("Text");
+      const split = pasted.trim().split(" ");
+      if (split.length === 24) {
+        split.forEach((word, i) => {
+          this.handleInputChange(
+            {
+              target: {
+                value: word
+              }
+            },
+            i
+          );
+        });
+      }
+    }
+  };
 
   handleSeedLengthClick = () => {
-    this.setState({
-      seedLength: this.state.seedLength === 12 ? 24 : 12
-    }, this.resetSeedArray)
-  }
+    this.setState(
+      {
+        seedLength: this.state.seedLength === 12 ? 24 : 12
+      },
+      this.resetSeedArray
+    );
+  };
 
-  render () {
-    const { 
-      doAddSoftwareWalletAddress, 
+  render() {
+    const {
+      doAddSoftwareWalletAddress,
       doClearSeed,
-      doRefreshData, 
-      loading, 
-      stxAddress, 
+      doRefreshData,
+      loading,
+      stxAddress,
       seed,
-      ...rest 
-    } = this.props
+      ...rest
+    } = this.props;
 
     return (
-      <Page
-        alignItems="center"
-        justifyContent="center"
-        {...rest}
-      >
+      <Page alignItems="center" justifyContent="center" {...rest}>
         <Flex
           flexGrow={1}
           flexDirection="column"
@@ -197,28 +234,34 @@ class RestoreSeedScreen extends Component {
             color="hsl(242, 56%, 75%)"
             maxWidth="600px"
           >
-            Restore your wallet by entering the 24 words of your seed phrase in the correct order.
+            Restore your wallet by entering the 24 words of your seed phrase in
+            the correct order.
           </Type>
           {/* <SeedLengthSelector length={this.state.seedLength} handleClick={this.handleSeedLengthClick} /> */}
-          <Seed 
-            isInput={true}
-            numWords={this.state.seedLength} 
+          <Seed
+            isInput
+            numWords={this.state.seedLength}
             handleKeyPress={this.handleKeyPress}
             handleChange={this.handleInputChange}
+            handleOnPaste={this.handleOnPaste}
             values={this.state.seedArray}
-            small={true}
+            small
           />
-          { this.state.error && 
-            <Type lineHeight={1.5} fontSize={2} pt={1} color="hsl(10, 85%, 50%)">
+          {this.state.error && (
+            <Type
+              lineHeight={1.5}
+              fontSize={2}
+              pt={1}
+              color="hsl(10, 85%, 50%)"
+            >
               {this.state.error}
             </Type>
-          }
+          )}
           <Buttons maxWidth="420px" mx="auto" flexDirection="column" pt={4}>
-            <Button outline invert onClick={this.handleConfirmSuccess}>Restore</Button>
-            <OnboardingNavigation
-                  onDark
-                  back={ROUTES.RESTORE_OPTIONS}
-                />
+            <Button outline invert onClick={this.handleConfirmSuccess}>
+              Restore
+            </Button>
+            <OnboardingNavigation onDark back={ROUTES.RESTORE_OPTIONS} />
           </Buttons>
         </Flex>
       </Page>

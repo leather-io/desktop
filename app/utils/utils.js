@@ -3,7 +3,6 @@ import bigi from "bigi";
 import numeral from "numeral";
 import bip32 from 'bip32'
 import bip39 from 'bip39'
-import crypto from 'crypto'
 import { b58ToC32, c32address, versions } from 'c32check'
 import { ECPair } from "bitcoinjs-lib"
 import { microToStacks, stacksToMicro } from "stacks-utils";

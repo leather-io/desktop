@@ -1,12 +1,7 @@
 import React from "react";
-import { Button, Type, Flex, Card } from "blockstack-ui";
-import { HardwareSteps } from "@containers/hardware-steps";
-import { ledgerSteps } from "@screens/onboarding/hardware-wallet/ledger";
-import { trezorSteps } from "@screens/onboarding/hardware-wallet/trezor";
-import { WALLET_TYPES } from "@stores/reducers/wallet";
+import { Type, Flex } from "blockstack-ui";
 import { decodeRawTx } from "@utils/stacks";
 import { ERRORS } from "@common/lib/transactions";
-import { Field } from "@components/field";
 import { Seed } from "@components/seed/index";
 
 const SeedView = ({
@@ -26,22 +21,22 @@ const SeedView = ({
   clearSeed,
   ...rest
 }) => {
-  const handleKeyPress = (event) => {
-    if(event.key === ' ') {
-      event.preventDefault()
+  const handleKeyPress = event => {
+    if (event.key === " ") {
+      event.preventDefault();
     }
-  }
+  };
   const handleSubmit = async () => {
     setState({
       processing: true
     });
-    try {      
+    try {
       const tx = await doSignTransaction(
         sender,
         state.values.recipient,
         state.values.amount,
         type,
-        state.values.seedArray.join(' '),
+        state.values.seedArray.join(" "),
         state.values.memo || ""
       );
 
@@ -89,34 +84,34 @@ const SeedView = ({
     <Wrapper hide={hide} p={0} pb="15px">
       <Flex flexDirection="column" bg="#F1F6F9" mx="0px" mb="15px">
         <Flex flexDirection="column" alignItems="left" pt={4} px="28px">
-          <Type fontSize={3}>
-            Enter your seed phrase
-          </Type>
+          <Type fontSize={3}>Enter your seed phrase</Type>
         </Flex>
         <Flex flexDirection="column" alignItems="center" mt="-15px" px="15px">
-          <Seed 
-            isInput={true}
-            numWords={24} 
+          <Seed
+            isInput
+            numWords={24}
             handleKeyPress={handleKeyPress}
-            handleChange={(event, index) => handleSeedChange(event, setState, index)}
+            handleChange={(event, index) =>
+              handleSeedChange(event, setState, index)
+            }
             values={state.values.seedArray}
-            invert={true}
-            small={true}
+            invert
+            small
             mt="25px"
           />
         </Flex>
       </Flex>
-      {state.errors && 
-        <Flex 
-          flexDirection="column" 
-          alignItems="center" 
-          mt="5px" 
-          mb="15px" 
+      {state.errors && (
+        <Flex
+          flexDirection="column"
+          alignItems="center"
+          mt="5px"
+          mb="15px"
           color="hsl(10, 85%, 50%)"
         >
           {state.errors.seed}
-        </Flex> 
-      }
+        </Flex>
+      )}
       {children
         ? children({
             next: {
@@ -132,9 +127,9 @@ const SeedView = ({
                     setState,
                     handleSubmit,
                     type
-                  )
+                  );
                 }
-              },
+              }
             },
             secondary: {
               label: "Cancel",

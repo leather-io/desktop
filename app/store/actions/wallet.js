@@ -519,7 +519,7 @@ const signBTCTransaction = (
   }
 };
 
-const broadcastBtcTransaction = rawTx => async (dispatch, state) => {
+const doBroadcastTransaction = rawTx => async (dispatch, state) => {
   try {
     // start our process
     dispatch({
@@ -566,5 +566,5 @@ export {
   doRefreshData,
   doSignTransaction,
   signBTCTransaction,
-  broadcastBtcTransaction
+  doBroadcastTransaction
 };

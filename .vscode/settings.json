@@ -17,9 +17,11 @@
   "search.exclude": {
     ".git": true,
     ".eslintcache": true,
-    "app/dist": true,
+    "app/dist/**": true,
     "app/main.prod.js": true,
+    "app/renderer.prod.js": true,
     "app/main.prod.js.map": true,
+    "app/node_modules": true,
     "dll": true,
     "release": true,
     "node_modules": true,

@@ -45,8 +45,9 @@ import { DecryptWalletForm } from './decrypt-wallet-form';
 import { SignTxWithLedger } from './sign-tx-with-ledger';
 import { selectPublicKey } from '@store/keys/keys.reducer';
 import { FailedBroadcastError } from './failed-broadcast-error';
-import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
+
 import { LedgerConnectStep } from '@hooks/use-ledger';
+import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 
 interface TxModalProps {
   balance: string;
@@ -112,6 +113,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         tx = await makeSTXTokenTransfer({ ...txDetails, senderKey: privateKey });
       } catch (e) {
         setDecryptionError(e);
+        setIsDecrypting(false);
+        return;
       }
     }
 
@@ -138,6 +141,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         }
       } catch (e) {
         setHasSubmitted(false);
+        return;
       }
     }
 

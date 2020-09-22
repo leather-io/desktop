@@ -1,4 +1,4 @@
-import { network, transactions, config } from "blockstack";
+import { network, transactions, config, estimateTXBytes } from "blockstack";
 import { c32address, c32ToB58, versions } from "c32check";
 import Transport from "@ledgerhq/hw-transport-node-hid";
 import btc from "bitcoinjs-lib";
@@ -43,66 +43,6 @@ export const ERRORS = {
 };
 
 /**
- * prepareBTCTransaction
- *
- * This will generate and sign a BTC transaction with either a seed phrase, ledger or trezor
- *
- * @param {string} senderBtcAddress - from BTC address
- * @param {string} recipientBtcAddress - to BTC address
- * @param {object} amount - the amount of BTC to send
- * @param {string} memo - the message for the tx
- */
-
-const prepareBTCTransaction = async (
-  senderBtcAddress,
-  recipientBtcAddress,
-  amount,
-  memo = ""
-) => {
-  // define token type
-  const tokenType = "BITCOIN";
-
-  const tokenAmount = toBigInt(amount); // convert to bigi in satoshis
-
-  // get an estimate
-  const utxos = await config.network.getUTXOs(senderBtcAddress);
-  const numUTXOs = utxos.length;
-
-  const estimate =
-    (await transactions.estimateTokenTransfer(
-      recipientBtcAddress,
-      tokenType,
-      tokenAmount,
-      memo,
-      numUTXOs
-    )) + 5500;
-
-  // current BTC balance
-  const btcBalance = sumUTXOs(utxos);
-
-  // not enough btc
-  if (btcBalance < estimate + amount) {
-    return {
-      ...ERRORS.INSUFFICIENT_BTC_BALANCE,
-      estimate,
-      btcBalance,
-      difference: estimate - btcBalance
-    };
-  }
-
-  return {
-    senderBtcAddress,
-    recipientBtcAddress,
-    tokenType,
-    tokenAmount,
-    utxos,
-    numUTXOs,
-    estimate,
-    btcBalance
-  };
-};
-
-/**
  * generateTransaction
  *
  * This will generate and sign our transaction with either a ledger or trezor
@@ -123,23 +63,6 @@ const generateBTCTransaction = async (
   memo = ""
 ) => {
   try {
-    const tx = await prepareBTCTransaction(
-      senderBtcAddress,
-      recipientBTCAddress,
-      btcAmount,
-      walletType,
-      memo
-    );
-
-    // if we don't have an obj from this, return generic error (should be impossible)
-    if (!tx) return ERRORS.TRANSACTION_ERROR();
-
-    // if we have an error, return it.
-    if (tx.error) {
-      return tx;
-    }
-
-    // define our signer
     let signer = null;
     if (walletType === WALLET_TYPES.SOFTWARE) {
       signer = privateKey;
@@ -156,8 +79,14 @@ const generateBTCTransaction = async (
       btcAmount
     );
 
+    const txBytes = estimateTXBytes(rawTx);
+
+    const feeRate = await config.network.getFeeRate();
+
+    const fee = feeRate * txBytes;
+
     return {
-      fee: tx.estimate,
+      fee: fee,
       rawTx
     };
   } catch (e) {
@@ -370,7 +299,6 @@ const broadcastTransaction = async rawTx => {
 };
 
 export {
-  prepareBTCTransaction,
   generateBTCTransaction,
   generateTransaction,
   broadcastTransaction,

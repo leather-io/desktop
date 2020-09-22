@@ -410,29 +410,16 @@ class WithdrawBTCModal extends React.Component {
     const { sender, balance, walletType } = reduxValues;
     const { recipient, seed } = this.state;
     const seedString = Object.values(seed).join(" ");
-    // Get the fee
-    const initialTx = await generateBTCTransaction(
+    const rawTx = await doSignBTCTransaction(
       sender,
       recipient,
       balance,
       walletType,
       seedString
     );
-    // should always error
-    if (initialTx.error) {
-      const { btcBalance, estimate } = initialTx;
-      const adjustedBalanceWithFeeRemoved = btcBalance - estimate;
-      const rawTx = await doSignBTCTransaction(
-        sender,
-        recipient,
-        adjustedBalanceWithFeeRemoved,
-        walletType,
-        seedString
-      );
-      if (!rawTx.error) {
-        this.handleSetRawTx(rawTx);
-        this.setScreen(SCREENS.confirm);
-      }
+    if (!rawTx.error) {
+      this.handleSetRawTx(rawTx);
+      this.setScreen(SCREENS.confirm);
     }
   };
 

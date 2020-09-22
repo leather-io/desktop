@@ -1,7 +1,6 @@
 import React from "react";
 import { Flex, Type, Input, Button } from "blockstack-ui/dist";
 
-import { doClearError } from "@stores/actions/wallet";
 import {
   selectWalletBitcoinAddress,
   selectWalletBitcoinBalance,
@@ -17,6 +16,11 @@ import {
 import { handleSeedValidation } from "@containers/modals/send/helpers";
 import { Seed } from "@components/seed";
 import { getSeedFromAnyString } from "@common/utils";
+import {
+  signBTCTransaction,
+  doBroadcastTransaction,
+  doClearError
+} from "@stores/actions/wallet";
 
 const mapStateToProps = state => ({
   sender: selectWalletBitcoinAddress(state),

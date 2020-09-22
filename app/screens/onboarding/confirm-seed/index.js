@@ -18,6 +18,7 @@ import {
   doRefreshData
 } from "@stores/actions/wallet";
 import { mnemonicToStxAddress, emptySeedArray } from "@utils/utils";
+import { getSeedFromAnyString } from "@common/utils";
 
 const Title = ({ ...rest }) => (
   <Type
@@ -98,7 +99,9 @@ class ConfirmSeedScreen extends Component {
   handleOnPaste = (event, index) => {
     if (index === 0) {
       const pasted = event.clipboardData.getData("Text");
-      const split = pasted.trim().split(" ");
+
+      const split = getSeedFromAnyString(pasted);
+
       if (split.length === 24) {
         split.forEach((word, i) => {
           this.handleInputChange(

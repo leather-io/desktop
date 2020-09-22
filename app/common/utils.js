@@ -12,4 +12,11 @@ const raf =
 const ric =
   IS_BROWSER && self.requestIdleCallback ? self.requestIdleCallback : fallback;
 
-export { raf, ric };
+const getSeedFromAnyString = string =>
+  string
+    .trim()
+    .match(/\S+/g)
+    .map(item => (item.match(/[^0-9]+/g) ? item : null))
+    .filter(w => w);
+
+export { raf, ric, getSeedFromAnyString };

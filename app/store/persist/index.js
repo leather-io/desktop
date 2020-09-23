@@ -1,4 +1,4 @@
-// import Store from "electron-store";
+import Store from "electron-store";
 import getPersistMiddleware from "./getPersistMiddleware";
 import {
   ADD_WALLET_ADDRESS,
@@ -7,8 +7,7 @@ import {
 } from "../reducers/wallet";
 
 const storage = ({ electronStore, electronStoreOpts } = {}) => {
-  const store = electronStore;
-
+  const store = electronStore || new Store(electronStoreOpts || {});
   return {
     get: key =>
       new Promise(resolve => {

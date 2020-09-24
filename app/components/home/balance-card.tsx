@@ -12,8 +12,8 @@ interface BalanceCardProps {
   onRequestTestnetStx(): Promise<any>;
 }
 
-export const BalanceCard: FC<BalanceCardProps> = args => {
-  const { balance, onSelectReceive, onSelectSend, onRequestTestnetStx } = args;
+export const BalanceCard: FC<BalanceCardProps> = props => {
+  const { balance, onSelectReceive, onSelectSend, onRequestTestnetStx } = props;
   const [requestingTestnetStx, setRequestingTestnetStx] = useState(false);
   const requestTestnetStacks = async () => {
     setRequestingTestnetStx(true);

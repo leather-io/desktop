@@ -12,8 +12,8 @@ interface DecryptWalletFormProps {
 
 type Props = FC<DecryptWalletFormProps>;
 
-export const DecryptWalletForm: Props = args => {
-  const { onSetPassword, decryptionError, hasSubmitted, onForgottenPassword } = args;
+export const DecryptWalletForm: Props = props => {
+  const { onSetPassword, decryptionError, hasSubmitted, onForgottenPassword } = props;
 
   const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();

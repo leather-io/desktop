@@ -64,24 +64,21 @@ export const App: FC = ({ children }) => {
     initAppWithStxAddressInfo();
   }, [address, activeNode, initAppWithStxAddressInfo]);
 
-  const wsUrl = new URL(activeNode.url);
-  wsUrl.protocol = 'ws:';
-
   useEffect(() => {
+    const wsUrl = new URL(activeNode.url);
+    wsUrl.protocol = 'ws:';
     async function run() {
-      const client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'v1', 'ws')).finally(
-        () => {
-          setWebSocket('Disconnected');
-        }
-      );
+      const client = await connectWebSocketClient(
+        urljoin(wsUrl.toString(), 'extended', 'v1', 'ws')
+      ).finally(() => {
+        setWebSocket('Disconnected');
+      });
       setWebSocket('Connected');
       if (!address) return;
       await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
-        console.log('address balance updates', { address, balance });
         dispatch(updateAddressBalance({ address, balance }));
       });
       await client.subscribeAddressTransactions(address, async ({ tx_id }) => {
-        console.log('address tx updates', tx_id);
         const newTx = await new Api(activeNode.url).getTxDetails(tx_id);
         if (newTx.data.tx_status !== 'success') return;
         dispatch(addNewTransaction(newTx.data));

@@ -15,7 +15,7 @@ import {
   OnboardingText,
 } from '@components/onboarding';
 import { selectMnemonic } from '@store/keys/keys.reducer';
-import { useBackButton } from '@hooks/use-back-url.hook';
+import { useBackButton } from '@hooks/use-back-url';
 
 export const SecretKey: React.FC = () => {
   const history = useHistory();

@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Text, Box } from '@blockstack/ui';
 
-// import { ENV } from '@constants/index';
+import { NETWORK } from '@constants/index';
 
 interface NetworkMessageProps {
   textColor?: string;
 }
 
 export const NetworkMessage: FC<NetworkMessageProps> = ({ textColor }) => {
-  // if (ENV === 'production') return null;
+  if (NETWORK === 'mainnet') return null;
   return (
     <Box display={['none', 'block']} position="absolute" ml="50%" left="-45px" top="9px">
       <Box

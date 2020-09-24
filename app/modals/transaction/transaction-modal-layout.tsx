@@ -1,14 +1,9 @@
 import React, { FC } from 'react';
-import { Flex, Text, CloseIcon, Button } from '@blockstack/ui';
+import { Flex, Text, CloseIcon, Button, ButtonProps } from '@blockstack/ui';
 
 export const modalStyle = {
   minWidth: ['100%', '488px'],
 };
-
-export const buttonStyle = {
-  size: 'lg',
-  minWidth: '70px',
-} as const;
 
 interface TxModalHeaderProps {
   onSelectClose: () => void;
@@ -45,21 +40,8 @@ export const TxModalFooter: FC = ({ children }) => (
   </Flex>
 );
 
-export const TxModalPreview: FC = ({ children }) => (
-  <Flex flexDirection="column" fontSize="14px" mx="extra-loose" mt="tight">
+export const TxModalButton: FC<ButtonProps> = ({ children, ...props }) => (
+  <Button ml="base-tight" size="lg" minWidth="70px" {...(props as any)}>
     {children}
-  </Flex>
-);
-
-interface TxModalPreviewItemProps {
-  label: string;
-}
-
-export const TxModalPreviewItem: FC<TxModalPreviewItemProps> = ({ label, children }) => (
-  <Flex alignItems="center" height="64px" borderBottom="1px solid #F0F0F5">
-    <Text textStyle="body.small.medium" width="70px">
-      {label}
-    </Text>
-    <Text>{children}</Text>
-  </Flex>
+  </Button>
 );

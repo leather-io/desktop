@@ -8,7 +8,7 @@ import routes from '@constants/routes.json';
 import { selectMnemonic } from '@store/keys';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { useBackButton } from '@hooks/use-back-url.hook';
+import { useBackButton } from '@hooks/use-back-url';
 import {
   Onboarding,
   OnboardingTitle,

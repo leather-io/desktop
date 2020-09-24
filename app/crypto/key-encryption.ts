@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 
-const algorithmName = 'AES-CBC' as const;
+const algorithmName = 'AES-CBC';
 
 function extractEncryptionKey(hash: Uint8Array) {
   return hash.slice(0, 32);
@@ -13,10 +13,9 @@ function extractEncryptionInitVector(hash: Uint8Array) {
 async function deriveWebCryptoKey(derivedKeyHash: Uint8Array) {
   const format = 'raw';
   const key = extractEncryptionKey(derivedKeyHash);
-  const algorithm = algorithmName;
   const extractable = false;
   const keyUsages: KeyUsage[] = ['encrypt', 'decrypt'];
-  return crypto.subtle.importKey(format, key, algorithm, extractable, keyUsages);
+  return crypto.subtle.importKey(format, key, algorithmName, extractable, keyUsages);
 }
 
 interface EncryptMnemonicArgs {

@@ -53,18 +53,21 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
 );
 
 interface BroadcastStxTransactionArgs {
-  signedTx: StacksTransaction;
+  transaction: StacksTransaction;
   amount: BigNumber;
   onBroadcastSuccess: () => void;
   onBroadcastFail: () => void;
 }
 export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
-  const { amount, signedTx, onBroadcastSuccess, onBroadcastFail } = args;
-  return async (dispatch: Dispatch) => {
+  const { amount, transaction, onBroadcastSuccess, onBroadcastFail } = args;
+  return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(broadcastTx());
 
+    const activeNode = selectActiveNodeApi(getState());
+    stacksNetwork.coreApiUrl = activeNode.url;
+
     const [error, blockchainResponse] = await safeAwait(
-      broadcastTransaction(signedTx, stacksNetwork)
+      broadcastTransaction(transaction, stacksNetwork)
     );
     if (error || !blockchainResponse) {
       dispatch(broadcastTxFail(error as any));

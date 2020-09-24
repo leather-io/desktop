@@ -18,7 +18,7 @@ import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-ins
 import { useLedger } from '@hooks/use-ledger';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { useBackButton } from '@hooks/use-back-url.hook';
+import { useBackButton } from '@hooks/use-back-url';
 
 const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
 

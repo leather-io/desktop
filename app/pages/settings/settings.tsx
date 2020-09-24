@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@blockstack/ui';
 
 import routes from '@constants/routes.json';
-import { useBackButton } from '@hooks/use-back-url.hook';
+import { useBackButton } from '@hooks/use-back-url';
 import { selectWalletType } from '@store/keys/keys.reducer';
 import { ResetWalletModal } from '@modals/reset-wallet/reset-wallet-modal';
 

@@ -12,7 +12,7 @@ import {
   OnboardingFooter,
   OnboardingFooterLink,
 } from '@components/onboarding';
-import { useBackButton } from '@hooks/use-back-url.hook';
+import { useBackButton } from '@hooks/use-back-url';
 
 export const CreateWallet: React.FC = () => {
   const dispatch = useDispatch();

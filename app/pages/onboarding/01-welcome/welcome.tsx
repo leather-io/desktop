@@ -8,7 +8,7 @@ import {
   OnboardingButton,
   OnboardingText,
 } from '@components/onboarding';
-import { useBackButton } from '@hooks/use-back-url.hook';
+import { useBackButton } from '@hooks/use-back-url';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();

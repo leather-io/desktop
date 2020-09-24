@@ -9,7 +9,7 @@ import { Hr } from '@components/hr';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { persistMnemonic } from '@store/keys/keys.actions';
-import { useBackButton } from '@hooks/use-back-url.hook';
+import { useBackButton } from '@hooks/use-back-url';
 import {
   Onboarding,
   OnboardingTitle,

@@ -27,7 +27,7 @@ export default class MenuBuilder {
       {
         label: 'Search Issues',
         click() {
-          void shell.openExternal('https://github.com/blockstack/stacks-wallet');
+          void shell.openExternal('https://github.com/blockstack/stacks-wallet/issues');
         },
       },
     ],

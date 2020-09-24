@@ -48,7 +48,7 @@ export const BetaNotice: FC = () => {
       <Text mr="base" onClick={openIssueLink} textDecoration="underline" cursor="pointer">
         Found a bug? Open an issue
       </Text>
-      <Text mr="base">
+      {/* <Text mr="base">
         Commit:{' '}
         <Text
           cursor="pointer"
@@ -61,8 +61,8 @@ export const BetaNotice: FC = () => {
         >
           {sha}
         </Text>
-      </Text>
-      <Text mr="base">Beta date: {buildDate}</Text>
+      </Text> */}
+      <Text mr="base">Build date: {buildDate}</Text>
     </Flex>
   );
 };

@@ -45,7 +45,7 @@ export const upsertStacksNodeApi = stacksNodeSlice.actions.upsertStacksNodeApi;
 export const removeStacksNodeApi = stacksNodeSlice.actions.removeStacksNodeApi;
 export const setActiveStacksNode = stacksNodeSlice.actions.setActiveStacksNode;
 
-const defaultNode: StacksNode = Object.freeze({
+export const defaultNode: StacksNode = Object.freeze({
   url: 'https://stacks-node-api.krypton.blockstack.org',
   name: 'Blockstack PBC Krypton node',
   id: 'default',

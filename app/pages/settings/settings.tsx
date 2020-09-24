@@ -14,6 +14,7 @@ import {
   selectActiveNodeApi,
   setActiveStacksNode,
   removeStacksNodeApi,
+  defaultNode,
 } from '@store/stacks-node';
 import { UpsertStacksNodeSettingsModal } from '@modals/upsert-stacks-node-api/upsert-stacks-node-api';
 import { NodeSelect } from '@components/settings/node-select';
@@ -46,7 +47,7 @@ export const Settings = () => {
           onClose={() => setNodeModalOpen(false)}
         />
         <NodeSelect>
-          {nodes.map((node, i) => (
+          {[defaultNode, ...nodes].map((node, i) => (
             <NodeSelectItem
               key={i}
               index={i}

@@ -70,13 +70,15 @@ const generateBTCTransaction = async (
       const isLedger = walletType === WALLET_TYPES.LEDGER;
       signer = isLedger
         ? new LedgerSigner(PATH, Transport)
-        : new TrezorSigner(PATH, tx.senderBtcAddress);
+        : new TrezorSigner(PATH, senderBtcAddress);
     }
 
     const rawTx = await transactions.makeBitcoinSpend(
       recipientBTCAddress,
-      privateKey,
-      btcAmount
+      signer,
+      btcAmount,
+      false,
+      true
     );
 
     const txBytes = estimateTXBytes(rawTx);

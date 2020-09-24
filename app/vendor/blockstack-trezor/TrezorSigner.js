@@ -105,19 +105,31 @@ export class TrezorSigner {
   signTransaction(txB, signInputIndex) {
     return this.signTransactionSkeleton(txB.__tx, signInputIndex).then(resp => {
       const signedTxHex = resp.tx;
-      // god of abstraction, forgive me, for I have transgressed
       const signedTx = btc.Transaction.fromHex(signedTxHex);
       const signedTxB = btc.TransactionBuilder.fromTransaction(signedTx);
-      txB.__inputs[signInputIndex] = signedTxB.__inputs[signInputIndex];
+      if(signInputIndex < 0) {
+        for (let i = 0; i < txB.__tx.ins.length; i++) {
+          txB.__inputs[i] = signedTxB.__inputs[i];
+        }
+      } else {
+        txB.__inputs[signInputIndex] = signedTxB.__inputs[signInputIndex];
+      }
     });
   }
 
   prepareTransactionInfo(tx, signInputIndex, extra) {
     return Promise.resolve().then(() => {
-      // we need to do a _lot_ of garbage here.
       // prepare inputs / outputs for trezor format
-      const inputs = this.prepareInputs(tx.ins, signInputIndex, extra);
-      const outputs = this.prepareOutputs(tx.outs);
+      var inputs, outputs;
+      if (signInputIndex < 0) {
+        for (let i = 0; i < tx.ins.length; i++) {
+          inputs = this.prepareInputs(tx.ins, i, extra);
+          outputs = this.prepareOutputs(tx.outs);
+        }
+      } else {
+        inputs = this.prepareInputs(tx.ins, signInputIndex, extra);
+        outputs = this.prepareOutputs(tx.outs);
+      }
 
       return { inputs, outputs };
     });
@@ -128,17 +140,15 @@ export class TrezorSigner {
       txInfo => {
         return this.promisifySignTx(
           txInfo.inputs,
-          txInfo.outputs,
-          false,
-          "Testnet"
+          txInfo.outputs
         );
       }
     );
   }
 
-  promisifySignTx(inputs, outputs, requiredFirmware, coin) {
+  promisifySignTx(inputs, outputs) {
     return new Promise((resolve, reject) => {
-      // TrezorConnect.setCurrency('Testnet')
+      console.log('trezor signer signing TX')
       TrezorConnect.signTx(inputs, outputs, resp => {
         if (!resp.success) {
           if (resp && resp.error) {

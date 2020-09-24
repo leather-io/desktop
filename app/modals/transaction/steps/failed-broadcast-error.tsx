@@ -12,8 +12,8 @@ export const FailedBroadcastError = () => (
       Your transaction failed to verify
     </Text>
     <Text as="p" mt="base" mb="extra-loose" mx="loose" display="block" textStyle="body.large">
-      ease make sure you are signing your transaction with the same Ledger or Secret Key used to set
-      up your wallet.
+      Please make sure you are signing your transaction with the same Ledger or Secret Key used to
+      set up your wallet.
     </Text>
   </Flex>
 );

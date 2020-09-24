@@ -6,6 +6,7 @@ import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
 import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
+import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 import {
   makeSTXTokenTransfer,
   MEMO_MAX_LENGTH_BYTES,
@@ -122,7 +123,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');
       }
-      return unsignedTx.setSignature(resp.signatureVRS.toString('hex'));
+      if (unsignedTx.auth.spendingCondition) {
+        (unsignedTx.auth.spendingCondition as any).signature = createMessageSignature(
+          resp.signatureVRS.toString('hex')
+        );
+      }
+      return unsignedTx;
+      // return unsignedTx.setSignature(resp.signatureVRS.toString('hex'));
     },
     [blockstackApp, publicKey]
   );
@@ -280,28 +287,33 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const updateAmountFieldToMaxBalance = async () => {
     interactedWithSendAllBtn.current = true;
     setCalculatingMaxSpend(true);
-    const demoTx = await makeSTXTokenTransfer({
-      // SECURITY: remove hardcoded test address
-      recipient: form.values.recipient || 'ST3NR0TBES0A94R38EJ8TC1TGWPN9T1SHVW03ZBD7',
-      network: stacksNetwork,
-      amount: new BN(stxToMicroStx(form.values.amount).toString()),
-      // SECURITY: find common burn address
-      senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
-    });
-    const fee = demoTx.auth.spendingCondition?.fee as BN;
-    const balanceLessFee = new BigNumber(balance).minus(fee.toString());
-    if (balanceLessFee.isLessThanOrEqualTo(0)) {
-      form.setFieldTouched('amount');
-      form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');
+    const [error, demoTx] = await safeAwait(
+      makeSTXTokenTransfer({
+        // SECURITY: remove hardcoded test address
+        recipient: form.values.recipient || 'ST3NR0TBES0A94R38EJ8TC1TGWPN9T1SHVW03ZBD7',
+        network: stacksNetwork,
+        amount: new BN(stxToMicroStx(form.values.amount).toString()),
+        // SECURITY: find common burn address
+        senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
+      })
+    );
+    if (error) setCalculatingMaxSpend(false);
+    if (demoTx) {
+      const fee = demoTx.auth.spendingCondition?.fee as BN;
+      const balanceLessFee = new BigNumber(balance).minus(fee.toString());
+      if (balanceLessFee.isLessThanOrEqualTo(0)) {
+        form.setFieldTouched('amount');
+        form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');
+        setCalculatingMaxSpend(false);
+        return;
+      }
+      form.setValues({
+        ...form.values,
+        amount: microStxToStx(balanceLessFee.toString()).toString(),
+      });
       setCalculatingMaxSpend(false);
-      return;
+      setTimeout(() => (interactedWithSendAllBtn.current = false), 1000);
     }
-    form.setValues({
-      ...form.values,
-      amount: microStxToStx(balanceLessFee.toString()).toString(),
-    });
-    setCalculatingMaxSpend(false);
-    setTimeout(() => (interactedWithSendAllBtn.current = false), 1000);
   };
 
   const setBlockstackAppCallback = useCallback(

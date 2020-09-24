@@ -114,6 +114,7 @@ export default merge.smart(baseConfig, {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
       DEBUG_PROD: false,
+      STX_NETWORK: 'testnet',
       E2E_BUILD: false,
       SHA: process.env.SHA,
       BUILD_DATE: process.env.BUILD_DATE,

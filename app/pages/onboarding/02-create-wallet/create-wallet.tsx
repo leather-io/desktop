@@ -40,7 +40,7 @@ export const CreateWallet: React.FC = () => {
       </OnboardingButton>
 
       <OnboardingFooter>
-        <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink>
+        {/* <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink> */}
       </OnboardingFooter>
     </Onboarding>
   );

@@ -88,7 +88,7 @@ export const RestoreWallet: React.FC = () => {
         Continue with Secret Key
       </OnboardingButton>
       <OnboardingFooter>
-        <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink>
+        {/* <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink> */}
       </OnboardingFooter>
     </Onboarding>
   );

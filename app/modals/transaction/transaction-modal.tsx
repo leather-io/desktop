@@ -406,7 +406,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       body: <SignTxWithLedger onLedgerConnect={setBlockstackAppCallback} updateStep={updateStep} />,
       footer: (
         <TxModalFooter>
-          <TxModalButton mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)}>
+          <TxModalButton
+            mode="tertiary"
+            onClick={() => {
+              setHasSubmitted(false);
+              setStep(TxModalStep.PreviewTx);
+            }}
+          >
             Go back
           </TxModalButton>
           <TxModalButton

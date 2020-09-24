@@ -20,19 +20,13 @@ export interface StacksNodeState extends EntityState<StacksNode> {
 
 const stacksNodeAdapter = createEntityAdapter<StacksNode>();
 
-const defaultNode: StacksNode = {
-  url: 'https://stacks-node-api-latest.argon.blockstack.xyz/extended',
-  name: 'Blockstack PBC node',
-  id: 'default',
-};
 const emptyInitialState = stacksNodeAdapter.getInitialState({
   selectedApiId: 'default',
 });
-const includesPbcDefaultNodeApi = stacksNodeAdapter.addOne(emptyInitialState, defaultNode);
 
 const stacksNodeSlice = createSlice({
   name: 'stacksNodes',
-  initialState: includesPbcDefaultNodeApi,
+  initialState: emptyInitialState,
   reducers: {
     upsertStacksNodeApi: stacksNodeAdapter.upsertOne,
     removeStacksNodeApi: (state, action) => ({
@@ -51,11 +45,20 @@ export const upsertStacksNodeApi = stacksNodeSlice.actions.upsertStacksNodeApi;
 export const removeStacksNodeApi = stacksNodeSlice.actions.removeStacksNodeApi;
 export const setActiveStacksNode = stacksNodeSlice.actions.setActiveStacksNode;
 
+const defaultNode: StacksNode = Object.freeze({
+  url: 'https://stacks-node-api-latest.krypton.blockstack.org/extended',
+  name: 'Blockstack PBC Krypton node',
+  id: 'default',
+});
+
 const selectStacksNodeState = (state: RootState) => state.stacksNode;
 const selectors = stacksNodeAdapter.getSelectors(selectStacksNodeState);
 export const selectStacksNodeApis = selectors.selectAll;
 export const selectActiveNodeApi = createSelector(
   selectStacksNodeState,
   // coercing type as default node is always selected
-  state => state.entities[state.selectedApiId] as StacksNode
+  state => {
+    if (state.selectedApiId === 'default') return defaultNode;
+    return state.entities[state.selectedApiId] as StacksNode;
+  }
 );

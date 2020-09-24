@@ -206,6 +206,7 @@
   },
   "dependencies": {
     "@blockstack/rpc-client": "0.3.0-alpha.17",
+    "@blockstack/stacks-transactions": "0.7.0",
     "@blockstack/ui": "2.13.0",
     "@hot-loader/react-dom": "16.13.0",
     "@ledgerhq/hw-transport-webusb": "5.23.0",

@@ -14,8 +14,8 @@ interface TransactionListItemPendingProps {
   onSelectTx: (txId: string) => void;
 }
 
-export const TransactionListItemPending: FC<TransactionListItemPendingProps> = args => {
-  const { tx, domNodeMapRef, activeTxIdRef, onSelectTx } = args;
+export const TransactionListItemPending: FC<TransactionListItemPendingProps> = props => {
+  const { tx, domNodeMapRef, activeTxIdRef, onSelectTx } = props;
   const [hovered, bindHover] = useHover();
   const [focused, bindFocus] = useFocus();
   const containerRef = useRef<HTMLButtonElement>(null);

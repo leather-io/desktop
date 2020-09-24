@@ -35,8 +35,8 @@ interface TransactionListItemProps {
   onSelectTx: (txId: string) => void;
 }
 
-export const TransactionListItem: FC<TransactionListItemProps> = args => {
-  const { tx, address, onSelectTx, activeTxIdRef, domNodeMapRef } = args;
+export const TransactionListItem: FC<TransactionListItemProps> = props => {
+  const { tx, address, onSelectTx, activeTxIdRef, domNodeMapRef } = props;
 
   const direction = getStxTxDirection(address, tx);
   const sumPrefix = direction === 'sent' ? '−' : '';

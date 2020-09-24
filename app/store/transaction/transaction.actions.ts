@@ -59,7 +59,7 @@ interface BroadcastStxTransactionArgs {
   onBroadcastFail: () => void;
 }
 export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
-  const { amount, signedTx, onBroadcastSuccess, onBroadcastFail } = args;
+  const { amount, transaction, onBroadcastSuccess, onBroadcastFail } = args;
   return async (dispatch: Dispatch) => {
     dispatch(broadcastTx());
 

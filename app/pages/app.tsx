@@ -77,11 +77,9 @@ export const App: FC = ({ children }) => {
       setWebSocket('Connected');
       if (!address) return;
       await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
-        console.log('address balance updates', { address, balance });
         dispatch(updateAddressBalance({ address, balance }));
       });
       await client.subscribeAddressTransactions(address, async ({ tx_id }) => {
-        console.log('address tx updates', tx_id);
         const newTx = await new Api(activeNode.url).getTxDetails(tx_id);
         if (newTx.data.tx_status !== 'success') return;
         dispatch(addNewTransaction(newTx.data));

@@ -68,11 +68,11 @@ export const App: FC = ({ children }) => {
     const wsUrl = new URL(activeNode.url);
     wsUrl.protocol = 'ws:';
     async function run() {
-      const client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'v1', 'ws')).finally(
-        () => {
-          setWebSocket('Disconnected');
-        }
-      );
+      const client = await connectWebSocketClient(
+        urljoin(wsUrl.toString(), 'extended', 'v1', 'ws')
+      ).finally(() => {
+        setWebSocket('Disconnected');
+      });
       setWebSocket('Connected');
       if (!address) return;
       await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {

@@ -12,13 +12,13 @@ export class Api {
 
   async getAddressBalance(address: string) {
     return axios.get<AddressBalanceResponse>(
-      urljoin(this.baseUrl, `v1/address/${address}/balances`)
+      urljoin(this.baseUrl, `/extended/v1/address/${address}/balances`)
     );
   }
 
   async getAddressTransactions(address: string) {
     return axios.get<TransactionResults>(
-      urljoin(this.baseUrl, `v1/address/${address}/transactions`)
+      urljoin(this.baseUrl, `/extended/v1/address/${address}/transactions`)
     );
   }
 
@@ -27,10 +27,12 @@ export class Api {
   }
 
   async getFaucetStx(address: string) {
-    return axios.post(urljoin(this.baseUrl, `v1/debug/faucet?address=${address}`), { address });
+    return axios.post(urljoin(this.baseUrl, `/extended/v1/debug/faucet?address=${address}`), {
+      address,
+    });
   }
 
   async getNodeStatus() {
-    return axios.post(urljoin(this.baseUrl, `v1/status`));
+    return axios.post(urljoin(this.baseUrl, `/extended/v1/status`));
   }
 }

@@ -60,8 +60,11 @@ interface BroadcastStxTransactionArgs {
 }
 export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
   const { amount, transaction, onBroadcastSuccess, onBroadcastFail } = args;
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(broadcastTx());
+
+    const activeNode = selectActiveNodeApi(getState());
+    stacksNetwork.coreApiUrl = activeNode.url;
 
     const [error, blockchainResponse] = await safeAwait(
       broadcastTransaction(transaction, stacksNetwork)

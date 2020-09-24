@@ -1,5 +1,5 @@
 import { remote } from 'electron';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export type WindowActiveState = 'focused' | 'blurred';
 
@@ -8,15 +8,17 @@ export function useWindowFocus() {
   const [windowState, setWindowState] = useState<WindowActiveState>(
     win.isFocused() ? 'focused' : 'blurred'
   );
+
+  const focusHandler = useCallback(() => setWindowState('focused'), []);
+  const blurHandler = useCallback(() => setWindowState('blurred'), []);
+
   useEffect(() => {
-    const focusHandler = () => setWindowState('focused');
-    const blurHandler = () => setWindowState('blurred');
     win.on('focus', focusHandler);
     win.on('blur', blurHandler);
     return () => {
       win.removeListener('focus', focusHandler);
       win.removeListener('blur', blurHandler);
     };
-  }, [win]);
+  }, [blurHandler, focusHandler, win]);
   return windowState;
 }

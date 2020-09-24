@@ -59,7 +59,7 @@
     "bip32": "1.0.4",
     "bip39": "2.5.0",
     "bitcoinjs-lib": "4.0.5",
-    "blockstack": "18.1.0",
+    "blockstack": "18.1.1",
     "blockstack-ui": "0.0.52",
     "c32check": "0.0.6",
     "connected-react-router": "5.0.1",

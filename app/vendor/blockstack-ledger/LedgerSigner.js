@@ -97,7 +97,7 @@ export class LedgerSigner {
 
   prepareInputs(tx, signInputIndex, appBtc) {
     const inputScripts = tx.ins.map((input, index) => {
-      if (index !== signInputIndex) {
+      if (signInputIndex < 0 || index !== signInputIndex) {
         return input.script.toString("hex");
       } else {
         return null;
@@ -128,12 +128,13 @@ export class LedgerSigner {
   prepareTransactionInfo(tx, signInputIndex, appBtc) {
     const sigHashType = 1; // SIGHASH_ALL
     const signPaths = tx.ins.map((input, index) => {
-      if (index === signInputIndex) {
+      if (signInputIndex < 0 || index === signInputIndex) {
         return this.hdPath;
       } else {
         return null;
       }
     });
+
     const outputHex = serializeOutputHex(tx);
     const lockTime = tx.locktime;
     return this.prepareInputs(tx, signInputIndex, appBtc).then(result => {
@@ -152,10 +153,15 @@ export class LedgerSigner {
   signTransaction(txB, signInputIndex) {
     return this.signTransactionSkeleton(txB.__tx, signInputIndex).then(
       signedTxHex => {
-        // god of abstraction, forgive me, for I have transgressed
         const signedTx = btc.Transaction.fromHex(signedTxHex);
         const signedTxB = btc.TransactionBuilder.fromTransaction(signedTx);
-        txB.__inputs[signInputIndex] = signedTxB.__inputs[signInputIndex];
+        if(signInputIndex < 0) {
+          for (let i = 0; i < txB.__tx.ins.length; i++) {
+            txB.__inputs[i] = signedTxB.__inputs[i];
+          }
+        } else {
+          txB.__inputs[signInputIndex] = signedTxB.__inputs[signInputIndex];
+        }
       }
     );
   }

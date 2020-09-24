@@ -13,8 +13,8 @@ interface TxModalFormProps {
   onSendEntireBalance(): void;
 }
 
-export const TxModalForm: FC<TxModalFormProps> = args => {
-  const { balance, form, isCalculatingMaxSpend, onSendEntireBalance } = args;
+export const TxModalForm: FC<TxModalFormProps> = props => {
+  const { balance, form, isCalculatingMaxSpend, onSendEntireBalance } = props;
   return (
     <Box mb="extra-loose">
       <Flex flexDirection="column" alignItems="center" mt="48px">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box, Text } from '@blockstack/ui';
 
-import failedCrossSvg from '../../assets/images/failed-cross.svg';
+import failedCrossSvg from '../../../assets/images/failed-cross.svg';
 
 export const FailedBroadcastError = () => {
   return (

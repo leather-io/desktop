@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -57,22 +57,25 @@ export const Home: FC = () => {
   const focusedTxIdRef = useRef<string | null>(null);
   const txDomNodeRefMap = useRef<{ [txId: string]: HTMLButtonElement }>({});
 
-  const focusTxDomNode = (shift: (i: number) => number) => {
-    const allTxs = [...pendingTxs, ...txs];
-    if (allTxs.length === 0) return;
-    if (focusedTxIdRef.current === null) {
-      const txId = allTxs[0].tx_id;
-      focusedTxIdRef.current = txId;
-      txDomNodeRefMap.current[txId].focus();
-      return;
-    }
-    const nextIndex = shift(allTxs.findIndex(tx => tx.tx_id === focusedTxIdRef.current));
-    const nextTx = allTxs[nextIndex];
-    if (!nextTx) return;
-    const domNode = txDomNodeRefMap.current[nextTx.tx_id];
-    if (!domNode) return;
-    domNode.focus();
-  };
+  const focusTxDomNode = useCallback(
+    (shift: (i: number) => number) => {
+      const allTxs = [...pendingTxs, ...txs];
+      if (allTxs.length === 0) return;
+      if (focusedTxIdRef.current === null) {
+        const txId = allTxs[0].tx_id;
+        focusedTxIdRef.current = txId;
+        txDomNodeRefMap.current[txId].focus();
+        return;
+      }
+      const nextIndex = shift(allTxs.findIndex(tx => tx.tx_id === focusedTxIdRef.current));
+      const nextTx = allTxs[nextIndex];
+      if (!nextTx) return;
+      const domNode = txDomNodeRefMap.current[nextTx.tx_id];
+      if (!domNode) return;
+      domNode.focus();
+    },
+    [pendingTxs, txs]
+  );
 
   useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs]);
   useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs]);

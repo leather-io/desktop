@@ -64,10 +64,9 @@ export const App: FC = ({ children }) => {
     initAppWithStxAddressInfo();
   }, [address, activeNode, initAppWithStxAddressInfo]);
 
-  const wsUrl = new URL(activeNode.url);
-  wsUrl.protocol = 'ws:';
-
   useEffect(() => {
+    const wsUrl = new URL(activeNode.url);
+    wsUrl.protocol = 'ws:';
     async function run() {
       const client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'v1', 'ws')).finally(
         () => {

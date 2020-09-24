@@ -4,13 +4,13 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
-import { Modal, Text, Button, Box } from '@blockstack/ui';
+import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
 import {
   makeSTXTokenTransfer,
   MEMO_MAX_LENGTH_BYTES,
   makeUnsignedSTXTokenTransfer,
-  StacksTransaction,
+  StacksTestnet,
 } from '@blockstack/stacks-transactions';
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -28,26 +28,24 @@ import {
 } from '@store/keys';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { broadcastStxTransaction } from '@store/transaction';
-import { toHumanReadableStx, stxToMicroStx, microStxToStx } from '@utils/unit-convert';
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
+import { stxToMicroStx, microStxToStx } from '@utils/unit-convert';
+
 import { stacksNetwork } from '../../environment';
 import {
   TxModalHeader,
-  buttonStyle,
   TxModalFooter,
-  TxModalPreview,
-  TxModalPreviewItem,
+  TxModalButton,
   modalStyle,
 } from './transaction-modal-layout';
-import { TxModalForm } from './transaction-form';
-import { DecryptWalletForm } from './decrypt-wallet-form';
-import { SignTxWithLedger } from './sign-tx-with-ledger';
+import { TxModalForm } from './steps/transaction-form';
+import { DecryptWalletForm } from './steps/decrypt-wallet-form';
+import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { selectPublicKey } from '@store/keys/keys.reducer';
-import { FailedBroadcastError } from './failed-broadcast-error';
-
+import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { LedgerConnectStep } from '@hooks/use-ledger';
-import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
+import { PreviewTransaction } from './steps/preview-transaction';
+import { safeAwait } from '../../utils/safe-await';
+import log from 'electron-log';
 
 interface TxModalProps {
   balance: string;
@@ -88,10 +86,49 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
-  const broadcastTx = async (blockstackApp?: BlockstackApp) => {
-    setHasSubmitted(true);
+  type CreateTxOptions = {
+    recipient: string;
+    network: StacksTestnet;
+    amount: BN;
+    memo: string;
+  };
 
-    let tx: StacksTransaction | null = null;
+  const createSoftwareWalletTx = useCallback(
+    async (options: CreateTxOptions) => {
+      if (!password || !encryptedMnemonic || !salt) {
+        throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
+      }
+      const { privateKey } = await decryptSoftwareWallet({
+        ciphertextMnemonic: encryptedMnemonic,
+        salt,
+        password,
+      });
+      return makeSTXTokenTransfer({ ...options, senderKey: privateKey });
+    },
+    [encryptedMnemonic, password, salt]
+  );
+
+  const createLedgerWalletTx = useCallback(
+    async (options: CreateTxOptions & { publicKey: Buffer }) => {
+      if (!publicKey || !blockstackApp)
+        throw new Error('`publicKey` or `blockstackApp` is not defined');
+
+      const unsignedTx = await makeUnsignedSTXTokenTransfer({
+        ...options,
+        publicKey: publicKey.toString('hex'),
+      });
+      const resp = await blockstackApp.sign(`m/44'/5757'/0'/0/0`, unsignedTx.serialize());
+
+      if (resp.returnCode !== LedgerError.NoErrors) {
+        throw new Error('Ledger responded with errors');
+      }
+      return unsignedTx.setSignature(resp.signatureVRS.toString('hex'));
+    },
+    [blockstackApp, publicKey]
+  );
+
+  const broadcastTx = async () => {
+    setHasSubmitted(true);
 
     const txDetails = {
       recipient: form.values.recipient,
@@ -100,63 +137,48 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       memo: form.values.memo,
     };
 
-    if (walletType === 'software') {
-      if (!password || !encryptedMnemonic || !salt) return;
-      setIsDecrypting(true);
-      try {
-        const { privateKey } = await decryptSoftwareWallet({
-          ciphertextMnemonic: encryptedMnemonic,
-          salt,
-          password,
-        });
+    const broadcastActions = {
+      amount,
+      onBroadcastSuccess: closeModal,
+      onBroadcastFail: () => setStep(TxModalStep.NetworkError),
+    };
 
-        tx = await makeSTXTokenTransfer({ ...txDetails, senderKey: privateKey });
-      } catch (e) {
-        setDecryptionError(e);
+    if (walletType === 'software') {
+      setIsDecrypting(true);
+
+      const [error, transaction] = await safeAwait(createSoftwareWalletTx(txDetails));
+
+      if (error) {
         setIsDecrypting(false);
+        setDecryptionError('Unable to decrypt wallet');
         return;
+      }
+
+      if (transaction) {
+        setIsDecrypting(false);
+        dispatch(broadcastStxTransaction({ ...broadcastActions, transaction }));
       }
     }
 
     if (walletType === 'ledger') {
-      try {
-        if (!publicKey || !blockstackApp) return;
+      if (publicKey === null) {
+        log.error('Tried to create Ledger transaction without persisted private key');
+        return;
+      }
 
-        tx = await makeUnsignedSTXTokenTransfer({
-          ...txDetails,
-          publicKey: publicKey.toString('hex'),
-        });
+      const [error, transaction] = await safeAwait(
+        createLedgerWalletTx({ ...txDetails, publicKey })
+      );
 
-        const resp = await blockstackApp.sign(`m/44'/5757'/0'/0/0`, tx.serialize());
-
-        if (resp.returnCode !== LedgerError.NoErrors) {
-          setHasSubmitted(false);
-          return;
-        }
-
-        if (tx.auth.spendingCondition) {
-          (tx.auth.spendingCondition as any).signature = createMessageSignature(
-            resp.signatureVRS.toString('hex')
-          );
-        }
-      } catch (e) {
+      if (error) {
         setHasSubmitted(false);
         return;
       }
+
+      if (transaction) {
+        dispatch(broadcastStxTransaction({ ...broadcastActions, transaction }));
+      }
     }
-
-    if (tx === null) return;
-
-    dispatch(
-      broadcastStxTransaction({
-        signedTx: tx,
-        amount,
-        onBroadcastSuccess: closeModalResetForm,
-        onBroadcastFail: () => setStep(TxModalStep.NetworkError),
-      })
-    );
-
-    setIsDecrypting(false);
   };
 
   const totalIsMoreThanBalance = total.isGreaterThan(balance);
@@ -248,7 +270,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
   const [ledgerConnectStep, setLedgerConnectStep] = useState(LedgerConnectStep.Disconnected);
 
-  const closeModalResetForm = () => dispatch(homeActions.closeTxModal());
+  const closeModal = () => dispatch(homeActions.closeTxModal());
 
   const proceedToSignTransactionStep = () =>
     walletType === 'software'
@@ -290,88 +312,61 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const txFormStepMap: Record<TxModalStep, ModalComponents> = {
     [TxModalStep.DescribeTx]: () => ({
-      header: <TxModalHeader onSelectClose={closeModalResetForm}>Send STX</TxModalHeader>,
+      header: <TxModalHeader onSelectClose={closeModal}>Send STX</TxModalHeader>,
       body: (
-        <>
-          <TxModalForm
-            balance={balance}
-            form={form}
-            isCalculatingMaxSpend={calculatingMaxSpend}
-            onSendEntireBalance={updateAmountFieldToMaxBalance}
-          />
-        </>
+        <TxModalForm
+          balance={balance}
+          form={form}
+          isCalculatingMaxSpend={calculatingMaxSpend}
+          onSendEntireBalance={updateAmountFieldToMaxBalance}
+        />
       ),
       footer: (
         <TxModalFooter>
-          <Button mode="tertiary" onClick={closeModalResetForm} {...buttonStyle}>
+          <TxModalButton mode="tertiary" onClick={closeModal}>
             Cancel
-          </Button>
-          <Button
-            ml="base-tight"
-            onClick={() => form.submitForm()}
-            isLoading={loading}
-            {...buttonStyle}
-          >
+          </TxModalButton>
+          <TxModalButton onClick={() => form.submitForm()} isLoading={loading}>
             Preview
-          </Button>
+          </TxModalButton>
         </TxModalFooter>
       ),
     }),
     [TxModalStep.PreviewTx]: () => ({
-      header: (
-        <TxModalHeader onSelectClose={closeModalResetForm}>Preview transaction</TxModalHeader>
-      ),
+      header: <TxModalHeader onSelectClose={closeModal}>Preview transaction</TxModalHeader>,
       body: (
-        <TxModalPreview>
-          <TxModalPreviewItem label="To">
-            <Text fontSize="13px">{form.values.recipient}</Text>
-          </TxModalPreviewItem>
-          <TxModalPreviewItem label="Amount">
-            {toHumanReadableStx(amount.toString())}
-          </TxModalPreviewItem>
-          <TxModalPreviewItem label="Fee">{toHumanReadableStx(fee)}</TxModalPreviewItem>
-          <TxModalPreviewItem label="Total">
-            {toHumanReadableStx(total.toString())}
-          </TxModalPreviewItem>
-          {form.values.memo && (
-            <TxModalPreviewItem label="Memo">{form.values.memo}</TxModalPreviewItem>
-          )}
-          <Box minHeight="24px">
-            {totalIsMoreThanBalance && (
-              <ErrorLabel size="md" my="base-loose">
-                <ErrorText fontSize="14px" lineHeight="20px">
-                  You have insufficient balance to complete this transfer.
-                </ErrorText>
-              </ErrorLabel>
-            )}
-          </Box>
-        </TxModalPreview>
+        <PreviewTransaction
+          recipient={form.values.recipient}
+          amount={amount.toString()}
+          fee={fee.toString()}
+          total={total.toString()}
+          memo={form.values.memo}
+          totalExceedsBalance={totalIsMoreThanBalance}
+        />
       ),
       footer: (
         <TxModalFooter>
-          <Button mode="tertiary" onClick={() => setStep(TxModalStep.DescribeTx)} {...buttonStyle}>
+          <TxModalButton mode="tertiary" onClick={() => setStep(TxModalStep.DescribeTx)}>
             Go back
-          </Button>
-          <Button
-            ml="base-tight"
-            {...buttonStyle}
+          </TxModalButton>
+          <TxModalButton
             isLoading={loading}
             isDisabled={totalIsMoreThanBalance}
             onClick={proceedToSignTransactionStep}
           >
             Sign transaction and send
-          </Button>
+          </TxModalButton>
         </TxModalFooter>
       ),
     }),
     [TxModalStep.DecryptWalletAndSend]: () => ({
-      header: <TxModalHeader onSelectClose={closeModalResetForm}>Confirm and send</TxModalHeader>,
+      header: <TxModalHeader onSelectClose={closeModal}>Confirm and send</TxModalHeader>,
       body: (
         <>
           <DecryptWalletForm
             onSetPassword={password => setPassword(password)}
             onForgottenPassword={() => {
-              closeModalResetForm();
+              closeModal();
               history.push(routes.SETTINGS);
             }}
             hasSubmitted={hasSubmitted}
@@ -381,33 +376,28 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       ),
       footer: (
         <TxModalFooter>
-          <Button mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)} {...buttonStyle}>
+          <TxModalButton mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)}>
             Go back
-          </Button>
-          <Button
-            ml="base-tight"
+          </TxModalButton>
+          <TxModalButton
             isLoading={isDecrypting}
             isDisabled={isDecrypting}
             onClick={() => broadcastTx()}
-            {...buttonStyle}
           >
             Send transaction
-          </Button>
+          </TxModalButton>
         </TxModalFooter>
       ),
     }),
     [TxModalStep.SignWithLedgerAndSend]: () => ({
-      header: (
-        <TxModalHeader onSelectClose={closeModalResetForm}>Confirm on your Ledger</TxModalHeader>
-      ),
+      header: <TxModalHeader onSelectClose={closeModal}>Confirm on your Ledger</TxModalHeader>,
       body: <SignTxWithLedger onLedgerConnect={setBlockstackAppCallback} updateStep={updateStep} />,
       footer: (
         <TxModalFooter>
-          <Button mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)} {...buttonStyle}>
+          <TxModalButton mode="tertiary" onClick={() => setStep(TxModalStep.PreviewTx)}>
             Go back
-          </Button>
-          <Button
-            ml="base-tight"
+          </TxModalButton>
+          <TxModalButton
             isDisabled={
               blockstackApp === null ||
               hasSubmitted ||
@@ -416,26 +406,23 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             isLoading={hasSubmitted}
             onClick={() => {
               if (blockstackApp === null) return;
-              void broadcastTx(blockstackApp);
+              void broadcastTx();
             }}
-            {...buttonStyle}
           >
             Sign transaction
-          </Button>
+          </TxModalButton>
         </TxModalFooter>
       ),
     }),
     [TxModalStep.NetworkError]: () => ({
-      header: <TxModalHeader onSelectClose={closeModalResetForm} />,
+      header: <TxModalHeader onSelectClose={closeModal} />,
       body: <FailedBroadcastError />,
       footer: (
         <TxModalFooter>
-          <Button mode="tertiary" onClick={closeModalResetForm}>
+          <TxModalButton mode="tertiary" onClick={closeModal}>
             Close
-          </Button>
-          <Button ml="base-tight" onClick={() => setStep(TxModalStep.DescribeTx)} {...buttonStyle}>
-            Try again
-          </Button>
+          </TxModalButton>
+          <TxModalButton onClick={() => setStep(TxModalStep.DescribeTx)}>Try again</TxModalButton>
         </TxModalFooter>
       ),
     }),

@@ -47,6 +47,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     );
   const txDate = new Date(tx.burn_block_time_iso);
   const txDateFormatted = new Intl.DateTimeFormat('en-US', dateOptions).format(txDate);
+  const txDateShort = txDate.toLocaleString();
 
   const containerRef = useRef<HTMLButtonElement>(null);
   const [hovered, bindHover] = useHover();
@@ -95,8 +96,11 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
         <Text textStyle="body.large.medium" display="block">
           {capitalize(direction)}
         </Text>
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color="ink.600" display={['none', 'none', 'block']}>
           {txDateFormatted}
+        </Text>
+        <Text textStyle="body.small" color="ink.600" display={['block', 'block', 'none']}>
+          {txDateShort}
         </Text>
       </Box>
       <Box textAlign="right">

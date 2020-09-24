@@ -3733,7 +3733,7 @@ bitcoin-ops@^1.3.0, bitcoin-ops@^1.4.0:
   resolved "https://registry.yarnpkg.com/bitcoin-ops/-/bitcoin-ops-1.4.1.tgz#e45de620398e22fd4ca6023de43974ff42240278"
   integrity sha512-pef6gxZFztEhaE9RY9HmWVmiIHqCb2OyS4HPKkpc6CIiiOa3Qmuoylxc5P2EkU3w+5eTSifI9SEZC88idAIGow==
 
-bitcoinjs-lib@4.0.5, bitcoinjs-lib@^4, bitcoinjs-lib@^4.0.2:
+bitcoinjs-lib@4.0.5, bitcoinjs-lib@^4, bitcoinjs-lib@^4.0.2, bitcoinjs-lib@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-4.0.5.tgz#2cce3469b950fade9f0442755ebb26bf9de519a1"
   integrity sha512-gYs7K2hiY4Xb96J8AIF+Rx+hqbwjVlp5Zt6L6AnHOdzfe/2tODdmDxsEytnaxVCdhOUg0JnsGpl+KowBpGLxtA==
@@ -3795,17 +3795,17 @@ blockstack-ui@0.0.52:
     styled-system "^3.1.6"
     system-components "^3.0.1"
 
-blockstack@18.1.0:
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/blockstack/-/blockstack-18.1.0.tgz#9a47f3de062c1c9e9f91d7790cc63db2967a1a0e"
-  integrity sha512-7N5Bea3dV4p9/g+2g318qoieEvkPT34if1pMFxcqIbpb3t+rBVzSMxjU6JWL1e5VyYWZJdrtHgw7J+uWZQNTew==
+blockstack@18.1.1:
+  version "18.1.1"
+  resolved "https://registry.yarnpkg.com/blockstack/-/blockstack-18.1.1.tgz#0f2dc11cec68a7ce2cb705617d4faab4aa95a9c7"
+  integrity sha512-HEr+G2FjuVmwbJC/YBYxUmlTzc43zdF3FOVy9BKJbeJY8sfy+g5tOgPwpAapvKVFyPqGi7ztFh2OKwApIWAMxA==
   dependencies:
     ajv "^4.11.5"
     babel-runtime "^6.26.0"
     bigi "^1.4.2"
-    bip32 "^1.0.2"
+    bip32 "^1.0.4"
     bip39 "^2.5.0"
-    bitcoinjs-lib "^4"
+    bitcoinjs-lib "^4.0.5"
     cheerio "^0.22.0"
     cross-fetch "^2.2.2"
     custom-protocol-detection-blockstack "1.1.4"

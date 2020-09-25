@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   extends: ['@blockstack/eslint-config', 'plugin:react-hooks/recommended'],
+  plugins: ['react'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
@@ -17,6 +18,13 @@ module.exports = {
     '@typescript-eslint/unbound-method': 0,
     'no-warning-comments': ['warn', { terms: ['SECURITY'], location: 'anywhere' }],
 
+    'react/self-closing-comp': [
+      'error',
+      {
+        component: true,
+        html: true,
+      },
+    ],
     'import/no-unresolved': 0,
     'import/no-mutable-exports': ['error'],
     'import/no-useless-path-segments': ['error'],

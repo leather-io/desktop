@@ -1,22 +1,29 @@
-import React, { FC, useCallback, useRef } from 'react';
+import React, { FC, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
+import BigNumber from 'bignumber.js';
 
 import { RootState } from '@store/index';
 import { openInExplorer } from '@utils/external-links';
 import { selectAddress } from '@store/keys';
+import routes from '@constants/routes.json';
+import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance } from '@store/address';
 import {
   selectTransactionList,
   selectTransactionsLoading,
   selectTransactionListFetchError,
 } from '@store/transaction';
+import { REQUIRED_STX_FOR_STACKING } from '@constants/index';
 import { selectPendingTransactions } from '@store/pending-transaction';
 import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
+import { increment, decrement } from '@utils/mutate-numbers';
 import {
   TransactionList,
   StackingPromoCard,
+  StackingParticipationCard,
   StackingRewardCard,
   TransactionListItem,
   BalanceCard,
@@ -26,12 +33,11 @@ import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
 import { Api } from '../../api/api';
-import { increment, decrement } from '@utils/mutate-numbers';
-import { selectActiveNodeApi } from '@store/stacks-node';
 import { HomeLayout } from './home-layout';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const {
     address,
     balance,
@@ -82,6 +88,9 @@ export const Home: FC = () => {
 
   if (!address) return <Spinner />;
 
+  const meetsMinStackingThreshold =
+    balance !== null && new BigNumber(balance).isGreaterThan(REQUIRED_STX_FOR_STACKING);
+
   const txCount = txs.length + pendingTxs.length;
 
   const transactionList = (
@@ -117,12 +126,15 @@ export const Home: FC = () => {
   const balanceCard = (
     <BalanceCard
       balance={balance}
+      onSelectStacking={() => history.push(routes.STACKING)}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
       onRequestTestnetStx={async () => new Api(activeNode.url).getFaucetStx(address)}
     />
   );
-  const stackingPromoCard = <StackingPromoCard />;
+
+  const card = meetsMinStackingThreshold ? <StackingParticipationCard /> : <StackingPromoCard />;
+
   const stackingRewardCard = (
     <StackingRewardCard lifetime="0.0281 Bitcoin (sample)" lastCycle="0.000383 Bitcoin (sample)" />
   );
@@ -135,7 +147,7 @@ export const Home: FC = () => {
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}
-        stackingPromoCard={stackingPromoCard}
+        stackingCard={card}
         stackingRewardCard={stackingRewardCard}
       />
     </>

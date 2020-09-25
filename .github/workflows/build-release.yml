@@ -53,6 +53,12 @@ jobs:
 
       - run: echo ${{ matrix.NPM_COMMAND }}
 
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build releases
         run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
         env:
@@ -84,3 +90,8 @@ jobs:
           path: |
             release/**/*.deb
             release/**/*.rpm
+
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        with:
+          header: '> [Download the latest builds](https://github.com/blockstack/stacks-wallet/actions/runs/${{ github.run_id }})'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,20 +1,17 @@
 import React, { FC } from 'react';
-import { Flex, Box, Text } from '@blockstack/ui';
+import { Box, Text } from '@blockstack/ui';
+
+import { Screen } from '@components/screen';
 
 export const SettingsLayout: FC = ({ children }) => (
-  <Flex
-    flexDirection="column"
-    maxWidth="960px"
-    mb="extra-loose"
-    mx={['loose', 'loose', 'extra-loose', 'auto']}
-  >
+  <Screen>
     <Box mt="68px">
       <Text as="h1" textStyle="display.large" fontSize="32px" display="block">
         Settings
       </Text>
       {children}
     </Box>
-  </Flex>
+  </Screen>
 );
 
 export const SettingDescription: FC = ({ children }) => (

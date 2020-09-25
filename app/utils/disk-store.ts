@@ -1,4 +1,5 @@
 import Store from 'electron-store';
+import { WalletType } from '../types/wallet-type';
 
 enum StoreIndex {
   Salt = 'salt',
@@ -63,7 +64,7 @@ export const persistSalt = (salt: string) => {
   store.set(StoreIndex.Salt, salt);
 };
 
-export const persistWalletType = (walletType: 'ledger' | 'software') => {
+export const persistWalletType = (walletType: WalletType) => {
   store.set(StoreIndex.WalletType, walletType);
 };
 

@@ -54,21 +54,12 @@ export const Settings = () => {
               node={node}
               activeNode={selectedNodeApi}
               onChange={nodeId => dispatch(setActiveStacksNode(nodeId))}
-              onEdit={() => {
-                setOperation('update');
-                setNodeModalOpen(true);
-              }}
+              onEdit={() => (setOperation('update'), setNodeModalOpen(true))}
               onDelete={nodeId => dispatch(removeStacksNodeApi(nodeId))}
             />
           ))}
         </NodeSelect>
-        <Button
-          mt="loose"
-          onClick={() => {
-            setOperation('create');
-            setNodeModalOpen(true);
-          }}
-        >
+        <Button mt="loose" onClick={() => (setOperation('create'), setNodeModalOpen(true))}>
           Add a node
         </Button>
       </SettingSection>

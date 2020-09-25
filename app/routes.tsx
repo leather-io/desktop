@@ -19,6 +19,7 @@ import {
 
 import { App } from './pages/app';
 import { Settings } from './pages/settings/settings';
+import { Stacking } from './pages/stacking/stacking';
 
 export const routerConfig = [
   {
@@ -64,6 +65,10 @@ export const routerConfig = [
   {
     path: routes.SETTINGS,
     component: Settings,
+  },
+  {
+    path: routes.STACKING,
+    component: Stacking,
   },
 ];
 

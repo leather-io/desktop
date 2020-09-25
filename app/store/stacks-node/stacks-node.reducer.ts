@@ -6,6 +6,7 @@ import {
   PayloadAction,
 } from '@reduxjs/toolkit';
 
+import { DEFAULT_STACKS_NODE_URL } from '@constants/index';
 import { RootState } from '..';
 
 export interface StacksNode {
@@ -46,7 +47,7 @@ export const removeStacksNodeApi = stacksNodeSlice.actions.removeStacksNodeApi;
 export const setActiveStacksNode = stacksNodeSlice.actions.setActiveStacksNode;
 
 export const defaultNode: StacksNode = Object.freeze({
-  url: 'https://stacks-node-api.krypton.blockstack.org',
+  url: DEFAULT_STACKS_NODE_URL,
   name: 'Blockstack PBC Krypton node',
   id: 'default',
 });

@@ -15,6 +15,12 @@ export function useWindowFocus() {
   useEffect(() => {
     win.on('focus', focusHandler);
     win.on('blur', blurHandler);
+
+    window.addEventListener('beforeunload', () => {
+      win.removeListener('focus', focusHandler);
+      win.removeListener('blur', blurHandler);
+    });
+
     return () => {
       win.removeListener('focus', focusHandler);
       win.removeListener('blur', blurHandler);

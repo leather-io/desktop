@@ -39,6 +39,7 @@ export const HardwareScreen = connect(
     walletType,
     balance,
     sender,
+    processing,
     handleSignTransaction,
     doSignBTCTransaction,
     doBroadcastBTCTransaction
@@ -62,8 +63,19 @@ export const HardwareScreen = connect(
         >
           {({ next, hasNext }) => (
             <Flex pt={4}>
-              <Button onClick={hasNext ? () => next() : () => handleSubmit()}>
-                {hasNext ? "Next" : "Sign transaction"}
+              <Button
+                style={processing ? { pointerEvents: "none" } : undefined}
+                onClick={
+                  // eslint-disable-next-line no-nested-ternary
+                  processing
+                    ? () => null
+                    : hasNext
+                    ? () => next()
+                    : () => handleSubmit()
+                }
+              >
+                {// eslint-disable-next-line no-nested-ternary
+                processing ? "Signing..." : hasNext ? "Next" : "Sign transaction"}
               </Button>
             </Flex>
           )}

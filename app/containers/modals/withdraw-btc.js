@@ -49,6 +49,7 @@ export class WithdrawBTCModal extends React.Component {
     const { sender, balance, walletType } = reduxValues;
     const { recipient, seed } = this.state;
     const seedString = Object.values(seed).join(" ");
+    this.handleProcessing(true);
     const rawTx = await doSignBTCTransaction(
       sender,
       recipient,
@@ -59,15 +60,22 @@ export class WithdrawBTCModal extends React.Component {
     if (!rawTx.error) {
       this.handleSetRawTx(rawTx);
       this.setScreen(SCREENS.confirm);
+      this.handleProcessing(false);
+    } else {
+      this.handleProcessing(false);
     }
   };
 
+  handleProcessing = processing => this.setState({ processing });
+
   handleBroadcastTx = async doBroadcastBTCTransaction => {
     if (this.state.rawTx.rawTx) {
+      this.handleProcessing(true);
       const txid = await doBroadcastBTCTransaction(this.state.rawTx.rawTx);
       if (txid) {
         this.handleSetTransaction(txid);
         this.setScreen(SCREENS.success);
+        this.handleProcessing(false);
       }
     }
   };

@@ -4,6 +4,8 @@ import createHistory from "history/createHashHistory";
 import { routerMiddleware } from "connected-react-router";
 import { createLogger } from "redux-logger";
 import rootReducer from "./reducers";
+import { persistMiddleware } from "@stores/persist/index";
+
 const history = createHistory();
 
 const configureStore = initialState => {
@@ -28,7 +30,7 @@ const configureStore = initialState => {
   // Router Middleware
   const router = routerMiddleware(history);
   middleware.push(router);
-  // middleware.push(persistMiddleware());
+  middleware.push(persistMiddleware());
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */

@@ -78,7 +78,7 @@ const generateBTCTransaction = async (
       signer,
       btcAmount,
       false,
-      true
+      walletType !== WALLET_TYPES.SOFTWARE
     );
 
     const txBytes = estimateTXBytes(rawTx);

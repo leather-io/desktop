@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
 });
 
 export const SuccessScreen = connect(mapStateToProps)(
-  ({ hide, recipient, rawTx, txid, balance }) => (
+  ({ hide, recipient, rawTx, transaction, balance }) => (
     <>
       <TopSection>
         <Type fontSize={4} lineHeight={1.5}>
@@ -31,8 +31,8 @@ export const SuccessScreen = connect(mapStateToProps)(
           <StaticField label="Recipient" value={recipient} />
           <StaticField
             label="Tx Hash"
-            value={txid}
-            link={`https://explorer.blockstack.org/tx/${txid}`}
+            value={transaction}
+            link={`https://explorer.blockstack.org/tx/${transaction}`}
           />
         </Flex>
         <Box mx="auto">

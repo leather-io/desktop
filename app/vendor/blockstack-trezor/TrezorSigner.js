@@ -148,7 +148,6 @@ export class TrezorSigner {
 
   promisifySignTx(inputs, outputs) {
     return new Promise((resolve, reject) => {
-      console.log('trezor signer signing TX')
       TrezorConnect.signTx(inputs, outputs, resp => {
         if (!resp.success) {
           if (resp && resp.error) {

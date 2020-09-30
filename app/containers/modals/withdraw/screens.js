@@ -20,7 +20,8 @@ export const Screens = ({
   setErrors,
   handleSignTransaction,
   handleBroadcastTx,
-  rawTx
+  rawTx,
+  transaction
 }) => {
   if (screen === SCREENS.seed)
     return (
@@ -62,6 +63,7 @@ export const Screens = ({
         handleBroadcastTx={handleBroadcastTx}
         recipient={recipient}
         rawTx={rawTx}
+        processing={processing}
       />
     );
   }
@@ -71,6 +73,7 @@ export const Screens = ({
         hide={hide}
         recipient={recipient}
         rawTx={rawTx}
+        transaction={transaction}
         navigate={setScreen}
       />
     );

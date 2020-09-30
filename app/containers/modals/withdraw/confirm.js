@@ -22,7 +22,8 @@ export const ConfirmScreen = connect(
     balance,
     recipient,
     handleBroadcastTx,
-    doBroadcastBTCTransaction
+    doBroadcastBTCTransaction,
+    processing
   }) => {
     const { fee } = rawTx;
     return (
@@ -51,8 +52,17 @@ export const ConfirmScreen = connect(
           </Card>
         </TopSection>
         <Flex justifyContent="center" py={4} width={1}>
-          <Button onClick={() => handleBroadcastTx(doBroadcastBTCTransaction)}>
-            Confirm withdraw
+          <Button
+            style={processing ? { pointerEvents: "none" } : undefined}
+            onClick={
+              // eslint-disable-next-line no-nested-ternary
+              processing
+                ? () => null
+                : () => handleBroadcastTx(doBroadcastBTCTransaction)
+            }
+          >
+            {// eslint-disable-next-line no-nested-ternary
+            processing ? "Processing..." : "Confirm withdraw"}
           </Button>
         </Flex>
       </>

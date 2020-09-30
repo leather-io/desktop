@@ -126,7 +126,7 @@ const SeedView = ({
                     state.values,
                     setState,
                     handleSubmit,
-                    type
+                    'STX'
                   );
                 }
               }

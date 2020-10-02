@@ -6,6 +6,7 @@ import { trezorSteps } from "@screens/onboarding/hardware-wallet/trezor";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { decodeRawTx } from "@utils/stacks";
 import { ERRORS } from "@common/lib/transactions";
+import { TrezorNote } from "@components/trezor-note";
 
 const HardwareView = ({
   wrapper: Wrapper,
@@ -119,6 +120,9 @@ const HardwareView = ({
             </Flex>
           )}
         </HardwareSteps>
+        {type === WALLET_TYPES.TREZOR ? (
+          <TrezorNote onDark={false} mt={4} textAlign="center" />
+        ) : null}
       </Flex>
     </Wrapper>
   ) : null;

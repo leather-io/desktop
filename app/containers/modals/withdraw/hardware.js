@@ -88,7 +88,7 @@ export const HardwareScreen = connect(
           )}
         </HardwareSteps>
         {walletType === WALLET_TYPES.TREZOR ? (
-          <TrezorNote mt={4} textAlign="center" />
+          <TrezorNote onDark={false} mt={4} textAlign="center" />
         ) : null}
         {errors && errors.signing ? (
           <ErrorMessage>{errors.signing}</ErrorMessage>

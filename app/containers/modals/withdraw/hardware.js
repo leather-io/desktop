@@ -17,6 +17,7 @@ import {
   doBroadcastTransaction,
   doClearError
 } from "@stores/actions/wallet";
+import { TrezorNote } from "@components/trezor-note";
 
 const mapStateToProps = state => ({
   sender: selectWalletBitcoinAddress(state),
@@ -75,11 +76,18 @@ export const HardwareScreen = connect(
                 }
               >
                 {// eslint-disable-next-line no-nested-ternary
-                processing ? "Signing..." : hasNext ? "Next" : "Sign transaction"}
+                processing
+                  ? "Signing..."
+                  : hasNext
+                  ? "Next"
+                  : "Sign transaction"}
               </Button>
             </Flex>
           )}
         </HardwareSteps>
+        {walletType === WALLET_TYPES.TREZOR ? (
+          <TrezorNote mt={4} textAlign="center" />
+        ) : null}
       </Flex>
     );
   }

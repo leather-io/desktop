@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex } from "blockstack-ui/dist";
+import { Flex, Box } from "blockstack-ui/dist";
 import { Page } from "@components/page";
 import { HardwareSteps } from "@containers/hardware-steps";
 import { OnboardingNavigation } from "@containers/buttons/onboarding-navigation";
@@ -10,6 +10,8 @@ import { Notice } from "@components/notice";
 import { connect } from "react-redux";
 import { TextLink } from "@containers/buttons/onboarding-navigation";
 import { shell } from "electron";
+import { TrezorNote } from "@components/trezor-note";
+
 export const trezorSteps = [
   {
     value: `Please connect your Trezor to your computer via USB.`,
@@ -52,7 +54,6 @@ const TrezorPage = connect(
             </TextLink>{" "}
             installed.
           </Notice>
-
           <HardwareSteps steps={trezorSteps}>
             {({ step, next, hasNext }) => (
               <>
@@ -64,6 +65,7 @@ const TrezorPage = connect(
               </>
             )}
           </HardwareSteps>
+          <TrezorNote mt={4} textAlign="center" />
         </Flex>
       </Flex>
     </Page>

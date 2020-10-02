@@ -18,6 +18,7 @@ import {
   doClearError
 } from "@stores/actions/wallet";
 import { TrezorNote } from "@components/trezor-note";
+import { ErrorMessage } from "@containers/modals/withdraw/common";
 
 const mapStateToProps = state => ({
   sender: selectWalletBitcoinAddress(state),
@@ -41,6 +42,7 @@ export const HardwareScreen = connect(
     balance,
     sender,
     processing,
+    errors,
     handleSignTransaction,
     doSignBTCTransaction,
     doBroadcastBTCTransaction
@@ -87,6 +89,9 @@ export const HardwareScreen = connect(
         </HardwareSteps>
         {walletType === WALLET_TYPES.TREZOR ? (
           <TrezorNote mt={4} textAlign="center" />
+        ) : null}
+        {errors && errors.signing ? (
+          <ErrorMessage>{errors.signing}</ErrorMessage>
         ) : null}
       </Flex>
     );

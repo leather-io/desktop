@@ -120,6 +120,9 @@ export const SeedScreen = connect(
             p="0px"
           />
           {errors && errors.seed && <ErrorMessage>{errors.seed}</ErrorMessage>}
+          {errors && errors.signing && (
+            <ErrorMessage>{errors.signing}</ErrorMessage>
+          )}
           {error && error.message && (
             <ErrorMessage>{error.message}</ErrorMessage>
           )}

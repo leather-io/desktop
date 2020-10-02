@@ -46,6 +46,7 @@ export class WithdrawBTCModal extends React.Component {
     doBroadcastBTCTransaction,
     reduxValues
   ) => {
+    this.setErrors("signing", undefined);
     const { sender, balance, walletType } = reduxValues;
     const { recipient, seed } = this.state;
     const seedString = Object.values(seed).join(" ");
@@ -62,6 +63,7 @@ export class WithdrawBTCModal extends React.Component {
       this.setScreen(SCREENS.confirm);
       this.handleProcessing(false);
     } else {
+      this.setErrors("signing", rawTx.error);
       this.handleProcessing(false);
     }
   };

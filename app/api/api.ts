@@ -23,7 +23,9 @@ export class Api {
   }
 
   async getTxDetails(txid: string) {
-    return axios.get<Transaction | MempoolTransaction>(urljoin(this.baseUrl, `v1/tx/${txid}`));
+    return axios.get<Transaction | MempoolTransaction>(
+      urljoin(this.baseUrl, `/extended/v1/tx/${txid}`)
+    );
   }
 
   async getFaucetStx(address: string) {

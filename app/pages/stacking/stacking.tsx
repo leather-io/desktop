@@ -1,5 +1,6 @@
 import React, { FC, useRef, useState } from 'react';
 
+import { StackingModal } from '@modals/stacking/stacking-modal';
 import { useBackButton } from '@hooks/use-back-url';
 import routes from '@constants/routes.json';
 
@@ -11,6 +12,9 @@ import { StackingIntro } from './components/stacking-intro';
 import { ChooseCycleStep } from './step/choose-cycles';
 import { ChooseBtcAddressStep } from './step/choose-btc-address';
 import { ConfirmAndLockStep } from './step/confirm-and-lock';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/index';
+import { selectWalletType } from '@store/keys';
 
 enum Step {
   ChooseCycles = 'Choose your duration',
@@ -32,6 +36,10 @@ export const Stacking: FC = () => {
     [Step.ConfirmAndLock]: null,
   });
 
+  const { walletType } = useSelector((state: RootState) => ({
+    walletType: selectWalletType(state),
+  }));
+
   const isComplete = (step: Step) => stepConfirmation[step] === 'complete';
 
   const updateStep = (step: Step, to: StepState) =>
@@ -43,8 +51,6 @@ export const Stacking: FC = () => {
     stepConfirmation[Step.ChooseCycles] === 'complete' &&
     stepConfirmation[Step.ChooseBtcAddress] === 'complete' &&
     !!btcAddress;
-
-  const intro = <StackingIntro />;
 
   const stackingInfoCard = (
     <StackingInfoCard cycles={cycles} startDate={dateRef.current} duration="12–19 days" />
@@ -71,12 +77,19 @@ export const Stacking: FC = () => {
       <ConfirmAndLockStep
         id={Step.ConfirmAndLock}
         formComplete={formComplete}
-        onConfirmAndLock={() => console.log('Open stack form', { cycles, btcAddress })}
+        onConfirmAndLock={() => setModalOpen(true)}
       />
     </StackingFormContainer>
   );
 
   return (
-    <StackingLayout intro={intro} stackingInfoCard={stackingInfoCard} stackingForm={stackingForm} />
+    <>
+      {modalOpen && <StackingModal walletType={walletType} onClose={() => setModalOpen(false)} />}
+      <StackingLayout
+        intro={<StackingIntro />}
+        stackingInfoCard={stackingInfoCard}
+        stackingForm={stackingForm}
+      />
+    </>
   );
 };

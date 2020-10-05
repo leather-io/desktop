@@ -2,6 +2,7 @@ import { createReducer, createSelector } from '@reduxjs/toolkit';
 import log from 'electron-log';
 
 import { RootState } from '..';
+import { WalletType } from '../../types/wallet-type';
 import {
   setPasswordSuccess,
   persistLedgerWallet,
@@ -12,7 +13,7 @@ import {
 //
 // TODO: create separate state slices per wallet type
 export interface KeysState {
-  walletType: 'ledger' | 'software';
+  walletType: WalletType;
   mnemonic: string | null;
   decrypting: boolean;
   salt?: string;

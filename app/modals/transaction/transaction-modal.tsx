@@ -76,6 +76,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
+
   const interactedWithSendAllBtn = useRef(false);
 
   const { encryptedMnemonic, salt, walletType, publicKey } = useSelector((state: RootState) => ({
@@ -84,8 +86,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     walletType: selectWalletType(state),
     publicKey: selectPublicKey(state),
   }));
-
-  const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
   type CreateTxOptions = {
     recipient: string;

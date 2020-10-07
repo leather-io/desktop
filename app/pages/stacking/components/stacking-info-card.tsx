@@ -13,7 +13,7 @@ interface StackingInfoCardProps extends FlexProps {
 }
 
 export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { cycles, duration, startDate } = props;
+  const { cycles, duration } = props;
   return (
     <Flex
       flexDirection="column"

@@ -5,6 +5,7 @@ import {
   TransactionResults,
   MempoolTransaction,
   AddressBalanceResponse,
+  CoreNodePoxResponse,
 } from '@blockstack/stacks-blockchain-api-types';
 
 export class Api {
@@ -29,9 +30,14 @@ export class Api {
   }
 
   async getFaucetStx(address: string) {
-    return axios.post(urljoin(this.baseUrl, `/extended/v1/debug/faucet?address=${address}`), {
-      address,
-    });
+    return axios.post(
+      urljoin(this.baseUrl, `/extended/v1/debug/faucet?address=${address}&stacking=true`),
+      { address }
+    );
+  }
+
+  async getPoxInfo() {
+    return axios.get<CoreNodePoxResponse>(urljoin(this.baseUrl, `/v2/pox`));
   }
 
   async getNodeStatus() {

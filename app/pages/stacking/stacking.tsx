@@ -16,6 +16,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@store/index';
 import { selectWalletType } from '@store/keys';
 
+import { selectActiveNodeApi } from '@store/stacks-node';
+
 enum Step {
   ChooseCycles = 'Choose your duration',
   ChooseBtcAddress = 'Add your Bitcoin address',
@@ -40,20 +42,21 @@ export const Stacking: FC = () => {
     walletType: selectWalletType(state),
   }));
 
-  const isComplete = (step: Step) => stepConfirmation[step] === 'complete';
-
   const updateStep = (step: Step, to: StepState) =>
     setStepConfirmation(state => ({ ...state, [step]: to }));
 
   const dateRef = useRef(new Date());
 
-  const formComplete =
-    stepConfirmation[Step.ChooseCycles] === 'complete' &&
-    stepConfirmation[Step.ChooseBtcAddress] === 'complete' &&
-    !!btcAddress;
+  const isComplete = (step: Step) => stepConfirmation[step] === 'complete';
+
+  const formComplete = [Step.ChooseCycles, Step.ChooseBtcAddress].every(isComplete) && !!btcAddress;
 
   const stackingInfoCard = (
-    <StackingInfoCard cycles={cycles} startDate={dateRef.current} duration="12–19 days" />
+    <StackingInfoCard
+      cycles={cycles}
+      startDate={dateRef.current}
+      duration={HARD_CODED_VALUES.duration}
+    />
   );
 
   const stackingForm = (
@@ -84,7 +87,7 @@ export const Stacking: FC = () => {
 
   return (
     <>
-      {modalOpen && <StackingModal walletType={walletType} onClose={() => setModalOpen(false)} />}
+      {modalOpen && <StackingModal onClose={() => setModalOpen(false)} />}
       <StackingLayout
         intro={<StackingIntro />}
         stackingInfoCard={stackingInfoCard}

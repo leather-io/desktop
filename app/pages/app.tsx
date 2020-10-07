@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, FC, useState } from 'react';
+import React, { useCallback, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { connectWebSocketClient } from '@stacks/blockchain-api-client';
-
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
 import { BetaNotice } from '@components/beta-notice';
 import {
@@ -14,15 +13,15 @@ import { RootState } from '@store/index';
 import { TitleBar } from '@components/title-bar';
 import { selectAddress } from '@store/keys';
 import { safeAwait } from '@utils/safe-await';
-import { Api } from '../api/api';
+import { Api } from '@api/api';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import urljoin from 'url-join';
-import { useInterval } from '../hooks/use-interval';
-import { selectPendingTransactions } from '../store/pending-transaction/pending-transaction.reducer';
+import { useInterval } from '@hooks/use-interval';
+import { selectPendingTransactions } from '@store/pending-transaction';
+import { fetchBlocktimeInfo, fetchCoreDetails, fetchStackingInfo } from '@store/stacking';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
-  const [webSocket, setWebSocket] = useState('Disconnected');
 
   const { address, activeNode, pendingTxs } = useSelector((state: RootState) => ({
     address: selectAddress(state),
@@ -65,15 +64,19 @@ export const App: FC = ({ children }) => {
   }, [address, activeNode, initAppWithStxAddressInfo]);
 
   useEffect(() => {
+    dispatch(fetchStackingInfo());
+    dispatch(fetchCoreDetails());
+    dispatch(fetchBlocktimeInfo());
+  }, [dispatch]);
+
+  useEffect(() => {
     const wsUrl = new URL(activeNode.url);
     wsUrl.protocol = 'ws:';
     async function run() {
       const client = await connectWebSocketClient(
         urljoin(wsUrl.toString(), 'extended', 'v1', 'ws')
-      ).finally(() => {
-        setWebSocket('Disconnected');
-      });
-      setWebSocket('Connected');
+      );
+
       if (!address) return;
       await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
         dispatch(updateAddressBalance({ address, balance }));

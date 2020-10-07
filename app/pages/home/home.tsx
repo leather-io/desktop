@@ -16,8 +16,8 @@ import {
   selectTransactionsLoading,
   selectTransactionListFetchError,
 } from '@store/transaction';
-import { REQUIRED_STX_FOR_STACKING } from '@constants/index';
 import { selectPendingTransactions } from '@store/pending-transaction';
+import { selectPoxInfo } from '@store/stacking';
 import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
 import { increment, decrement } from '@utils/mutate-numbers';
 import {
@@ -48,6 +48,7 @@ export const Home: FC = () => {
     txListFetchError,
     receiveModalOpen,
     activeNode,
+    stackingDetails,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
@@ -58,10 +59,11 @@ export const Home: FC = () => {
     loadingTxs: selectTransactionsLoading(state),
     txListFetchError: selectTransactionListFetchError(state),
     activeNode: selectActiveNodeApi(state),
+    stackingDetails: selectPoxInfo(state),
   }));
 
   const focusedTxIdRef = useRef<string | null>(null);
-  const txDomNodeRefMap = useRef<{ [txId: string]: HTMLButtonElement }>({});
+  const txDomNodeRefMap = useRef<Record<string, HTMLButtonElement>>({});
 
   const focusTxDomNode = useCallback(
     (shift: (i: number) => number) => {
@@ -89,7 +91,9 @@ export const Home: FC = () => {
   if (!address) return <Spinner />;
 
   const meetsMinStackingThreshold =
-    balance !== null && new BigNumber(balance).isGreaterThan(REQUIRED_STX_FOR_STACKING);
+    balance !== null &&
+    stackingDetails !== null &&
+    new BigNumber(balance).isGreaterThan(stackingDetails.min_amount_ustx);
 
   const txCount = txs.length + pendingTxs.length;
 

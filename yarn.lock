@@ -1144,10 +1144,10 @@
     "@blockstack/stacks-transactions" "0.5.1"
     cross-fetch "^3.0.4"
 
-"@blockstack/stacks-blockchain-api-types@0.14.4":
-  version "0.14.4"
-  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.14.4.tgz#9f79993b9dd2c7232215a67ccb10e77162853950"
-  integrity sha512-o7AlZToMjeyl32tMOQH1PtzpWGGoPMGb+kMvQ76Cy9PWB9bi+PMT4eoXNt0BLoHgUpktOhRyuNUIpPJhv3r7dQ==
+"@blockstack/stacks-blockchain-api-types@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.25.3.tgz#e84ad2e7e6daffcd79ecf80a5c520b2e235079b1"
+  integrity sha512-HFoFyc7L3bINgGYLc6WDVhltlQ1lGlIvQhGRbCLnefm01t+j+COWrn72fcpFLEi6GKl4yPdBTUIZEeZ2jgRZCg==
 
 "@blockstack/stacks-blockchain-api-types@^0.5.3":
   version "0.5.3"

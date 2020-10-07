@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef, useState, useCallback } from 'react';
 
 import { StackingModal } from '@modals/stacking/stacking-modal';
 import { useBackButton } from '@hooks/use-back-url';
@@ -17,6 +17,7 @@ import { RootState } from '@store/index';
 import { selectWalletType } from '@store/keys';
 
 import { selectActiveNodeApi } from '@store/stacks-node';
+import { selectEstimatedStackingCycleDuration } from '@store/stacking';
 
 enum Step {
   ChooseCycles = 'Choose your duration',
@@ -31,16 +32,27 @@ export const Stacking: FC = () => {
 
   const [cycles, setCycles] = useState(1);
   const [btcAddress, setBtcAddress] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [stepConfirmation, setStepConfirmation] = useState<Record<Step, StepState>>({
-    [Step.ChooseCycles]: 'incomplete',
-    [Step.ChooseBtcAddress]: 'incomplete',
+    [Step.ChooseCycles]: 'complete',
+    [Step.ChooseBtcAddress]: 'complete',
     [Step.ConfirmAndLock]: null,
   });
 
-  const { walletType } = useSelector((state: RootState) => ({
+  const { stackingCycleDuration } = useSelector((state: RootState) => ({
     walletType: selectWalletType(state),
+    activeNode: selectActiveNodeApi(state),
+    stackingCycleDuration: selectEstimatedStackingCycleDuration(state),
   }));
+
+  const calcStackingDuration = useCallback(() => stackingCycleDuration * cycles, [
+    stackingCycleDuration,
+    cycles,
+  ]);
+
+  console.log({ stackingCycleDuration });
+  console.log({ totalCyclesInSeconds: calcStackingDuration() });
 
   const updateStep = (step: Step, to: StepState) =>
     setStepConfirmation(state => ({ ...state, [step]: to }));
@@ -55,7 +67,7 @@ export const Stacking: FC = () => {
     <StackingInfoCard
       cycles={cycles}
       startDate={dateRef.current}
-      duration={HARD_CODED_VALUES.duration}
+      duration={calcStackingDuration().toString() + ' seconds'}
     />
   );
 

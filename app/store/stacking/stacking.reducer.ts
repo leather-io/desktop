@@ -52,7 +52,7 @@ export const selectBlocktimeInfo = createSelector(
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const stackingWillBeExecuted = createSelector(selectStackingState, () => {});
 
-export const estimatedStackingCycleDuration = createSelector(
+export const selectEstimatedStackingCycleDuration = createSelector(
   selectStackingState,
   ({ poxInfo, blockTimeInfo }) => {
     if (poxInfo === null || blockTimeInfo === null) return 0;

@@ -54,8 +54,8 @@ test('making a lock-stx transaction', async () => {
   await waitForTxConfirm(`0x${lockTxid}`);
   const stackerInfo = await client.getStackerInfo(address);
   console.log('Stacker Info:');
-  console.log('Amount Locked:', stackerInfo.amountSTX.toString(10));
-  console.log('Lock Period:', stackerInfo.lockPeriod.toString(10));
+  console.log('Amount Locked:', stackerInfo.amountSTX);
+  console.log('Lock Period:', stackerInfo.lockPeriod);
   console.log('Address Version:', stackerInfo.poxAddr.version.toString('hex'));
   console.log('Address Hashbytes:', stackerInfo.poxAddr.hashbytes.toString('hex'));
   console.log('Bitcoin Address', stackerInfo.btcAddress);
@@ -64,8 +64,8 @@ test('making a lock-stx transaction', async () => {
     stackerInfo.poxAddr.hashbytes
   );
   expect(btcReconstruced).toEqual(poxAddress);
-  expect(stackerInfo.amountSTX.eq(new BN(50500000010000 + 500, 10))).toBeTruthy();
-  expect(stackerInfo.lockPeriod.eq(new BN(1, 10))).toBeTruthy();
+  expect(stackerInfo.amountSTX).toEqual('50500000010500');
+  expect(stackerInfo.lockPeriod).toEqual(1);
   expect(stackerInfo.poxAddr.version).toEqual(Buffer.from('00', 'hex'));
   expect(stackerInfo.btcAddress).toEqual(poxAddress);
 }, 55_000);

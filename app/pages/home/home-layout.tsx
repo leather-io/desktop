@@ -2,9 +2,12 @@ import React, { FC } from 'react';
 import { Flex, Box } from '@blockstack/ui';
 import { Screen } from '@components/screen';
 
-type HomeComponents = 'balanceCard' | 'transactionList' | 'stackingCard' | 'stackingRewardCard';
-
-type HomeLayoutProps = Record<HomeComponents, JSX.Element>;
+interface HomeLayoutProps {
+  balanceCard: JSX.Element;
+  transactionList: JSX.Element;
+  stackingCard: JSX.Element | null;
+  stackingRewardCard: JSX.Element | null;
+}
 
 export const HomeLayout: FC<HomeLayoutProps> = props => {
   const { balanceCard, transactionList, stackingCard, stackingRewardCard } = props;

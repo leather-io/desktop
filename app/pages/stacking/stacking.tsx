@@ -99,7 +99,13 @@ export const Stacking: FC = () => {
 
   return (
     <>
-      {modalOpen && <StackingModal onClose={() => setModalOpen(false)} />}
+      {modalOpen && btcAddress && (
+        <StackingModal
+          onClose={() => setModalOpen(false)}
+          numCycles={cycles}
+          poxAddress={btcAddress}
+        />
+      )}
       <StackingLayout
         intro={<StackingIntro />}
         stackingInfoCard={stackingInfoCard}

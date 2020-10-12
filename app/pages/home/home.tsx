@@ -17,7 +17,7 @@ import {
   selectTransactionListFetchError,
 } from '@store/transaction';
 import { selectPendingTransactions } from '@store/pending-transaction';
-import { selectPoxInfo } from '@store/stacking';
+import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
 import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
 import { increment, decrement } from '@utils/mutate-numbers';
 import {
@@ -49,6 +49,7 @@ export const Home: FC = () => {
     receiveModalOpen,
     activeNode,
     stackingDetails,
+    stackerInfo,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
@@ -60,6 +61,7 @@ export const Home: FC = () => {
     txListFetchError: selectTransactionListFetchError(state),
     activeNode: selectActiveNodeApi(state),
     stackingDetails: selectPoxInfo(state),
+    stackerInfo: selectStackerInfo(state),
   }));
 
   const focusedTxIdRef = useRef<string | null>(null);
@@ -129,6 +131,7 @@ export const Home: FC = () => {
   );
   const balanceCard = (
     <BalanceCard
+      lockedSTX={stackerInfo?.amountSTX}
       balance={balance}
       onSelectStacking={() => history.push(routes.STACKING)}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
@@ -151,7 +154,7 @@ export const Home: FC = () => {
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}
-        stackingCard={card}
+        stackingCard={stackerInfo ? null : card}
         stackingRewardCard={stackingRewardCard}
       />
     </>

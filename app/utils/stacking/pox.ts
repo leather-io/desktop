@@ -13,6 +13,7 @@ import {
   ContractCallOptions,
   UIntCV,
   BufferCV,
+  StacksNetwork,
 } from '@blockstack/stacks-transactions';
 import BN from 'bn.js';
 import { address } from 'bitcoinjs-lib';
@@ -76,6 +77,31 @@ export class POX {
     poxAddress: string;
     amountSTX: number;
   }) {
+    const txOptions = await this.getLockTxOptions({
+      amountSTX,
+      cycles,
+      poxAddress,
+    });
+    const tx = await makeContractCall({
+      ...txOptions,
+      senderKey: key,
+    });
+    const res = await broadcastTransaction(tx, txOptions.network as StacksNetwork);
+    if (typeof res === 'string') {
+      return res;
+    }
+    throw new Error(`${res.error} - ${res.reason}`);
+  }
+
+  async getLockTxOptions({
+    amountSTX,
+    poxAddress,
+    cycles,
+  }: {
+    cycles: number;
+    poxAddress: string;
+    amountSTX: number;
+  }) {
     const info = await this.getPOXInfo();
     const contract = info.contract_id;
     const { version, hash } = this.convertBTCAddress(poxAddress);
@@ -87,23 +113,17 @@ export class POX {
     });
     const [contractAddress, contractName]: string[] = contract.split('.');
     const network = new StacksTestnet();
-    network.coreApiUrl = 'http://localhost:3999';
+    network.coreApiUrl = this.nodeURL;
     const txOptions: ContractCallOptions = {
       contractAddress,
       contractName,
       functionName: 'stack-stx',
       functionArgs: [uintCV(amountSTX), address, uintCV(cycles)],
-      senderKey: key,
       validateWithAbi: true,
       network,
       fee: new BN(5000, 10),
     };
-    const tx = await makeContractCall(txOptions);
-    const res = await broadcastTransaction(tx, network);
-    if (typeof res === 'string') {
-      return res;
-    }
-    throw new Error(`${res.error} - ${res.reason}`);
+    return txOptions;
   }
 
   async getStackerInfo(address: string): Promise<StackerInfo> {

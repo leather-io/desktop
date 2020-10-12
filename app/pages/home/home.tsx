@@ -131,7 +131,7 @@ export const Home: FC = () => {
   );
   const balanceCard = (
     <BalanceCard
-      lockedSTX={stackerInfo?.amountSTX}
+      lockedSTX={stackerInfo?.amountMicroSTX}
       balance={balance}
       onSelectStacking={() => history.push(routes.STACKING)}
       onSelectSend={() => dispatch(homeActions.openTxModal())}

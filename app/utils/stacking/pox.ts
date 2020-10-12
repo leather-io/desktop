@@ -13,6 +13,7 @@ import {
   ContractCallOptions,
   UIntCV,
   BufferCV,
+  StacksNetwork,
 } from '@blockstack/stacks-transactions';
 import BN from 'bn.js';
 import { address } from 'bitcoinjs-lib';
@@ -28,7 +29,7 @@ interface POXInfo {
 }
 
 export interface StackerInfo {
-  amountSTX: string;
+  amountMicroSTX: string;
   firstRewardCycle: number;
   lockPeriod: number;
   poxAddr: {
@@ -66,18 +67,46 @@ export class POX {
   }
 
   async lockSTX({
-    amountSTX,
+    amountMicroSTX,
     poxAddress,
     cycles,
     key,
+    contract,
   }: {
     key: string;
     cycles: number;
     poxAddress: string;
-    amountSTX: number;
+    amountMicroSTX: BigNumber;
+    contract: string;
   }) {
-    const info = await this.getPOXInfo();
-    const contract = info.contract_id;
+    const txOptions = this.getLockTxOptions({
+      amountMicroSTX,
+      cycles,
+      poxAddress,
+      contract,
+    });
+    const tx = await makeContractCall({
+      ...txOptions,
+      senderKey: key,
+    });
+    const res = await broadcastTransaction(tx, txOptions.network as StacksNetwork);
+    if (typeof res === 'string') {
+      return res;
+    }
+    throw new Error(`${res.error} - ${res.reason}`);
+  }
+
+  getLockTxOptions({
+    amountMicroSTX,
+    poxAddress,
+    cycles,
+    contract,
+  }: {
+    cycles: number;
+    poxAddress: string;
+    amountMicroSTX: BigNumber;
+    contract: string;
+  }) {
     const { version, hash } = this.convertBTCAddress(poxAddress);
     const versionBuffer = bufferCV(new BN(version, 10).toBuffer());
     const hashbytes = bufferCV(hash);
@@ -87,23 +116,17 @@ export class POX {
     });
     const [contractAddress, contractName]: string[] = contract.split('.');
     const network = new StacksTestnet();
-    network.coreApiUrl = 'http://localhost:3999';
+    network.coreApiUrl = this.nodeURL;
     const txOptions: ContractCallOptions = {
       contractAddress,
       contractName,
       functionName: 'stack-stx',
-      functionArgs: [uintCV(amountSTX), address, uintCV(cycles)],
-      senderKey: key,
+      functionArgs: [uintCV(amountMicroSTX.toString(10)), address, uintCV(cycles)],
       validateWithAbi: true,
       network,
       fee: new BN(5000, 10),
     };
-    const tx = await makeContractCall(txOptions);
-    const res = await broadcastTransaction(tx, network);
-    if (typeof res === 'string') {
-      return res;
-    }
-    throw new Error(`${res.error} - ${res.reason}`);
+    return txOptions;
   }
 
   async getStackerInfo(address: string): Promise<StackerInfo> {
@@ -124,7 +147,7 @@ export class POX {
     const hashbytes = data['pox-addr'].data.hashbytes.buffer;
     return {
       lockPeriod: data['lock-period'].value.toNumber(),
-      amountSTX: data['amount-ustx'].value.toString(10),
+      amountMicroSTX: data['amount-ustx'].value.toString(10),
       firstRewardCycle: data['first-reward-cycle'].value.toNumber(),
       poxAddr: {
         version,

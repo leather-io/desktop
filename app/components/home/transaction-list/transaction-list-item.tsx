@@ -1,4 +1,5 @@
 import React, { FC, MutableRefObject, RefObject, useLayoutEffect, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useHover, useFocus } from 'use-events';
 import { Box, Text, useClipboard } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
@@ -17,6 +18,8 @@ import {
 import { makeExplorerLink } from '@utils/external-links';
 import { getRecipientAddress } from '@utils/tx-utils';
 import { TransactionListItemContainer } from './transaction-list-item-container';
+import { RootState } from '@store/index';
+import { selectPoxInfo } from '@store/stacking';
 
 const dateOptions = {
   year: 'numeric',
@@ -37,8 +40,11 @@ interface TransactionListItemProps {
 
 export const TransactionListItem: FC<TransactionListItemProps> = props => {
   const { tx, address, onSelectTx, activeTxIdRef, domNodeMapRef } = props;
+  const { poxInfo } = useSelector((state: RootState) => ({
+    poxInfo: selectPoxInfo(state),
+  }));
 
-  const direction = getStxTxDirection(address, tx);
+  const direction = getStxTxDirection(address, tx, poxInfo?.contract_id);
   const sumPrefix = direction === 'sent' ? '−' : '';
   const memo =
     tx.tx_type === 'token_transfer' &&
@@ -111,7 +117,8 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
           title={`Fee: ${toHumanReadableStx(tx.fee_rate)}`}
           display="block"
         >
-          {sumPrefix + toHumanReadableStx(sumStxTxTotal(address, tx).toString())}
+          {sumPrefix +
+            toHumanReadableStx(sumStxTxTotal(address, tx, poxInfo?.contract_id).toString())}
         </Text>
         <Text textStyle="body.small" color="ink.600">
           {memo}

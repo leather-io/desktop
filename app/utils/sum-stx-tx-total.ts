@@ -1,6 +1,7 @@
 import type { Transaction, TransactionEvent } from '@blockstack/stacks-blockchain-api-types';
 import BigNumber from 'bignumber.js';
 import { getStxTxDirection } from './get-stx-transfer-direction';
+import { isLockTx } from './tx-utils';
 
 export function sumStxTxTotal(address: string, tx: Transaction) {
   const dir = getStxTxDirection(address, tx);
@@ -9,6 +10,15 @@ export function sumStxTxTotal(address: string, tx: Transaction) {
   }
   if (tx.tx_type === 'coinbase' || tx.tx_type === 'poison_microblock') {
     return new BigNumber(tx.fee_rate);
+  }
+
+  if (isLockTx(tx) && tx.tx_result?.repr) {
+    // We get the amount stacked from the tx_result
+    const matcher = /\(tuple \(lock-amount\su(\d+)/;
+    const matches = matcher.exec(tx.tx_result.repr);
+    if (matches && matches[1]) {
+      return parseInt(matches[1]);
+    }
   }
 
   const initialValue = new BigNumber(0);

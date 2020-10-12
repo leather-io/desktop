@@ -11,6 +11,8 @@ import {
   deserializeCV,
   TupleCV,
   ContractCallOptions,
+  UIntCV,
+  BufferCV,
 } from '@blockstack/stacks-transactions';
 import BN from 'bn.js';
 import { address } from 'bitcoinjs-lib';
@@ -25,10 +27,10 @@ interface POXInfo {
   reward_cycle_length: number;
 }
 
-interface StackerInfo {
-  amountSTX: BN;
-  firstRewardCycle: BN;
-  lockPeriod: BN;
+export interface StackerInfo {
+  amountSTX: string;
+  firstRewardCycle: number;
+  lockPeriod: number;
   poxAddr: {
     version: Buffer;
     hashbytes: Buffer;
@@ -36,8 +38,26 @@ interface StackerInfo {
   btcAddress: string;
 }
 
+interface StackerInfoCV {
+  'amount-ustx': UIntCV;
+  'first-reward-cycle': UIntCV;
+  'pox-addr': {
+    data: {
+      version: BufferCV;
+      hashbytes: BufferCV;
+    };
+  };
+  'lock-period': UIntCV;
+}
+
 export class POX {
   nodeURL = 'http://localhost:3999';
+
+  constructor(nodeURL?: string) {
+    if (nodeURL) {
+      this.nodeURL = nodeURL;
+    }
+  }
 
   async getPOXInfo(): Promise<POXInfo> {
     const url = `${this.nodeURL}/v2/pox`;
@@ -88,6 +108,7 @@ export class POX {
 
   async getStackerInfo(address: string): Promise<StackerInfo> {
     const info = await this.getPOXInfo();
+    console.log(address);
     const args = [`0x${serializeCV(standardPrincipalCV(address)).toString('hex')}`];
     const res = await this.callReadOnly({
       contract: info.contract_id,
@@ -98,13 +119,13 @@ export class POX {
     // Not sure why these types are off
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const data = cv.value.data;
+    const data: StackerInfoCV = cv.value.data;
     const version = data['pox-addr'].data.version.buffer;
     const hashbytes = data['pox-addr'].data.hashbytes.buffer;
     return {
-      lockPeriod: data['lock-period'].value,
-      amountSTX: data['amount-ustx'].value,
-      firstRewardCycle: data['first-reward-cycle'].value,
+      lockPeriod: data['lock-period'].value.toNumber(),
+      amountSTX: data['amount-ustx'].value.toString(10),
+      firstRewardCycle: data['first-reward-cycle'].value.toNumber(),
       poxAddr: {
         version,
         hashbytes,

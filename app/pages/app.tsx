@@ -18,7 +18,12 @@ import { selectActiveNodeApi } from '@store/stacks-node';
 import urljoin from 'url-join';
 import { useInterval } from '@hooks/use-interval';
 import { selectPendingTransactions } from '@store/pending-transaction';
-import { fetchBlocktimeInfo, fetchCoreDetails, fetchStackingInfo } from '@store/stacking';
+import {
+  fetchBlocktimeInfo,
+  fetchCoreDetails,
+  fetchStackerInfo,
+  fetchStackingInfo,
+} from '@store/stacking';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
@@ -68,6 +73,10 @@ export const App: FC = ({ children }) => {
     dispatch(fetchCoreDetails());
     dispatch(fetchBlocktimeInfo());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchStackerInfo());
+  }, [dispatch, address]);
 
   useEffect(() => {
     const wsUrl = new URL(activeNode.url);

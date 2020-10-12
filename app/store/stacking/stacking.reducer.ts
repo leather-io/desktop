@@ -13,11 +13,7 @@ import {
   fetchStackerInfo,
 } from './stacking.actions';
 import { NETWORK } from '../../constants/index';
-import { StackerInfo as StackerInfoRaw } from '@utils/stacking/pox';
-
-interface StackerInfo extends StackerInfoRaw {
-  amountSTX: string;
-}
+import { StackerInfo } from '@utils/stacking/pox';
 
 export interface StackingState {
   poxInfo: CoreNodePoxResponse | null;

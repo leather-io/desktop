@@ -45,16 +45,18 @@ test('making a lock-stx transaction', async () => {
   const address = getAddressFromPrivateKey(key.data, TransactionVersion.Testnet);
   const faucetResponse = await api.getFaucetStx(address);
   await waitForTxConfirm(faucetResponse.data.txId);
+  const poxInfo = await client.getPOXInfo();
   const lockTxid = await client.lockSTX({
-    amountSTX: 50500000010000 + 500,
+    amountMicroSTX: new BigNumber(50500000010000 + 500, 10),
     cycles: 1,
     poxAddress,
     key: key.data.toString('hex'),
+    contract: poxInfo.contract_id,
   });
   await waitForTxConfirm(`0x${lockTxid}`);
   const stackerInfo = await client.getStackerInfo(address);
   console.log('Stacker Info:');
-  console.log('Amount Locked:', stackerInfo.amountSTX);
+  console.log('Amount Locked:', stackerInfo.amountMicroSTX);
   console.log('Lock Period:', stackerInfo.lockPeriod);
   console.log('Address Version:', stackerInfo.poxAddr.version.toString('hex'));
   console.log('Address Hashbytes:', stackerInfo.poxAddr.hashbytes.toString('hex'));
@@ -64,7 +66,7 @@ test('making a lock-stx transaction', async () => {
     stackerInfo.poxAddr.hashbytes
   );
   expect(btcReconstruced).toEqual(poxAddress);
-  expect(stackerInfo.amountSTX).toEqual('50500000010500');
+  expect(stackerInfo.amountMicroSTX).toEqual('50500000010500');
   expect(stackerInfo.lockPeriod).toEqual(1);
   expect(stackerInfo.poxAddr.version).toEqual(Buffer.from('00', 'hex'));
   expect(stackerInfo.btcAddress).toEqual(poxAddress);

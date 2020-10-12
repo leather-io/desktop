@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js';
 import { getStxTxDirection } from './get-stx-transfer-direction';
 import { isLockTx } from './tx-utils';
 
-export function sumStxTxTotal(address: string, tx: Transaction) {
-  const dir = getStxTxDirection(address, tx);
+export function sumStxTxTotal(address: string, tx: Transaction, poxContractID?: string) {
+  const dir = getStxTxDirection(address, tx, poxContractID);
   if (tx.tx_type === 'token_transfer') {
     return new BigNumber(tx.token_transfer.amount).plus(dir === 'sent' ? tx.fee_rate : 0);
   }
@@ -12,12 +12,12 @@ export function sumStxTxTotal(address: string, tx: Transaction) {
     return new BigNumber(tx.fee_rate);
   }
 
-  if (isLockTx(tx) && tx.tx_result?.repr) {
+  if (isLockTx(tx, poxContractID) && tx.tx_result?.repr) {
     // We get the amount stacked from the tx_result
     const matcher = /\(tuple \(lock-amount\su(\d+)/;
     const matches = matcher.exec(tx.tx_result.repr);
     if (matches && matches[1]) {
-      return parseInt(matches[1]);
+      return new BigNumber(matches[1], 10);
     }
   }
 

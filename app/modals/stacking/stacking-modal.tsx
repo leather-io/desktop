@@ -18,6 +18,7 @@ import {
   decryptSoftwareWallet,
   selectWalletType,
 } from '@store/keys';
+import { POX } from '@utils/stacking/pox';
 
 import {
   StackingModalHeader,
@@ -29,6 +30,8 @@ import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { StackingSuccess } from './steps/stacking-success';
+import { DEFAULT_STACKS_NODE_URL } from '@constants/index';
+import { selectPoxInfo } from '@store/stacking';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
@@ -37,13 +40,17 @@ enum StackingModalStep {
   NetworkError,
 }
 
+const poxClient = new POX(DEFAULT_STACKS_NODE_URL);
+
 type ModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
 interface StackingModalProps {
   onClose(): void;
+  poxAddress: string;
+  numCycles: number;
 }
 
-export const StackingModal: FC<StackingModalProps> = ({ onClose }) => {
+export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxAddress }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
@@ -56,12 +63,15 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose }) => {
   // const [loading, setLoading] = useState(false);
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
-  const { encryptedMnemonic, salt, walletType, publicKey } = useSelector((state: RootState) => ({
-    salt: selectSalt(state),
-    encryptedMnemonic: selectEncryptedMnemonic(state),
-    walletType: selectWalletType(state),
-    publicKey: selectPublicKey(state),
-  }));
+  const { encryptedMnemonic, salt, walletType, publicKey, poxInfo } = useSelector(
+    (state: RootState) => ({
+      salt: selectSalt(state),
+      encryptedMnemonic: selectEncryptedMnemonic(state),
+      walletType: selectWalletType(state),
+      publicKey: selectPublicKey(state),
+      poxInfo: selectPoxInfo(state),
+    })
+  );
 
   const initialStep =
     walletType === 'software'
@@ -70,7 +80,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose }) => {
   const [step, setStep] = useState(initialStep);
 
   const createSoftwareWalletTx = useCallback(async () => {
-    if (!password || !encryptedMnemonic || !salt) {
+    if (!password || !encryptedMnemonic || !salt || !poxInfo) {
       throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
     }
     const { privateKey } = await decryptSoftwareWallet({
@@ -79,8 +89,19 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose }) => {
       password,
     });
     console.log({ privateKey });
+    try {
+      const txid = await poxClient.lockSTX({
+        key: privateKey,
+        amountSTX: poxInfo.min_amount_ustx,
+        poxAddress,
+        cycles: numCycles,
+      });
+      console.log(txid);
+    } catch (error) {
+      console.error(error);
+    }
     // return makeSTXTokenTransfer({ ...options, senderKey: privateKey });
-  }, [encryptedMnemonic, password, salt]);
+  }, [encryptedMnemonic, password, salt, numCycles, poxInfo, poxAddress]);
 
   const createLedgerWalletTx = useCallback(
     async (options: { publicKey: Buffer }) => {

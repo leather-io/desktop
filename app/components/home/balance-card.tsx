@@ -5,9 +5,11 @@ import { features } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { safeAwait } from '@utils/safe-await';
 import { delay } from '@utils/delay';
+import BN from 'bn.js';
 
 interface BalanceCardProps {
   balance: string | null;
+  lockedSTX?: string;
   onSelectSend(): void;
   onSelectReceive(): void;
   onSelectStacking(): void;
@@ -15,7 +17,14 @@ interface BalanceCardProps {
 }
 
 export const BalanceCard: FC<BalanceCardProps> = props => {
-  const { balance, onSelectReceive, onSelectSend, onRequestTestnetStx, onSelectStacking } = props;
+  const {
+    balance,
+    onSelectReceive,
+    onSelectSend,
+    onRequestTestnetStx,
+    onSelectStacking,
+    lockedSTX,
+  } = props;
 
   const [requestingTestnetStx, setRequestingTestnetStx] = useState(false);
   const requestTestnetStacks = async () => {
@@ -23,6 +32,10 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
     await safeAwait(Promise.allSettled([onRequestTestnetStx(), delay(1500)]));
     setRequestingTestnetStx(false);
   };
+
+  const balanceBN = new BN(balance || 0, 10);
+  const lockedBN = new BN(lockedSTX || 0, 10);
+  const available = balanceBN.sub(lockedBN);
   return (
     <Box>
       <Text textStyle="body.large.medium" display="block">
@@ -36,10 +49,10 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
           <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
           <Text onClick={onSelectStacking} cursor="pointer" borderBottom="1px dotted #677282">
-            320,000.00 STX locked
+            {toHumanReadableStx(lockedSTX || '0')} locked
           </Text>
           <Text children="·" mx="base-tight" />
-          <Text>40,000.00 STX available</Text>
+          <Text>{toHumanReadableStx(available)} available</Text>
         </Flex>
       )}
 

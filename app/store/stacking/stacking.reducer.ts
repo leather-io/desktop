@@ -6,19 +6,31 @@ import {
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import { fetchStackingInfo, fetchCoreDetails, fetchBlocktimeInfo } from './stacking.actions';
+import {
+  fetchStackingInfo,
+  fetchCoreDetails,
+  fetchBlocktimeInfo,
+  fetchStackerInfo,
+} from './stacking.actions';
 import { NETWORK } from '../../constants/index';
+import { StackerInfo as StackerInfoRaw } from '@utils/stacking/pox';
+
+interface StackerInfo extends StackerInfoRaw {
+  amountSTX: string;
+}
 
 export interface StackingState {
   poxInfo: CoreNodePoxResponse | null;
   coreNodeInfo: CoreNodeInfoResponse | null;
   blockTimeInfo: NetworkBlockTimesResponse | null;
+  stackerInfo: StackerInfo | null;
 }
 
 const initialState: StackingState = {
   poxInfo: null,
   coreNodeInfo: null,
   blockTimeInfo: null,
+  stackerInfo: null,
 };
 
 export const stackingSlice = createSlice({
@@ -32,8 +44,14 @@ export const stackingSlice = createSlice({
     [fetchCoreDetails.fulfilled.toString()]: (state, a: PayloadAction<CoreNodeInfoResponse>) => {
       state.coreNodeInfo = a.payload;
     },
-    [fetchBlocktimeInfo.fulfilled.toString()]: (s, a: PayloadAction<NetworkBlockTimesResponse>) => {
-      s.blockTimeInfo = a.payload;
+    [fetchBlocktimeInfo.fulfilled.toString()]: (
+      state,
+      a: PayloadAction<NetworkBlockTimesResponse>
+    ) => {
+      state.blockTimeInfo = a.payload;
+    },
+    [fetchStackerInfo.fulfilled.toString()]: (state, a: PayloadAction<StackerInfo>) => {
+      state.stackerInfo = a.payload;
     },
   },
 });
@@ -47,6 +65,7 @@ export const selectBlocktimeInfo = createSelector(
   selectStackingState,
   state => state.blockTimeInfo
 );
+export const selectStackerInfo = createSelector(selectStackingState, state => state.stackerInfo);
 
 // `rejection_votes_left_required` not returned by API
 // eslint-disable-next-line @typescript-eslint/no-empty-function

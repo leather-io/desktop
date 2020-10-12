@@ -3,21 +3,22 @@ import { Flex, FlexProps, Spinner } from '@blockstack/ui';
 
 import { SentArrow } from '@components/icons/sent-arrow';
 import { ReceivedArrow } from '@components/icons/received-arrow';
+import { LockedIcon } from '@components/icons/locked';
+import { StxTxDirection } from '@utils/get-stx-transfer-direction';
 
-type TransactionDirection = 'sent' | 'received';
-
-const iconMap: { [key in TransactionDirection]: () => JSX.Element } = {
+const iconMap: { [key in StxTxDirection]: () => JSX.Element } = {
   sent: SentArrow,
   received: ReceivedArrow,
+  locked: LockedIcon,
 };
 
-function getDirectionalArrowIcon(direction: TransactionDirection) {
+function getDirectionalArrowIcon(direction: StxTxDirection) {
   const Icon = iconMap[direction];
   return <Icon />;
 }
 
 interface TransactionIconProps extends FlexProps {
-  variant: TransactionDirection | 'pending';
+  variant: StxTxDirection | 'pending';
 }
 
 export const TransactionIcon: FC<TransactionIconProps> = ({ variant, ...props }) => {

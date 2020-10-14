@@ -146,9 +146,9 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
         throw new Error('Ledger responded with errors');
       }
 
-      unsignedTx.createTxWithSignature(resp.signatureVRS);
+      const signedTx = unsignedTx.createTxWithSignature(resp.signatureVRS);
 
-      return unsignedTx;
+      return signedTx;
     },
     [blockstackApp, poxInfo, numCycles, poxAddress, node.url, balance]
   );

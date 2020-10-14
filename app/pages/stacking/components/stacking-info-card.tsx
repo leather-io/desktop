@@ -5,15 +5,17 @@ import { Flex, FlexProps, Text } from '@blockstack/ui';
 import { Hr } from '@components/hr';
 
 import { ExplainerTooltip } from '@components/tooltip';
+import { toHumanReadableStx } from '@utils/unit-convert';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
   duration: string;
   startDate: Date;
+  balance: string | null;
 }
 
 export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { cycles, duration } = props;
+  const { cycles, duration, balance } = props;
   return (
     <Flex
       flexDirection="column"
@@ -30,7 +32,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>
         <Text fontSize="24px" fontWeight={600} letterSpacing="-0.04em" mt="extra-tight">
-          370,000 STX
+          {toHumanReadableStx(balance || 0)}
         </Text>
       </Flex>
       <Hr />

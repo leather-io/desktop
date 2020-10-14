@@ -18,6 +18,7 @@ import { selectWalletType } from '@store/keys';
 
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectEstimatedStackingCycleDuration } from '@store/stacking';
+import { selectAddressBalance } from '@store/address';
 
 enum Step {
   ChooseCycles = 'Choose your duration',
@@ -40,10 +41,11 @@ export const Stacking: FC = () => {
     [Step.ConfirmAndLock]: null,
   });
 
-  const { stackingCycleDuration } = useSelector((state: RootState) => ({
+  const { stackingCycleDuration, balance } = useSelector((state: RootState) => ({
     walletType: selectWalletType(state),
     activeNode: selectActiveNodeApi(state),
     stackingCycleDuration: selectEstimatedStackingCycleDuration(state),
+    balance: selectAddressBalance(state),
   }));
 
   const calcStackingDuration = useCallback(() => stackingCycleDuration * cycles, [
@@ -66,6 +68,7 @@ export const Stacking: FC = () => {
   const stackingInfoCard = (
     <StackingInfoCard
       cycles={cycles}
+      balance={balance}
       startDate={dateRef.current}
       duration={calcStackingDuration().toString() + ' seconds'}
     />

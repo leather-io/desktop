@@ -14,9 +14,12 @@ import {
   UIntCV,
   BufferCV,
   StacksNetwork,
+  ContractCallPayload,
+  StacksTransaction,
 } from '@blockstack/stacks-transactions';
 import BN from 'bn.js';
 import { address } from 'bitcoinjs-lib';
+import { BigNumber } from 'bignumber.js';
 
 interface POXInfo {
   contract_id: string;
@@ -124,9 +127,16 @@ export class POX {
       functionArgs: [uintCV(amountMicroSTX.toString(10)), address, uintCV(cycles)],
       validateWithAbi: true,
       network,
-      fee: new BN(5000, 10),
     };
     return txOptions;
+  }
+
+  modifyLockTxFee({ tx, amountMicroSTX }: { tx: StacksTransaction; amountMicroSTX: BigNumber }) {
+    const fee = tx.auth.getFee() as BN;
+    (tx.payload as ContractCallPayload).functionArgs[0] = uintCV(
+      new BN(amountMicroSTX.toString(10), 10).sub(fee).toBuffer()
+    );
+    return tx;
   }
 
   async getStackerInfo(address: string): Promise<StackerInfo> {

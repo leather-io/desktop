@@ -34,6 +34,7 @@ import { TransactionListItemPending } from '@components/home/transaction-list/tr
 
 import { Api } from '../../api/api';
 import { HomeLayout } from './home-layout';
+import { microStxToStx } from '../../utils/unit-convert';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -140,7 +141,13 @@ export const Home: FC = () => {
     />
   );
 
-  const card = meetsMinStackingThreshold ? <StackingParticipationCard /> : <StackingPromoCard />;
+  const card = meetsMinStackingThreshold ? (
+    <StackingParticipationCard />
+  ) : (
+    <StackingPromoCard
+      minRequiredStx={microStxToStx(stackingDetails?.min_amount_ustx || 0).toNumber()}
+    />
+  );
 
   const stackingRewardCard = (
     <StackingRewardCard lifetime="0.0281 Bitcoin (sample)" lastCycle="0.000383 Bitcoin (sample)" />

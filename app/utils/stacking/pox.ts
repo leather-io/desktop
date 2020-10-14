@@ -29,7 +29,7 @@ interface POXInfo {
 }
 
 export interface StackerInfo {
-  amountSTX: string;
+  amountMicroSTX: string;
   firstRewardCycle: number;
   lockPeriod: number;
   poxAddr: {
@@ -67,20 +67,23 @@ export class POX {
   }
 
   async lockSTX({
-    amountSTX,
+    amountMicroSTX,
     poxAddress,
     cycles,
     key,
+    contract,
   }: {
     key: string;
     cycles: number;
     poxAddress: string;
-    amountSTX: number;
+    amountMicroSTX: BigNumber;
+    contract: string;
   }) {
-    const txOptions = await this.getLockTxOptions({
-      amountSTX,
+    const txOptions = this.getLockTxOptions({
+      amountMicroSTX,
       cycles,
       poxAddress,
+      contract,
     });
     const tx = await makeContractCall({
       ...txOptions,
@@ -93,17 +96,17 @@ export class POX {
     throw new Error(`${res.error} - ${res.reason}`);
   }
 
-  async getLockTxOptions({
-    amountSTX,
+  getLockTxOptions({
+    amountMicroSTX,
     poxAddress,
     cycles,
+    contract,
   }: {
     cycles: number;
     poxAddress: string;
-    amountSTX: number;
+    amountMicroSTX: BigNumber;
+    contract: string;
   }) {
-    const info = await this.getPOXInfo();
-    const contract = info.contract_id;
     const { version, hash } = this.convertBTCAddress(poxAddress);
     const versionBuffer = bufferCV(new BN(version, 10).toBuffer());
     const hashbytes = bufferCV(hash);
@@ -118,7 +121,7 @@ export class POX {
       contractAddress,
       contractName,
       functionName: 'stack-stx',
-      functionArgs: [uintCV(amountSTX), address, uintCV(cycles)],
+      functionArgs: [uintCV(amountMicroSTX.toString(10)), address, uintCV(cycles)],
       validateWithAbi: true,
       network,
       fee: new BN(5000, 10),
@@ -144,7 +147,7 @@ export class POX {
     const hashbytes = data['pox-addr'].data.hashbytes.buffer;
     return {
       lockPeriod: data['lock-period'].value.toNumber(),
-      amountSTX: data['amount-ustx'].value.toString(10),
+      amountMicroSTX: data['amount-ustx'].value.toString(10),
       firstRewardCycle: data['first-reward-cycle'].value.toNumber(),
       poxAddr: {
         version,

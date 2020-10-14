@@ -4,8 +4,12 @@ import { isLockTx } from './tx-utils';
 
 export type StxTxDirection = 'sent' | 'received' | 'locked';
 
-export function getStxTxDirection(address: string, tx: Transaction): StxTxDirection {
-  if (isLockTx(tx)) return 'locked';
+export function getStxTxDirection(
+  address: string,
+  tx: Transaction,
+  poxContractID?: string
+): StxTxDirection {
+  if (isLockTx(tx, poxContractID)) return 'locked';
   if (tx.sender_address === address) return 'sent';
   return 'received';
 }

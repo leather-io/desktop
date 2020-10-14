@@ -16,7 +16,7 @@ import {
   deregisterHandler,
 } from './transaction-list-context-menu';
 import { makeExplorerLink } from '@utils/external-links';
-import { getRecipientAddress } from '@utils/tx-utils';
+import { getRecipientAddress, isLockTx } from '@utils/tx-utils';
 import { TransactionListItemContainer } from './transaction-list-item-container';
 import { RootState } from '@store/index';
 import { selectPoxInfo } from '@store/stacking';
@@ -44,7 +44,8 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     poxInfo: selectPoxInfo(state),
   }));
 
-  const direction = getStxTxDirection(address, tx, poxInfo?.contract_id);
+  const direction = getStxTxDirection(address, tx);
+  const isStackingTx = isLockTx(tx, poxInfo?.contract_id);
   const sumPrefix = direction === 'sent' ? '−' : '';
   const memo =
     tx.tx_type === 'token_transfer' &&
@@ -98,7 +99,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
       {...bindHover}
       {...bindFocus}
     >
-      <TransactionIcon variant={direction} mr="base-loose" />
+      <TransactionIcon variant={isStackingTx ? 'locked' : direction} mr="base-loose" />
       <Box flex={1}>
         <Text textStyle="body.large.medium" display="block">
           {capitalize(direction)}

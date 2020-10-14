@@ -6,28 +6,27 @@ import { ReceivedArrow } from '@components/icons/received-arrow';
 import { LockedIcon } from '@components/icons/locked';
 import { StxTxDirection } from '@utils/get-stx-transfer-direction';
 
-const iconMap: { [key in StxTxDirection]: () => JSX.Element } = {
+type TransactionIconVariants = StxTxDirection | 'pending' | 'locked';
+
+const iconMap: Record<TransactionIconVariants, () => JSX.Element> = {
   sent: SentArrow,
   received: ReceivedArrow,
   locked: LockedIcon,
+  pending: () => <Spinner size="xs" color="#5548FF" />,
 };
 
-function getDirectionalArrowIcon(direction: StxTxDirection) {
+function getTxTypeIcon(direction: TransactionIconVariants) {
   const Icon = iconMap[direction];
   return <Icon />;
 }
 
 interface TransactionIconProps extends FlexProps {
-  variant: StxTxDirection | 'pending';
+  variant: TransactionIconVariants;
 }
 
 export const TransactionIcon: FC<TransactionIconProps> = ({ variant, ...props }) => {
-  const contents =
-    variant === 'pending' ? (
-      <Spinner size="xs" color="#5548FF" />
-    ) : (
-      getDirectionalArrowIcon(variant)
-    );
+  const contents = getTxTypeIcon(variant);
+
   return (
     <Flex
       justifyContent="center"

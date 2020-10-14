@@ -5,7 +5,6 @@ import { Api } from '@api/api';
 import { Configuration, InfoApi } from '@stacks/blockchain-api-client';
 import fetch from 'cross-fetch';
 import { POX } from '@utils/stacking/pox';
-import { selectAddress } from '@store/keys';
 
 const createApi = (url: string) => {
   const config = new Configuration({
@@ -44,15 +43,10 @@ export const fetchBlocktimeInfo = createAsyncThunk(
 
 export const fetchStackerInfo = createAsyncThunk(
   'stacking/stacker-info',
-  async (_arg, thunkApi) => {
+  async (address: string, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const node = selectActiveNodeApi(state);
     const poxClient = new POX(node.url);
-    const address = selectAddress(state);
-    if (!address) {
-      return null;
-    }
-    const stackerInfo = await poxClient.getStackerInfo(address);
-    return stackerInfo;
+    return poxClient.getStackerInfo(address);
   }
 );

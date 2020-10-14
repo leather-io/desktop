@@ -2,13 +2,17 @@ import React, { FC } from 'react';
 import { Flex, Text } from '@blockstack/ui';
 import { LargeCheckmark } from '@components/icons/large-checkmark';
 
-export const StackingSuccess: FC = () => (
+interface StackingSuccessProps {
+  cycles: number;
+}
+
+export const StackingSuccess: FC<StackingSuccessProps> = ({ cycles }) => (
   <Flex flexDirection="column" textAlign="center" py="extra-loose">
     <Flex justifyContent="center">
       <LargeCheckmark />
     </Flex>
     <Text textStyle="display.small" display="block" textAlign="center" mt="extra-loose">
-      You locked your STX for 2 weeks
+      You locked your STX for {cycles} cycles
     </Text>
     <Text
       textStyle="body.large"

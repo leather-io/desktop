@@ -75,7 +75,8 @@ export const App: FC = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchStackerInfo());
+    if (!address) return;
+    dispatch(fetchStackerInfo(address));
   }, [dispatch, address]);
 
   useEffect(() => {

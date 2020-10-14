@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Box, Flex, Text, Button } from '@blockstack/ui';
 
 import btcPodium from '../../assets/images/btc-podium.svg';
 import { openExternalLink } from '@utils/external-links';
 import { BUY_STX_URL } from '@constants/index';
 
-export const StackingPromoCard = () => (
+interface StackingPromoCardProps {
+  minRequiredStx: number;
+}
+
+export const StackingPromoCard: FC<StackingPromoCardProps> = ({ minRequiredStx }) => (
   <Box
     mt="extra-loose"
     borderRadius="8px"
@@ -18,7 +22,7 @@ export const StackingPromoCard = () => (
         Earn Bitcoin rewards
       </Text>
       <Text display="block" mt="tight" textAlign="center" maxWidth="320px" mx="auto">
-        You’ll earn Bitcoin when you temporarily lock 100,000 STX or more
+        You’ll earn Bitcoin when you temporarily lock {minRequiredStx} STX or more
       </Text>
       <Button
         size="md"

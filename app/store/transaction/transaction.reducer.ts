@@ -52,7 +52,9 @@ export const transactionReducer = createReducer(initialState, builder =>
 const selectTxState = (state: RootState) => state.transaction;
 const selectors = transactionAdapter.getSelectors(selectTxState);
 
-export const selectTransactionList = selectors.selectAll;
+export const selectTransactionList = (state: RootState) =>
+  selectors.selectAll(state).filter(tx => tx.tx_type === ('pending' as any));
+
 export const selectMostRecentlyTxError = createSelector(
   selectTxState,
   state => state.mostRecentBroadcastError

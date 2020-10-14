@@ -19,5 +19,6 @@ export const MIN_STACKING_CYCLES = 1;
 export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
 
 export const features = {
-  stackingEnabled: true,
+  stacking: true,
+  lifetimeRewards: false,
 };

@@ -36,10 +36,12 @@ import {
   makeUnsignedContractCall,
   StacksTransaction,
   makeContractCall,
+  TransactionSigner,
+  createStacksPrivateKey,
 } from '@blockstack/stacks-transactions';
-import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 import { broadcastStxTransaction } from '@store/transaction';
 import { selectActiveNodeApi } from '@store/stacks-node';
+import { selectAddressBalance } from '@store/address';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
@@ -69,14 +71,15 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
   // const [loading, setLoading] = useState(false);
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
-  const { encryptedMnemonic, salt, walletType, publicKey, poxInfo, nodeURL: node } = useSelector(
+  const { encryptedMnemonic, salt, walletType, publicKey, poxInfo, node, balance } = useSelector(
     (state: RootState) => ({
       salt: selectSalt(state),
       encryptedMnemonic: selectEncryptedMnemonic(state),
       walletType: selectWalletType(state),
       publicKey: selectPublicKey(state),
       poxInfo: selectPoxInfo(state),
-      nodeURL: selectActiveNodeApi(state),
+      node: selectActiveNodeApi(state),
+      balance: selectAddressBalance(state),
     })
   );
 
@@ -87,7 +90,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
   const [step, setStep] = useState(initialStep);
 
   const createSoftwareWalletTx = useCallback(async (): Promise<StacksTransaction> => {
-    if (!password || !encryptedMnemonic || !salt || !poxInfo) {
+    if (!password || !encryptedMnemonic || !salt || !poxInfo || !balance) {
       throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
     }
     const poxClient = new POX(node.url);
@@ -96,34 +99,43 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       salt,
       password,
     });
-    const txOptions = await poxClient.getLockTxOptions({
+    const balanceBN = new BigNumber(balance, 10);
+    const txOptions = poxClient.getLockTxOptions({
       cycles: numCycles,
       poxAddress,
-      amountMicroSTX: poxInfo.min_amount_ustx,
+      amountMicroSTX: balanceBN,
+      contract: poxInfo.contract_id,
     });
     const tx = await makeContractCall({
       ...txOptions,
       senderKey: privateKey,
     });
+    poxClient.modifyLockTxFee({ tx, amountMicroSTX: balanceBN });
+    const signer = new TransactionSigner(tx);
+    signer.signOrigin(createStacksPrivateKey(privateKey));
     return tx;
-  }, [encryptedMnemonic, password, salt, numCycles, poxInfo, poxAddress, node.url]);
+  }, [encryptedMnemonic, password, salt, numCycles, balance, poxInfo, poxAddress, node.url]);
 
   const createLedgerWalletTx = useCallback(
     async (options: { publicKey: Buffer }): Promise<StacksTransaction> => {
       const poxClient = new POX(node.url);
-      if (!blockstackApp || !poxInfo)
+      if (!blockstackApp || !poxInfo || !balance)
         throw new Error('`poxInfo` or `blockstackApp` is not defined');
       // 1. Form unsigned contract call transaction
-      const txOptions = await poxClient.getLockTxOptions({
-        amountMicroSTX: poxInfo.min_amount_ustx,
+      const balanceBN = new BigNumber(balance, 10);
+      const txOptions = poxClient.getLockTxOptions({
+        amountMicroSTX: balanceBN,
         poxAddress,
         cycles: numCycles,
+        contract: poxInfo.contract_id,
       });
 
       const unsignedTx = await makeUnsignedContractCall({
         ...txOptions,
         publicKey: options.publicKey.toString('hex'),
       });
+
+      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroSTX: balanceBN });
 
       // 2. Sign transaction
       const resp: ResponseSign = await blockstackApp.sign(
@@ -138,7 +150,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
       return unsignedTx;
     },
-    [blockstackApp, poxInfo, numCycles, poxAddress, node.url]
+    [blockstackApp, poxInfo, numCycles, poxAddress, node.url, balance]
   );
 
   const closeModal = () => onClose();

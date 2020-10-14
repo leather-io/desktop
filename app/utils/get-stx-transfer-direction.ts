@@ -1,15 +1,9 @@
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 import { c32addressDecode } from 'c32check';
-import { isLockTx } from './tx-utils';
 
-export type StxTxDirection = 'sent' | 'received' | 'locked';
+export type StxTxDirection = 'sent' | 'received';
 
-export function getStxTxDirection(
-  address: string,
-  tx: Transaction,
-  poxContractID?: string
-): StxTxDirection {
-  if (isLockTx(tx, poxContractID)) return 'locked';
+export function getStxTxDirection(address: string, tx: Transaction): StxTxDirection {
   if (tx.sender_address === address) return 'sent';
   return 'received';
 }

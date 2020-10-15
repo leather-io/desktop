@@ -10,7 +10,7 @@ interface StackingRewardCardProps {
 }
 
 export const StackingRewardCard: FC<StackingRewardCardProps> = ({ lifetime, lastCycle }) => {
-  if (!features.stackingEnabled) return null;
+  if (!features.stacking || !features.lifetimeRewards) return null;
   return (
     <Box
       mt="extra-loose"

@@ -53,9 +53,6 @@ export const Stacking: FC = () => {
     cycles,
   ]);
 
-  console.log({ stackingCycleDuration });
-  console.log({ totalCyclesInSeconds: calcStackingDuration() });
-
   const updateStep = (step: Step, to: StepState) =>
     setStepConfirmation(state => ({ ...state, [step]: to }));
 
@@ -70,7 +67,7 @@ export const Stacking: FC = () => {
       cycles={cycles}
       balance={balance}
       startDate={dateRef.current}
-      duration={calcStackingDuration().toString() + ' seconds'}
+      duration={'~' + (calcStackingDuration() / 60 / 60).toString() + ' hours'}
     />
   );
 

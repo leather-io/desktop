@@ -87,6 +87,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
     walletType === 'software'
       ? StackingModalStep.DecryptWalletAndSend
       : StackingModalStep.SignWithLedgerAndSend;
+
   const [step, setStep] = useState(initialStep);
 
   const createSoftwareWalletTx = useCallback(async (): Promise<StacksTransaction> => {
@@ -155,13 +156,15 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
   const closeModal = () => onClose();
 
-  const broadcastActions = {
-    amount: new BigNumber(0),
-    onBroadcastSuccess: closeModal,
-    onBroadcastFail: () => setStep(StackingModalStep.NetworkError),
-  };
-
   const broadcastTx = async () => {
+    if (balance === null) return;
+
+    const broadcastActions = {
+      amount: new BigNumber(balance),
+      onBroadcastSuccess: () => setStep(StackingModalStep.StackingSuccess),
+      onBroadcastFail: () => setStep(StackingModalStep.NetworkError),
+    };
+
     setHasSubmitted(true);
     if (walletType === 'software') {
       setIsDecrypting(true);
@@ -274,7 +277,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
     [StackingModalStep.StackingSuccess]: () => ({
       header: <StackingModalHeader onSelectClose={closeModal} />,
-      body: <StackingSuccess />,
+      body: <StackingSuccess cycles={numCycles} />,
       footer: (
         <StackingModalFooter>
           <StackingModalButton onClick={closeModal}>Close</StackingModalButton>

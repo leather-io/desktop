@@ -36,8 +36,8 @@ export const Stacking: FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [stepConfirmation, setStepConfirmation] = useState<Record<Step, StepState>>({
-    [Step.ChooseCycles]: 'complete',
-    [Step.ChooseBtcAddress]: 'complete',
+    [Step.ChooseCycles]: 'incomplete',
+    [Step.ChooseBtcAddress]: 'incomplete',
     [Step.ConfirmAndLock]: null,
   });
 

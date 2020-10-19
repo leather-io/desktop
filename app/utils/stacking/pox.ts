@@ -21,7 +21,7 @@ import BN from 'bn.js';
 import { address } from 'bitcoinjs-lib';
 import { BigNumber } from 'bignumber.js';
 
-interface POXInfo {
+interface PoxInfo {
   contract_id: string;
   first_burnchain_block_height: number;
   min_amount_ustx: number;
@@ -32,7 +32,7 @@ interface POXInfo {
 }
 
 export interface StackerInfo {
-  amountMicroSTX: string;
+  amountMicroStx: string;
   firstRewardCycle: number;
   lockPeriod: number;
   poxAddr: {
@@ -63,9 +63,9 @@ export class POX {
     }
   }
 
-  async getPOXInfo(): Promise<POXInfo> {
+  async getPOXInfo(): Promise<PoxInfo> {
     const url = `${this.nodeURL}/v2/pox`;
-    const res = await axios.get<POXInfo>(url);
+    const res = await axios.get<PoxInfo>(url);
     return res.data;
   }
 
@@ -131,10 +131,16 @@ export class POX {
     return txOptions;
   }
 
-  modifyLockTxFee({ tx, amountMicroSTX }: { tx: StacksTransaction; amountMicroSTX: BigNumber }) {
+  modifyLockTxFee({
+    tx,
+    amountMicroStx: amountMicroStx,
+  }: {
+    tx: StacksTransaction;
+    amountMicroStx: BigNumber;
+  }) {
     const fee = tx.auth.getFee() as BN;
     (tx.payload as ContractCallPayload).functionArgs[0] = uintCV(
-      new BN(amountMicroSTX.toString(10), 10).sub(fee).toBuffer()
+      new BN(amountMicroStx.toString(10), 10).sub(fee).toBuffer()
     );
     return tx;
   }
@@ -157,7 +163,7 @@ export class POX {
     const hashbytes = data['pox-addr'].data.hashbytes.buffer;
     return {
       lockPeriod: data['lock-period'].value.toNumber(),
-      amountMicroSTX: data['amount-ustx'].value.toString(10),
+      amountMicroStx: data['amount-ustx'].value.toString(10),
       firstRewardCycle: data['first-reward-cycle'].value.toNumber(),
       poxAddr: {
         version,

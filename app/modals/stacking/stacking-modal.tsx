@@ -111,7 +111,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       ...txOptions,
       senderKey: privateKey,
     });
-    poxClient.modifyLockTxFee({ tx, amountMicroSTX: balanceBN });
+    poxClient.modifyLockTxFee({ tx, amountMicroStx: balanceBN });
     const signer = new TransactionSigner(tx);
     signer.signOrigin(createStacksPrivateKey(privateKey));
     return tx;
@@ -136,7 +136,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
         publicKey: options.publicKey.toString('hex'),
       });
 
-      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroSTX: balanceBN });
+      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroStx: balanceBN });
 
       // 2. Sign transaction
       const resp: ResponseSign = await blockstackApp.sign(

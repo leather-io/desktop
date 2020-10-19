@@ -3,8 +3,8 @@ import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';
 import { RootState } from '@store/index';
 import { Api } from '@api/api';
 import { Configuration, InfoApi } from '@stacks/blockchain-api-client';
-import fetch from 'cross-fetch';
 import { POX } from '@utils/stacking/pox';
+import { safeAwait } from '../../utils/safe-await';
 
 const createApi = (url: string) => {
   const config = new Configuration({

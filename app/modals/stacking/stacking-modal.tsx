@@ -147,9 +147,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
         throw new Error('Ledger responded with errors');
       }
 
-      const signedTx = unsignedTx.createTxWithSignature(resp.signatureVRS);
-
-      return signedTx;
+      return unsignedTx.createTxWithSignature(resp.signatureVRS);
     },
     [blockstackApp, poxInfo, numCycles, poxAddress, node.url, balance]
   );
@@ -280,7 +278,9 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       body: <StackingSuccess cycles={numCycles} />,
       footer: (
         <StackingModalFooter>
-          <StackingModalButton onClick={closeModal}>Close</StackingModalButton>
+          <StackingModalButton onClick={() => (closeModal(), history.push(routes.HOME))}>
+            Close
+          </StackingModalButton>
         </StackingModalFooter>
       ),
     }),

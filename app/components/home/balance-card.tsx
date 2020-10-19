@@ -13,7 +13,7 @@ interface BalanceCardProps {
   onSelectSend(): void;
   onSelectReceive(): void;
   onSelectStacking(): void;
-  onRequestTestnetStx(): Promise<any>;
+  onRequestTestnetStx(): Promise<void>;
 }
 
 export const BalanceCard: FC<BalanceCardProps> = props => {
@@ -45,7 +45,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         {balance === null ? '–' : toHumanReadableStx(balance)}
       </Text>
 
-      {features.stacking && (
+      {features.stacking && lockedBN.toNumber() !== 0 && (
         <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
           <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
           <Text onClick={onSelectStacking} cursor="pointer" borderBottom="1px dotted #677282">

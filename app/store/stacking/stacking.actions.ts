@@ -3,8 +3,7 @@ import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';
 import { RootState } from '@store/index';
 import { Api } from '@api/api';
 import { Configuration, InfoApi } from '@stacks/blockchain-api-client';
-import fetch from 'cross-fetch';
-import { POX } from '@utils/stacking/pox';
+import { Pox } from '@utils/stacking/pox';
 
 const createApi = (url: string) => {
   const config = new Configuration({
@@ -46,7 +45,7 @@ export const fetchStackerInfo = createAsyncThunk(
   async (address: string, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const node = selectActiveNodeApi(state);
-    const poxClient = new POX(node.url);
+    const poxClient = new Pox(node.url);
     return poxClient.getStackerInfo(address);
   }
 );

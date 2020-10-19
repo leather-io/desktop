@@ -1,14 +1,15 @@
 import React, { FC, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 import BigNumber from 'bignumber.js';
 
+import { Api } from '@api/api';
+import { microStxToStx } from '@utils/unit-convert';
+import { increment, decrement } from '@utils/mutate-numbers';
 import { RootState } from '@store/index';
 import { openInExplorer } from '@utils/external-links';
 import { selectAddress } from '@store/keys';
-import routes from '@constants/routes.json';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance } from '@store/address';
 import {
@@ -19,7 +20,6 @@ import {
 import { selectPendingTransactions } from '@store/pending-transaction';
 import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
 import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
-import { increment, decrement } from '@utils/mutate-numbers';
 import {
   TransactionList,
   StackingPromoCard,
@@ -32,13 +32,11 @@ import { TransactionModal } from '@modals/transaction/transaction-modal';
 import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
-import { Api } from '../../api/api';
 import { HomeLayout } from './home-layout';
-import { microStxToStx } from '../../utils/unit-convert';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+
   const {
     address,
     balance,
@@ -132,9 +130,8 @@ export const Home: FC = () => {
   );
   const balanceCard = (
     <BalanceCard
-      lockedSTX={stackerInfo?.amountMicroSTX}
+      lockedStx={stackerInfo?.amountMicroStx}
       balance={balance}
-      onSelectStacking={() => history.push(routes.STACKING)}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
       onRequestTestnetStx={async () => new Api(activeNode.url).getFaucetStx(address)}

@@ -11,6 +11,7 @@ module.exports = {
     createDefaultProgram: true,
   },
   rules: {
+    '@typescript-eslint/no-unsafe-return': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/no-unsafe-member-access': 0,
     '@typescript-eslint/no-unsafe-assignment': 0,

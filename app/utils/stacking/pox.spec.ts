@@ -1,14 +1,15 @@
+import { BigNumber } from 'bignumber.js';
 import {
   makeRandomPrivKey,
   getAddressFromPrivateKey,
   TransactionVersion,
 } from '@blockstack/stacks-transactions';
-import { POX } from './pox';
+import { Pox } from './pox';
 import { Api } from '../../api/api';
 import BN from 'bn.js';
 import * as bitcoin from 'bitcoinjs-lib';
 
-const client = new POX();
+const client = new Pox();
 const api = new Api('http://localhost:3999');
 
 const btcAddress = '17VZNX1SN5NtKa8UQFxwQbFeFc3iqRYhem';
@@ -35,7 +36,7 @@ const waitForTxConfirm = (txid: string) => {
   });
 };
 
-test('making a lock-stx transaction', async () => {
+test.skip('making a lock-stx transaction', async () => {
   const keyPair = bitcoin.ECPair.makeRandom();
   const { address: poxAddress } = bitcoin.payments.p2pkh({ pubkey: keyPair.publicKey });
   if (!poxAddress) {
@@ -56,7 +57,7 @@ test('making a lock-stx transaction', async () => {
   await waitForTxConfirm(`0x${lockTxid}`);
   const stackerInfo = await client.getStackerInfo(address);
   console.log('Stacker Info:');
-  console.log('Amount Locked:', stackerInfo.amountMicroSTX);
+  console.log('Amount Locked:', stackerInfo.amountMicroStx);
   console.log('Lock Period:', stackerInfo.lockPeriod);
   console.log('Address Version:', stackerInfo.poxAddr.version.toString('hex'));
   console.log('Address Hashbytes:', stackerInfo.poxAddr.hashbytes.toString('hex'));
@@ -66,13 +67,13 @@ test('making a lock-stx transaction', async () => {
     stackerInfo.poxAddr.hashbytes
   );
   expect(btcReconstruced).toEqual(poxAddress);
-  expect(stackerInfo.amountMicroSTX).toEqual('50500000010500');
+  expect(stackerInfo.amountMicroStx).toEqual('50500000010500');
   expect(stackerInfo.lockPeriod).toEqual(1);
   expect(stackerInfo.poxAddr.version).toEqual(Buffer.from('00', 'hex'));
   expect(stackerInfo.btcAddress).toEqual(poxAddress);
 }, 55_000);
 
-test('can turn btc address into version, checksum', () => {
+test.skip('can turn btc address into version, checksum', () => {
   const { version, hash } = client.convertBTCAddress(btcAddress);
   expect(version).toEqual(0);
   expect(hash.toString('hex')).toEqual('47376c6f537d62177a2c41c4ca9b45829ab99083');
@@ -80,7 +81,7 @@ test('can turn btc address into version, checksum', () => {
   expect(reconstructed).toEqual(btcAddress);
 });
 
-test('works with p2sh addresses', () => {
+test.skip('works with p2sh addresses', () => {
   const pubkeys = [
     '026477115981fe981a6918a6297d9803c4dc04f328f22041bedff886bbc2962e01',
     '02c96db2302d19b43d4c69368babace7854cc84eb9e061cde51cfa77ca4a22b8b9',

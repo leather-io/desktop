@@ -1,4 +1,12 @@
-import React, { FC, MutableRefObject, RefObject, useLayoutEffect, useRef, useEffect } from 'react';
+import React, {
+  FC,
+  MutableRefObject,
+  RefObject,
+  useLayoutEffect,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 import { useSelector } from 'react-redux';
 import { useHover, useFocus } from 'use-events';
 import { Box, Text, useClipboard } from '@blockstack/ui';
@@ -7,7 +15,7 @@ import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 import { capitalize } from '@utils/capitalize';
 import { getStxTxDirection } from '@utils/get-stx-transfer-direction';
 import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
-import { TransactionIcon } from './transaction-icon';
+import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
 import { toHumanReadableStx } from '@utils/unit-convert';
 
 import {
@@ -35,7 +43,7 @@ interface TransactionListItemProps {
   address: string;
   activeTxIdRef: MutableRefObject<any>;
   domNodeMapRef: MutableRefObject<any>;
-  onSelectTx: (txId: string) => void;
+  onSelectTx(txId: string): void;
 }
 
 export const TransactionListItem: FC<TransactionListItemProps> = props => {
@@ -45,7 +53,25 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
   }));
 
   const direction = getStxTxDirection(address, tx);
-  const isStackingTx = isLockTx(tx, poxInfo?.contract_id);
+
+  const getTxIconVariant = useCallback((): TransactionIconVariants => {
+    if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition') {
+      return 'failed';
+    }
+    if (tx.tx_type === 'token_transfer') {
+      return direction;
+    }
+    if (tx.tx_type === 'contract_call' && isLockTx(tx, poxInfo?.contract_id)) {
+      return 'locked';
+    }
+    return 'default';
+  }, [direction, poxInfo?.contract_id, tx]);
+
+  const transactionTitle = useCallback(() => {
+    if (tx.tx_type === 'token_transfer') return capitalize(direction);
+    return capitalize(tx.tx_type).replace('_', ' ');
+  }, [tx.tx_id]);
+
   const sumPrefix = direction === 'sent' ? '−' : '';
   const memo =
     tx.tx_type === 'token_transfer' &&
@@ -99,10 +125,10 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
       {...bindHover}
       {...bindFocus}
     >
-      <TransactionIcon variant={isStackingTx ? 'locked' : direction} mr="base-loose" />
+      <TransactionIcon variant={getTxIconVariant()} mr="base-loose" />
       <Box flex={1}>
         <Text textStyle="body.large.medium" display="block">
-          {capitalize(direction)}
+          {transactionTitle()}
         </Text>
         <Text textStyle="body.small" color="ink.600" display={['none', 'none', 'block']}>
           {txDateFormatted}

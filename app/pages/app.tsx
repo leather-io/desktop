@@ -51,7 +51,7 @@ export const App: FC = ({ children }) => {
     if (error || !txResponse || txResponse.data.tx_status === 'pending') {
       return;
     }
-    if (txResponse.data.tx_status === 'success') {
+    if (txResponse.data.tx_status !== ('pending' as any)) {
       dispatch(pendingTransactionSuccessful(txResponse.data));
     }
   };

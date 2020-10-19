@@ -1,18 +1,20 @@
 import React, { FC } from 'react';
-import { Flex, FlexProps, Spinner } from '@blockstack/ui';
+import { Flex, FlexProps, Spinner, FailedIcon } from '@blockstack/ui';
 
 import { SentArrow } from '@components/icons/sent-arrow';
 import { ReceivedArrow } from '@components/icons/received-arrow';
 import { LockedIcon } from '@components/icons/locked';
 import { StxTxDirection } from '@utils/get-stx-transfer-direction';
 
-type TransactionIconVariants = StxTxDirection | 'pending' | 'locked';
+export type TransactionIconVariants = StxTxDirection | 'pending' | 'locked' | 'failed' | 'default';
 
 const iconMap: Record<TransactionIconVariants, () => JSX.Element> = {
   sent: SentArrow,
   received: ReceivedArrow,
   locked: LockedIcon,
+  failed: () => <FailedIcon size="16px" />,
   pending: () => <Spinner size="xs" color="#5548FF" />,
+  default: () => <></>,
 };
 
 function getTxTypeIcon(direction: TransactionIconVariants) {

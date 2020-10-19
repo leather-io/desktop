@@ -9,24 +9,17 @@ import BN from 'bn.js';
 
 interface BalanceCardProps {
   balance: string | null;
-  lockedSTX?: string;
+  lockedStx?: string;
   onSelectSend(): void;
   onSelectReceive(): void;
-  onSelectStacking(): void;
-  onRequestTestnetStx(): Promise<void>;
+  onRequestTestnetStx(): Promise<any>;
 }
 
 export const BalanceCard: FC<BalanceCardProps> = props => {
-  const {
-    balance,
-    onSelectReceive,
-    onSelectSend,
-    onRequestTestnetStx,
-    onSelectStacking,
-    lockedSTX,
-  } = props;
+  const { balance, onSelectReceive, onSelectSend, onRequestTestnetStx, lockedStx } = props;
 
   const [requestingTestnetStx, setRequestingTestnetStx] = useState(false);
+
   const requestTestnetStacks = async () => {
     setRequestingTestnetStx(true);
     await safeAwait(Promise.allSettled([onRequestTestnetStx(), delay(1500)]));
@@ -34,8 +27,9 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
   };
 
   const balanceBN = new BN(balance || 0, 10);
-  const lockedBN = new BN(lockedSTX || 0, 10);
+  const lockedBN = new BN(lockedStx || 0, 10);
   const available = balanceBN.sub(lockedBN);
+
   return (
     <Box>
       <Text textStyle="body.large.medium" display="block">
@@ -48,9 +42,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
       {features.stacking && lockedBN.toNumber() !== 0 && (
         <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
           <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
-          <Text onClick={onSelectStacking} cursor="pointer" borderBottom="1px dotted #677282">
-            {toHumanReadableStx(lockedSTX || '0')} locked
-          </Text>
+          <Text>{toHumanReadableStx(lockedStx || '0')} locked</Text>
           <Text children="·" mx="base-tight" />
           <Text>{toHumanReadableStx(available)} available</Text>
         </Flex>

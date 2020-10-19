@@ -19,7 +19,7 @@ import {
   decryptSoftwareWallet,
   selectWalletType,
 } from '@store/keys';
-import { POX } from '@utils/stacking/pox';
+import { Pox } from '@utils/stacking/pox';
 
 import {
   StackingModalHeader,
@@ -94,7 +94,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
     if (!password || !encryptedMnemonic || !salt || !poxInfo || !balance) {
       throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
     }
-    const poxClient = new POX(node.url);
+    const poxClient = new Pox(node.url);
     const { privateKey } = await decryptSoftwareWallet({
       ciphertextMnemonic: encryptedMnemonic,
       salt,
@@ -111,7 +111,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       ...txOptions,
       senderKey: privateKey,
     });
-    poxClient.modifyLockTxFee({ tx, amountMicroSTX: balanceBN });
+    poxClient.modifyLockTxFee({ tx, amountMicroStx: balanceBN });
     const signer = new TransactionSigner(tx);
     signer.signOrigin(createStacksPrivateKey(privateKey));
     return tx;
@@ -119,7 +119,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
   const createLedgerWalletTx = useCallback(
     async (options: { publicKey: Buffer }): Promise<StacksTransaction> => {
-      const poxClient = new POX(node.url);
+      const poxClient = new Pox(node.url);
       if (!blockstackApp || !poxInfo || !balance)
         throw new Error('`poxInfo` or `blockstackApp` is not defined');
       // 1. Form unsigned contract call transaction
@@ -136,7 +136,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
         publicKey: options.publicKey.toString('hex'),
       });
 
-      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroSTX: balanceBN });
+      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroStx: balanceBN });
 
       // 2. Sign transaction
       const resp: ResponseSign = await blockstackApp.sign(

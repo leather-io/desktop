@@ -1175,10 +1175,10 @@
     sha.js "^2.4.11"
     smart-buffer "^4.1.0"
 
-"@blockstack/stacks-transactions@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@blockstack/stacks-transactions/-/stacks-transactions-0.7.0.tgz#c587f69879b1903bada87769f1d6d1217479336a"
-  integrity sha512-9IUR641PJpigYDCWdtKFgBIk0Oxyoc2M2XVdyaEOEcRhI+4lcacDhsuseAmGbkB9FhJgJcNicWPujUPNFl1XCw==
+"@blockstack/stacks-transactions@0.6.1-beta.2":
+  version "0.6.1-beta.2"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-transactions/-/stacks-transactions-0.6.1-beta.2.tgz#c7d00a9118794761d1254de9e2633962ffe19834"
+  integrity sha512-2GJgk2AZV7aXli/j58kVOl769DhiYMMtyKfd35JokV8jQXiWgHNOLuMPE3QZccQCFKnIfdqRt3N7GLnGNzUW2w==
   dependencies:
     "@types/bn.js" "^4.11.6"
     "@types/elliptic" "^6.4.12"
@@ -1685,10 +1685,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@stacks/blockchain-api-client@0.14.4":
-  version "0.14.4"
-  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.14.4.tgz#0fe6710877d53b65a829b7671a40d6af2007e785"
-  integrity sha512-EE2RWHyALldElygi5dsICDBGoQNelIkZ5kjYS1iCUTuhZBlt3/ew31IS0VMFmWQISLrax1ZozrPgrC1iWMfOxA==
+"@stacks/blockchain-api-client@0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.28.0.tgz#d1dc06c38a459118e580d26ebf458b8fa14c5c6e"
+  integrity sha512-4hhmdhRmgDeuLLeQg+Oj+FlYggDn5Wu5EcVVSCcDXjdXpYsOBeoxkOjAfRdTSyxXHczqP0klSOsHOoe6BAqmeA==
   dependencies:
     "@blockstack/stacks-blockchain-api-types" "^0.5.3"
     "@types/ws" "^7.2.6"

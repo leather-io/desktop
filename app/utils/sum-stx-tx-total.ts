@@ -4,7 +4,7 @@ import { getStxTxDirection } from './get-stx-transfer-direction';
 import { isLockTx } from './tx-utils';
 
 export function sumStxTxTotal(address: string, tx: Transaction, poxContractID?: string) {
-  const dir = getStxTxDirection(address, tx, poxContractID);
+  const dir = getStxTxDirection(address, tx);
   if (tx.tx_type === 'token_transfer') {
     return new BigNumber(tx.token_transfer.amount).plus(dir === 'sent' ? tx.fee_rate : 0);
   }

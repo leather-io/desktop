@@ -1,17 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';
+
+import { selectActiveNodeApi } from '@store/stacks-node/stacks-node.reducer';
 import { RootState } from '@store/index';
 import { Api } from '@api/api';
-import { Configuration, InfoApi } from '@stacks/blockchain-api-client';
 import { Pox } from '@utils/stacking/pox';
-
-const createApi = (url: string) => {
-  const config = new Configuration({
-    fetchApi: fetch,
-    basePath: url,
-  });
-  return new InfoApi(config);
-};
+import { safeAwait } from '@utils/safe-await';
 
 export const fetchStackingInfo = createAsyncThunk('stacking/details', async (_arg, thunkApi) => {
   const state = thunkApi.getState() as RootState;
@@ -25,18 +18,17 @@ export const fetchCoreDetails = createAsyncThunk(
   async (_arg, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const network = selectActiveNodeApi(state);
-    const api = createApi(network.url);
-    return api.getCoreApiInfo();
+    const resp = await new Api(network.url).getCoreDetails();
+    return resp.data;
   }
 );
-
 export const fetchBlocktimeInfo = createAsyncThunk(
   'stacking/block-time-details',
   async (_arg, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const network = selectActiveNodeApi(state);
-    const api = createApi(network.url);
-    return api.getNetworkBlockTimes();
+    const resp = await new Api(network.url).getNetworkBlockTimes();
+    return resp.data;
   }
 );
 
@@ -46,6 +38,12 @@ export const fetchStackerInfo = createAsyncThunk(
     const state = thunkApi.getState() as RootState;
     const node = selectActiveNodeApi(state);
     const poxClient = new Pox(node.url);
-    return poxClient.getStackerInfo(address);
+    const [error, resp] = await safeAwait(poxClient.getStackerInfo(address));
+    if (error) {
+      console.log(error);
+      throw error;
+    }
+    if (resp) return resp;
+    return null;
   }
 );

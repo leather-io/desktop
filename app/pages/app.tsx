@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import urljoin from 'url-join';
+
 import { connectWebSocketClient } from '@stacks/blockchain-api-client';
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
 import { BetaNotice } from '@components/beta-notice';
@@ -15,7 +17,6 @@ import { selectAddress } from '@store/keys';
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
 import { selectActiveNodeApi } from '@store/stacks-node';
-import urljoin from 'url-join';
 import { useInterval } from '@hooks/use-interval';
 import { selectPendingTransactions } from '@store/pending-transaction';
 import {

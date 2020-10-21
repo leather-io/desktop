@@ -1,15 +1,16 @@
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
+import urljoin from 'url-join';
 import BigNumber from 'bignumber.js';
-import { broadcastTransaction, StacksTransaction } from '@blockstack/stacks-transactions';
+import { StacksTransaction, TxBroadcastResult } from '@blockstack/stacks-transactions';
 
 import { Api } from '../../api/api';
 import { stacksNetwork } from '../../environment';
 import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
-import { addPendingTransaction } from '../pending-transaction';
-import { Dispatch, GetState } from '../index';
-import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';
+import { addPendingTransaction } from '@store/pending-transaction';
+import { Dispatch, GetState } from '@store/index';
+import { selectActiveNodeApi } from '@store/stacks-node';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'
@@ -52,13 +53,13 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
   'transactions/broadcast-transactions-fail'
 );
 
-interface BroadcastStxTransactionArgs {
+interface BroadcastTransactionArgs {
   transaction: StacksTransaction;
   amount: BigNumber;
-  onBroadcastSuccess: () => void;
-  onBroadcastFail: () => void;
+  onBroadcastSuccess(): void;
+  onBroadcastFail(): void;
 }
-export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
+export function broadcastTransaction(args: BroadcastTransactionArgs) {
   const { amount, transaction, onBroadcastSuccess, onBroadcastFail } = args;
   return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(broadcastTx());
@@ -67,7 +68,7 @@ export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
     stacksNetwork.coreApiUrl = activeNode.url;
 
     const [error, blockchainResponse] = await safeAwait(
-      broadcastTransaction(transaction, stacksNetwork)
+      broadcastRawTransaction(transaction.serialize(), activeNode.url)
     );
     if (error || !blockchainResponse) {
       dispatch(broadcastTxFail(error as any));
@@ -89,4 +90,28 @@ export function broadcastStxTransaction(args: BroadcastStxTransactionArgs) {
     );
     return blockchainResponse;
   };
+}
+
+export async function broadcastRawTransaction(
+  rawTx: Buffer,
+  url: string
+): Promise<TxBroadcastResult> {
+  const requestHeaders = {
+    'Content-Type': 'application/octet-stream',
+  };
+
+  const options = {
+    method: 'POST',
+    headers: requestHeaders,
+    body: rawTx,
+  };
+
+  const response = await fetch(urljoin(url, '/v2/transactions'), options);
+  const text = await response.text();
+
+  try {
+    return JSON.parse(text) as TxBroadcastResult;
+  } catch (e) {
+    return text;
+  }
 }

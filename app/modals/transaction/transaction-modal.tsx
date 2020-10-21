@@ -28,7 +28,7 @@ import {
   selectWalletType,
 } from '@store/keys';
 import { validateAddressChain } from '../../crypto/validate-address-net';
-import { broadcastStxTransaction } from '@store/transaction';
+import { broadcastTransaction } from '@store/transaction';
 import { stxToMicroStx, microStxToStx } from '@utils/unit-convert';
 
 import { stacksNetwork } from '../../environment';
@@ -163,7 +163,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
       if (transaction) {
         setIsDecrypting(false);
-        dispatch(broadcastStxTransaction({ ...broadcastActions, transaction }));
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
 
@@ -183,7 +183,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       }
 
       if (transaction) {
-        dispatch(broadcastStxTransaction({ ...broadcastActions, transaction }));
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
   };

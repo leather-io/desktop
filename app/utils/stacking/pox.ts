@@ -20,6 +20,29 @@ import {
 } from '@blockstack/stacks-transactions';
 import BN from 'bn.js';
 import { address } from 'bitcoinjs-lib';
+import { Api } from '@api/api';
+
+enum StackingErrors {
+  ERR_STACKING_UNREACHABLE = 255,
+  ERR_STACKING_INSUFFICIENT_FUNDS = 1,
+  ERR_STACKING_INVALID_LOCK_PERIOD = 2,
+  ERR_STACKING_ALREADY_STACKED = 3,
+  ERR_STACKING_NO_SUCH_PRINCIPAL = 4,
+  ERR_STACKING_EXPIRED = 5,
+  ERR_STACKING_STX_LOCKED = 6,
+  ERR_STACKING_PERMISSION_DENIED = 9,
+  ERR_STACKING_THRESHOLD_NOT_MET = 11,
+  ERR_STACKING_POX_ADDRESS_IN_USE = 12,
+  ERR_STACKING_INVALID_POX_ADDRESS = 13,
+  ERR_STACKING_ALREADY_REJECTED = 17,
+  ERR_STACKING_INVALID_AMOUNT = 18,
+  ERR_NOT_ALLOWED = 19,
+  ERR_STACKING_ALREADY_DELEGATED = 20,
+  ERR_DELEGATION_EXPIRES_DURING_LOCK = 21,
+  ERR_DELEGATION_TOO_MUCH_LOCKED = 22,
+  ERR_DELEGATION_POX_ADDR_REQUIRED = 23,
+  ERR_INVALID_START_BURN_HEIGHT = 24,
+}
 
 interface PoxInfo {
   contract_id: string;
@@ -55,38 +78,35 @@ interface StackerInfoCV {
 }
 
 export class Pox {
-  nodeURL = 'http://localhost:3999';
+  constructor(public nodeUrl: string) {}
 
-  constructor(nodeURL?: string) {
-    if (nodeURL) {
-      this.nodeURL = nodeURL;
-    }
-  }
-
-  async getPOXInfo(): Promise<PoxInfo> {
-    const url = `${this.nodeURL}/v2/pox`;
+  async getPoxInfo(): Promise<PoxInfo> {
+    const url = `${this.nodeUrl}/v2/pox`;
     const res = await axios.get<PoxInfo>(url);
     return res.data;
   }
 
-  async lockSTX({
-    amountMicroSTX,
+  async lockStx({
+    amountMicroStx,
     poxAddress,
     cycles,
     key,
     contract,
+    burnBlockHeight,
   }: {
     key: string;
     cycles: number;
     poxAddress: string;
-    amountMicroSTX: BigNumber;
+    amountMicroStx: BigNumber;
     contract: string;
+    burnBlockHeight: number;
   }) {
     const txOptions = this.getLockTxOptions({
-      amountMicroSTX,
+      amountMicroStx,
       cycles,
       poxAddress,
       contract,
+      burnBlockHeight,
     });
     const tx = await makeContractCall({
       ...txOptions,
@@ -100,15 +120,17 @@ export class Pox {
   }
 
   getLockTxOptions({
-    amountMicroSTX,
+    amountMicroStx,
     poxAddress,
     cycles,
     contract,
+    burnBlockHeight,
   }: {
     cycles: number;
     poxAddress: string;
-    amountMicroSTX: BigNumber;
+    amountMicroStx: BigNumber;
     contract: string;
+    burnBlockHeight: number;
   }) {
     const { version, hash } = this.convertBTCAddress(poxAddress);
     const versionBuffer = bufferCV(new BN(version, 10).toBuffer());
@@ -117,14 +139,20 @@ export class Pox {
       hashbytes,
       version: versionBuffer,
     });
-    const [contractAddress, contractName]: string[] = contract.split('.');
+    const [contractAddress, contractName] = contract.split('.');
     const network = new StacksTestnet();
-    network.coreApiUrl = this.nodeURL;
+    network.coreApiUrl = this.nodeUrl;
     const txOptions: ContractCallOptions = {
       contractAddress,
       contractName,
       functionName: 'stack-stx',
-      functionArgs: [uintCV(amountMicroSTX.toString(10)), address, uintCV(cycles)],
+      // sum of uStx, address, burn_block_height, num_cycles
+      functionArgs: [
+        uintCV(amountMicroStx.toString(10)),
+        address,
+        uintCV(burnBlockHeight),
+        uintCV(cycles),
+      ],
       validateWithAbi: true,
       network,
     };
@@ -140,19 +168,18 @@ export class Pox {
   }
 
   async getStackerInfo(address: string): Promise<StackerInfo> {
-    const info = await this.getPOXInfo();
-    console.log(address);
+    const info = await this.getPoxInfo();
     const args = [`0x${serializeCV(standardPrincipalCV(address)).toString('hex')}`];
-    const res = await this.callReadOnly({
+    const res = await new Api(this.nodeUrl).callReadOnly({
       contract: info.contract_id,
-      args,
       functionName: 'get-stacker-info',
+      args,
     });
-    const cv = deserializeCV(Buffer.from(res.slice(2), 'hex')) as TupleCV;
-    // Not sure why these types are off
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const data: StackerInfoCV = cv.value.data;
+    console.log({ ...info });
+    const cv = deserializeCV(Buffer.from(res.slice(2), 'hex')) as any; //TupleCV;
+    console.log({ cv });
+    if (!cv.value) throw new Error(`Failed to fetch stacker info. ${StackingErrors[cv.type]}`);
+    const data = cv.value.data as StackerInfoCV;
     const version = data['pox-addr'].data.version.buffer;
     const hashbytes = data['pox-addr'].data.hashbytes.buffer;
     return {
@@ -165,31 +192,6 @@ export class Pox {
       },
       btcAddress: this.getBTCAddress(version, hashbytes),
     };
-  }
-
-  async callReadOnly({
-    contract,
-    functionName,
-    args,
-  }: {
-    contract: string;
-    functionName: string;
-    args: string[];
-  }) {
-    const [contractAddress, contractName] = contract.split('.');
-    const url = `${this.nodeURL}/v2/contracts/call-read/${contractAddress}/${contractName}/${functionName}`;
-    const body = {
-      sender: 'ST384HBMC97973427QMM58NY2R9TTTN4M599XM5TD',
-      arguments: args,
-    };
-    // Note: must include this custom header - the default Axios one for JSON
-    // is not accepted by the core node.
-    const response = await axios.post(url, body, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data.result as string;
   }
 
   convertBTCAddress(btcAddress: string) {

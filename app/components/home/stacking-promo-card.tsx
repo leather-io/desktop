@@ -22,7 +22,7 @@ export const StackingPromoCard: FC<StackingPromoCardProps> = ({ minRequiredStx }
         Earn Bitcoin rewards
       </Text>
       <Text display="block" mt="tight" textAlign="center" maxWidth="320px" mx="auto">
-        You’ll earn Bitcoin when you temporarily lock {minRequiredStx} STX or more
+        You’ll earn Bitcoin when you temporarily lock {Math.ceil(minRequiredStx)} STX or more
       </Text>
       <Button
         size="md"

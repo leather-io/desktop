@@ -9,8 +9,9 @@ import { Api } from '../../api/api';
 import BN from 'bn.js';
 import * as bitcoin from 'bitcoinjs-lib';
 
-const client = new Pox();
-const api = new Api('http://localhost:3999');
+const localUrl = 'http://localhost:3999';
+const client = new Pox(localUrl);
+const api = new Api(localUrl);
 
 const btcAddress = '17VZNX1SN5NtKa8UQFxwQbFeFc3iqRYhem';
 
@@ -46,13 +47,14 @@ test.skip('making a lock-stx transaction', async () => {
   const address = getAddressFromPrivateKey(key.data, TransactionVersion.Testnet);
   const faucetResponse = await api.getFaucetStx(address);
   await waitForTxConfirm(faucetResponse.data.txId);
-  const poxInfo = await client.getPOXInfo();
-  const lockTxid = await client.lockSTX({
-    amountMicroSTX: new BigNumber(50500000010000 + 500, 10),
+  const poxInfo = await client.getPoxInfo();
+  const lockTxid = await client.lockStx({
+    amountMicroStx: new BigNumber(50500000010000 + 500, 10),
     cycles: 1,
     poxAddress,
     key: key.data.toString('hex'),
     contract: poxInfo.contract_id,
+    burnBlockHeight: 1,
   });
   await waitForTxConfirm(`0x${lockTxid}`);
   const stackerInfo = await client.getStackerInfo(address);

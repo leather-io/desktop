@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, FlexProps, Spinner, FailedIcon } from '@blockstack/ui';
+import { Flex, FlexProps, Box, Spinner, FailedIcon } from '@blockstack/ui';
 
 import { SentArrow } from '@components/icons/sent-arrow';
 import { ReceivedArrow } from '@components/icons/received-arrow';
@@ -14,7 +14,7 @@ const iconMap: Record<TransactionIconVariants, () => JSX.Element> = {
   locked: LockedIcon,
   failed: () => <FailedIcon size="16px" />,
   pending: () => <Spinner size="xs" color="#5548FF" />,
-  default: () => <></>,
+  default: () => <Box width="16px" height="16px" borderRadius="50%" backgroundColor="ink.100" />,
 };
 
 function getTxTypeIcon(direction: TransactionIconVariants) {

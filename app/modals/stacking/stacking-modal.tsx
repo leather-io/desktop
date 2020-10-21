@@ -31,7 +31,7 @@ import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { StackingSuccess } from './steps/stacking-success';
-import { selectPoxInfo } from '@store/stacking';
+import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
 import {
   makeUnsignedContractCall,
   StacksTransaction,
@@ -39,7 +39,7 @@ import {
   TransactionSigner,
   createStacksPrivateKey,
 } from '@blockstack/stacks-transactions';
-import { broadcastStxTransaction } from '@store/transaction';
+import { broadcastTransaction } from '@store/transaction';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance } from '@store/address';
 
@@ -71,17 +71,25 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
   // const [loading, setLoading] = useState(false);
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
-  const { encryptedMnemonic, salt, walletType, publicKey, poxInfo, node, balance } = useSelector(
-    (state: RootState) => ({
-      salt: selectSalt(state),
-      encryptedMnemonic: selectEncryptedMnemonic(state),
-      walletType: selectWalletType(state),
-      publicKey: selectPublicKey(state),
-      poxInfo: selectPoxInfo(state),
-      node: selectActiveNodeApi(state),
-      balance: selectAddressBalance(state),
-    })
-  );
+  const {
+    encryptedMnemonic,
+    salt,
+    walletType,
+    publicKey,
+    poxInfo,
+    node,
+    coreNodeInfo,
+    balance,
+  } = useSelector((state: RootState) => ({
+    salt: selectSalt(state),
+    encryptedMnemonic: selectEncryptedMnemonic(state),
+    walletType: selectWalletType(state),
+    publicKey: selectPublicKey(state),
+    poxInfo: selectPoxInfo(state),
+    coreNodeInfo: selectCoreNodeInfo(state),
+    node: selectActiveNodeApi(state),
+    balance: selectAddressBalance(state),
+  }));
 
   const initialStep =
     walletType === 'software'
@@ -94,6 +102,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
     if (!password || !encryptedMnemonic || !salt || !poxInfo || !balance) {
       throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
     }
+    if (coreNodeInfo === null) throw new Error('Stacking requires coreNodeInfo');
     const poxClient = new Pox(node.url);
     const { privateKey } = await decryptSoftwareWallet({
       ciphertextMnemonic: encryptedMnemonic,
@@ -104,31 +113,41 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
     const txOptions = poxClient.getLockTxOptions({
       cycles: numCycles,
       poxAddress,
-      amountMicroSTX: balanceBN,
+      amountMicroStx: balanceBN,
       contract: poxInfo.contract_id,
+      burnBlockHeight: coreNodeInfo.burn_block_height,
     });
-    const tx = await makeContractCall({
-      ...txOptions,
-      senderKey: privateKey,
-    });
+    const tx = await makeContractCall({ ...txOptions, senderKey: privateKey });
     poxClient.modifyLockTxFee({ tx, amountMicroStx: balanceBN });
     const signer = new TransactionSigner(tx);
     signer.signOrigin(createStacksPrivateKey(privateKey));
     return tx;
-  }, [encryptedMnemonic, password, salt, numCycles, balance, poxInfo, poxAddress, node.url]);
+  }, [
+    password,
+    encryptedMnemonic,
+    salt,
+    poxInfo,
+    balance,
+    coreNodeInfo,
+    node.url,
+    numCycles,
+    poxAddress,
+  ]);
 
   const createLedgerWalletTx = useCallback(
     async (options: { publicKey: Buffer }): Promise<StacksTransaction> => {
+      if (coreNodeInfo === null) throw new Error('Stacking requires coreNodeInfo');
       const poxClient = new Pox(node.url);
       if (!blockstackApp || !poxInfo || !balance)
         throw new Error('`poxInfo` or `blockstackApp` is not defined');
       // 1. Form unsigned contract call transaction
       const balanceBN = new BigNumber(balance, 10);
       const txOptions = poxClient.getLockTxOptions({
-        amountMicroSTX: balanceBN,
+        amountMicroStx: balanceBN,
         poxAddress,
         cycles: numCycles,
         contract: poxInfo.contract_id,
+        burnBlockHeight: coreNodeInfo.burn_block_height,
       });
 
       const unsignedTx = await makeUnsignedContractCall({
@@ -149,7 +168,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
       return unsignedTx.createTxWithSignature(resp.signatureVRS);
     },
-    [blockstackApp, poxInfo, numCycles, poxAddress, node.url, balance]
+    [coreNodeInfo, node.url, blockstackApp, poxInfo, balance, poxAddress, numCycles]
   );
 
   const closeModal = () => onClose();
@@ -177,7 +196,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
       if (transaction) {
         setIsDecrypting(false);
-        dispatch(broadcastStxTransaction({ ...broadcastActions, transaction }));
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
 
@@ -195,7 +214,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       }
 
       if (transaction) {
-        dispatch(broadcastStxTransaction({ ...broadcastActions, transaction }));
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
   };

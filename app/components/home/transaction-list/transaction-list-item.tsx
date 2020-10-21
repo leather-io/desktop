@@ -12,22 +12,22 @@ import { useHover, useFocus } from 'use-events';
 import { Box, Text, useClipboard } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
+import { RootState } from '@store/index';
+import { selectPoxInfo } from '@store/stacking';
 import { capitalize } from '@utils/capitalize';
 import { getStxTxDirection } from '@utils/get-stx-transfer-direction';
 import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
 import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
 import { toHumanReadableStx } from '@utils/unit-convert';
+import { makeExplorerLink } from '@utils/external-links';
+import { getRecipientAddress, isLockTx } from '@utils/tx-utils';
 
 import {
   createTxListContextMenu,
   registerHandler,
   deregisterHandler,
 } from './transaction-list-context-menu';
-import { makeExplorerLink } from '@utils/external-links';
-import { getRecipientAddress, isLockTx } from '@utils/tx-utils';
 import { TransactionListItemContainer } from './transaction-list-item-container';
-import { RootState } from '@store/index';
-import { selectPoxInfo } from '@store/stacking';
 
 const dateOptions = {
   year: 'numeric',
@@ -70,7 +70,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
   const transactionTitle = useCallback(() => {
     if (tx.tx_type === 'token_transfer') return capitalize(direction);
     return capitalize(tx.tx_type).replace('_', ' ');
-  }, [tx.tx_id]);
+  }, [direction, tx.tx_type]);
 
   const sumPrefix = direction === 'sent' ? '−' : '';
   const memo =

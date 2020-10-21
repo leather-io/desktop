@@ -9,7 +9,7 @@ import { RootState } from '..';
 import {
   fetchStackingInfo,
   fetchCoreDetails,
-  fetchBlocktimeInfo,
+  fetchBlockTimeInfo,
   fetchStackerInfo,
 } from './stacking.actions';
 import { NETWORK } from '../../constants/index';
@@ -40,7 +40,7 @@ export const stackingSlice = createSlice({
     [fetchCoreDetails.fulfilled.toString()]: (state, a: PayloadAction<CoreNodeInfoResponse>) => {
       state.coreNodeInfo = a.payload;
     },
-    [fetchBlocktimeInfo.fulfilled.toString()]: (
+    [fetchBlockTimeInfo.fulfilled.toString()]: (
       state,
       a: PayloadAction<NetworkBlockTimesResponse>
     ) => {

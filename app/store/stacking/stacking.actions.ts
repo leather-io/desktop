@@ -22,7 +22,7 @@ export const fetchCoreDetails = createAsyncThunk(
     return resp.data;
   }
 );
-export const fetchBlocktimeInfo = createAsyncThunk(
+export const fetchBlockTimeInfo = createAsyncThunk(
   'stacking/block-time-details',
   async (_arg, thunkApi) => {
     const state = thunkApi.getState() as RootState;

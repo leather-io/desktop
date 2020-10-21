@@ -56,7 +56,7 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
 interface BroadcastTransactionArgs {
   transaction: StacksTransaction;
   amount: BigNumber;
-  onBroadcastSuccess(): void;
+  onBroadcastSuccess(txId: string): void;
   onBroadcastFail(): void;
 }
 export function broadcastTransaction(args: BroadcastTransactionArgs) {
@@ -80,7 +80,7 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
       onBroadcastFail();
       return;
     }
-    onBroadcastSuccess();
+    onBroadcastSuccess(safelyFormatHexTxid(blockchainResponse));
     dispatch(
       addPendingTransaction({
         tx_id: safelyFormatHexTxid(blockchainResponse),

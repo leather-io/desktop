@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import urljoin from 'url-join';
-
 import { connectWebSocketClient } from '@stacks/blockchain-api-client';
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
 import { BetaNotice } from '@components/beta-notice';
@@ -20,7 +19,7 @@ import { selectActiveNodeApi } from '@store/stacks-node';
 import { useInterval } from '@hooks/use-interval';
 import { selectPendingTransactions } from '@store/pending-transaction';
 import {
-  fetchBlocktimeInfo,
+  fetchBlockTimeInfo,
   fetchCoreDetails,
   fetchStackerInfo,
   fetchStackingInfo,
@@ -57,9 +56,7 @@ export const App: FC = ({ children }) => {
     }
   };
 
-  useNavigatorOnline({
-    onReconnect: initAppWithStxAddressInfo,
-  });
+  useNavigatorOnline({ onReconnect: initAppWithStxAddressInfo });
 
   useInterval(() => refreshWalletDetailsWithoutLoader(), 60_000);
 
@@ -72,7 +69,7 @@ export const App: FC = ({ children }) => {
   useEffect(() => {
     dispatch(fetchStackingInfo());
     dispatch(fetchCoreDetails());
-    dispatch(fetchBlocktimeInfo());
+    dispatch(fetchBlockTimeInfo());
   }, [dispatch]);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import urljoin from 'url-join';
-import { connectWebSocketClient } from '@stacks/blockchain-api-client';
+import { connectWebSocketClient, StacksApiWebSocketClient } from '@stacks/blockchain-api-client';
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
 import { BetaNotice } from '@components/beta-notice';
 import {
@@ -66,25 +66,22 @@ export const App: FC = ({ children }) => {
     initAppWithStxAddressInfo();
   }, [address, activeNode, initAppWithStxAddressInfo]);
 
-  useEffect(() => {
+  useInterval(() => {
     dispatch(fetchStackingInfo());
     dispatch(fetchCoreDetails());
     dispatch(fetchBlockTimeInfo());
-  }, [dispatch]);
+  }, 5_000);
 
   useEffect(() => {
-    if (!address) return;
-    dispatch(fetchStackerInfo(address));
+    if (address) dispatch(fetchStackerInfo(address));
   }, [dispatch, address]);
 
   useEffect(() => {
     const wsUrl = new URL(activeNode.url);
     wsUrl.protocol = 'ws:';
+    let client: null | StacksApiWebSocketClient;
     async function run() {
-      const client = await connectWebSocketClient(
-        urljoin(wsUrl.toString(), 'extended', 'v1', 'ws')
-      );
-
+      client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'extended', 'v1', 'ws'));
       if (!address) return;
       await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
         dispatch(updateAddressBalance({ address, balance }));
@@ -97,6 +94,9 @@ export const App: FC = ({ children }) => {
       });
     }
     void run();
+    return () => {
+      if (client) client.webSocket.close();
+    };
   }, [address, dispatch, activeNode.url]);
 
   return (

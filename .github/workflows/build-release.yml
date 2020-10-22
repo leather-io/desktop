@@ -53,12 +53,6 @@ jobs:
 
       - run: echo ${{ matrix.NPM_COMMAND }}
 
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
-        if: matrix.os == 'ubuntu-latest'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build releases
         run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
         env:

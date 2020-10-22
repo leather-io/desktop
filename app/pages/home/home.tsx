@@ -1,6 +1,6 @@
 import React, { FC, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from '@blockstack/ui';
+import { Box, Flex, Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 import BigNumber from 'bignumber.js';
 
@@ -18,7 +18,7 @@ import {
   selectTransactionListFetchError,
 } from '@store/transaction';
 import { selectPendingTransactions } from '@store/pending-transaction';
-import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
+import { selectNextCycleInfo, selectPoxInfo, selectStackerInfo } from '@store/stacking';
 import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
 import {
   TransactionList,
@@ -33,6 +33,7 @@ import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
 import { HomeLayout } from './home-layout';
+import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ export const Home: FC = () => {
     receiveModalOpen,
     activeNode,
     stackingDetails,
+    nextCycleInfo,
     stackerInfo,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),

@@ -6,6 +6,7 @@ import { Hr } from '@components/hr';
 
 import { ExplainerTooltip } from '@components/tooltip';
 import { toHumanReadableStx } from '@utils/unit-convert';
+import dayjs from 'dayjs';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -15,7 +16,7 @@ interface StackingInfoCardProps extends FlexProps {
 }
 
 export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { cycles, duration, balance } = props;
+  const { cycles, duration, balance, startDate } = props;
   return (
     <Flex
       flexDirection="column"
@@ -61,8 +62,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
         </Flex>
         <Flex justifyContent="space-between" mt="tight">
           <Text textStyle="body.large.medium">Start date</Text>
-          {/* <Text textAlign="right">{startDate.toISOString()}</Text> */}
-          <Text textAlign="right">October 12th</Text>
+          <Text textAlign="right">{dayjs(startDate).format('MMMM DD')}</Text>
         </Flex>
       </Flex>
     </Flex>

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Flex, Text, FlexProps } from '@blockstack/ui';
 
 import { CalendarIcon } from '@components/icons/calendar-circle';
 
-type NextCycleInfoProps = FlexProps;
+interface NextCycleInfoProps extends FlexProps {
+  timeUntilNextCycle: string;
+}
 
-export const NextCycleInfo = (props: NextCycleInfoProps) => (
+export const NextCycleInfo: FC<NextCycleInfoProps> = ({ timeUntilNextCycle, ...props }) => (
   <Flex
     boxShadow="low"
     border="1px solid #F0F0F5"
@@ -19,7 +21,7 @@ export const NextCycleInfo = (props: NextCycleInfoProps) => (
     <CalendarIcon display={['none', 'flex']} mr="base" />
     <Flex flexDirection="column" justifyContent="space-evenly">
       <Text display="block" textStyle="body.large.medium" lineHeight="20px">
-        Next cycle starts in 4 days
+        Next cycle starts in {timeUntilNextCycle}
       </Text>
       <Text display="block" textStyle="body.small" color="ink.600" mt="extra-tight">
         Lock your STX to earn Bitcoin when the next cycle starts

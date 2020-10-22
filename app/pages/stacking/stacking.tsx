@@ -17,7 +17,7 @@ import { RootState } from '@store/index';
 import { selectWalletType } from '@store/keys';
 
 import { selectActiveNodeApi } from '@store/stacks-node';
-import { selectEstimatedStackingCycleDuration } from '@store/stacking';
+import { selectEstimatedStackingCycleDuration, selectNextCycleInfo } from '@store/stacking';
 import { selectAddressBalance } from '@store/address';
 
 enum Step {
@@ -32,20 +32,21 @@ export const Stacking: FC = () => {
   useBackButton(routes.HOME);
 
   const [cycles, setCycles] = useState(1);
-  const [btcAddress, setBtcAddress] = useState<string | null>(null);
+  const [btcAddress, setBtcAddress] = useState<string | null>('1KPfw15mzGrqvHbRFiVrpg7LYSdhPm2HHk');
   const [modalOpen, setModalOpen] = useState(false);
 
   const [stepConfirmation, setStepConfirmation] = useState<Record<Step, StepState>>({
-    [Step.ChooseCycles]: 'incomplete',
-    [Step.ChooseBtcAddress]: 'incomplete',
+    [Step.ChooseCycles]: 'complete',
+    [Step.ChooseBtcAddress]: 'complete',
     [Step.ConfirmAndLock]: null,
   });
 
-  const { stackingCycleDuration, balance } = useSelector((state: RootState) => ({
+  const { stackingCycleDuration, balance, nextCycleInfo } = useSelector((state: RootState) => ({
     walletType: selectWalletType(state),
     activeNode: selectActiveNodeApi(state),
     stackingCycleDuration: selectEstimatedStackingCycleDuration(state),
     balance: selectAddressBalance(state),
+    nextCycleInfo: selectNextCycleInfo(state),
   }));
 
   const calcStackingDuration = useCallback(() => stackingCycleDuration * cycles, [
@@ -56,17 +57,21 @@ export const Stacking: FC = () => {
   const updateStep = (step: Step, to: StepState) =>
     setStepConfirmation(state => ({ ...state, [step]: to }));
 
-  const dateRef = useRef(new Date());
-
   const isComplete = (step: Step) => stepConfirmation[step] === 'complete';
 
   const formComplete = [Step.ChooseCycles, Step.ChooseBtcAddress].every(isComplete) && !!btcAddress;
+
+  if (nextCycleInfo === null) return null;
+
+  const stackingIntro = (
+    <StackingIntro timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle} />
+  );
 
   const stackingInfoCard = (
     <StackingInfoCard
       cycles={cycles}
       balance={balance}
-      startDate={dateRef.current}
+      startDate={nextCycleInfo.nextCycleStartingAt}
       duration={'~' + (calcStackingDuration() / 60 / 60).toString() + ' hours'}
     />
   );
@@ -92,6 +97,7 @@ export const Stacking: FC = () => {
       <ConfirmAndLockStep
         id={Step.ConfirmAndLock}
         formComplete={formComplete}
+        timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle}
         onConfirmAndLock={() => setModalOpen(true)}
       />
     </StackingFormContainer>
@@ -107,7 +113,7 @@ export const Stacking: FC = () => {
         />
       )}
       <StackingLayout
-        intro={<StackingIntro />}
+        intro={stackingIntro}
         stackingInfoCard={stackingInfoCard}
         stackingForm={stackingForm}
       />

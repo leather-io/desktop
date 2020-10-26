@@ -35,8 +35,8 @@ export const SecretKey: React.FC = () => {
     <Onboarding>
       <OnboardingTitle>Your Secret Key</OnboardingTitle>
       <OnboardingText>
-        Here’s your Secret Key: 24 words that prove it’s you when you want to access your wallet.
-        Once lost, it’s lost forever, so save it somewhere you won’t forget.
+        Here's your Secret Key: 24 words that give you access to your Stacks Wallet. If you lose
+        your Secret Key, you'll be unable to access your STX tokens. No one can reset it for you.
       </OnboardingText>
       <Card title="Your Secret Key" mt="extra-loose">
         <Text textStyle="body.small" mt="loose" mx="loose" lineHeight="20px" display="block">

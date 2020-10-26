@@ -11,7 +11,7 @@ import { RootState } from '@store/index';
 import { openInExplorer } from '@utils/external-links';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
-import { selectAddressBalance } from '@store/address';
+import { selectAddressBalance, selectAvailableBalance } from '@store/address';
 import {
   selectTransactionList,
   selectTransactionsLoading,
@@ -41,6 +41,7 @@ export const Home: FC = () => {
   const {
     address,
     balance,
+    spendableBalance,
     txs,
     pendingTxs,
     loadingTxs,
@@ -155,7 +156,7 @@ export const Home: FC = () => {
   return (
     <>
       {receiveModalOpen && <ReceiveStxModal address={address} />}
-      {txModalOpen && <TransactionModal balance={balance || '0'} address={address} />}
+      {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
 
       <HomeLayout
         transactionList={transactionList}

@@ -5,7 +5,7 @@ import { features } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { safeAwait } from '@utils/safe-await';
 import { delay } from '@utils/delay';
-import BN from 'bn.js';
+import { BigNumber } from 'bignumber.js';
 
 interface BalanceCardProps {
   balance: string | null;
@@ -26,9 +26,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
     setRequestingTestnetStx(false);
   };
 
-  const balanceBN = new BN(balance || 0, 10);
-  const lockedBN = new BN(lockedStx || 0, 10);
-  const available = balanceBN.sub(lockedBN);
+  const availableBalance = new BigNumber(balance || 0).minus(lockedStx || 0);
 
   return (
     <Box>
@@ -39,12 +37,12 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         {balance === null ? '–' : toHumanReadableStx(balance)}
       </Text>
 
-      {features.stacking && lockedBN.toNumber() !== 0 && (
+      {features.stacking && lockedStx && (
         <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
           <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
           <Text>{toHumanReadableStx(lockedStx || '0')} locked</Text>
           <Text children="·" mx="base-tight" />
-          <Text>{toHumanReadableStx(available)} available</Text>
+          <Text>{toHumanReadableStx(availableBalance.toString())} available</Text>
         </Flex>
       )}
 

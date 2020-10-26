@@ -1,4 +1,6 @@
 import { createReducer, createSelector } from '@reduxjs/toolkit';
+import { selectStackerInfo } from '@store/stacking';
+import BigNumber from 'bignumber.js';
 
 import { RootState } from '..';
 import { fetchAddressDone, updateAddressBalance } from './address.actions';
@@ -20,3 +22,13 @@ export const addressReducer = createReducer(initialState, builder =>
 export const selectAddressState = (state: RootState) => state.address;
 
 export const selectAddressBalance = createSelector(selectAddressState, state => state.balance);
+
+export const selectAvailableBalance = createSelector(
+  selectAddressState,
+  selectStackerInfo,
+  (address, stackerInfo) => {
+    if (address.balance === null) return null;
+    if (stackerInfo === null) return address.balance;
+    return new BigNumber(address.balance).minus(stackerInfo.amountMicroStx).toString();
+  }
+);

@@ -1,12 +1,24 @@
+import { ipcRenderer } from 'electron';
 import { memoizeWith, identity } from 'ramda';
 import argon2, { ArgonType } from 'argon2-browser';
 
-import { delay } from '@utils/delay';
+function listenForKeyDerivation(): Promise<{ derivedKeyHash: Uint8Array }> {
+  return new Promise(resolve => {
+    ipcRenderer.once('derive-key-listen', (_e, result: ReturnType<typeof deriveArgon2Key>) =>
+      resolve(result)
+    );
+  });
+}
 
-export async function deriveKey({ pass, salt }: { pass: string; salt: string }) {
-  // Without this additional delay of 1ms, an odd behaviour with the argon2 library
-  // causes the promise to be render blocking
-  await delay(1);
+interface DeriveKeyArgs {
+  pass: string;
+  salt: string;
+}
+
+/**
+ * This method **must not** be imported by code on the renderer thread
+ */
+export async function deriveArgon2Key({ pass, salt }: DeriveKeyArgs) {
   const result = await argon2.hash({
     pass,
     salt,
@@ -15,6 +27,14 @@ export async function deriveKey({ pass, salt }: { pass: string; salt: string }) 
     type: ArgonType.Argon2id,
   });
   return { derivedKeyHash: result.hash };
+}
+
+export async function deriveKey({ pass, salt }: DeriveKeyArgs) {
+  ipcRenderer.send('derive-key', {
+    pass,
+    salt,
+  });
+  return listenForKeyDerivation();
 }
 
 export function generateRandomHexString() {

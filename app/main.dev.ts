@@ -14,12 +14,12 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
-
 import MenuBuilder from './menu';
+import { deriveArgon2Key } from './crypto/key-generation';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -153,8 +153,18 @@ app.on('window-all-closed', () => {
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.on('ready', createWindow);
 
+app.allowRendererProcessReuse = false;
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) void createWindow();
+});
+
+// Internally `argon2-browser` uses wasm which is prohibited by the renderer's CSP
+ipcMain.on('derive-key', (event, { pass, salt }: Record<'pass' | 'salt', string>) => {
+  void (async () => {
+    const result = await deriveArgon2Key({ pass, salt });
+    event.reply('derive-key-listen', result);
+  })();
 });

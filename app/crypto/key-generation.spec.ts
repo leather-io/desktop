@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-import { generateSalt, deriveKey } from './key-generation';
+import { generateSalt, deriveKey, deriveArgon2Key } from './key-generation';
 
 // https://stackoverflow.com/a/52612372/1141891
 Object.defineProperty(global, 'crypto', {
@@ -9,11 +9,11 @@ Object.defineProperty(global, 'crypto', {
   },
 });
 
-describe(deriveKey.name, () => {
+describe(deriveArgon2Key.name, () => {
   test('a argon2id hash is returned', async () => {
     const salt = '$2a$12$BwnByfKrfRbpxsazN712T.';
     const pass = 'f255cadb0af84854819c63f26c53e1a9';
-    const { derivedKeyHash } = await deriveKey({ salt, pass });
+    const { derivedKeyHash } = await deriveArgon2Key({ salt, pass });
     const expectedResultArray = [
       94,
       0,

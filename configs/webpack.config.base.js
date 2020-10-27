@@ -59,6 +59,9 @@ export default {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
     modules: [path.join(__dirname, '..', 'app'), 'node_modules'],
     plugins: [new TsconfigPathsPlugin()],
+    alias: {
+      ajv: path.resolve(__dirname, '..', 'app/utils/ajv-mock.js'),
+    },
   },
 
   plugins: [
@@ -68,5 +71,8 @@ export default {
     }),
 
     new webpack.NamedModulesPlugin(),
+
+    // Ignore Ajv lib, used by conf, used by electron-store, see `ajv-mock.js`
+    new webpack.IgnorePlugin(/ajv/, /^conf$/),
   ],
 };

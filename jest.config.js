@@ -18,7 +18,7 @@ module.exports = {
   setupFiles: ['./internals/scripts/CheckBuildsExist.js'],
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.tests.json',
+      tsconfig: 'tsconfig.tests.json',
       diagnostics: {
         ignoreCodes: [6133],
       },

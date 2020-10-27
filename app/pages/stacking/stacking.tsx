@@ -32,12 +32,12 @@ export const Stacking: FC = () => {
   useBackButton(routes.HOME);
 
   const [cycles, setCycles] = useState(1);
-  const [btcAddress, setBtcAddress] = useState<string | null>('1KPfw15mzGrqvHbRFiVrpg7LYSdhPm2HHk');
+  const [btcAddress, setBtcAddress] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [stepConfirmation, setStepConfirmation] = useState<Record<Step, StepState>>({
-    [Step.ChooseCycles]: 'complete',
-    [Step.ChooseBtcAddress]: 'complete',
+    [Step.ChooseCycles]: 'incomplete',
+    [Step.ChooseBtcAddress]: 'incomplete',
     [Step.ConfirmAndLock]: null,
   });
 

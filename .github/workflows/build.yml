@@ -1,0 +1,25 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install --ignore-scripts --ignore-optional
+
+      - name: Build
+        run: yarn build

@@ -37,6 +37,10 @@ export class Api {
     );
   }
 
+  async getFeeRate() {
+    return axios.get<string>(urljoin(this.baseUrl, `/v2/fees/transfer`));
+  }
+
   async getPoxInfo() {
     return axios.get<CoreNodePoxResponse>(urljoin(this.baseUrl, `/v2/pox`));
   }

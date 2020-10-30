@@ -80,7 +80,6 @@ const createWindow = async () => {
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     icon: path.join(__dirname, '../resources/icon-no-padding-512x512.png'),
     webPreferences:
-      // SECURITY: Remove node env
       process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
         ? {
             nodeIntegration: true,

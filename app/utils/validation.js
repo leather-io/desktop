@@ -1,4 +1,4 @@
-import { validateStacksAddress } from "stacks-utils";
+import { validateStacksAddress } from "@blockstack/stacks-utils";
 
 
 export { validateStacksAddress };

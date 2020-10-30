@@ -1,3 +1,3 @@
-import { decodeRawTx } from "stacks-utils";
+import { decodeRawTx } from "@blockstack/stacks-utils";
 
 export { decodeRawTx };

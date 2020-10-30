@@ -47,7 +47,7 @@ import {
   TOGGLE_MODAL_CLOSE
 } from "@stores/reducers/app";
 import { ROUTES } from "@common/constants";
-import { fetchStacksAddressData } from "stacks-utils";
+import { fetchStacksAddressData } from "@blockstack/stacks-utils";
 import { mnemonicToStxAddress, mnemonicToPrivateKey } from "@utils/utils";
 import crypto from "crypto";
 import bip39 from "bip39";

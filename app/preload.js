@@ -14,7 +14,7 @@ const moduleWhiteList = [
 	'blockstack-ui',
 	'react-router',
 	'react-router-dom',
-	'stacks-utils',
+	'@blockstack/stacks-utils',
 	'reakit',
 	'styled-system',
 	'react-powerplug',

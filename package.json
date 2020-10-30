@@ -148,7 +148,6 @@
     "@types/source-map-support": "0.5.3",
     "@types/terser-webpack-plugin": "4.2.0",
     "@types/url-join": "4.0.0",
-    "@types/uuid": "8.3.0",
     "@types/vfile-message": "2.0.0",
     "@types/webpack": "4.41.23",
     "@types/webpack-merge": "4.1.5",
@@ -255,7 +254,6 @@
     "styled-components": "5.1.1",
     "typescript": "4.0.2",
     "url-join": "4.0.1",
-    "uuid": "8.3.1",
     "yup": "0.29.3",
     "zxcvbn": "4.4.2"
   },

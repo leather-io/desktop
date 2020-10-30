@@ -2,16 +2,16 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useFormik } from 'formik';
 import { Modal, ButtonGroup, Button, Box, Text, Input } from '@blockstack/ui';
-import { v4 as uuid } from 'uuid';
 import * as yup from 'yup';
 
 import { StacksNode } from '@store/stacks-node';
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { capitalize } from '@utils/capitalize';
-import { Api } from '../../api/api';
+import { Api } from '@api/api';
 import { safeAwait } from '@utils/safe-await';
+import { generateRandomHexString } from '@crypto/key-generation';
+import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
 
 interface AddNodeSettingsProps {
   isOpen: boolean;
@@ -45,7 +45,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
         return;
       }
       if (success && success.data.status === 'ready') {
-        onUpdateNode({ id: uuid(), ...selectedNode, ...form.values });
+        onUpdateNode({ id: generateRandomHexString(), ...selectedNode, ...form.values });
         onClose();
         setLoading(false);
       }

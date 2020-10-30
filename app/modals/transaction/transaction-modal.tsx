@@ -1,5 +1,6 @@
 import React, { FC, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import log from 'electron-log';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
@@ -16,19 +17,26 @@ import {
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import { safeAwait } from '@utils/safe-await';
+import { Api } from '@api/api';
+import { STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
+import { LedgerConnectStep } from '@hooks/use-ledger';
 import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
 
-import { homeActions } from '@store/home/home.reducer';
+import { homeActions } from '@store/home';
+import { broadcastTransaction } from '@store/transaction';
 import {
   selectEncryptedMnemonic,
   selectSalt,
   decryptSoftwareWallet,
   selectWalletType,
+  selectPublicKey,
 } from '@store/keys';
-import { validateAddressChain } from '../../crypto/validate-address-net';
-import { broadcastTransaction } from '@store/transaction';
+import { selectActiveNodeApi } from '@store/stacks-node';
+
+import { validateAddressChain } from '@crypto/validate-address-net';
 import { stxToMicroStx, microStxToStx } from '@utils/unit-convert';
 
 import { stacksNetwork } from '../../environment';
@@ -41,12 +49,8 @@ import {
 import { TxModalForm } from './steps/transaction-form';
 import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
-import { selectPublicKey } from '@store/keys/keys.reducer';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
-import { LedgerConnectStep } from '@hooks/use-ledger';
 import { PreviewTransaction } from './steps/preview-transaction';
-import { safeAwait } from '../../utils/safe-await';
-import log from 'electron-log';
 
 interface TxModalProps {
   balance: string;
@@ -68,7 +72,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const history = useHistory();
   useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
   const [step, setStep] = useState(TxModalStep.DescribeTx);
-  const [fee, setFee] = useState(new BN(0));
+  const [fee, setFee] = useState(new BigNumber(0));
   const [amount, setAmount] = useState(new BigNumber(0));
   const [password, setPassword] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -80,12 +84,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const interactedWithSendAllBtn = useRef(false);
 
-  const { encryptedMnemonic, salt, walletType, publicKey } = useSelector((state: RootState) => ({
-    salt: selectSalt(state),
-    encryptedMnemonic: selectEncryptedMnemonic(state),
-    walletType: selectWalletType(state),
-    publicKey: selectPublicKey(state),
-  }));
+  const { encryptedMnemonic, salt, walletType, publicKey, node } = useSelector(
+    (state: RootState) => ({
+      salt: selectSalt(state),
+      encryptedMnemonic: selectEncryptedMnemonic(state),
+      walletType: selectWalletType(state),
+      publicKey: selectPublicKey(state),
+      node: selectActiveNodeApi(state),
+    })
+  );
 
   type CreateTxOptions = {
     recipient: string;
@@ -254,23 +261,17 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     onSubmit: async () => {
       setLoading(true);
       setDecryptionError(null);
-      const demoTx = await makeSTXTokenTransfer({
-        recipient: form.values.recipient,
-        network: stacksNetwork,
-        amount: new BN(stxToMicroStx(form.values.amount).toString()),
-        //
-        // SECURITY: find common burn address
-        senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
-      });
-      const { amount, fee } = {
-        amount: stxToMicroStx(form.values.amount),
-        fee: demoTx.auth.spendingCondition?.fee as BN,
-      };
-      setFee(fee);
-      setTotal(amount.plus(fee.toString()));
-      setAmount(amount);
-      setStep(TxModalStep.PreviewTx);
+      const [error, feeRate] = await safeAwait(new Api(node.url).getFeeRate());
+      if (feeRate) {
+        const fee = new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);
+        const amount = stxToMicroStx(form.values.amount);
+        setFee(fee);
+        setTotal(amount.plus(fee.toString()));
+        setAmount(amount);
+        setStep(TxModalStep.PreviewTx);
+      }
       setLoading(false);
+      if (error) return;
     },
   });
 
@@ -287,19 +288,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const updateAmountFieldToMaxBalance = async () => {
     interactedWithSendAllBtn.current = true;
     setCalculatingMaxSpend(true);
-    const [error, demoTx] = await safeAwait(
-      makeSTXTokenTransfer({
-        // SECURITY: remove hardcoded test address
-        recipient: form.values.recipient || 'ST3NR0TBES0A94R38EJ8TC1TGWPN9T1SHVW03ZBD7',
-        network: stacksNetwork,
-        amount: new BN(stxToMicroStx(form.values.amount).toString()),
-        // SECURITY: find common burn address
-        senderKey: 'f0bc18b8c5adc39c26e0fe686c71c7ab3cc1755a3a19e6e1eb84b55f2ede95da01',
-      })
-    );
+    const [error, feeRate] = await safeAwait(new Api(node.url).getFeeRate());
     if (error) setCalculatingMaxSpend(false);
-    if (demoTx) {
-      const fee = demoTx.auth.spendingCondition?.fee as BN;
+    if (feeRate) {
+      const fee = new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);
       const balanceLessFee = new BigNumber(balance).minus(fee.toString());
       if (balanceLessFee.isLessThanOrEqualTo(0)) {
         form.setFieldTouched('amount');

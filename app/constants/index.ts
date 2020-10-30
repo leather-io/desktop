@@ -10,6 +10,9 @@ export const STATUS_PAGE_URL = 'http://status.test-blockstack.com';
 
 export const DEFAULT_STACKS_NODE_URL = 'https://stacks-node-api.krypton.blockstack.org';
 
+export const TREZOR_HELP_URL =
+  'https://www.blockstack.org/questions/how-can-i-use-my-trezor-device-with-the-stacks-wallet';
+
 export const NETWORK = process.env.STX_NETWORK as 'mainnet' | 'testnet';
 
 export const MAX_STACKING_CYCLES = 12;

@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { onboardingMnemonicGenerationStep } from '@store/keys/keys.actions';
+import { onboardingMnemonicGenerationStep } from '@store/keys';
 import routes from '@constants/routes.json';
 import {
   Onboarding,
@@ -13,6 +13,8 @@ import {
   OnboardingFooterLink,
 } from '@components/onboarding';
 import { useBackButton } from '@hooks/use-back-url';
+import { openExternalLink } from '@utils/external-links';
+import { TREZOR_HELP_URL } from '@constants/index';
 
 export const CreateWallet: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ export const CreateWallet: React.FC = () => {
     dispatch(onboardingMnemonicGenerationStep({ stepDelayMs: 1_500 }));
     history.push(routes.GENERATING);
   };
+
+  const openTrezorHelpPage = () => openExternalLink(TREZOR_HELP_URL);
 
   return (
     <Onboarding>
@@ -40,7 +44,9 @@ export const CreateWallet: React.FC = () => {
       </OnboardingButton>
 
       <OnboardingFooter>
-        {/* <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink> */}
+        <OnboardingFooterLink onClick={openTrezorHelpPage}>
+          I have a Trezor wallet
+        </OnboardingFooterLink>
       </OnboardingFooter>
     </Onboarding>
   );

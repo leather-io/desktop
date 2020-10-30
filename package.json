@@ -1,7 +1,7 @@
 {
   "name": "stacks-wallet-1",
   "description": "Stacks Wallet",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "author": {
     "name": "Blockstack PBC",
     "url": "https://www.blockstack.org"
@@ -104,7 +104,7 @@
     "setimmediate": "1.0.5",
     "shortid": "2.2.14",
     "source-map-support": "0.5.6",
-    "stacks-utils": "0.1.4",
+    "@blockstack/stacks-utils": "0.1.6",
     "styled-components": "4.0.3",
     "styled-icons": "3.6.0",
     "styled-system": "3.1.11",

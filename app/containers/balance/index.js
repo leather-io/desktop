@@ -15,7 +15,7 @@ import {
   selectWalletBalance,
   selectPendingBalance
 } from "@stores/selectors/wallet";
-import { microToStacks } from "stacks-utils";
+import { microToStacks } from "@blockstack/stacks-utils";
 import { WALLET_TYPES } from "@stores/reducers/wallet";
 import { Notice } from "@components/notice";
 import { formatMicroStxValue } from "@utils/utils";

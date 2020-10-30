@@ -5,7 +5,7 @@ import bip32 from 'bip32'
 import bip39 from 'bip39'
 import { b58ToC32, c32address, versions } from 'c32check'
 import { ECPair } from "bitcoinjs-lib"
-import { microToStacks, stacksToMicro } from "stacks-utils";
+import { microToStacks, stacksToMicro } from "@blockstack/stacks-utils";
 import BigNumber from "bignumber.js"
 import { PATH } from "@common/constants";
 

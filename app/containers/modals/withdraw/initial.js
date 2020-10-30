@@ -15,7 +15,7 @@ import {
   ErrorMessage
 } from "@containers/modals/withdraw/common";
 import { SCREENS } from "@containers/modals/withdraw-btc";
-import { btcAddressToStacksAddress } from "stacks-utils";
+import { btcAddressToStacksAddress } from "@blockstack/stacks-utils";
 
 const mapPropsToState = state => ({
   sender: selectWalletBitcoinAddress(state),

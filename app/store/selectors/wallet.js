@@ -1,4 +1,4 @@
-import { microToStacks, stacksToMicro } from "stacks-utils";
+import { microToStacks, stacksToMicro } from "@blockstack/stacks-utils";
 import BigNumber from "bignumber.js"
 
 const selectWalletHistory = state =>

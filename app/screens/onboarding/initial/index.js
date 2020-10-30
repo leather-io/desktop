@@ -96,7 +96,7 @@ class InitialScreen extends Component {
           fontSize="12px" 
           onClick={() => this.handleClicks(this.props.history)}
           >
-          v3.1.0
+          v3.1.1
         </Type>
       </Flex>
     )

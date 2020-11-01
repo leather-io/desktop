@@ -183,12 +183,11 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       amount: new BigNumber(balance),
       onBroadcastSuccess: async (txId: string) => {
         setStep(StackingModalStep.PendingTransaction);
-        const [failed, success] = await safeAwait(
+        const [error, success] = await safeAwait(
           watchContractExecution({ txId, nodeUrl: node.url })
         );
-        if (failed) {
-          console.log(failed);
-          setContractError(failed.message);
+        if (error) {
+          setContractError(error.message);
           setStep(StackingModalStep.FailedContractCall);
         }
         if (success) {

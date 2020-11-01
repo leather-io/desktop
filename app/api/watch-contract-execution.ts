@@ -1,6 +1,8 @@
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
 
+const defaultErrorMsg = 'Stacking contract failed to execute';
+
 interface WatchContractExecutionArgs {
   nodeUrl: string;
   txId: string;
@@ -14,12 +16,14 @@ export function watchContractExecution(args: WatchContractExecutionArgs) {
 
       if (!txResponse || txResponse.data.tx_status === 'pending') return;
       const tx = txResponse.data;
+
       if (
         error ||
         tx.tx_status === 'abort_by_response' ||
         tx.tx_status === 'abort_by_post_condition'
       ) {
-        return reject(error);
+        clearInterval(timeoutInterval);
+        return reject(new Error(error?.message || defaultErrorMsg));
       }
 
       if (tx.tx_status === 'success') {

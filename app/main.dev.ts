@@ -61,9 +61,9 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
-  }
+  // if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+  //   await installExtensions();
+  // }
 
   const mainWindowState = windowState({
     defaultWidth: 1024,
@@ -86,8 +86,8 @@ const createWindow = async () => {
             nodeIntegration: true,
           }
         : {
-            nodeIntegration: false,
-            contextIsolation: false,
+            nodeIntegration: true,
+            contextIsolation: true,
             webSecurity: true,
             preload: path.join(__dirname, 'dist/renderer.prod.js'),
           },
@@ -162,9 +162,8 @@ app.on('activate', () => {
 });
 
 // Internally `argon2-browser` uses wasm which is prohibited by the renderer's CSP
-ipcMain.on('derive-key', (event, { pass, salt }: Record<'pass' | 'salt', string>) => {
-  void (async () => {
-    const result = await deriveArgon2Key({ pass, salt });
-    event.reply('derive-key-listen', result);
-  })();
+ipcMain.handle('derive-key', async (_event, { pass, salt }: Record<'pass' | 'salt', string>) => {
+  const result = await deriveArgon2Key({ pass, salt });
+  console.log({ result });
+  return result;
 });

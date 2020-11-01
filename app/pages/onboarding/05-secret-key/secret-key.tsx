@@ -42,8 +42,8 @@ export const SecretKey: React.FC = () => {
         <Text textStyle="body.small" mt="loose" mx="loose" lineHeight="20px" display="block">
           {mnemonic}
         </Text>
-        <Button variant="link" mt="tight">
-          <Text textStyle="caption.medium" fontSize="12px" onClick={onCopy}>
+        <Button variant="link" mt="tight" onClick={onCopy}>
+          <Text textStyle="caption.medium" fontSize="12px">
             Copy to clipboard
           </Text>
         </Button>

@@ -2,14 +2,6 @@ import { ipcRenderer } from 'electron';
 import { memoizeWith, identity } from 'ramda';
 import argon2, { ArgonType } from 'argon2-browser';
 
-function listenForKeyDerivation(): Promise<{ derivedKeyHash: Uint8Array }> {
-  return new Promise(resolve => {
-    ipcRenderer.once('derive-key-listen', (_e, result: ReturnType<typeof deriveArgon2Key>) =>
-      resolve(result)
-    );
-  });
-}
-
 interface DeriveKeyArgs {
   pass: string;
   salt: string;
@@ -30,11 +22,11 @@ export async function deriveArgon2Key({ pass, salt }: DeriveKeyArgs) {
 }
 
 export async function deriveKey({ pass, salt }: DeriveKeyArgs) {
-  ipcRenderer.send('derive-key', {
+  console.log('sending derive-key');
+  return ipcRenderer.invoke('derive-key', {
     pass,
     salt,
   });
-  return listenForKeyDerivation();
 }
 
 export function generateRandomHexString() {

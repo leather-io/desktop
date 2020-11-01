@@ -134,6 +134,7 @@ export default merge.smart(baseConfig, {
      */
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
+      STX_NETWORK: 'testnet',
     }),
 
     new webpack.LoaderOptionsPlugin({

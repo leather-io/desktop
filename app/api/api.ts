@@ -31,9 +31,12 @@ export class Api {
     );
   }
 
-  async getFaucetStx(address: string) {
+  async getFaucetStx(address: string, stacking?: boolean) {
     return axios.post(
-      urljoin(this.baseUrl, `/extended/v1/faucets/stx?address=${address}&stacking=true`)
+      urljoin(
+        this.baseUrl,
+        `/extended/v1/faucets/stx?address=${address}${stacking ? '&stacking=true' : ''}`
+      )
     );
   }
 

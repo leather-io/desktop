@@ -5,10 +5,12 @@ import { openExternalLink } from '@utils/external-links';
 import packageJson from '../../package.json';
 
 const sha = process.env.SHA;
-const buildDate = process.env.BUILD_DATE;
+const shaShort = sha && sha.substr(0, 7);
+const pullRequest = process.env.PULL_REQUEST;
+const branchName = process.env.BRANCH_NAME;
+const version = packageJson.version;
 
 const issueParams = new URLSearchParams();
-
 const issueTitle = `[${String(packageJson.version)}] Bug: <describe issue>`;
 const issueLabels = 'bug,reported-from-ui';
 const issueBody = `
@@ -21,7 +23,7 @@ const issueBody = `
 
 -->
 
-Bug found testing Stacks Wallet build ${String(sha)}, ${String(buildDate)}.
+Bug found testing Stacks Wallet build ${String(shaShort)}, ${String(version)}.
 
 `;
 
@@ -30,12 +32,14 @@ issueParams.set('labels', issueLabels);
 issueParams.set('body', issueBody);
 
 const openIssueLink = () =>
-  openExternalLink(
-    `https://github.com/blockstack/stacks-wallet/issues/new?${issueParams.toString()}`
-  );
+  openExternalLink(`https://github.com/blockstack/stacks-wallet/issues/new?${String(issueParams)}`);
+
+const openPullRequestLink = () =>
+  openExternalLink(`https://github.com/blockstack/stacks-wallet/pull/${String(pullRequest)}`);
 
 export const BetaNotice: FC = () => {
-  if (!sha && !buildDate) return null;
+  if (!sha && !version.includes('beta')) return null;
+
   return (
     <Flex
       textStyle="caption.medium"
@@ -45,24 +49,34 @@ export const BetaNotice: FC = () => {
       bottom="base"
       flexDirection={['column', 'row']}
     >
-      <Text mr="base" onClick={openIssueLink} textDecoration="underline" cursor="pointer">
+      <Text mr="base-tight" onClick={openIssueLink} textDecoration="underline" cursor="pointer">
         Found a bug? Open an issue
       </Text>
-      {/* <Text mr="base">
-        Commit:{' '}
+      {pullRequest && branchName && (
         <Text
-          cursor="pointer"
+          mr="base-tight"
+          onClick={openPullRequestLink}
           textDecoration="underline"
-          onClick={() =>
-            openExternalLink(
-              `https://github.com/blockstack/stacks-wallet/pull/203/commits/${sha || ''}`
-            )
-          }
+          cursor="pointer"
         >
-          {sha}
+          {branchName}
         </Text>
-      </Text> */}
-      <Text mr="base">Build date: {buildDate}</Text>
+      )}
+      {shaShort && (
+        <Text mr="base">
+          Commit:{' '}
+          <Text
+            cursor="pointer"
+            textDecoration="underline"
+            onClick={() =>
+              openExternalLink(`https://github.com/blockstack/stacks-wallet/commit/${sha || ''}`)
+            }
+          >
+            {shaShort}
+          </Text>
+        </Text>
+      )}
+      <Text mr="base">[{packageJson.version}]</Text>
     </Flex>
   );
 };

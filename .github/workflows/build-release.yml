@@ -20,51 +20,66 @@ jobs:
             NPM_COMMAND: win
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - name: Get git commit
-        id: git-commit
-        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - name: Print environment variables
+        run: |
+          echo "GITHUB_REPOSITORY_SLUG=$GITHUB_REPOSITORY_SLUG"
+          echo "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER"
+          echo "GITHUB_REPOSITORY_OWNER_SLUG=$GITHUB_REPOSITORY_OWNER_SLUG"
+          echo "GITHUB_REPOSITORY_NAME=$GITHUB_REPOSITORY_NAME"
+          echo "GITHUB_REPOSITORY_NAME_SLUG=$GITHUB_REPOSITORY_NAME_SLUG"
+          echo "GITHUB_REF_SLUG=$GITHUB_REF_SLUG"
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+          echo "GITHUB_REF_NAME_SLUG=$GITHUB_REF_NAME_SLUG"
+          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT"
+          echo "GITHUB_SHA=$GITHUB_SHA"
 
-      - name: Get build date
-        id: build-date
-        run: echo "::set-output name=date::$(date)"
+      - name: Variables
+        id: vars
+        run: |
+          echo "::set-output name=version::$(cat package.json | jq -r .version)"
+          echo "::set-output name=branch_name::$(echo ${GITHUB_REF#refs/heads/})"
+          echo "::set-output name=pull_request_id::$(echo $GITHUB_REF)"
+
+      # - run: echo "${{github.event.number}} ${{ steps.vars.outputs.branch_name }} ${{ github.event.pull_request.head.sha }} ${{ steps.vars.outputs.sha2 }}"
+
+      # - run: echo "${GITHUB_CONTEXT}"
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      # - run: echo "${GITHUB_CONTEXT}" | jq
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
           node-version: 10
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       - name: Install packages
         run: yarn
-
-      - run: echo ${{ matrix.NPM_COMMAND }}
 
       - name: Build releases
         run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
         env:
+          SHA: ${{ github.event.pull_request.head.sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SHA: ${{ steps.git-commit.outputs.sha }}
-          BUILD_DATE: ${{ steps.build-date.outputs.date }}
+          PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
+          BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
 
       - uses: actions/upload-artifact@v2
         name: Upload Windows build
         if: matrix.os == 'windows-latest'
         with:
-          name: stacks-wallet-${{ steps.git-commit.outputs.sha }}-windows
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-windows
           path: |
             release/**/*.exe
             release/**/*.msi
@@ -73,19 +88,21 @@ jobs:
         name: Upload MacOS build
         if: matrix.os == 'macos-latest'
         with:
-          name: stacks-wallet-${{ steps.git-commit.outputs.sha }}-macos
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-macos
           path: release/**/*.dmg
 
       - uses: actions/upload-artifact@v2
         name: Upload Linux build
         if: matrix.os == 'ubuntu-latest'
         with:
-          name: stacks-wallet-${{ steps.git-commit.outputs.sha }}-linux
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-linux
           path: |
             release/**/*.deb
             release/**/*.rpm
 
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        # Only update it once per build
+        if: matrix.os == 'macos-latest'
         with:
-          header: '> [Download the latest builds](https://github.com/blockstack/stacks-wallet/actions/runs/${{ github.run_id }})'
+          header: '> [Download the latest builds [${{ steps.vars.outputs.version }}]](https://github.com/blockstack/stacks-wallet/actions/runs/${{ github.run_id }}).'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -70,6 +70,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
             ml="tight"
             isDisabled={requestingTestnetStx}
             onClick={e => requestTestnetStacks(e)}
+            title="Hold alt to request more STX. Use sparingly."
           >
             <Box
               mr="extra-tight"

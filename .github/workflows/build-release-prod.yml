@@ -44,7 +44,7 @@ jobs:
         run: yarn
 
       - name: Build releases
-        run: ./node_modules/.bin/cross-env STX_TEST yarn package-${{ matrix.NPM_COMMAND }}
+        run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
         env:
           SHA: ${{ github.event.pull_request.head.sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

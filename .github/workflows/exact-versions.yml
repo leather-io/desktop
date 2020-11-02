@@ -1,9 +1,7 @@
 name: Exact versions
-on:
-  push:
-    branches: [release/stacking]
-  pull_request:
-    branches: [release/stacking]
+
+on: [push]
+
 jobs:
   check-versions:
     runs-on: ubuntu-latest

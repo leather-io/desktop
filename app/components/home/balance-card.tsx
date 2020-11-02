@@ -1,18 +1,18 @@
 import React, { FC, useState } from 'react';
 import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex } from '@blockstack/ui';
 
-import { features } from '@constants/index';
+import { features, NETWORK } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { safeAwait } from '@utils/safe-await';
 import { delay } from '@utils/delay';
-import { BigNumber } from 'bignumber.js';
+import BN from 'bn.js';
 
 interface BalanceCardProps {
   balance: string | null;
   lockedStx?: string;
   onSelectSend(): void;
   onSelectReceive(): void;
-  onRequestTestnetStx(): Promise<any>;
+  onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise<any>;
 }
 
 export const BalanceCard: FC<BalanceCardProps> = props => {
@@ -20,13 +20,21 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
 
   const [requestingTestnetStx, setRequestingTestnetStx] = useState(false);
 
-  const requestTestnetStacks = async () => {
-    setRequestingTestnetStx(true);
-    await safeAwait(Promise.allSettled([onRequestTestnetStx(), delay(1500)]));
+  const requestTestnetStacks = async (e: React.MouseEvent) => {
+    if (NETWORK !== 'testnet') return;
+    if (e.nativeEvent) setRequestingTestnetStx(true);
+    const [error] = await safeAwait(
+      Promise.all([onRequestTestnetStx({ stacking: e.nativeEvent.altKey }), delay(1500)])
+    );
+    if (error) {
+      window.alert('Faucet request failed');
+    }
     setRequestingTestnetStx(false);
   };
 
-  const availableBalance = new BigNumber(balance || 0).minus(lockedStx || 0);
+  const balanceBN = new BN(balance || 0, 10);
+  const lockedBN = new BN(lockedStx || 0, 10);
+  const available = balanceBN.sub(lockedBN);
 
   return (
     <Box>
@@ -37,12 +45,12 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         {balance === null ? '–' : toHumanReadableStx(balance)}
       </Text>
 
-      {features.stacking && lockedStx && (
+      {features.stacking && lockedBN.toNumber() !== 0 && (
         <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
           <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
           <Text>{toHumanReadableStx(lockedStx || '0')} locked</Text>
           <Text children="·" mx="base-tight" />
-          <Text>{toHumanReadableStx(availableBalance.toString())} available</Text>
+          <Text>{toHumanReadableStx(available)} available</Text>
         </Flex>
       )}
 
@@ -55,18 +63,26 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
           <ArrowIcon direction="down" mr="base-tight" />
           Receive
         </Button>
-        <Button mode="secondary" size="md" ml="tight" onClick={requestTestnetStacks}>
-          <Box
-            mr="extra-tight"
-            fontSize="18px"
-            left="-4px"
-            position="relative"
-            display={['none', 'none', 'block']}
+        {NETWORK === 'testnet' && (
+          <Button
+            mode="secondary"
+            size="md"
+            ml="tight"
+            isDisabled={requestingTestnetStx}
+            onClick={e => requestTestnetStacks(e)}
           >
-            🚰
-          </Box>
-          {requestingTestnetStx ? 'Requesting faucet' : 'Get testnet STX'}
-        </Button>
+            <Box
+              mr="extra-tight"
+              fontSize="18px"
+              left="-4px"
+              position="relative"
+              display={['none', 'none', 'block']}
+            >
+              🚰
+            </Box>
+            {requestingTestnetStx ? 'Requesting faucet' : 'Get testnet STX'}
+          </Button>
+        )}
       </Box>
     </Box>
   );

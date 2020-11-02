@@ -137,7 +137,9 @@ export const Home: FC = () => {
       balance={balance}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
-      onRequestTestnetStx={async () => new Api(activeNode.url).getFaucetStx(address)}
+      onRequestTestnetStx={async ({ stacking }) =>
+        new Api(activeNode.url).getFaucetStx(address, stacking)
+      }
     />
   );
 

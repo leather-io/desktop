@@ -61,9 +61,9 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
-  // if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  //   await installExtensions();
-  // }
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+    await installExtensions();
+  }
 
   const mainWindowState = windowState({
     defaultWidth: 1024,
@@ -125,6 +125,12 @@ const createWindow = async () => {
       mainWindow.focus();
       hasFocusedOnInitialLoad = true;
     }
+    registerIpcHandlers();
+
+    ipcMain.on('xxx', e => {
+      console.log('Logging main');
+      e.sender.send('xxx-reply');
+    });
   });
 
   mainWindow.on('closed', () => {
@@ -161,9 +167,11 @@ app.on('activate', () => {
   if (mainWindow === null) void createWindow();
 });
 
-// Internally `argon2-browser` uses wasm which is prohibited by the renderer's CSP
-ipcMain.handle('derive-key', async (_event, { pass, salt }: Record<'pass' | 'salt', string>) => {
-  const result = await deriveArgon2Key({ pass, salt });
-  console.log({ result });
-  return result;
-});
+function registerIpcHandlers() {
+  // Internally `argon2-browser` uses wasm which is prohibited by the renderer's CSP
+  ipcMain.handle('derive-key', async (_event, { pass, salt }: Record<'pass' | 'salt', string>) => {
+    const result = await deriveArgon2Key({ pass, salt });
+    console.log({ result });
+    return result;
+  });
+}

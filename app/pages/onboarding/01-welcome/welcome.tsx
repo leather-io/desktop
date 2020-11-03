@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import routes from '@constants/routes.json';
@@ -9,10 +9,22 @@ import {
   OnboardingText,
 } from '@components/onboarding';
 import { useBackButton } from '@hooks/use-back-url';
+import { ipcRenderer } from 'electron';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();
   useBackButton(null);
+
+  useEffect(() => {
+    console.log('setting effect');
+    setInterval(() => {
+      console.log('sending event');
+      ipcRenderer.send('xxx');
+    }, 3000);
+
+    ipcRenderer.on('xxx-reply', () => console.log('logging local reply'));
+  }, []);
+
   return (
     <Onboarding>
       <OnboardingTitle>Stacks Wallet</OnboardingTitle>

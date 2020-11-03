@@ -64,12 +64,15 @@ export const App: FC = ({ children }) => {
 
   useEffect(() => {
     initAppWithStxAddressInfo();
-  }, [address, activeNode, initAppWithStxAddressInfo]);
-
-  useInterval(() => {
     dispatch(fetchStackingInfo());
     dispatch(fetchCoreDetails());
     dispatch(fetchBlockTimeInfo());
+  }, [address, activeNode, initAppWithStxAddressInfo, dispatch]);
+
+  useInterval(() => {
+    if (address) dispatch(fetchStackerInfo(address));
+    dispatch(fetchStackingInfo());
+    dispatch(fetchCoreDetails());
   }, 5_000);
 
   useEffect(() => {

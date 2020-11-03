@@ -21,6 +21,7 @@ import {
 import BN from 'bn.js';
 import { address } from 'bitcoinjs-lib';
 import { Api } from '@api/api';
+import { safelyFormatHexTxid } from '../safe-handle-txid';
 
 enum StackingErrors {
   ERR_STACKING_UNREACHABLE = 255,
@@ -169,19 +170,18 @@ export class Pox {
 
   async getStackerInfo(address: string): Promise<StackerInfo> {
     const info = await this.getPoxInfo();
-    const args = [`0x${serializeCV(standardPrincipalCV(address)).toString('hex')}`];
+    const args = [safelyFormatHexTxid(serializeCV(standardPrincipalCV(address)).toString('hex'))];
     const res = await new Api(this.nodeUrl).callReadOnly({
       contract: info.contract_id,
       functionName: 'get-stacker-info',
       args,
     });
-    console.log({ ...info });
     const cv = deserializeCV(Buffer.from(res.slice(2), 'hex')) as any; //TupleCV;
-    console.log({ cv });
     if (!cv.value) throw new Error(`Failed to fetch stacker info. ${StackingErrors[cv.type]}`);
     const data = cv.value.data as StackerInfoCV;
     const version = data['pox-addr'].data.version.buffer;
     const hashbytes = data['pox-addr'].data.hashbytes.buffer;
+    console.log({ data });
     return {
       lockPeriod: data['lock-period'].value.toNumber(),
       amountMicroStx: data['amount-ustx'].value.toString(10),

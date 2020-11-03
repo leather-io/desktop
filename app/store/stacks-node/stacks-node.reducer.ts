@@ -47,8 +47,8 @@ export const removeStacksNodeApi = stacksNodeSlice.actions.removeStacksNodeApi;
 export const setActiveStacksNode = stacksNodeSlice.actions.setActiveStacksNode;
 
 export const defaultNode: StacksNode = Object.freeze({
-  url: DEFAULT_STACKS_NODE_URL,
-  name: 'Blockstack PBC Krypton node',
+  url: 'http://127.0.0.1:3999',
+  name: 'localhost',
   id: 'default',
 });
 

@@ -14,8 +14,15 @@ import {
   fetchBlockTimeInfo,
   fetchStackerInfo,
 } from './stacking.actions';
-import { NETWORK } from '../../constants/index';
+import { NETWORK } from '@constants/index';
 import { StackerInfo } from '@utils/stacking/pox';
+
+export enum StackingStatus {
+  NotStacking = 'NotStacking',
+  StackedPreCycle = 'StackedPreCycle',
+  StackedActive = 'StackedActive',
+  FinishedStacking = 'FinishedStacking',
+}
 
 export interface StackingState {
   poxInfo: CoreNodePoxResponse | null;
@@ -57,13 +64,51 @@ export const stackingSlice = createSlice({
 export const stackingActions = stackingSlice.actions;
 
 export const selectStackingState = (state: RootState) => state.stacking;
-export const selectPoxInfo = createSelector(selectStackingState, state => state.poxInfo);
 export const selectCoreNodeInfo = createSelector(selectStackingState, state => state.coreNodeInfo);
 export const selectBlockTimeInfo = createSelector(
   selectStackingState,
   state => state.blockTimeInfo
 );
-export const selectStackerInfo = createSelector(selectStackingState, state => state.stackerInfo);
+
+export const selectPoxInfo = createSelector(selectStackingState, state => state.poxInfo);
+
+export const selectStackerInfo = createSelector(selectStackingState, state => {
+  if (state.poxInfo === null || state.stackerInfo === null) return null;
+
+  const hasStackingCycleStarted =
+    state.poxInfo.reward_cycle_id >= state.stackerInfo.firstRewardCycle;
+
+  const hasStackingPeriodFinished =
+    state.poxInfo.reward_cycle_id >
+    state.stackerInfo.lockPeriod - 1 + state.stackerInfo.firstRewardCycle;
+
+  console.log({ hasStackingPeriodFinished });
+
+  const currentCycleOfTotal =
+    state.poxInfo.reward_cycle_id - state.stackerInfo.firstRewardCycle < 0
+      ? 0
+      : state.poxInfo.reward_cycle_id - state.stackerInfo.firstRewardCycle + 1;
+
+  const isPreStackingPeriodStart =
+    state.poxInfo.reward_cycle_id < state.stackerInfo.firstRewardCycle;
+
+  const isCurrentlyStacking = hasStackingCycleStarted && !hasStackingPeriodFinished;
+
+  let status: StackingStatus = StackingStatus.NotStacking;
+  if (isPreStackingPeriodStart) status = StackingStatus.StackedPreCycle;
+  if (isCurrentlyStacking) status = StackingStatus.StackedActive;
+  if (hasStackingPeriodFinished) status = StackingStatus.FinishedStacking;
+
+  return {
+    status,
+    isCurrentlyStacking,
+    hasStackingPeriodFinished,
+    isPreStackingPeriodStart,
+    hasAddressStackingCycleStarted: hasStackingCycleStarted,
+    currentCycleOfTotal,
+    ...state.stackerInfo,
+  };
+});
 
 export const selectNextCycleInfo = createSelector(
   selectStackingState,

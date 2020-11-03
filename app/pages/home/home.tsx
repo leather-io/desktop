@@ -1,6 +1,6 @@
 import React, { FC, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Flex, Spinner } from '@blockstack/ui';
+import { Box, Flex, Spinner, Text } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 import BigNumber from 'bignumber.js';
 
@@ -18,7 +18,7 @@ import {
   selectTransactionListFetchError,
 } from '@store/transaction';
 import { selectPendingTransactions } from '@store/pending-transaction';
-import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
+import { selectNextCycleInfo, selectPoxInfo, selectStackerInfo } from '@store/stacking';
 import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
 import {
   TransactionList,
@@ -33,6 +33,8 @@ import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
 import { HomeLayout } from './home-layout';
+import { WaffleChart } from '@components/chart/waffle-chart';
+import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -49,7 +51,7 @@ export const Home: FC = () => {
     receiveModalOpen,
     activeNode,
     stackingDetails,
-
+    nextCycleInfo,
     stackerInfo,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
@@ -62,6 +64,7 @@ export const Home: FC = () => {
     loadingTxs: selectTransactionsLoading(state),
     txListFetchError: selectTransactionListFetchError(state),
     activeNode: selectActiveNodeApi(state),
+    nextCycleInfo: selectNextCycleInfo(state),
     stackingDetails: selectPoxInfo(state),
     stackerInfo: selectStackerInfo(state),
   }));
@@ -143,12 +146,99 @@ export const Home: FC = () => {
     />
   );
 
-  const card = meetsMinStackingThreshold ? (
-    <StackingParticipationCard />
-  ) : (
-    <StackingPromoCard
-      minRequiredStx={microStxToStx(stackingDetails?.min_amount_ustx || 0).toNumber()}
-    />
+  const card = (
+    <>
+      {stackingDetails && stackerInfo && (
+        <Flex
+          flexDirection="column"
+          mt="extra-loose"
+          borderRadius="8px"
+          boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
+          border="1px solid #F0F0F5"
+          px="loose"
+          minHeight="180px"
+        >
+          {stackerInfo &&
+            !stackerInfo?.hasAddressStackingCycleStarted &&
+            !stackerInfo.hasStackingPeriodFinished && (
+              <StackingBeginsSoonCard blocksTillNextCycle={nextCycleInfo?.blocksToNextCycle} />
+            )}
+          {stackerInfo?.isCurrentlyStacking && (
+            <Box>
+              <Text
+                display="block"
+                textStyle="body.large.medium"
+                mt="base-loose"
+                textAlign="center"
+              >
+                Stacking progress
+              </Text>
+              <Flex justifyContent="space-between" mt="base">
+                <Text textStyle="body.small.medium">Current stacking cycle</Text>
+              </Flex>
+              <Flex
+                maxWidth={[null, null, '325px']}
+                flexWrap="wrap"
+                alignContent="flex-start"
+                mt="tight"
+              >
+                <WaffleChart
+                  points={[
+                    ...Array.from({
+                      length:
+                        (stackingDetails?.reward_cycle_length || 0) -
+                        (nextCycleInfo?.blocksToNextCycle || 0),
+                    }).map(() => true),
+                    ...Array.from({ length: nextCycleInfo?.blocksToNextCycle || 0 }).map(
+                      () => false
+                    ),
+                  ]}
+                />
+              </Flex>
+              <Box mr="2px">
+                <Flex justifyContent="space-between" mt="base">
+                  <Text textStyle="body.small.medium">Blocks until next cycle</Text>
+                  <Text textStyle="body.small">{nextCycleInfo?.blocksToNextCycle}</Text>
+                </Flex>
+                <Flex justifyContent="space-between" mt="tight">
+                  <Text textStyle="body.small.medium">You're stacking for</Text>
+                  <Text textStyle="body.small">
+                    {stackerInfo?.lockPeriod} cycle{stackerInfo.lockPeriod > 1 ? 's' : ''}
+                  </Text>
+                </Flex>
+                {stackerInfo.lockPeriod > 1 && (
+                  <Flex justifyContent="space-between" mt="tight">
+                    <Text textStyle="body.small.medium">Current cycle</Text>
+                    <Text textStyle="body.small">
+                      {stackerInfo.currentCycleOfTotal} of {stackerInfo?.lockPeriod}
+                    </Text>
+                  </Flex>
+                )}
+                <Flex flexDirection="column" mt="tight" mb="base-loose">
+                  <Text textStyle="body.small.medium">Reward to be paid to</Text>
+                  <Text as="code" fontSize="13px" mt="tight" color="ink.600">
+                    {stackerInfo?.btcAddress}
+                  </Text>
+                </Flex>
+              </Box>
+            </Box>
+          )}
+        </Flex>
+      )}
+      {(stackerInfo === null ||
+        ((stackerInfo ? !stackerInfo.isPreStackingPeriodStart : true) &&
+          (stackerInfo ? !stackerInfo.isCurrentlyStacking : true))) && (
+        <>
+          {meetsMinStackingThreshold ? (
+            <StackingParticipationCard />
+          ) : (
+            <StackingPromoCard
+              minRequiredStx={microStxToStx(stackingDetails?.min_amount_ustx || 0).toNumber()}
+            />
+          )}
+        </>
+      )}
+    </>
   );
 
   const stackingRewardCard = (
@@ -163,7 +253,7 @@ export const Home: FC = () => {
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}
-        stackingCard={stackerInfo ? null : card}
+        stackingCard={card}
         stackingRewardCard={stackingRewardCard}
       />
     </>

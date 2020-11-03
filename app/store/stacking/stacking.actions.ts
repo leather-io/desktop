@@ -39,10 +39,7 @@ export const fetchStackerInfo = createAsyncThunk(
     const node = selectActiveNodeApi(state);
     const poxClient = new Pox(node.url);
     const [error, resp] = await safeAwait(poxClient.getStackerInfo(address));
-    if (error) {
-      console.log(error);
-      throw error;
-    }
+    if (error) throw error;
     if (resp) return resp;
     return null;
   }

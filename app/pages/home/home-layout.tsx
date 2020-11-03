@@ -15,8 +15,16 @@ export const HomeLayout: FC<HomeLayoutProps> = props => {
   return (
     <Screen pt="120px" mb="extra-loose">
       {balanceCard}
-      <Flex flexDirection={['column', 'column', 'row']}>
-        <Box mt="extra-loose" flexGrow={1} mr={[null, null, 'extra-loose', '72px']}>
+      <Flex
+        flexDirection={['column', 'column', 'row']}
+        justifyContent={[null, null, 'space-between']}
+      >
+        <Box
+          mt="extra-loose"
+          maxWidth={[null, null, '720px']}
+          flexGrow={1}
+          mr={[null, null, 'extra-loose', '72px']}
+        >
           {transactionList}
         </Box>
         <Flex flexDirection="column" minWidth={[null, null, '376px']}>

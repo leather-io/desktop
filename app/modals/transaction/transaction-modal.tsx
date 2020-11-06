@@ -136,7 +136,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         );
       }
       return unsignedTx;
-      // return unsignedTx.setSignature(resp.signatureVRS.toString('hex'));
     },
     [blockstackApp, publicKey]
   );

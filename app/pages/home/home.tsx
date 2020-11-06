@@ -18,7 +18,7 @@ import {
   selectTransactionListFetchError,
 } from '@store/transaction';
 import { selectPendingTransactions } from '@store/pending-transaction';
-import { selectNextCycleInfo, selectPoxInfo, selectStackerInfo } from '@store/stacking';
+import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
 import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
 import {
   TransactionList,
@@ -33,7 +33,6 @@ import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
 import { HomeLayout } from './home-layout';
-import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -50,11 +49,12 @@ export const Home: FC = () => {
     receiveModalOpen,
     activeNode,
     stackingDetails,
-    nextCycleInfo,
+
     stackerInfo,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
+    spendableBalance: selectAvailableBalance(state),
     pendingTxs: selectPendingTransactions(state),
     balance: selectAddressBalance(state),
     txModalOpen: selectTxModalOpen(state),

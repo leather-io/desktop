@@ -18,7 +18,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
-
+import contextMenu from 'electron-context-menu';
 import MenuBuilder from './menu';
 
 // CSP enabled in production mode, don't warn in development
@@ -33,6 +33,8 @@ export default class AppUpdater {
     void autoUpdater.checkForUpdatesAndNotify();
   }
 }
+
+contextMenu({ showCopyImage: false, showSearchWithGoogle: false });
 
 let mainWindow: BrowserWindow | null = null;
 

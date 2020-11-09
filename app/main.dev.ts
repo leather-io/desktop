@@ -88,7 +88,8 @@ const createWindow = async () => {
           }
         : {
             nodeIntegration: false,
-            contextIsolation: true,
+            // SECURITY: This needs to be disabled
+            contextIsolation: false,
             webSecurity: true,
             preload: path.join(__dirname, 'dist/renderer.prod.js'),
           },

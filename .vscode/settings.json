@@ -10,10 +10,7 @@
   "javascript.validate.enable": false,
   "javascript.format.enable": false,
   "typescript.format.enable": false,
-  "files.exclude": {
-    "app/node_modules/": true,
-    "app/dist/": true
-  },
+  "files.exclude": {},
   "search.exclude": {
     ".git": true,
     ".eslintcache": true,

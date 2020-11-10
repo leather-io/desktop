@@ -34,9 +34,9 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
     builder
       .addCase(persistMnemonicSafe, (state, action) => {
         if (state.mnemonic !== null) {
-          log.warn(
-            'generateMnemonicSafe failed. Tried to create mnemonic when one already exists.'
-          );
+          // log.warn(
+          //   'generateMnemonicSafe failed. Tried to create mnemonic when one already exists.'
+          // );
           return state;
         }
         return { ...state, mnemonic: action.payload };

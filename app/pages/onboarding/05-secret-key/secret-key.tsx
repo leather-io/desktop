@@ -25,7 +25,7 @@ export const SecretKey: React.FC = () => {
 
   if (!mnemonic) {
     const err = 'Component `SecretKey` should not render without pre-generated mnemonic';
-    log.error(err);
+    // log.error(err);
     throw new Error(err);
   }
 

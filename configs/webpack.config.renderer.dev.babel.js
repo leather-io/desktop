@@ -45,7 +45,7 @@ export default merge.smart(baseConfig, {
 
   mode: 'development',
 
-  target: 'electron-renderer',
+  // target: 'electron-renderer',
 
   entry: [
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
@@ -57,6 +57,7 @@ export default merge.smart(baseConfig, {
   output: {
     publicPath: `http://localhost:${port}/dist/`,
     filename: 'renderer.dev.js',
+    libraryTarget: 'var',
   },
 
   module: {
@@ -104,6 +105,7 @@ export default merge.smart(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      // buffer:
     },
   },
   plugins: [

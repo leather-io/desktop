@@ -81,17 +81,18 @@ const createWindow = async () => {
     frame: process.platform !== 'darwin',
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     icon: path.join(__dirname, '../resources/icon-no-padding-512x512.png'),
-    webPreferences:
-      process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
+    webPreferences: {
+      webSecurity: true,
+      contextIsolation: true,
+      ...(process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
         ? {
             nodeIntegration: true,
           }
         : {
             nodeIntegration: false,
-            contextIsolation: true,
-            webSecurity: true,
-            preload: path.join(__dirname, 'dist/renderer.prod.js'),
-          },
+            // preload: path.join(__dirname, 'dist/renderer.prod.js'),
+          }),
+    },
   });
 
   if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 28 });

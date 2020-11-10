@@ -39,7 +39,6 @@ export default merge.smart(baseConfig, {
     library: 'renderer',
     path: dist,
     filename: '[name].dev.dll.js',
-    libraryTarget: 'var',
   },
 
   plugins: [

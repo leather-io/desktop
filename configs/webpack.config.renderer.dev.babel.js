@@ -9,6 +9,7 @@ import path from 'path';
 import fs from 'fs';
 import webpack from 'webpack';
 import chalk from 'chalk';
+import CopyPlugin from 'copy-webpack-plugin';
 import merge from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
 import baseConfig from './webpack.config.base';
@@ -140,6 +141,10 @@ export default merge.smart(baseConfig, {
 
     new webpack.LoaderOptionsPlugin({
       debug: true,
+    }),
+
+    new CopyPlugin({
+      patterns: [{ from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' }],
     }),
   ],
 

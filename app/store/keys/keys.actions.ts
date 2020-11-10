@@ -77,7 +77,7 @@ export function setSoftwareWallet({ password, history }: SetSoftwareWallet) {
     const { derivedKeyHash } = await deriveKey({ pass: password, salt });
 
     if (!mnemonic) {
-      log.error('Cannot derive encryption key unless a mnemonic has been generated');
+      // log.error('Cannot derive encryption key unless a mnemonic has been generated');
       return;
     }
 

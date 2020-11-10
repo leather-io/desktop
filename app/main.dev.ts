@@ -39,20 +39,15 @@ contextMenu({ showCopyImage: false, showSearchWithGoogle: false });
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
-  import('source-map-support')
-    .then(sourceMapSupport => sourceMapSupport.install())
-    .catch(err => {
-      throw err;
-    });
+  const sourceMapSupport = require('source-map-support');
+  sourceMapSupport.install();
 }
 
 if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  import('electron-debug')
-    .then(electronDebug => electronDebug.default())
-    .catch(error => console.error(error));
+  require('electron-debug')();
 }
 
-const installExtensions = async () => {
+const installExtensions = () => {
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
@@ -84,13 +79,18 @@ const createWindow = async () => {
     webPreferences: {
       webSecurity: true,
       contextIsolation: true,
+      // SECURITY: disable this module for production
+      enableRemoteModule: true,
+      preload: path.join(__dirname, 'preload.js'),
+
       ...(process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
         ? {
             nodeIntegration: true,
           }
         : {
             nodeIntegration: false,
-            // preload: path.join(__dirname, 'dist/renderer.prod.js'),
+            nodeIntegrationInWorker: false,
+            nodeIntegrationInSubFrames: false,
           }),
     },
   });

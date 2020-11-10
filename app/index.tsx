@@ -14,6 +14,9 @@ const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 //   xxx: 123,
 // });
 
+// console.log('dddddddddd', require('safe-buffer'));
+// (window as any).Buffer = require('safe-buffer').Buffer;
+
 document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const Root = require('./pages/root').default;

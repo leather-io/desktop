@@ -4,7 +4,7 @@ import { StacksTestnet } from '@stacks/network';
 export { ChainID };
 
 // export const chain = ENV === 'development' || ENV === 'testing' ? ChainID.Testnet : ChainID.Mainnet;
-export const chain = ChainID.Testnet;
+export const chain = 2147483648;
 
 // export const stacksNetwork: StacksNetwork =
 //   ENV === 'development' || ENV === 'testing' ? new StacksTestnet() : new StacksMainnet();

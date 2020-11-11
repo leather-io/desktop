@@ -9,9 +9,8 @@
     <div class="draggable-bar"></div>
     <div id="root"></div>
     <script>
-      window.Buffer = electron.Buffer;
       window.__dirname = electron.__dirname;
-      window.fs = electron.fs;
+      window.__filename = electron.__filename;
 
       if (electron.scriptsToLoad.length) {
         document.write(

@@ -3,30 +3,30 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { useStore } from 'react-redux';
 
 import routes from './constants/routes.json';
-// import { Home } from './pages/home/home';
+import { Home } from './pages/home/home';
 import { selectAddress } from './store/keys/keys.reducer';
 
 import {
   Terms,
   Welcome,
-  // CreateWallet,
-  // RestoreWallet,
-  // GeneratingSecret,
-  // ConnectLedger,
-  // SecretKey,
-  // VerifyKey,
-  // SetPassword,
+  CreateWallet,
+  RestoreWallet,
+  GeneratingSecret,
+  ConnectLedger,
+  SecretKey,
+  VerifyKey,
+  SetPassword,
 } from './pages/onboarding';
 
 import { App } from './pages/app';
-// import { Settings } from './pages/settings/settings';
-// import { Stacking } from './pages/stacking/stacking';
+import { Settings } from './pages/settings/settings';
+import { Stacking } from './pages/stacking/stacking';
 
 export const routerConfig = [
-  // {
-  //   path: routes.HOME,
-  //   component: Home,
-  // },
+  {
+    path: routes.HOME,
+    component: Home,
+  },
   {
     path: routes.TERMS,
     component: Terms,
@@ -35,46 +35,46 @@ export const routerConfig = [
     path: routes.WELCOME,
     component: Welcome,
   },
-  // {
-  //   path: routes.CREATE,
-  //   component: CreateWallet,
-  // },
-  // {
-  //   path: routes.RESTORE,
-  //   component: RestoreWallet,
-  // },
-  // {
-  //   path: routes.GENERATING,
-  //   component: GeneratingSecret,
-  // },
-  // {
-  //   path: routes.CONNECT_LEDGER,
-  //   component: ConnectLedger,
-  // },
-  // {
-  //   path: routes.SECRET_KEY,
-  //   component: SecretKey,
-  // },
-  // {
-  //   path: routes.VERIFY_KEY,
-  //   component: VerifyKey,
-  // },
-  // {
-  //   path: routes.SET_PASSWORD,
-  //   component: SetPassword,
-  // },
-  // {
-  //   path: routes.SET_PASSWORD,
-  //   component: SetPassword,
-  // },
-  // {
-  //   path: routes.SETTINGS,
-  //   component: Settings,
-  // },
-  // {
-  //   path: routes.STACKING,
-  //   component: Stacking,
-  // },
+  {
+    path: routes.CREATE,
+    component: CreateWallet,
+  },
+  {
+    path: routes.RESTORE,
+    component: RestoreWallet,
+  },
+  {
+    path: routes.GENERATING,
+    component: GeneratingSecret,
+  },
+  {
+    path: routes.CONNECT_LEDGER,
+    component: ConnectLedger,
+  },
+  {
+    path: routes.SECRET_KEY,
+    component: SecretKey,
+  },
+  {
+    path: routes.VERIFY_KEY,
+    component: VerifyKey,
+  },
+  {
+    path: routes.SET_PASSWORD,
+    component: SetPassword,
+  },
+  {
+    path: routes.SET_PASSWORD,
+    component: SetPassword,
+  },
+  {
+    path: routes.SETTINGS,
+    component: Settings,
+  },
+  {
+    path: routes.STACKING,
+    component: Stacking,
+  },
 ];
 
 const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.TERMS);

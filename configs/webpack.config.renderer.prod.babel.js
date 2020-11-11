@@ -5,7 +5,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import merge from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import baseConfig from './webpack.config.base';
@@ -16,12 +16,13 @@ CheckNodeEnv('production');
 DeleteSourceMaps();
 
 // eslint-disable-next-line import/no-default-export
-export default merge.smart(baseConfig, {
+export default merge(baseConfig, {
   devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
 
-  mode: 'production',
+  mode: 'development',
 
-  target: 'electron-renderer',
+  // target: 'electron-renderer',
+  target: 'web',
 
   entry: ['core-js', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'app/index.tsx')],
 
@@ -29,6 +30,7 @@ export default merge.smart(baseConfig, {
     path: path.join(__dirname, '..', 'app/dist'),
     publicPath: './dist/',
     filename: 'renderer.prod.js',
+    libraryTarget: 'var',
   },
 
   module: {
@@ -124,8 +126,13 @@ export default merge.smart(baseConfig, {
       openAnalyzer: process.env.OPEN_ANALYZER === 'true',
     }),
 
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+
     new CopyPlugin({
       patterns: [{ from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' }],
+      patterns: [{ from: 'app/preload.js', to: '.' }],
     }),
   ],
 });

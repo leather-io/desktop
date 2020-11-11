@@ -5,13 +5,17 @@
     <title>Stacks Wallet</title>
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; font-src 'self'; img-src data:; style-src 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-6ca3c3e1fcd34bbc8cfaeceaa8106e36'; connect-src *;"
+      content="default-src 'none'; font-src 'self'; img-src data:; style-src 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-6ca3c3e1fcd34bbc8cfaeceaa8106e36' 'nonce-6ca3c3e1fcd34bbc8cfaeceaa8106e37'; connect-src *;"
     />
   </head>
 
   <body>
     <div class="draggable-bar"></div>
     <div id="root"></div>
+    <script nonce="6ca3c3e1fcd34bbc8cfaeceaa8106e37">
+      window.__dirname = electron.__dirname;
+      window.__filename = electron.__filename;
+    </script>
     <script src="./dist/renderer.prod.js" nonce="6ca3c3e1fcd34bbc8cfaeceaa8106e36"></script>
   </body>
 </html>

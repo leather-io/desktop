@@ -31,7 +31,7 @@ export type Store = ReduxStore<RootState, Action<string>>;
 
 export const persistConfig: PersistConfig<RootState> = {
   key: 'root',
-  // storage: reduxPersistElectronStore(),
+  storage: reduxPersistElectronStore(),
   whitelist: ['stacksNode'],
 };
 

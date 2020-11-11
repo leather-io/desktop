@@ -4,7 +4,7 @@
 
 import webpack from 'webpack';
 import path from 'path';
-import merge from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import baseConfig from './webpack.config.base';
 import { dependencies } from '../package.json';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
@@ -14,10 +14,10 @@ CheckNodeEnv('development');
 const dist = path.join(__dirname, '..', 'dll');
 
 // eslint-disable-next-line import/no-default-export
-export default merge.smart(baseConfig, {
+export default merge(baseConfig, {
   context: path.join(__dirname, '..'),
 
-  devtool: 'inline-source-map',
+  devtool: 'eval',
 
   mode: 'development',
 
@@ -36,10 +36,10 @@ export default merge.smart(baseConfig, {
   },
 
   output: {
-    // library: 'renderer',
+    library: 'renderer',
     path: dist,
     filename: '[name].dev.dll.js',
-    libraryTarget: 'window',
+    libraryTarget: 'var',
   },
 
   plugins: [

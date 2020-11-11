@@ -6,7 +6,7 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import merge from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './webpack.config.base';
@@ -17,7 +17,7 @@ CheckNodeEnv('production');
 DeleteSourceMaps();
 
 // eslint-disable-next-line import/no-default-export
-export default merge.smart(baseConfig, {
+export default merge(baseConfig, {
   devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
 
   mode: 'production',
@@ -31,18 +31,18 @@ export default merge.smart(baseConfig, {
     filename: './app/main.prod.js',
   },
 
-  optimization: {
-    minimizer: process.env.E2E_BUILD
-      ? []
-      : [
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          new TerserPlugin({
-            parallel: true,
-            sourceMap: true,
-            cache: true,
-          }),
-        ],
-  },
+  // optimization: {
+  // minimizer: process.env.E2E_BUILD
+  // ? []
+  // : [
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  //   new TerserPlugin({
+  //     parallel: true,
+  //     sourceMap: true,
+  //     cache: true,
+  //   }),
+  // ],
+  // },
 
   plugins: [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call

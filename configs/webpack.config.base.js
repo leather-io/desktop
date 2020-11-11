@@ -4,15 +4,17 @@
 
 import path from 'path';
 import webpack from 'webpack';
-import { dependencies as externals } from '../app/package.json';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import { dependencies as externals } from '../app/package.json';
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  externals: [...Object.keys(externals || {})],
+  target: 'web',
+
+  // externals: [...Object.keys(externals || {})],
 
   module: {
-    noParse: /\.wasm$/,
+    noParse: [/\.wasm$/],
     rules: [
       {
         test: /\.tsx?$/,
@@ -49,7 +51,7 @@ export default {
   output: {
     path: path.join(__dirname, '..', 'app'),
     // https://github.com/webpack/webpack/issues/1114
-    libraryTarget: 'commonjs2',
+    // libraryTarget: 'commonjs2',
   },
 
   /**
@@ -61,12 +63,14 @@ export default {
     plugins: [new TsconfigPathsPlugin()],
   },
 
+  optimization: {
+    namedModules: true,
+  },
+
   plugins: [
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
       SHA: '',
     }),
-
-    new webpack.NamedModulesPlugin(),
   ],
 };

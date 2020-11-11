@@ -13,13 +13,19 @@
  * When running `yarn build` or `yarn build-main`, this file is compiled to
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
 import MenuBuilder from './menu';
+import { deriveKey } from './crypto/key-generation';
+import Store from 'secure-electron-store';
+import StoreElectron from 'electron-store';
+// import fs from 'fs';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -81,11 +87,12 @@ const createWindow = async () => {
       contextIsolation: true,
       // SECURITY: disable this module for production
       enableRemoteModule: true,
+      additionalArguments: [`storePath:${app.getPath('userData')}`],
       preload: path.join(__dirname, 'preload.js'),
 
       ...(process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
         ? {
-            nodeIntegration: true,
+            nodeIntegration: false,
           }
         : {
             nodeIntegration: false,
@@ -96,6 +103,15 @@ const createWindow = async () => {
   });
 
   if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 28 });
+
+  //
+  // Set up electron-secure-store
+  // const store = new Store({
+  //   path: app.getPath('userData'),
+  //   unprotectedFilename: 'config',
+  //   encrypt: false,
+  // });
+  // store.mainBindings(ipcMain, mainWindow, fs);
 
   mainWindowState.manage(mainWindow);
 
@@ -159,4 +175,14 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) void createWindow();
+});
+
+const store = new StoreElectron();
+
+setTimeout(() => store.set('test', '123132132'), 1000);
+
+ipcMain.handle('store-get', (e, { key, value }: any) => store.set(key, value));
+
+ipcMain.handle('derive-key', async (e, args) => {
+  return deriveKey(args);
 });

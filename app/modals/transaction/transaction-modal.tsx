@@ -1,6 +1,6 @@
 import React, { FC, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import log from 'electron-log';
+// import log from 'electron-log';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';

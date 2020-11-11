@@ -25,7 +25,7 @@ import {
   makeContractCall,
   TransactionSigner,
   createStacksPrivateKey,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
 import { broadcastTransaction } from '@store/transaction';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance } from '@store/address';

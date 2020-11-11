@@ -1,4 +1,5 @@
-import { ChainID, StacksTestnet } from '@blockstack/stacks-transactions';
+import { ChainID } from '@stacks/transactions';
+import { StacksTestnet } from '@stacks/network';
 
 export { ChainID };
 

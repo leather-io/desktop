@@ -1,25 +1,23 @@
 import axios from 'axios';
 import { BigNumber } from 'bignumber.js';
+import { address } from 'bitcoinjs-lib';
 import {
   makeContractCall,
   bufferCV,
   uintCV,
   tupleCV,
-  StacksTestnet,
   broadcastTransaction,
   standardPrincipalCV,
   serializeCV,
   deserializeCV,
-  TupleCV,
   ContractCallOptions,
   UIntCV,
   BufferCV,
-  StacksNetwork,
   ContractCallPayload,
   StacksTransaction,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
+import { StacksTestnet, StacksNetwork } from '@stacks/network';
 import BN from 'bn.js';
-import { address } from 'bitcoinjs-lib';
 import { Api } from '@api/api';
 import { safelyFormatHexTxid } from '../safe-handle-txid';
 

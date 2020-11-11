@@ -2,7 +2,7 @@ import { useHistory } from 'react-router';
 import { push } from 'connected-react-router';
 import { createAction, Dispatch } from '@reduxjs/toolkit';
 import log from 'electron-log';
-import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '@blockstack/keychain';
+import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '@stacks/keychain';
 
 import { RootState } from '..';
 import routes from '@constants/routes.json';

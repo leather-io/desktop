@@ -3,7 +3,7 @@ import {
   makeRandomPrivKey,
   getAddressFromPrivateKey,
   TransactionVersion,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
 import { Pox } from './pox';
 import { Api } from '../../api/api';
 import BN from 'bn.js';

@@ -14,9 +14,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@blockstack/keychain": "0.13.0-beta.2",
-    "@blockstack/stacks-transactions": "0.6.1-beta.2",
     "@ledgerhq/hw-transport-node-hid": "5.23.2",
+    "@stacks/keychain": "0.16.1",
+    "@stacks/transactions": "1.0.0-beta.9",
     "bitcoinjs-lib": "^5.2.0"
   }
 }

@@ -10,7 +10,7 @@ import fs from 'fs';
 import webpack from 'webpack';
 import chalk from 'chalk';
 import CopyPlugin from 'copy-webpack-plugin';
-import merge from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
 import baseConfig from './webpack.config.base';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
@@ -40,14 +40,16 @@ if (!requiredByDLLConfig && !(fs.existsSync(dll) && fs.existsSync(manifest))) {
 }
 
 // eslint-disable-next-line import/no-default-export
-export default merge.smart(baseConfig, {
-  devtool: 'source-map',
+export default merge(baseConfig, {
+  devtool: 'inline-source-map',
 
   mode: 'development',
 
   // target: 'electron-renderer',
 
   entry: [
+    'core-js',
+    'regenerator-runtime/runtime',
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
@@ -57,7 +59,6 @@ export default merge.smart(baseConfig, {
   output: {
     publicPath: `http://localhost:${port}/dist/`,
     filename: 'renderer.dev.js',
-    libraryTarget: 'var',
   },
 
   module: {
@@ -105,7 +106,6 @@ export default merge.smart(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
-      // buffer:
     },
   },
   plugins: [
@@ -145,6 +145,10 @@ export default merge.smart(baseConfig, {
       debug: true,
     }),
 
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+
     new CopyPlugin({
       patterns: [{ from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' }],
     }),
@@ -159,7 +163,7 @@ export default merge.smart(baseConfig, {
     port,
     publicPath,
     compress: true,
-    noInfo: true,
+    noInfo: false,
     stats: 'errors-only',
     inline: true,
     lazy: false,

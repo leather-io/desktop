@@ -1,5 +1,5 @@
 import { createReducer, createSelector } from '@reduxjs/toolkit';
-import log from 'electron-log';
+// import log from 'electron-log';
 
 import { RootState } from '..';
 import { WalletType } from '../../types/wallet-type';

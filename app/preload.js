@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 console.log('preload');
-const fs = require('fs');
 
-const { ChainID } = require('@blockstack/stacks-transactions');
 const { contextBridge, ipcRenderer, app } = require('electron');
+const fs = require('fs');
+const Store = require('secure-electron-store').default;
 
 const scriptsToLoad = [];
 
@@ -20,11 +20,24 @@ if (process.env.START_HOT) {
   scriptsToLoad.push('./dist/renderer.prod.js');
 }
 
+// Create the electron store to be made available in the renderer process
+const store = new Store();
+
 contextBridge.exposeInMainWorld('electron', {
   scriptsToLoad,
   __dirname,
+  __filename,
 });
-contextBridge.exposeInMainWorld('process', { ...process });
-contextBridge.exposeInMainWorld('fs', fs);
 
-contextBridge.exposeInMainWorld('Buffer', Buffer);
+contextBridge.exposeInMainWorld('process', { ...process });
+
+contextBridge.exposeInMainWorld('api', {
+  // Expose protected methods that allow the renderer process to use
+  // the ipcRenderer without exposing the entire object
+  store: store.preloadBindings(ipcRenderer, fs),
+
+  deriveKey: async args => {
+    console.log('deriveKey', args);
+    return ipcRenderer.invoke('derive-key', args);
+  },
+});

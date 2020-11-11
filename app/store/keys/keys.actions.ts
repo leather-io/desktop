@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router';
 import { push } from 'connected-react-router';
 import { createAction, Dispatch } from '@reduxjs/toolkit';
-import log from 'electron-log';
+// import log from 'electron-log';
 import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '@stacks/keychain';
 
 import { RootState } from '..';
@@ -14,7 +14,7 @@ import {
   persistWalletType,
   persistPublicKey,
 } from '@utils/disk-store';
-import { generateSalt, deriveKey } from '../../crypto/key-generation';
+import { generateSalt } from '../../crypto/key-generation';
 import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
 
@@ -74,7 +74,7 @@ export function setSoftwareWallet({ password, history }: SetSoftwareWallet) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const mnemonic = selectMnemonic(getState());
     const salt = generateSalt();
-    const { derivedKeyHash } = await deriveKey({ pass: password, salt });
+    const { derivedKeyHash } = await api.deriveKey({ pass: password, salt });
 
     if (!mnemonic) {
       // log.error('Cannot derive encryption key unless a mnemonic has been generated');
@@ -99,7 +99,7 @@ interface DecryptSoftwareWalletArgs {
 }
 export async function decryptSoftwareWallet(args: DecryptSoftwareWalletArgs) {
   const { password, salt, ciphertextMnemonic } = args;
-  const { derivedKeyHash } = await deriveKey({ pass: password, salt });
+  const { derivedKeyHash } = await api.deriveKey({ pass: password, salt });
   const plaintextMnemonic = await decryptMnemonic({
     encryptedMnemonic: ciphertextMnemonic,
     derivedKeyHash,

@@ -3,7 +3,7 @@ import { safeAwait } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 import urljoin from 'url-join';
 import BigNumber from 'bignumber.js';
-import { StacksTransaction, TxBroadcastResult } from '@blockstack/stacks-transactions';
+import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 
 import { Api } from '../../api/api';
 import { stacksNetwork } from '../../environment';

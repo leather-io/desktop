@@ -7,13 +7,13 @@ import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
 import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
-import { createMessageSignature } from '@blockstack/stacks-transactions/lib/authorization';
 import {
   makeSTXTokenTransfer,
   MEMO_MAX_LENGTH_BYTES,
   makeUnsignedSTXTokenTransfer,
-  StacksTestnet,
-} from '@blockstack/stacks-transactions';
+  createMessageSignature,
+} from '@stacks/transactions';
+
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -51,6 +51,7 @@ import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
+import { StacksTestnet } from '@stacks/network';
 
 interface TxModalProps {
   balance: string;

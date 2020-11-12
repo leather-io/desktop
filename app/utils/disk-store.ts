@@ -1,4 +1,3 @@
-import Store from 'electron-store';
 import { WalletType } from '../types/wallet-type';
 
 enum StoreIndex {
@@ -24,52 +23,29 @@ interface LedgerWallet {
 
 export type DiskStore = LedgerWallet | SoftwareWallet;
 
-// const store = new Store({
-//   schema: {
-//     [StoreIndex.Salt]: {
-//       type: 'string',
-//       minLength: 32,
-//       maxLength: 32,
-//     },
-//     [StoreIndex.EncryptedMnemonic]: {
-//       type: 'string',
-//     },
-//     [StoreIndex.StxAddress]: {
-//       type: 'string',
-//     },
-//     [StoreIndex.PublicKey]: {
-//       type: 'string',
-//       minLength: 66,
-//       maxLength: 66,
-//     },
-//     [StoreIndex.WalletType]: {
-//       enum: ['ledger', 'software'],
-//     },
-//   },
-// });
-
 export const persistEncryptedMnemonic = (encryptedMnemonic: string) => {
-  // store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
+  api.store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
 };
 
 export const persistStxAddress = (stxAddress: string) => {
-  // store.set(StoreIndex.StxAddress, stxAddress);
+  api.store.set(StoreIndex.StxAddress, stxAddress);
 };
 
 export const persistPublicKey = (publicKey: string) => {
-  // store.set(StoreIndex.PublicKey, publicKey);
+  api.store.set(StoreIndex.PublicKey, publicKey);
 };
 
 export const persistSalt = (salt: string) => {
-  // store.set(StoreIndex.Salt, salt);
+  api.store.set(StoreIndex.Salt, salt);
 };
 
 export const persistWalletType = (walletType: WalletType) => {
-  // store.set(StoreIndex.WalletType, walletType);
+  api.store.set(StoreIndex.WalletType, walletType);
 };
 
 export const getInitialStateFromDisk = () => {
-  // return store.store as DiskStore;
+  console.log('getting entire disk store', api.store.initialValue);
+  return (api.store.initialValue as unknown) as DiskStore;
 };
 
-export const clearDiskStorage = () => {}; //store.clear();
+export const clearDiskStorage = () => api.store.clear();

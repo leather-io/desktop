@@ -2,8 +2,8 @@
 console.log('preload');
 
 const { contextBridge, ipcRenderer, app } = require('electron');
+const Store = require('electron-store');
 const fs = require('fs');
-const Store = require('secure-electron-store').default;
 
 const scriptsToLoad = [];
 
@@ -20,21 +20,28 @@ if (process.env.START_HOT) {
   scriptsToLoad.push('./dist/renderer.prod.js');
 }
 
-// Create the electron store to be made available in the renderer process
-const store = new Store();
-
 contextBridge.exposeInMainWorld('electron', {
   scriptsToLoad,
   __dirname,
   __filename,
 });
 
+// SECURITY: don't expose entire process obj
 contextBridge.exposeInMainWorld('process', { ...process });
+
+const store = new Store();
 
 contextBridge.exposeInMainWorld('api', {
   // Expose protected methods that allow the renderer process to use
   // the ipcRenderer without exposing the entire object
-  store: store.preloadBindings(ipcRenderer, fs),
+  store: {
+    set: (key, value) => ipcRenderer.invoke('store-set', { key, value }),
+    get: key => ipcRenderer.invoke('store-get', { key }),
+    delete: key => ipcRenderer.invoke('store-delete', { key }),
+    clear: () => ipcRenderer.invoke('store-clear'),
+    getEntireStore: () => ipcRenderer.invoke('store-getEntireStore'),
+    initialValue: store.store,
+  },
 
   deriveKey: async args => {
     console.log('deriveKey', args);

@@ -1,15 +1,3 @@
-declare module '*.svg' {
-  const content: any;
-  // eslint-disable-next-line import/no-default-export
-  export default content;
-}
-
-declare module '*.woff2' {
-  const content: any;
-  // eslint-disable-next-line import/no-default-export
-  export default content;
-}
-
 declare const api: {
   deriveKey: ({
     pass,
@@ -25,5 +13,16 @@ declare const api: {
     clear(): void;
     getEntireStore(): any;
     initialValue: Record<string, unknown>;
+  };
+
+  nodeHid: {
+    listen: typeof import('@ledgerhq/hw-transport').default['listen'];
+    open({
+      descriptor,
+      onDisconnect,
+    }: {
+      descriptor: string;
+      onDisconnect(): void;
+    }): Promise<{ transport: any; closeTransportConnection(): Promise<void> }>;
   };
 };

@@ -1,4 +1,8 @@
-# Stacks Wallet
+> This is the legacy Blockstack Wallet. For the newer Stacks Wallet, see the [`release/stacking`](https://github.com/blockstack/stacks-wallet/tree/release/stacking) branch.
+
+------------------------------
+
+# Stacks Wallet v1
 
 The Stacks Wallet enables holders of Stacks to send and receive tokens. [Read the announcement here.](https://blog.blockstack.org/introducing-the-stacks-wallet/)
 

@@ -17,10 +17,11 @@ module.exports = {
   moduleDirectories: ['node_modules', 'app/node_modules'],
   setupFiles: ['./internals/scripts/CheckBuildsExist.js'],
   globals: {
+    api: true,
     'ts-jest': {
       tsConfig: 'tsconfig.tests.json',
       diagnostics: {
-        ignoreCodes: [6133],
+        ignoreCodes: [6133, 2304],
       },
     },
   },

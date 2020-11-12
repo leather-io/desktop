@@ -45,7 +45,7 @@ export const persistWalletType = (walletType: WalletType) => {
 
 export const getInitialStateFromDisk = () => {
   console.log('getting entire disk store', api.store.initialValue);
-  return (api.store.initialValue as unknown) as DiskStore;
+  return (api.store.initialValue() as unknown) as DiskStore;
 };
 
 export const clearDiskStorage = () => api.store.clear();

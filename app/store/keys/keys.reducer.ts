@@ -10,8 +10,6 @@ import {
   persistMnemonic,
 } from './keys.actions';
 
-//
-// TODO: create separate state slices per wallet type
 export interface KeysState {
   walletType: WalletType;
   mnemonic: string | null;

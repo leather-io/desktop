@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
-const { contextBridge, ipcRenderer, app } = require('electron');
+const { contextBridge, ipcRenderer, app, shell } = require('electron');
 
 const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default;
 
@@ -55,6 +55,8 @@ contextBridge.exposeInMainWorld('api', {
       return () => ipcRenderer.removeListener('focus', listener);
     },
   },
+
+  openExternalLink: url => shell.openExternal(url),
 
   nodeHid: {
     listen: observer => TransportNodeHid.listen(observer),

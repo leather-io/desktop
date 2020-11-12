@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-console.log('preload');
-
+const fs = require('fs');
 const { contextBridge, ipcRenderer, app } = require('electron');
 const Store = require('electron-store');
-const fs = require('fs');
+
+const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default;
 
 const scriptsToLoad = [];
 
@@ -46,5 +46,22 @@ contextBridge.exposeInMainWorld('api', {
   deriveKey: async args => {
     console.log('deriveKey', args);
     return ipcRenderer.invoke('derive-key', args);
+  },
+
+  nodeHid: {
+    listen: observer => TransportNodeHid.listen(observer),
+    open: async ({ descriptor, onDisconnect }) => {
+      const transport = await TransportNodeHid.open(descriptor);
+      transport.on('disconnect', async () => {
+        await transport.close();
+        onDisconnect();
+      });
+      return {
+        transport,
+        closeTransportConnection: async () => {
+          await transport.close();
+        },
+      };
+    },
   },
 });

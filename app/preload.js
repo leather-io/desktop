@@ -43,6 +43,19 @@ contextBridge.exposeInMainWorld('api', {
     return ipcRenderer.invoke('derive-key', args);
   },
 
+  windowEvents: {
+    blur(callback) {
+      const listener = () => callback();
+      ipcRenderer.on('blur', listener);
+      return () => ipcRenderer.removeListener('blur', listener);
+    },
+    focus(callback) {
+      const listener = () => callback();
+      ipcRenderer.on('focus', listener);
+      return () => ipcRenderer.removeListener('focus', listener);
+    },
+  },
+
   nodeHid: {
     listen: observer => TransportNodeHid.listen(observer),
     open: async ({ descriptor, onDisconnect }) => {

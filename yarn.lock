@@ -2057,11 +2057,6 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.26.0.tgz#171bd471265259663520abb02a0eed80e949e3a1"
   integrity sha512-/3EKvS9eHzKl9Om+t//SPnzJaahIoVIUlozLMSarINyO7SSh174kxl3jTNHBl7dLxvkQyDDs5imLvP04ohlQaw==
 
-"@msgpack/msgpack@^2.1.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@msgpack/msgpack/-/msgpack-2.3.0.tgz#a9043b920837b2dd63482e7bf6b8345813e9816b"
-  integrity sha512-xxRejzNpiVQ2lzxMG/yo2ocfZSk+cKo2THq54AimaubMucg66DpQm9Yj7ESMr/l2EqDkmF2Dx4r0F/cbsitAaw==
-
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.3.tgz#3a582bdb53804c6ba6d146579c46e52130cf4a3b"
@@ -11453,13 +11448,6 @@ schema-utils@^3.0.0:
     "@types/json-schema" "^7.0.6"
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
-
-secure-electron-store@1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/secure-electron-store/-/secure-electron-store-1.3.3.tgz#f9d24ee3a597a179473b398e00c15f1c75115d3f"
-  integrity sha512-mlhqmJqjMbLWKUIFTxHNQlAaRq+7Mzqs96z3nJq1p1qKN/YLTTjqOLrAd+S8Jfau49SE5kSW2qzv831o1AZpfg==
-  dependencies:
-    "@msgpack/msgpack" "^2.1.0"
 
 select-hose@^2.0.0:
   version "2.0.0"

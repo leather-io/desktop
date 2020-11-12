@@ -10,28 +10,6 @@ declare module '*.woff2' {
   export default content;
 }
 
-declare module 'secure-electron-store' {
-  const content: {
-    new (x: any): any;
-  };
-  const readConfigRequest: any;
-  const readConfigResponse: any;
-  const writeConfigRequest: any;
-  const clearRendererBindings: any;
-  const readUnprotectedConfigRequest: any;
-  const writeUnprotectedConfigRequest: any;
-  export {
-    readConfigRequest,
-    readConfigResponse,
-    writeConfigRequest,
-    writeUnprotectedConfigRequest,
-    readUnprotectedConfigRequest,
-    clearRendererBindings,
-  };
-  // eslint-disable-next-line import/no-default-export
-  export default content;
-}
-
 declare const api: {
   deriveKey: ({
     pass,
@@ -41,8 +19,11 @@ declare const api: {
     salt: string;
   }) => Promise<{ derivedKeyHash: Uint8Array }>;
   store: {
-    send(readOrWriteConfig: any, key: string, value?: any): void;
-    onReceive(readOrWriteConfig: any, key: (val: any) => void): void;
-    initial(): any;
+    get(key: string): any;
+    set(key: string, value: any): void;
+    delete(key: string): void;
+    clear(): void;
+    getEntireStore(): any;
+    initialValue: Record<string, unknown>;
   };
 };

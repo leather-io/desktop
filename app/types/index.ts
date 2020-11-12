@@ -12,7 +12,7 @@ declare const api: {
     delete(key: string): void;
     clear(): void;
     getEntireStore(): any;
-    initialValue: Record<string, unknown>;
+    initialValue(): Record<string, unknown>;
   };
 
   nodeHid: {

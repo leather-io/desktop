@@ -54,7 +54,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
 
   useEffect(() => {
     if (!selectedNode) return form.resetForm();
-    form.setValues(selectedNode);
+    void form.setValues(selectedNode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, selectedNode]);
 

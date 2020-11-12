@@ -86,9 +86,7 @@ const createWindow = async () => {
     webPreferences: {
       webSecurity: true,
       contextIsolation: true,
-      // SECURITY: disable this module for production
-      enableRemoteModule: true,
-      additionalArguments: [`storePath:${app.getPath('userData')}`],
+      enableRemoteModule: false,
       preload: path.join(__dirname, 'preload.js'),
 
       ...(process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
@@ -186,7 +184,7 @@ ipcMain.handle('store-delete', (_e, { key }: any) => store.delete(key));
 // ipcMain.handle('store-getEntireStore', () => store.store);
 ipcMain.handle('store-clear', () => store.clear());
 
-ipcMain.on('store-getEntireStore', (event, arg) => {
+ipcMain.on('store-getEntireStore', event => {
   event.returnValue = store.store;
 });
 

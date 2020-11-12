@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
 const { contextBridge, ipcRenderer, app } = require('electron');
-const Store = require('electron-store');
 
 const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default;
 
@@ -29,8 +28,6 @@ contextBridge.exposeInMainWorld('electron', {
 // SECURITY: don't expose entire process obj
 contextBridge.exposeInMainWorld('process', { ...process });
 
-const store = new Store();
-
 contextBridge.exposeInMainWorld('api', {
   // Expose protected methods that allow the renderer process to use
   // the ipcRenderer without exposing the entire object
@@ -39,12 +36,10 @@ contextBridge.exposeInMainWorld('api', {
     get: key => ipcRenderer.invoke('store-get', { key }),
     delete: key => ipcRenderer.invoke('store-delete', { key }),
     clear: () => ipcRenderer.invoke('store-clear'),
-    getEntireStore: () => ipcRenderer.invoke('store-getEntireStore'),
-    initialValue: store.store,
+    initialValue: () => ipcRenderer.sendSync('store-getEntireStore'),
   },
 
   deriveKey: async args => {
-    console.log('deriveKey', args);
     return ipcRenderer.invoke('derive-key', args);
   },
 

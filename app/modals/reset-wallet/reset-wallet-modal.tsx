@@ -1,7 +1,6 @@
 import React, { FC, useState, useRef } from 'react';
 import { Modal, ButtonGroup, Button, Box } from '@blockstack/ui';
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
-// import { remote } from 'electron';
 import { clearDiskStorage } from '@utils/disk-store';
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -32,7 +31,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
     cancelBtnRef.current?.focus();
     timer.current = setTimeout(() => {
       clearDiskStorage();
-      // remote.getCurrentWindow().reload();
+      api.reloadApp();
     }, PANIC_CANCEL_TIME);
   };
 

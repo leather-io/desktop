@@ -22,6 +22,8 @@ declare const api: {
 
   openExternalLink(url: string): Promise<void>;
 
+  reloadApp(): void;
+
   nodeHid: {
     listen: typeof import('@ledgerhq/hw-transport').default['listen'];
     open({

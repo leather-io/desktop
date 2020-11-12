@@ -20,6 +20,10 @@ declare const api: {
     focus(listener: () => void): () => void;
   };
 
+  openExternalLink(url: string): Promise<void>;
+
+  reloadApp(): void;
+
   nodeHid: {
     listen: typeof import('@ledgerhq/hw-transport').default['listen'];
     open({

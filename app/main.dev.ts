@@ -23,8 +23,7 @@ import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
-import Store from 'secure-electron-store';
-import StoreElectron from 'electron-store';
+import Store from 'electron-store';
 // import fs from 'fs';
 
 // CSP enabled in production mode, don't warn in development
@@ -157,6 +156,12 @@ const createWindow = async () => {
   new AppUpdater();
 };
 
+app.on('web-contents-created', (_event, contents) => {
+  contents.on('will-navigate', event => {
+    event.preventDefault();
+  });
+});
+
 /**
  * Add event listeners...
  */
@@ -177,12 +182,14 @@ app.on('activate', () => {
   if (mainWindow === null) void createWindow();
 });
 
-const store = new StoreElectron();
+const store = new Store();
 
-setTimeout(() => store.set('test', '123132132'), 1000);
+ipcMain.handle('store-set', (_e, { key, value }: any) => store.set(key, value));
+ipcMain.handle('store-get', (_e, { key }: any) => store.get(key));
+ipcMain.handle('store-delete', (_e, { key }: any) => store.delete(key));
+ipcMain.handle('store-getEntireStore', () => store.store);
+ipcMain.handle('store-clear', () => store.clear());
 
-ipcMain.handle('store-get', (e, { key, value }: any) => store.set(key, value));
-
-ipcMain.handle('derive-key', async (e, args) => {
+ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);
 });

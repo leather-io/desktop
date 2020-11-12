@@ -189,8 +189,12 @@ const store = new Store();
 ipcMain.handle('store-set', (_e, { key, value }: any) => store.set(key, value));
 ipcMain.handle('store-get', (_e, { key }: any) => store.get(key));
 ipcMain.handle('store-delete', (_e, { key }: any) => store.delete(key));
-ipcMain.handle('store-getEntireStore', () => store.store);
+// ipcMain.handle('store-getEntireStore', () => store.store);
 ipcMain.handle('store-clear', () => store.clear());
+
+ipcMain.on('store-getEntireStore', (event, arg) => {
+  event.returnValue = store.store;
+});
 
 ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);

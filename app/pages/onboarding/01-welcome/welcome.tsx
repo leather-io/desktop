@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { writeUnprotectedConfigRequest, readUnprotectedConfigRequest } from 'secure-electron-store';
 
 import routes from '@constants/routes.json';
 import {

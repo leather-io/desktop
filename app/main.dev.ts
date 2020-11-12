@@ -105,15 +105,6 @@ const createWindow = async () => {
 
   if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 28 });
 
-  //
-  // Set up electron-secure-store
-  // const store = new Store({
-  //   path: app.getPath('userData'),
-  //   unprotectedFilename: 'config',
-  //   encrypt: false,
-  // });
-  // store.mainBindings(ipcMain, mainWindow, fs);
-
   mainWindowState.manage(mainWindow);
 
   if (process.env.NODE_ENV === 'development' && process.env.DEBUG_PROD !== 'true') {
@@ -145,6 +136,9 @@ const createWindow = async () => {
       hasFocusedOnInitialLoad = true;
     }
   });
+
+  mainWindow.on('blur', () => mainWindow?.webContents.send('blur'));
+  mainWindow.on('focus', () => mainWindow?.webContents.send('focus'));
 
   mainWindow.on('closed', () => {
     mainWindow = null;

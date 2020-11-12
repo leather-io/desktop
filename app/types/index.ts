@@ -15,6 +15,11 @@ declare const api: {
     initialValue(): Record<string, unknown>;
   };
 
+  windowEvents: {
+    blur(listener: () => void): () => void;
+    focus(listener: () => void): () => void;
+  };
+
   nodeHid: {
     listen: typeof import('@ledgerhq/hw-transport').default['listen'];
     open({

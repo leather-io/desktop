@@ -24,9 +24,6 @@ import contextMenu from 'electron-context-menu';
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
 import Store from 'electron-store';
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { safeAwait } from './utils/safe-await';
-import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -190,4 +187,8 @@ ipcMain.on('store-getEntireStore', event => {
 
 ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);
+});
+
+ipcMain.handle('reload-app', (_e, args) => {
+  mainWindow?.reload();
 });

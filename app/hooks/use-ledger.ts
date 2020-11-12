@@ -17,6 +17,7 @@ export function useLedger() {
   const transport = useRef<Transport | null>(null);
   const disconnectTimeouts = useRef<number>(0);
   const listeningForAddEvent = useRef(true);
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const closeTransport = useRef(() => {});
   const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 1000;
   const POLL_LEDGER_INTERVAL = 250;

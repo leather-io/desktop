@@ -82,19 +82,12 @@ const createWindow = async () => {
     icon: path.join(__dirname, '../resources/icon-no-padding-512x512.png'),
     webPreferences: {
       webSecurity: true,
+      nodeIntegration: false,
+      nodeIntegrationInWorker: false,
+      nodeIntegrationInSubFrames: false,
       contextIsolation: true,
       enableRemoteModule: false,
       preload: path.join(__dirname, 'preload.js'),
-
-      ...(process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
-        ? {
-            nodeIntegration: false,
-          }
-        : {
-            nodeIntegration: false,
-            nodeIntegrationInWorker: false,
-            nodeIntegrationInSubFrames: false,
-          }),
     },
   });
 
@@ -189,6 +182,6 @@ ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);
 });
 
-ipcMain.handle('reload-app', (_e, args) => {
+ipcMain.handle('reload-app', _e => {
   mainWindow?.reload();
 });

@@ -25,7 +25,6 @@ contextBridge.exposeInMainWorld('electron', {
   __filename,
 });
 
-// SECURITY: don't expose entire process obj
 contextBridge.exposeInMainWorld('process', { ...process });
 
 contextBridge.exposeInMainWorld('api', {

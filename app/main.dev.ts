@@ -16,7 +16,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, MenuItem } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
@@ -82,19 +82,12 @@ const createWindow = async () => {
     icon: path.join(__dirname, '../resources/icon-no-padding-512x512.png'),
     webPreferences: {
       webSecurity: true,
+      nodeIntegration: false,
+      nodeIntegrationInWorker: false,
+      nodeIntegrationInSubFrames: false,
       contextIsolation: true,
       enableRemoteModule: false,
       preload: path.join(__dirname, 'preload.js'),
-
-      ...(process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
-        ? {
-            nodeIntegration: false,
-          }
-        : {
-            nodeIntegration: false,
-            nodeIntegrationInWorker: false,
-            nodeIntegrationInSubFrames: false,
-          }),
     },
   });
 
@@ -103,7 +96,7 @@ const createWindow = async () => {
   mainWindowState.manage(mainWindow);
 
   if (process.env.NODE_ENV === 'development' && process.env.DEBUG_PROD !== 'true') {
-    void mainWindow.loadURL(`file://${__dirname}/app-dev.html`);
+    void mainWindow.loadFile(`app-dev.html`);
   }
 
   if (process.env.NODE_ENV === 'production' || process.env.DEBUG_PROD === 'true') {
@@ -189,6 +182,16 @@ ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);
 });
 
-ipcMain.handle('reload-app', (_e, args) => {
+ipcMain.handle('reload-app', () => {
   mainWindow?.reload();
+});
+
+ipcMain.on('context-menu-open', (_e, { menuItems }) => {
+  const menu = new Menu();
+  menuItems.forEach((item: Electron.MenuItemConstructorOptions) => menu.append(new MenuItem(item)));
+  menu.popup({ window: mainWindow?.getParentWindow() });
+  menu.once('menu-will-close', () => {
+    // `destroy` call untyped
+    (menu as any).destroy();
+  });
 });

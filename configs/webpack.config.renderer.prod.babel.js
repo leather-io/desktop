@@ -19,7 +19,7 @@ DeleteSourceMaps();
 export default merge(baseConfig, {
   devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
 
-  mode: 'development',
+  mode: 'production',
 
   // target: 'electron-renderer',
   target: 'web',

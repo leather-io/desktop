@@ -31,7 +31,7 @@ type StepState = 'incomplete' | 'complete' | null;
 export const Stacking: FC = () => {
   useBackButton(routes.HOME);
 
-  const [cycles, setCycles] = useState(1);
+  const [cycles, setCycles] = useState(12);
   const [btcAddress, setBtcAddress] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 

@@ -17,12 +17,13 @@ interface ChooseBtcAddressStepProps {
   id: string;
   step?: number;
   isComplete: boolean;
+  value?: string;
   onEdit(): void;
   onComplete(address: string): void;
 }
 
 export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
-  const { isComplete, step, id, onEdit, onComplete } = props;
+  const { isComplete, step, id, value, onEdit, onComplete } = props;
 
   const btcAddressForm = useFormik({
     initialValues: { btcAddress: '' },
@@ -41,7 +42,7 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
   });
 
   return (
-    <StackingStep title={id} step={step} isComplete={isComplete} onEdit={onEdit}>
+    <StackingStep title={id} step={step} value={value} isComplete={isComplete} onEdit={onEdit}>
       <StackingStepDescription>
         Choose the address where you’d like to receive Bitcoin.
       </StackingStepDescription>

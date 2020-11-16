@@ -388,7 +388,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             isDisabled={isDecrypting}
             onClick={() => broadcastTx()}
           >
-            Send transaction
+            Send
           </TxModalButton>
         </TxModalFooter>
       ),

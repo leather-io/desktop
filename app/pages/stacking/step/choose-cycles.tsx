@@ -21,9 +21,9 @@ interface ChooseCycleStepProps {
 
 export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
   const { isComplete, step, cycles, id, onUpdate, onEdit, onComplete } = props;
-
+  const value = `${cycles} cycle${cycles !== 1 ? 's' : ''} selected`;
   return (
-    <StackingStep step={step} title={id} isComplete={isComplete} onEdit={onEdit}>
+    <StackingStep step={step} title={id} value={value} isComplete={isComplete} onEdit={onEdit}>
       <StackingStepDescription>
         Choose the amount of cycles to lock your STX. One cycle typically lasts between 6 and 8
         days, depending on the Bitcoin block time. At the end of each cycle, you'll have the chance

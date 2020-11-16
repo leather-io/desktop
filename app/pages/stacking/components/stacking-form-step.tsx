@@ -12,12 +12,13 @@ import {
 interface StackingFormStepProps extends FlexProps {
   title: string;
   isComplete: boolean;
+  value?: string;
   step?: number;
   onEdit?(step: number): void;
 }
 
 export const StackingStep: FC<StackingFormStepProps> = props => {
-  const { step, title, isComplete, children, onEdit, ...rest } = props;
+  const { step, title, isComplete, value, children, onEdit, ...rest } = props;
   if (!step) return null;
   return (
     <Flex flexDirection="column" mt="extra-loose" {...rest}>
@@ -38,6 +39,11 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
       </Flex>
       {isComplete ? (
         <Box>
+          {value && (
+            <Text display="block" mt="tight" textStyle="body.large">
+              {value}
+            </Text>
+          )}
           <Text
             as="button"
             onClick={() => onEdit?.(step)}

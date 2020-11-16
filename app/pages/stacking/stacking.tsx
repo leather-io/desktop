@@ -88,6 +88,7 @@ export const Stacking: FC = () => {
       />
       <ChooseBtcAddressStep
         id={Step.ChooseBtcAddress}
+        value={btcAddress || undefined}
         isComplete={isComplete(Step.ChooseBtcAddress)}
         onEdit={() => updateStep(Step.ChooseBtcAddress, 'incomplete')}
         onComplete={address => (

@@ -358,7 +358,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             isDisabled={totalIsMoreThanBalance}
             onClick={proceedToSignTransactionStep}
           >
-            Sign transaction and send
+            Send
           </TxModalButton>
         </TxModalFooter>
       ),

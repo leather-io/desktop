@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
-const { contextBridge, ipcRenderer, app, shell, remote } = require('electron');
+const { contextBridge, ipcRenderer, app, shell } = require('electron');
 
 const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default;
 
@@ -75,4 +75,6 @@ contextBridge.exposeInMainWorld('api', {
       };
     },
   },
+
+  contextMenu: menuItems => ipcRenderer.send('context-menu-open', { menuItems }),
 });

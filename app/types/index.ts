@@ -24,6 +24,8 @@ declare const api: {
 
   reloadApp(): void;
 
+  contextMenu(menuItems: any[]): void;
+
   nodeHid: {
     listen: typeof import('@ledgerhq/hw-transport').default['listen'];
     open({

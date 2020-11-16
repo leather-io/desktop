@@ -43,7 +43,7 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
   return (
     <StackingStep title={id} step={step} isComplete={isComplete} onEdit={onEdit}>
       <StackingStepDescription>
-        Choose the address where you’d like to receive Bitcoin. You’ll receive Bitcoin twice.
+        Choose the address where you’d like to receive Bitcoin.
       </StackingStepDescription>
 
       <form onSubmit={btcAddressForm.handleSubmit}>

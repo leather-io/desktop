@@ -22,7 +22,7 @@ export const DecryptWalletForm: Props = props => {
   };
   return (
     <Box mx="extra-loose" mt="extra-loose">
-      <Text textStyle="body.large">Enter your password to confirm your transaction</Text>
+      <Text textStyle="body.large">Enter your password to initiate Stacking</Text>
       <Input onChange={handlePasswordInput} type="password" mt="base-loose" />
       {hasSubmitted && decryptionError && (
         <ErrorLabel>

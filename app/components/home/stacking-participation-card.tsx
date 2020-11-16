@@ -20,7 +20,7 @@ export const StackingParticipationCard = () => {
           Earn Bitcoin rewards
         </Text>
         <Text display="block" mt="tight" textAlign="center" maxWidth="320px" mx="auto">
-          When you lock your STX, you’ll earn Bitcoin every week
+          When you lock your STX, you'll have a chance to earn Bitcoin every week.
         </Text>
         <Button
           size="md"

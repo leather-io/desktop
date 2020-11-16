@@ -24,7 +24,7 @@ export const NextCycleInfo: FC<NextCycleInfoProps> = ({ timeUntilNextCycle, ...p
         Next cycle starts in {timeUntilNextCycle}
       </Text>
       <Text display="block" textStyle="body.small" color="ink.600" mt="extra-tight">
-        Lock your STX to earn Bitcoin when the next cycle starts
+        Lock your STX for a chance to earn Bitcoin when the next cycle starts
       </Text>
     </Flex>
   </Flex>

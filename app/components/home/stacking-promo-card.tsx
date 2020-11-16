@@ -19,10 +19,10 @@ export const StackingPromoCard: FC<StackingPromoCardProps> = ({ minRequiredStx }
     <Flex flexDirection="column" mt="40px" mb="extra-loose">
       <img src={btcPodium} />
       <Text display="block" textAlign="center" textStyle="display.small" mt="loose">
-        Earn Bitcoin rewards
+        Earn Bitcoin rewards with Stacking
       </Text>
       <Text display="block" mt="tight" textAlign="center" maxWidth="320px" mx="auto">
-        You’ll earn Bitcoin when you temporarily lock {Math.ceil(minRequiredStx)} STX or more
+        You can earn Bitcoin by temporarily locking locking {Math.ceil(minRequiredStx)} STX or more
       </Text>
       <Button
         size="md"

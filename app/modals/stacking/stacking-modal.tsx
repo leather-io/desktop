@@ -267,7 +267,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
             isDisabled={isDecrypting}
             onClick={() => broadcastTx()}
           >
-            Send transaction
+            Initiate Stacking
           </StackingModalButton>
         </StackingModalFooter>
       ),

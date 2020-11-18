@@ -11,6 +11,7 @@ import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { addPendingTransaction } from '@store/pending-transaction';
 import { Dispatch, GetState } from '@store/index';
 import { selectActiveNodeApi } from '@store/stacks-node';
+import { isStackingTx } from '../../utils/tx-utils';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'
@@ -55,13 +56,13 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
 
 interface BroadcastTransactionArgs {
   transaction: StacksTransaction;
-  txType: Transaction['tx_type'];
   amount: BigNumber;
+  isStackingCall?: boolean;
   onBroadcastSuccess(txId: string): void;
   onBroadcastFail(): void;
 }
 export function broadcastTransaction(args: BroadcastTransactionArgs) {
-  const { amount, transaction, txType, onBroadcastSuccess, onBroadcastFail } = args;
+  const { amount, transaction, isStackingCall = false, onBroadcastSuccess, onBroadcastFail } = args;
   return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(broadcastTx());
 
@@ -87,7 +88,7 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
         tx_id: safelyFormatHexTxid(blockchainResponse),
         amount: amount.toString(),
         time: +new Date(),
-        txType,
+        isStackingCall,
       })
     );
     return blockchainResponse;

@@ -20,7 +20,7 @@ import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
 import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { makeExplorerLink } from '@utils/external-links';
-import { getRecipientAddress, isLockTx } from '@utils/tx-utils';
+import { getRecipientAddress, isStackingTx } from '@utils/tx-utils';
 
 import {
   createTxListContextMenu,
@@ -61,7 +61,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     if (tx.tx_type === 'token_transfer') {
       return direction;
     }
-    if (tx.tx_type === 'contract_call' && isLockTx(tx, poxInfo?.contract_id)) {
+    if (tx.tx_type === 'contract_call' && isStackingTx(tx, poxInfo?.contract_id)) {
       return 'locked';
     }
     return 'default';
@@ -69,10 +69,16 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
 
   const transactionTitle = useCallback(() => {
     if (tx.tx_type === 'token_transfer') return capitalize(direction);
+    if (tx.tx_type === 'contract_call' && isStackingTx(tx, poxInfo?.contract_id)) {
+      if (tx.tx_status === 'pending') return 'Initiating Stacking';
+      if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition')
+        return 'Stacking initiation failed';
+      return 'Stacking initiated successfully';
+    }
     return capitalize(tx.tx_type).replace('_', ' ');
-  }, [direction, tx.tx_type]);
+  }, [direction, poxInfo?.contract_id, tx]);
 
-  const sumPrefix = direction === 'sent' ? '−' : '';
+  const sumPrefix = direction === 'sent' && !isStackingTx(tx, poxInfo?.contract_id) ? '−' : '';
   const memo =
     tx.tx_type === 'token_transfer' &&
     Buffer.from(

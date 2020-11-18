@@ -8,17 +8,15 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
 
 import { RootState } from '@store/index';
-import { watchContractExecution } from '@api/watch-contract-execution';
 import routes from '@constants/routes.json';
 import {
-  selectAddress,
   selectPublicKey,
   selectEncryptedMnemonic,
   selectSalt,
   decryptSoftwareWallet,
   selectWalletType,
 } from '@store/keys';
-import { fetchStackerInfo, selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
+import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
 import {
   makeUnsignedContractCall,
   StacksTransaction,
@@ -43,12 +41,10 @@ import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { StackingSuccess } from './steps/stacking-success';
-import { PendingContractCall } from './steps/pending-contract-call';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
   SignWithLedgerAndSend,
-  PendingTransaction,
   StackingSuccess,
   FailedContractCall,
 }
@@ -72,12 +68,10 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
-  const [contractError, setContractError] = useState<null | string>(null);
 
   const {
     encryptedMnemonic,
     salt,
-    address,
     walletType,
     publicKey,
     poxInfo,
@@ -87,7 +81,6 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
   } = useSelector((state: RootState) => ({
     salt: selectSalt(state),
     encryptedMnemonic: selectEncryptedMnemonic(state),
-    address: selectAddress(state),
     walletType: selectWalletType(state),
     publicKey: selectPublicKey(state),
     poxInfo: selectPoxInfo(state),
@@ -181,20 +174,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
     const broadcastActions = {
       amount: new BigNumber(balance),
-      onBroadcastSuccess: async (txId: string) => {
-        setStep(StackingModalStep.PendingTransaction);
-        const [error, success] = await safeAwait(
-          watchContractExecution({ txId, nodeUrl: node.url })
-        );
-        if (error) {
-          setContractError(error.message);
-          setStep(StackingModalStep.FailedContractCall);
-        }
-        if (success) {
-          setStep(StackingModalStep.StackingSuccess);
-          if (address) dispatch(fetchStackerInfo(address));
-        }
-      },
+      onBroadcastSuccess: () => history.push(routes.HOME),
       onBroadcastFail: () => setStep(StackingModalStep.FailedContractCall),
     };
 
@@ -212,7 +192,9 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
       if (transaction) {
         setIsDecrypting(false);
-        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
+        dispatch(
+          broadcastTransaction({ ...broadcastActions, txType: 'contract_call', transaction })
+        );
       }
     }
 
@@ -230,7 +212,9 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       }
 
       if (transaction) {
-        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
+        dispatch(
+          broadcastTransaction({ ...broadcastActions, txType: 'contract_call', transaction })
+        );
       }
     }
   };
@@ -306,18 +290,6 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       ),
     }),
 
-    [StackingModalStep.PendingTransaction]: () => ({
-      header: <StackingModalHeader onSelectClose={onClose} />,
-      body: <PendingContractCall />,
-      footer: (
-        <StackingModalFooter>
-          <StackingModalButton onClick={() => (onClose(), history.push(routes.HOME))}>
-            Close
-          </StackingModalButton>
-        </StackingModalFooter>
-      ),
-    }),
-
     [StackingModalStep.StackingSuccess]: () => ({
       header: <StackingModalHeader onSelectClose={onClose} />,
       body: <StackingSuccess cycles={numCycles} />,
@@ -332,11 +304,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
     [StackingModalStep.FailedContractCall]: () => ({
       header: <StackingModalHeader onSelectClose={onClose} />,
-      body: (
-        <FailedBroadcastError>
-          {contractError || 'Failed to call stacking contract'}
-        </FailedBroadcastError>
-      ),
+      body: <FailedBroadcastError>{'Failed to call stacking contract'}</FailedBroadcastError>,
       footer: (
         <StackingModalFooter>
           <StackingModalButton mode="tertiary" onClick={onClose}>

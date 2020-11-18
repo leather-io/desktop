@@ -44,7 +44,7 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = p
       <TransactionIcon variant="pending" mr="base-loose" />
       <Box flex={1}>
         <Text textStyle="body.large.medium" display="block">
-          Sending
+          {tx.txType === 'token_transfer' ? 'Sending' : 'Initiating Stacking…'}
         </Text>
         <Text textStyle="body.small" color="ink.600">
           {tx.tx_id.substr(0, 28)}…
@@ -52,7 +52,8 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = p
       </Box>
       <Box textAlign="right">
         <Text textStyle="body.large" color="ink.900" display="block">
-          −{toHumanReadableStx(tx.amount)}
+          {tx.txType === 'token_transfer' ? '−' : ''}
+          {toHumanReadableStx(tx.amount)}
         </Text>
         <Text textStyle="body.small" color="ink.600">
           Pending

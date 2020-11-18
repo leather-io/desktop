@@ -10,6 +10,6 @@ export function getRecipientAddress(tx: Transaction) {
   return tx.token_transfer.recipient_address;
 }
 
-export function isLockTx(tx: Transaction, poxContractID?: string): boolean {
-  return tx.tx_type === 'contract_call' && tx.contract_call.contract_id === poxContractID;
+export function isStackingTx(tx: Transaction, poxContractId?: string): boolean {
+  return tx.tx_type === 'contract_call' && tx.contract_call.contract_id === poxContractId;
 }

@@ -61,6 +61,8 @@ export const Stacking: FC = () => {
 
   const formComplete = [Step.ChooseCycles, Step.ChooseBtcAddress].every(isComplete) && !!btcAddress;
 
+  const estimatedStackingDuration = '~' + (calcStackingDuration() / 60 / 60).toString() + ' hours';
+
   if (nextCycleInfo === null) return null;
 
   const stackingIntro = (
@@ -72,7 +74,7 @@ export const Stacking: FC = () => {
       cycles={cycles}
       balance={balance}
       startDate={nextCycleInfo.nextCycleStartingAt}
-      duration={'~' + (calcStackingDuration() / 60 / 60).toString() + ' hours'}
+      duration={estimatedStackingDuration}
     />
   );
 
@@ -98,6 +100,7 @@ export const Stacking: FC = () => {
       <ConfirmAndLockStep
         id={Step.ConfirmAndLock}
         formComplete={formComplete}
+        estimatedDuration={estimatedStackingDuration}
         timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle}
         onConfirmAndLock={() => setModalOpen(true)}
       />

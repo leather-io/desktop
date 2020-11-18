@@ -170,9 +170,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
       if (transaction) {
         setIsDecrypting(false);
-        dispatch(
-          broadcastTransaction({ ...broadcastActions, txType: 'token_transfer', transaction })
-        );
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
 
@@ -192,9 +190,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       }
 
       if (transaction) {
-        dispatch(
-          broadcastTransaction({ ...broadcastActions, txType: 'token_transfer', transaction })
-        );
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
   };

@@ -7,7 +7,7 @@ import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 export interface PendingTransaction extends Pick<Transaction, 'tx_id'> {
   amount: string;
   time: number;
-  txType: Transaction['tx_type'];
+  isStackingCall?: boolean;
 }
 
 export type PendingTransactionState = EntityState<PendingTransaction>;

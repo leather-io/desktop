@@ -172,6 +172,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
     const broadcastActions = {
       amount: new BigNumber(balance),
+      isStackingCall: true,
       onBroadcastSuccess: () => history.push(routes.HOME),
       onBroadcastFail: () => setStep(StackingModalStep.FailedContractCall),
     };
@@ -190,9 +191,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
       if (transaction) {
         setIsDecrypting(false);
-        dispatch(
-          broadcastTransaction({ ...broadcastActions, txType: 'contract_call', transaction })
-        );
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
 
@@ -210,9 +209,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       }
 
       if (transaction) {
-        dispatch(
-          broadcastTransaction({ ...broadcastActions, txType: 'contract_call', transaction })
-        );
+        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
     }
   };

@@ -118,7 +118,8 @@ export const selectNextCycleInfo = createSelector(
     const blocksToNextCycle =
       poxInfo.reward_cycle_length -
       ((coreNodeInfo.burn_block_height - poxInfo.first_burnchain_block_height) %
-        poxInfo.reward_cycle_length);
+        poxInfo.reward_cycle_length) -
+      1;
 
     const secondsToNextCycle =
       (poxInfo.reward_cycle_length -

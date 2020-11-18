@@ -40,12 +40,10 @@ import {
 import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
-import { StackingSuccess } from './steps/stacking-success';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
   SignWithLedgerAndSend,
-  StackingSuccess,
   FailedContractCall,
 }
 
@@ -285,18 +283,6 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
             }}
           >
             Sign transaction
-          </StackingModalButton>
-        </StackingModalFooter>
-      ),
-    }),
-
-    [StackingModalStep.StackingSuccess]: () => ({
-      header: <StackingModalHeader onSelectClose={onClose} />,
-      body: <StackingSuccess cycles={numCycles} />,
-      footer: (
-        <StackingModalFooter>
-          <StackingModalButton onClick={() => (onClose(), history.push(routes.HOME))}>
-            Close
           </StackingModalButton>
         </StackingModalFooter>
       ),

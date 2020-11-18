@@ -12,11 +12,12 @@ interface ConfirmAndLockStepProps {
   formComplete: boolean;
   step?: number;
   timeUntilNextCycle: string;
+  estimatedDuration: string;
   onConfirmAndLock(): void;
 }
 
 export const ConfirmAndLockStep: FC<ConfirmAndLockStepProps> = props => {
-  const { step, id, formComplete, timeUntilNextCycle, onConfirmAndLock } = props;
+  const { step, id, formComplete, timeUntilNextCycle, estimatedDuration, onConfirmAndLock } = props;
 
   return (
     <StackingStep title={id} step={step} isComplete={false} mb="300px">
@@ -25,7 +26,10 @@ export const ConfirmAndLockStep: FC<ConfirmAndLockStepProps> = props => {
         <br />
         Please keep in mind that:
       </StackingStepDescription>
-      <StackingTerms timeUntilNextCycle={timeUntilNextCycle} />
+      <StackingTerms
+        timeUntilNextCycle={timeUntilNextCycle}
+        estimatedDuration={estimatedDuration}
+      />
       <StackingStepAction onClick={onConfirmAndLock} isDisabled={!formComplete}>
         Confirm and lock
       </StackingStepAction>

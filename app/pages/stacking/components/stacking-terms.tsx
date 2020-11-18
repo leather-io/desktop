@@ -5,26 +5,32 @@ import { RewindArrow } from '../../../components/icons/rewind-arrow';
 
 interface StackingTermsProps {
   timeUntilNextCycle: string;
+  estimatedDuration: string;
 }
-export const StackingTerms: FC<StackingTermsProps> = ({ timeUntilNextCycle }) => (
-  <Box textStyle={['body.small', 'body.large']} mt="loose">
-    <Flex alignItems="center">
-      <Box width={['12px', '16px']} mr="base-tight">
-        <EncryptionIcon width={['12px', '16px']} />
-      </Box>
-      <Text>Your STX will be locked for ~2 weeks, starting in {timeUntilNextCycle}</Text>
-    </Flex>
-    <Flex alignItems="center" mt="base-loose">
-      <Box width={['12px', '16px']} mr="base-tight">
-        <ClockIcon />
-      </Box>
-      <Text>The duration can vary depending on the Bitcoin block time</Text>
-    </Flex>
-    <Flex alignItems="center" mt="base-loose">
-      <Box width={['12px', '16px']} mr="base-tight">
-        <RewindArrow />
-      </Box>
-      <Text>This transaction can not be reversed</Text>
-    </Flex>
-  </Box>
-);
+export const StackingTerms: FC<StackingTermsProps> = props => {
+  const { timeUntilNextCycle, estimatedDuration } = props;
+  return (
+    <Box textStyle={['body.small', 'body.large']} mt="loose">
+      <Flex alignItems="center">
+        <Box width={['12px', '16px']} mr="base-tight">
+          <EncryptionIcon width={['12px', '16px']} />
+        </Box>
+        <Text>
+          Your STX will be locked for {estimatedDuration}, starting in {timeUntilNextCycle}
+        </Text>
+      </Flex>
+      <Flex alignItems="center" mt="base-loose">
+        <Box width={['12px', '16px']} mr="base-tight">
+          <ClockIcon />
+        </Box>
+        <Text>The duration can vary depending on the Bitcoin block time</Text>
+      </Flex>
+      <Flex alignItems="center" mt="base-loose">
+        <Box width={['12px', '16px']} mr="base-tight">
+          <RewindArrow />
+        </Box>
+        <Text>This transaction can not be reversed</Text>
+      </Flex>
+    </Box>
+  );
+};

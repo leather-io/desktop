@@ -1,4 +1,8 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { selectAddressBalance } from '@store/address';
+import { selectIsStackingCallPending } from '@store/pending-transaction';
+import { selectLoadingStacking, selectPoxInfo, selectStackerInfo } from '@store/stacking';
+import BigNumber from 'bignumber.js';
 
 import { RootState } from '..';
 
@@ -31,4 +35,45 @@ export const selectTxModalOpen = createSelector(selectHomeState, state => state.
 export const selectReceiveModalOpen = createSelector(
   selectHomeState,
   state => state.receiveModalOpen
+);
+
+export enum HomeCardState {
+  LoadingResources,
+  NotEnoughStx,
+  EligibleToParticipate,
+  StackingPendingContactCall,
+  StackingPreCycle,
+  StackingActive,
+  PostStacking,
+}
+
+const selectLoadingCardResources = createSelector(
+  selectAddressBalance,
+  selectLoadingStacking,
+  (balance, isLoadingStacking) => balance === null || isLoadingStacking
+);
+
+const selectMeetsMinStackingThreshold = createSelector(
+  selectAddressBalance,
+  selectPoxInfo,
+  (balance, poxInfo) => {
+    if (balance === null || poxInfo === null) return false;
+    return new BigNumber(balance).isGreaterThan(poxInfo.min_amount_ustx);
+  }
+);
+
+export const selectHomeCardState = createSelector(
+  selectLoadingCardResources,
+  selectMeetsMinStackingThreshold,
+  selectIsStackingCallPending,
+  selectStackerInfo,
+  (loadingResources, meetsMinThreshold, stackingCallPending, stackerInfo) => {
+    if (loadingResources) return HomeCardState.LoadingResources;
+    if (!meetsMinThreshold) return HomeCardState.NotEnoughStx;
+    if (stackingCallPending) return HomeCardState.StackingPendingContactCall;
+    if (stackerInfo?.isPreStackingPeriodStart) return HomeCardState.StackingPreCycle;
+    if (stackerInfo?.isCurrentlyStacking) return HomeCardState.StackingActive;
+    if (meetsMinThreshold) return HomeCardState.EligibleToParticipate;
+    return HomeCardState.PostStacking;
+  }
 );

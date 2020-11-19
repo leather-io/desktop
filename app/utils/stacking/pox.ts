@@ -53,7 +53,7 @@ interface PoxInfo {
   reward_cycle_length: number;
 }
 
-export interface StackerInfo {
+export interface StackerInfoSuccess {
   amountMicroStx: string;
   firstRewardCycle: number;
   lockPeriod: number;
@@ -63,6 +63,11 @@ export interface StackerInfo {
   };
   btcAddress: string;
 }
+export interface StackerInfoFail {
+  error: string;
+}
+
+export type StackerInfo = StackerInfoSuccess | StackerInfoFail;
 
 interface StackerInfoCV {
   'amount-ustx': UIntCV;
@@ -175,11 +180,10 @@ export class Pox {
       args,
     });
     const cv = deserializeCV(Buffer.from(res.slice(2), 'hex')) as any; //TupleCV;
-    if (!cv.value) throw new Error(`Failed to fetch stacker info. ${StackingErrors[cv.type]}`);
+    if (!cv.value) return { error: StackingErrors[cv.type] };
     const data = cv.value.data as StackerInfoCV;
     const version = data['pox-addr'].data.version.buffer;
     const hashbytes = data['pox-addr'].data.hashbytes.buffer;
-    console.log({ data });
     return {
       lockPeriod: data['lock-period'].value.toNumber(),
       amountMicroStx: data['amount-ustx'].value.toString(10),

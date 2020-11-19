@@ -18,6 +18,7 @@ import { Api } from '@api/api';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { useInterval } from '@hooks/use-interval';
 import { selectPendingTransactions } from '@store/pending-transaction';
+import { watchContractExecution } from '../api/watch-contract-execution';
 import {
   fetchBlockTimeInfo,
   fetchCoreDetails,
@@ -64,20 +65,43 @@ export const App: FC = ({ children }) => {
 
   useEffect(() => {
     initAppWithStxAddressInfo();
-    dispatch(fetchStackingInfo());
-    dispatch(fetchCoreDetails());
-    dispatch(fetchBlockTimeInfo());
+    if (address) {
+      dispatch(fetchStackingInfo());
+      dispatch(fetchCoreDetails());
+      dispatch(fetchBlockTimeInfo());
+    }
   }, [address, activeNode, initAppWithStxAddressInfo, dispatch]);
 
   useInterval(() => {
-    if (address) dispatch(fetchStackerInfo(address));
-    dispatch(fetchStackingInfo());
+    if (address) {
+      dispatch(fetchStackerInfo(address));
+      dispatch(fetchStackingInfo());
+    }
     dispatch(fetchCoreDetails());
   }, 5_000);
 
   useEffect(() => {
     if (address) dispatch(fetchStackerInfo(address));
   }, [dispatch, address]);
+
+  useEffect(() => {
+    async function run() {
+      console.log('new stacking call');
+      const [firstTxId] = pendingTxs.filter(tx => tx.isStackingCall);
+      if (!firstTxId) return;
+      console.log({ firstTxId });
+      const result = await watchContractExecution({
+        nodeUrl: activeNode.url,
+        txId: firstTxId.tx_id,
+      });
+      dispatch(fetchStackingInfo());
+      dispatch(fetchCoreDetails());
+      dispatch(fetchBlockTimeInfo());
+      console.log(result);
+    }
+    void run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingTxs]);
 
   useEffect(() => {
     const wsUrl = new URL(activeNode.url);

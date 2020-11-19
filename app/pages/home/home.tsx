@@ -1,8 +1,7 @@
-import React, { FC, useRef, useCallback } from 'react';
+import React, { FC, useRef, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Flex, Spinner, Text } from '@blockstack/ui';
+import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
-import BigNumber from 'bignumber.js';
 
 import { Api } from '@api/api';
 import { microStxToStx } from '@utils/unit-convert';
@@ -18,8 +17,19 @@ import {
   selectTransactionListFetchError,
 } from '@store/transaction';
 import { selectPendingTransactions } from '@store/pending-transaction';
-import { selectNextCycleInfo, selectPoxInfo, selectStackerInfo } from '@store/stacking';
-import { homeActions, selectTxModalOpen, selectReceiveModalOpen } from '@store/home';
+import {
+  selectLoadingStacking,
+  selectNextCycleInfo,
+  selectPoxInfo,
+  selectStackerInfo,
+} from '@store/stacking';
+import {
+  homeActions,
+  selectTxModalOpen,
+  selectReceiveModalOpen,
+  selectHomeCardState,
+  HomeCardState,
+} from '@store/home';
 import {
   TransactionList,
   StackingPromoCard,
@@ -33,7 +43,9 @@ import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
 import { HomeLayout } from './home-layout';
-import { WaffleChart } from '@components/chart/waffle-chart';
+
+import { StackingCard } from '../../components/home/stacking-card';
+import { StackingLoading } from '@components/home/stacking-loading';
 import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';
 
 export const Home: FC = () => {
@@ -53,6 +65,7 @@ export const Home: FC = () => {
     stackingDetails,
     nextCycleInfo,
     stackerInfo,
+    stackingCardState,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
@@ -67,6 +80,8 @@ export const Home: FC = () => {
     nextCycleInfo: selectNextCycleInfo(state),
     stackingDetails: selectPoxInfo(state),
     stackerInfo: selectStackerInfo(state),
+    stackingLoading: selectLoadingStacking(state),
+    stackingCardState: selectHomeCardState(state),
   }));
 
   const focusedTxIdRef = useRef<string | null>(null);
@@ -95,12 +110,14 @@ export const Home: FC = () => {
   useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs]);
   useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs]);
 
-  if (!address) return <Spinner />;
+  useEffect(() => {
+    console.log({
+      blocksToNextCycle: nextCycleInfo?.blocksToNextCycle,
+      nextCycleStartBlock: nextCycleInfo?.nextCycleStartBlock,
+    });
+  }, [nextCycleInfo?.blocksToNextCycle]);
 
-  const meetsMinStackingThreshold =
-    balance !== null &&
-    stackingDetails !== null &&
-    new BigNumber(balance).isGreaterThan(stackingDetails.min_amount_ustx);
+  if (!address) return <Spinner />;
 
   const txCount = txs.length + pendingTxs.length;
 
@@ -146,100 +163,21 @@ export const Home: FC = () => {
     />
   );
 
-  const card = (
-    <>
-      {stackingDetails && stackerInfo && (
-        <Flex
-          flexDirection="column"
-          mt="extra-loose"
-          borderRadius="8px"
-          boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-          border="1px solid #F0F0F5"
-          px="loose"
-          minHeight="180px"
-        >
-          {stackerInfo &&
-            !stackerInfo?.hasAddressStackingCycleStarted &&
-            !stackerInfo.hasStackingPeriodFinished && (
-              <StackingBeginsSoonCard blocksTillNextCycle={nextCycleInfo?.blocksToNextCycle} />
-            )}
-          {stackerInfo?.isCurrentlyStacking && (
-            <Box>
-              <Text
-                display="block"
-                textStyle="body.large.medium"
-                mt="base-loose"
-                textAlign="center"
-              >
-                Stacking progress
-              </Text>
-              <Flex justifyContent="space-between" mt="base">
-                <Text textStyle="body.small.medium">Current stacking cycle</Text>
-              </Flex>
-              <Flex
-                maxWidth={[null, null, '325px']}
-                flexWrap="wrap"
-                alignContent="flex-start"
-                mt="tight"
-              >
-                <WaffleChart
-                  points={[
-                    ...Array.from({
-                      length:
-                        (stackingDetails?.reward_cycle_length || 0) -
-                        (nextCycleInfo?.blocksToNextCycle || 0),
-                    }).map(() => true),
-                    ...Array.from({ length: nextCycleInfo?.blocksToNextCycle || 0 }).map(
-                      () => false
-                    ),
-                  ]}
-                />
-              </Flex>
-              <Box mr="2px">
-                <Flex justifyContent="space-between" mt="base">
-                  <Text textStyle="body.small.medium">Blocks until next cycle</Text>
-                  <Text textStyle="body.small">{nextCycleInfo?.blocksToNextCycle}</Text>
-                </Flex>
-                <Flex justifyContent="space-between" mt="tight">
-                  <Text textStyle="body.small.medium">You're stacking for</Text>
-                  <Text textStyle="body.small">
-                    {stackerInfo?.lockPeriod} cycle{stackerInfo.lockPeriod > 1 ? 's' : ''}
-                  </Text>
-                </Flex>
-                {stackerInfo.lockPeriod > 1 && (
-                  <Flex justifyContent="space-between" mt="tight">
-                    <Text textStyle="body.small.medium">Current cycle</Text>
-                    <Text textStyle="body.small">
-                      {stackerInfo.currentCycleOfTotal} of {stackerInfo?.lockPeriod}
-                    </Text>
-                  </Flex>
-                )}
-                <Flex flexDirection="column" mt="tight" mb="base-loose">
-                  <Text textStyle="body.small.medium">Reward to be paid to</Text>
-                  <Text as="code" fontSize="13px" mt="tight" color="ink.600">
-                    {stackerInfo?.btcAddress}
-                  </Text>
-                </Flex>
-              </Box>
-            </Box>
-          )}
-        </Flex>
-      )}
-      {(stackerInfo === null ||
-        ((stackerInfo ? !stackerInfo.isPreStackingPeriodStart : true) &&
-          (stackerInfo ? !stackerInfo.isCurrentlyStacking : true))) && (
-        <>
-          {meetsMinStackingThreshold ? (
-            <StackingParticipationCard />
-          ) : (
-            <StackingPromoCard
-              minRequiredStx={microStxToStx(stackingDetails?.min_amount_ustx || 0).toNumber()}
-            />
-          )}
-        </>
-      )}
-    </>
-  );
+  const stackingCardMap: Record<HomeCardState, JSX.Element> = {
+    [HomeCardState.LoadingResources]: <StackingLoading />,
+    [HomeCardState.NotEnoughStx]: (
+      <StackingPromoCard
+        minRequiredStx={microStxToStx(stackingDetails?.min_amount_ustx || 0).toNumber()}
+      />
+    ),
+    [HomeCardState.EligibleToParticipate]: <StackingParticipationCard />,
+    [HomeCardState.StackingPendingContactCall]: <StackingLoading />,
+    [HomeCardState.StackingPreCycle]: (
+      <StackingBeginsSoonCard blocksTillNextCycle={nextCycleInfo?.blocksToNextCycle} />
+    ),
+    [HomeCardState.StackingActive]: <StackingCard />,
+    [HomeCardState.PostStacking]: <></>,
+  };
 
   const stackingRewardCard = (
     <StackingRewardCard lifetime="0.0281 Bitcoin (sample)" lastCycle="0.000383 Bitcoin (sample)" />
@@ -249,11 +187,11 @@ export const Home: FC = () => {
     <>
       {receiveModalOpen && <ReceiveStxModal address={address} />}
       {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
-
+      {String(HomeCardState[stackingCardState])}
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}
-        stackingCard={card}
+        stackingCard={stackingCardMap[stackingCardState]}
         stackingRewardCard={stackingRewardCard}
       />
     </>

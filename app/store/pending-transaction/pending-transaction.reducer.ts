@@ -1,4 +1,4 @@
-import { createEntityAdapter, EntityState, createSlice } from '@reduxjs/toolkit';
+import { createEntityAdapter, EntityState, createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
 import type { pendingTransactionSuccessful } from '../transaction';
@@ -41,6 +41,9 @@ const selectPendingTransactionState = (state: RootState) => state.pendingTransac
 const selectors = pendingTransactionAdapter.getSelectors(selectPendingTransactionState);
 
 export const selectPendingTransactions = selectors.selectAll;
+export const selectIsStackingCallPending = createSelector(selectors.selectAll, state =>
+  state.some(tx => tx.isStackingCall)
+);
 
 export const addPendingTransaction = pendingTransactionSlice.actions.addPendingTransaction;
 export const removePendingTransaction = pendingTransactionSlice.actions.removePendingTransaction;

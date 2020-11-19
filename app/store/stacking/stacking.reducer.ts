@@ -15,7 +15,8 @@ import {
   fetchStackerInfo,
 } from './stacking.actions';
 import { NETWORK } from '@constants/index';
-import { StackerInfo } from '@utils/stacking/pox';
+import { StackerInfo, StackerInfoSuccess } from '@utils/stacking/pox';
+import { selectIsStackingCallPending } from '@store/pending-transaction';
 
 export enum StackingStatus {
   NotStacking = 'NotStacking',
@@ -25,13 +26,15 @@ export enum StackingStatus {
 }
 
 export interface StackingState {
+  error: string | null;
   poxInfo: CoreNodePoxResponse | null;
   coreNodeInfo: CoreNodeInfoResponse | null;
   blockTimeInfo: NetworkBlockTimesResponse | null;
-  stackerInfo: StackerInfo | null;
+  stackerInfo: StackerInfoSuccess | null;
 }
 
 const initialState: StackingState = {
+  error: null,
   poxInfo: null,
   coreNodeInfo: null,
   blockTimeInfo: null,
@@ -56,7 +59,13 @@ export const stackingSlice = createSlice({
       state.blockTimeInfo = a.payload;
     },
     [fetchStackerInfo.fulfilled.toString()]: (state, a: PayloadAction<StackerInfo>) => {
+      // if (a.payload === )
+      if ('error' in a.payload) {
+        state.error = a.payload.error;
+        return;
+      }
       state.stackerInfo = a.payload;
+      state.error = null;
     },
   },
 });
@@ -70,6 +79,17 @@ export const selectBlockTimeInfo = createSelector(
   state => state.blockTimeInfo
 );
 
+export const selectStackingError = createSelector(selectStackingState, state => state.error);
+
+export const selectLoadingStacking = createSelector(selectStackingState, state => {
+  return (
+    state.coreNodeInfo === null &&
+    state.poxInfo === null &&
+    state.error === null &&
+    state.stackerInfo === null
+  );
+});
+
 export const selectPoxInfo = createSelector(selectStackingState, state => state.poxInfo);
 
 export const selectStackerInfo = createSelector(selectStackingState, state => {
@@ -81,8 +101,6 @@ export const selectStackerInfo = createSelector(selectStackingState, state => {
   const hasStackingPeriodFinished =
     state.poxInfo.reward_cycle_id >
     state.stackerInfo.lockPeriod - 1 + state.stackerInfo.firstRewardCycle;
-
-  console.log({ hasStackingPeriodFinished });
 
   const currentCycleOfTotal =
     state.poxInfo.reward_cycle_id - state.stackerInfo.firstRewardCycle < 0
@@ -112,20 +130,18 @@ export const selectStackerInfo = createSelector(selectStackingState, state => {
 
 export const selectNextCycleInfo = createSelector(
   selectStackingState,
-  ({ poxInfo, coreNodeInfo, blockTimeInfo }) => {
+  selectIsStackingCallPending,
+  ({ poxInfo, coreNodeInfo, blockTimeInfo }, isStackingCallPending) => {
     if (poxInfo === null || coreNodeInfo === null || blockTimeInfo === null) return null;
+
+    const nextCycleStartBlock = (poxInfo.reward_cycle_id + 1) * poxInfo.reward_cycle_length + 1;
 
     const blocksToNextCycle =
       poxInfo.reward_cycle_length -
-      ((coreNodeInfo.burn_block_height - poxInfo.first_burnchain_block_height) %
-        poxInfo.reward_cycle_length) -
-      1;
+      ((coreNodeInfo.burn_block_height - poxInfo.first_burnchain_block_height - 1) %
+        poxInfo.reward_cycle_length);
 
-    const secondsToNextCycle =
-      (poxInfo.reward_cycle_length -
-        ((coreNodeInfo.burn_block_height - poxInfo.first_burnchain_block_height) %
-          poxInfo.reward_cycle_length)) *
-      blockTimeInfo[NETWORK].target_block_time;
+    const secondsToNextCycle = blocksToNextCycle * blockTimeInfo[NETWORK].target_block_time;
 
     const nextCycleStartingAt = new Date();
     nextCycleStartingAt.setSeconds(nextCycleStartingAt.getSeconds() + secondsToNextCycle);
@@ -145,11 +161,13 @@ export const selectNextCycleInfo = createSelector(
         : '~' + Math.ceil(timeUntilCycle.days).toString() + ' days';
 
     return {
+      nextCycleStartBlock,
       secondsToNextCycle,
       nextCycleStartingAt,
       timeUntilCycle,
       formattedTimeToNextCycle,
       blocksToNextCycle,
+      isStackingCallPending,
     };
   }
 );

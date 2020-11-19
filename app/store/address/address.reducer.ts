@@ -1,5 +1,5 @@
 import { createReducer, createSelector } from '@reduxjs/toolkit';
-import { selectStackerInfo } from '@store/stacking';
+import { selectLoadingStacking, selectStackerInfo } from '@store/stacking';
 import BigNumber from 'bignumber.js';
 
 import { RootState } from '..';
@@ -21,7 +21,11 @@ export const addressReducer = createReducer(initialState, builder =>
 
 export const selectAddressState = (state: RootState) => state.address;
 
-export const selectAddressBalance = createSelector(selectAddressState, state => state.balance);
+export const selectAddressBalance = createSelector(
+  selectAddressState,
+  selectLoadingStacking,
+  state => state.balance
+);
 
 export const selectAvailableBalance = createSelector(
   selectAddressState,

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Flex, Spinner } from '@blockstack/ui';
-import { Card } from '@components/card';
 
 export const StackingLoading: FC = () => (
   <Flex
@@ -13,8 +12,6 @@ export const StackingLoading: FC = () => (
     px="loose"
     minHeight="180px"
   >
-    {/* <Card> */}
     <Spinner size="sm" color="ink.300" />
-    {/* </Card> */}
   </Flex>
 );

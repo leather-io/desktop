@@ -50,12 +50,15 @@ enum StackingModalStep {
 type StackingModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
 interface StackingModalProps {
-  onClose(): void;
   poxAddress: string;
   numCycles: number;
+  amountToStack: BigNumber;
+  onClose(): void;
 }
 
-export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxAddress }) => {
+export const StackingModal: FC<StackingModalProps> = props => {
+  const { onClose, numCycles, poxAddress, amountToStack } = props;
+
   const dispatch = useDispatch();
   const history = useHistory();
   useHotkeys('esc', () => onClose());
@@ -105,16 +108,15 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       salt,
       password,
     });
-    const balanceBN = new BigNumber(balance, 10);
     const txOptions = poxClient.getLockTxOptions({
       cycles: numCycles,
       poxAddress,
-      amountMicroStx: balanceBN,
+      amountMicroStx: amountToStack,
       contract: poxInfo.contract_id,
       burnBlockHeight: coreNodeInfo.burn_block_height,
     });
     const tx = await makeContractCall({ ...txOptions, senderKey: privateKey });
-    poxClient.modifyLockTxFee({ tx, amountMicroStx: balanceBN });
+    poxClient.modifyLockTxFee({ tx, amountMicroStx: amountToStack });
     const signer = new TransactionSigner(tx);
     signer.signOrigin(createStacksPrivateKey(privateKey));
     return tx;
@@ -128,6 +130,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
     node.url,
     numCycles,
     poxAddress,
+    amountToStack,
   ]);
 
   const createLedgerWalletTx = useCallback(
@@ -137,9 +140,9 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
       if (!blockstackApp || !poxInfo || !balance)
         throw new Error('`poxInfo` or `blockstackApp` is not defined');
       // 1. Form unsigned contract call transaction
-      const balanceBN = new BigNumber(balance, 10);
+
       const txOptions = poxClient.getLockTxOptions({
-        amountMicroStx: balanceBN,
+        amountMicroStx: amountToStack,
         poxAddress,
         cycles: numCycles,
         contract: poxInfo.contract_id,
@@ -151,7 +154,7 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
         publicKey: options.publicKey.toString('hex'),
       });
 
-      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroStx: balanceBN });
+      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroStx: amountToStack });
 
       // 2. Sign transaction
       const resp: ResponseSign = await blockstackApp.sign(
@@ -164,14 +167,14 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
 
       return unsignedTx.createTxWithSignature(resp.signatureVRS);
     },
-    [coreNodeInfo, node.url, blockstackApp, poxInfo, balance, poxAddress, numCycles]
+    [coreNodeInfo, node.url, blockstackApp, poxInfo, amountToStack, poxAddress, numCycles]
   );
 
   const broadcastTx = async () => {
     if (balance === null) return;
 
     const broadcastActions: Omit<BroadcastTransactionArgs, 'transaction'> = {
-      amount: new BigNumber(balance),
+      amount: amountToStack,
       isStackingCall: true,
       onBroadcastSuccess: txId => {
         dispatch(activeStackingTx({ txId }));

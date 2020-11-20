@@ -19,7 +19,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
-import { STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
+import { STX_DECIMAL_PRECISION, STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
 import { LedgerConnectStep } from '@hooks/use-ledger';
@@ -52,6 +52,7 @@ import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
 import { StacksTestnet } from '@stacks/network';
+import { validateDecimalPrecision } from '../../utils/form/validate-decimals';
 
 interface TxModalProps {
   balance: string;
@@ -230,12 +231,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         .test(
           'test-has-less-than-or-equal-to-6-decimal-places',
           'STX do not have more than 6 decimal places',
-          value => {
-            if (value === null || value === undefined) return false;
-            // Explicit base ensures BigNumber doesn't use exponential notation
-            const decimals = new BigNumber(value).toString(10).split('.')[1];
-            return decimals === undefined || decimals.length <= 6;
-          }
+          value => validateDecimalPrecision(STX_DECIMAL_PRECISION)(value)
         )
         .test(
           'test-address-has-enough-balance',
@@ -246,8 +242,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
             // otherwise it'll render the error for this test
             if (value === undefined) return true;
             const enteredAmount = stxToMicroStx(value);
-            // console.log(enteredAmount.toString());
-            // console.log(balance.toString());
             return enteredAmount.isLessThanOrEqualTo(balance);
           }
         )

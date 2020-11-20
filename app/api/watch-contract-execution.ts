@@ -23,7 +23,7 @@ export function watchContractExecution(args: WatchContractExecutionArgs) {
         tx.tx_status === 'abort_by_post_condition'
       ) {
         clearInterval(timeoutInterval);
-        return reject(new Error(error?.message || defaultErrorMsg));
+        return reject(error?.message || defaultErrorMsg);
       }
 
       if (tx.tx_status === 'success') {

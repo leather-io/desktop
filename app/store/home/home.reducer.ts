@@ -63,7 +63,7 @@ const selectMeetsMinStackingThreshold = createSelector(
   selectPoxInfo,
   (balance, poxInfo) => {
     if (balance === null || poxInfo === null) return false;
-    return new BigNumber(balance).isGreaterThan(poxInfo.min_amount_ustx);
+    return new BigNumber(balance).isGreaterThan(poxInfo.paddedMinimumStackingAmountMicroStx);
   }
 );
 

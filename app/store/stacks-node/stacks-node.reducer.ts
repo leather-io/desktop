@@ -48,7 +48,7 @@ export const setActiveStacksNode = stacksNodeSlice.actions.setActiveStacksNode;
 
 export const defaultNode: StacksNode = Object.freeze({
   url: DEFAULT_STACKS_NODE_URL,
-  name: 'Blockstack PBC Krypton node',
+  name: 'Blockstack PBC node',
   id: 'default',
 });
 

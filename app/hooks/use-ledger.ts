@@ -34,7 +34,6 @@ export function useLedger() {
           const [error, t] = await safeAwait(TransportNodeHid.open(event.descriptor));
 
           if (error) {
-            console.log(error);
             setUsbError('Unable to connect to device. You may need to configure your udev rules.');
             return;
           }

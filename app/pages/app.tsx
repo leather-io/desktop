@@ -87,10 +87,7 @@ export const App: FC = ({ children }) => {
   useEffect(() => {
     async function run() {
       if (!activeStackingTx || !address) return;
-      await watchContractExecution({
-        nodeUrl: activeNode.url,
-        txId: activeStackingTx,
-      });
+      await safeAwait(watchContractExecution({ nodeUrl: activeNode.url, txId: activeStackingTx }));
       dispatch(fetchStackerInfo(address));
       setTimeout(() => dispatch(removeStackingTx()), 2000);
     }

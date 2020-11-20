@@ -8,15 +8,17 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { NETWORK } from '@constants/index';
+import { StackerInfo, StackerInfoSuccess } from '@utils/stacking/pox';
+import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
   fetchStackingInfo,
   fetchCoreDetails,
   fetchBlockTimeInfo,
   fetchStackerInfo,
+  activeStackingTx,
+  removeStackingTx,
 } from './stacking.actions';
-import { NETWORK } from '@constants/index';
-import { StackerInfo, StackerInfoSuccess } from '@utils/stacking/pox';
-import { selectIsStackingCallPending } from '@store/pending-transaction';
 
 export enum StackingStatus {
   NotStacking = 'NotStacking',
@@ -26,7 +28,12 @@ export enum StackingStatus {
 }
 
 export interface StackingState {
+  initialRequestsComplete: Record<
+    'poxInfo' | 'coreNodeInfo' | 'blockTimeInfo' | 'stackerInfo',
+    boolean
+  >;
   error: string | null;
+  contractCallTx: string | null;
   poxInfo: CoreNodePoxResponse | null;
   coreNodeInfo: CoreNodeInfoResponse | null;
   blockTimeInfo: NetworkBlockTimesResponse | null;
@@ -34,7 +41,14 @@ export interface StackingState {
 }
 
 const initialState: StackingState = {
+  initialRequestsComplete: {
+    poxInfo: false,
+    coreNodeInfo: false,
+    blockTimeInfo: false,
+    stackerInfo: false,
+  },
   error: null,
+  contractCallTx: null,
   poxInfo: null,
   coreNodeInfo: null,
   blockTimeInfo: null,
@@ -46,26 +60,41 @@ export const stackingSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchStackingInfo.fulfilled.toString()]: (state, a: PayloadAction<CoreNodePoxResponse>) => {
-      state.poxInfo = a.payload;
+    [fetchStackingInfo.fulfilled.toString()]: (
+      state,
+      action: PayloadAction<CoreNodePoxResponse>
+    ) => {
+      state.initialRequestsComplete.poxInfo = true;
+      state.poxInfo = action.payload;
     },
-    [fetchCoreDetails.fulfilled.toString()]: (state, a: PayloadAction<CoreNodeInfoResponse>) => {
-      state.coreNodeInfo = a.payload;
+    [fetchCoreDetails.fulfilled.toString()]: (
+      state,
+      action: PayloadAction<CoreNodeInfoResponse>
+    ) => {
+      state.initialRequestsComplete.coreNodeInfo = true;
+      state.coreNodeInfo = action.payload;
     },
     [fetchBlockTimeInfo.fulfilled.toString()]: (
       state,
-      a: PayloadAction<NetworkBlockTimesResponse>
+      action: PayloadAction<NetworkBlockTimesResponse>
     ) => {
-      state.blockTimeInfo = a.payload;
+      state.initialRequestsComplete.blockTimeInfo = true;
+      state.blockTimeInfo = action.payload;
     },
-    [fetchStackerInfo.fulfilled.toString()]: (state, a: PayloadAction<StackerInfo>) => {
-      // if (a.payload === )
-      if ('error' in a.payload) {
-        state.error = a.payload.error;
+    [fetchStackerInfo.fulfilled.toString()]: (state, action: PayloadAction<StackerInfo>) => {
+      state.initialRequestsComplete.stackerInfo = true;
+      if ('error' in action.payload) {
+        state.error = action.payload.error;
         return;
       }
-      state.stackerInfo = a.payload;
+      state.stackerInfo = action.payload;
       state.error = null;
+    },
+    [activeStackingTx.toString()]: (state, action: PayloadAction<{ txId: string }>) => {
+      state.contractCallTx = action.payload.txId;
+    },
+    [removeStackingTx.toString()]: state => {
+      state.contractCallTx = null;
     },
   },
 });
@@ -81,14 +110,15 @@ export const selectBlockTimeInfo = createSelector(
 
 export const selectStackingError = createSelector(selectStackingState, state => state.error);
 
-export const selectLoadingStacking = createSelector(selectStackingState, state => {
-  return (
-    state.coreNodeInfo === null &&
-    state.poxInfo === null &&
-    state.error === null &&
-    state.stackerInfo === null
-  );
-});
+export const selectLoadingStacking = createSelector(
+  selectStackingState,
+  state => !Object.values(state.initialRequestsComplete).every(value => value === true)
+);
+
+export const selectActiveStackingTxId = createSelector(
+  selectStackingState,
+  state => state.contractCallTx
+);
 
 export const selectPoxInfo = createSelector(selectStackingState, state => state.poxInfo);
 

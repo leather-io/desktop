@@ -11,7 +11,6 @@ import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { addPendingTransaction } from '@store/pending-transaction';
 import { Dispatch, GetState } from '@store/index';
 import { selectActiveNodeApi } from '@store/stacks-node';
-import { isStackingTx } from '../../utils/tx-utils';
 
 export const pendingTransactionSuccessful = createAction<Transaction>(
   'transactions/pending-transaction-successful'
@@ -54,7 +53,7 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
   'transactions/broadcast-transactions-fail'
 );
 
-interface BroadcastTransactionArgs {
+export interface BroadcastTransactionArgs {
   transaction: StacksTransaction;
   amount: BigNumber;
   isStackingCall?: boolean;

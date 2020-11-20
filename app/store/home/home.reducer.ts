@@ -1,7 +1,12 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { selectAddressBalance } from '@store/address';
 import { selectIsStackingCallPending } from '@store/pending-transaction';
-import { selectLoadingStacking, selectPoxInfo, selectStackerInfo } from '@store/stacking';
+import {
+  selectActiveStackingTxId,
+  selectLoadingStacking,
+  selectPoxInfo,
+  selectStackerInfo,
+} from '@store/stacking';
 import BigNumber from 'bignumber.js';
 
 import { RootState } from '..';
@@ -64,13 +69,15 @@ const selectMeetsMinStackingThreshold = createSelector(
 
 export const selectHomeCardState = createSelector(
   selectLoadingCardResources,
+  selectActiveStackingTxId,
   selectMeetsMinStackingThreshold,
   selectIsStackingCallPending,
   selectStackerInfo,
-  (loadingResources, meetsMinThreshold, stackingCallPending, stackerInfo) => {
+  (loadingResources, activeStackingTxId, meetsMinThreshold, stackingCallPending, stackerInfo) => {
     if (loadingResources) return HomeCardState.LoadingResources;
     if (!meetsMinThreshold) return HomeCardState.NotEnoughStx;
-    if (stackingCallPending) return HomeCardState.StackingPendingContactCall;
+    if (stackingCallPending || typeof activeStackingTxId === 'string')
+      return HomeCardState.StackingPendingContactCall;
     if (stackerInfo?.isPreStackingPeriodStart) return HomeCardState.StackingPreCycle;
     if (stackerInfo?.isCurrentlyStacking) return HomeCardState.StackingActive;
     if (meetsMinThreshold) return HomeCardState.EligibleToParticipate;

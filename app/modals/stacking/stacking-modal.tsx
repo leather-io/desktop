@@ -16,7 +16,7 @@ import {
   decryptSoftwareWallet,
   selectWalletType,
 } from '@store/keys';
-import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
+import { activeStackingTx, selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
 import {
   makeUnsignedContractCall,
   StacksTransaction,
@@ -24,7 +24,7 @@ import {
   TransactionSigner,
   createStacksPrivateKey,
 } from '@stacks/transactions';
-import { broadcastTransaction } from '@store/transaction';
+import { broadcastTransaction, BroadcastTransactionArgs } from '@store/transaction';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance } from '@store/address';
 import { LedgerConnectStep } from '@hooks/use-ledger';
@@ -170,10 +170,13 @@ export const StackingModal: FC<StackingModalProps> = ({ onClose, numCycles, poxA
   const broadcastTx = async () => {
     if (balance === null) return;
 
-    const broadcastActions = {
+    const broadcastActions: Omit<BroadcastTransactionArgs, 'transaction'> = {
       amount: new BigNumber(balance),
       isStackingCall: true,
-      onBroadcastSuccess: () => history.push(routes.HOME),
+      onBroadcastSuccess: txId => {
+        dispatch(activeStackingTx({ txId }));
+        history.push(routes.HOME);
+      },
       onBroadcastFail: () => setStep(StackingModalStep.FailedContractCall),
     };
 

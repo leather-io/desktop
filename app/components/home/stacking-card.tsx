@@ -12,16 +12,13 @@ import {
 
 type StackingCardProps = any;
 
-export const StackingCard: FC<StackingCardProps> = props => {
-  const {} = props;
-
+export const StackingCard: FC<StackingCardProps> = () => {
   const { stackingDetails, stackerInfo, nextCycleInfo } = useSelector((state: RootState) => ({
     stackingDetails: selectPoxInfo(state),
     stackerInfo: selectStackerInfo(state),
     nextCycleInfo: selectNextCycleInfo(state),
   }));
 
-  // if (stackingDetails && stackerInfo && !stackingError && !nextCycleInfo?.isStackingCallPending)
   return (
     <Flex
       flexDirection="column"

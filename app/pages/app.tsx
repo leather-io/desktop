@@ -24,15 +24,18 @@ import {
   fetchCoreDetails,
   fetchStackerInfo,
   fetchStackingInfo,
+  removeStackingTx,
+  selectActiveStackingTxId,
 } from '@store/stacking';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
 
-  const { address, activeNode, pendingTxs } = useSelector((state: RootState) => ({
+  const { address, activeNode, pendingTxs, activeStackingTx } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     activeNode: selectActiveNodeApi(state),
     pendingTxs: selectPendingTransactions(state),
+    activeStackingTx: selectActiveStackingTxId(state),
   }));
 
   const initAppWithStxAddressInfo = useCallback(() => {
@@ -69,6 +72,7 @@ export const App: FC = ({ children }) => {
       dispatch(fetchStackingInfo());
       dispatch(fetchCoreDetails());
       dispatch(fetchBlockTimeInfo());
+      dispatch(fetchStackerInfo(address));
     }
   }, [address, activeNode, initAppWithStxAddressInfo, dispatch]);
 
@@ -81,27 +85,18 @@ export const App: FC = ({ children }) => {
   }, 5_000);
 
   useEffect(() => {
-    if (address) dispatch(fetchStackerInfo(address));
-  }, [dispatch, address]);
-
-  useEffect(() => {
     async function run() {
-      console.log('new stacking call');
-      const [firstTxId] = pendingTxs.filter(tx => tx.isStackingCall);
-      if (!firstTxId) return;
-      console.log({ firstTxId });
-      const result = await watchContractExecution({
+      if (!activeStackingTx || !address) return;
+      await watchContractExecution({
         nodeUrl: activeNode.url,
-        txId: firstTxId.tx_id,
+        txId: activeStackingTx,
       });
-      dispatch(fetchStackingInfo());
-      dispatch(fetchCoreDetails());
-      dispatch(fetchBlockTimeInfo());
-      console.log(result);
+      dispatch(fetchStackerInfo(address));
+      setTimeout(() => dispatch(removeStackingTx()), 2000);
     }
     void run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendingTxs]);
+  }, [activeStackingTx]);
 
   useEffect(() => {
     const wsUrl = new URL(activeNode.url);

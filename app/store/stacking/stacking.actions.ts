@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 
 import { selectActiveNodeApi } from '@store/stacks-node/stacks-node.reducer';
 import { RootState } from '@store/index';
@@ -43,3 +43,9 @@ export const fetchStackerInfo = createAsyncThunk(
     throw new Error();
   }
 );
+
+export const activeStackingTx = createAction<{ txId: string }>(
+  'stacking/call-stacking-contract-tx'
+);
+
+export const removeStackingTx = createAction('stacking/remove-active-tx');

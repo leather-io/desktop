@@ -150,7 +150,6 @@ export class Pox {
       contractAddress,
       contractName,
       functionName: 'stack-stx',
-      // sum of uStx, address, burn_block_height, num_cycles
       functionArgs: [
         uintCV(amountMicroStx.toString(10)),
         address,

@@ -19,6 +19,7 @@ import {
   activeStackingTx,
   removeStackingTx,
 } from './stacking.actions';
+import { stxToMicroStx } from '@utils/unit-convert';
 
 export enum StackingStatus {
   NotStacking = 'NotStacking',
@@ -120,7 +121,13 @@ export const selectActiveStackingTxId = createSelector(
   state => state.contractCallTx
 );
 
-export const selectPoxInfo = createSelector(selectStackingState, state => state.poxInfo);
+export const selectPoxInfo = createSelector(selectStackingState, state => {
+  if (state.poxInfo === null) return null;
+  const paddingStackingMargin = stxToMicroStx(100).toNumber();
+  const paddedMinimumStackingAmountMicroStx =
+    Math.ceil(state.poxInfo.min_amount_ustx / paddingStackingMargin) * paddingStackingMargin;
+  return { ...state.poxInfo, paddedMinimumStackingAmountMicroStx };
+});
 
 export const selectStackerInfo = createSelector(selectStackingState, state => {
   if (state.poxInfo === null || state.stackerInfo === null) return null;

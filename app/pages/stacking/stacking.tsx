@@ -1,8 +1,19 @@
-import React, { FC, useRef, useState, useCallback } from 'react';
+import React, { FC, useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { BigNumber } from 'bignumber.js';
 
 import { StackingModal } from '@modals/stacking/stacking-modal';
 import { useBackButton } from '@hooks/use-back-url';
 import routes from '@constants/routes.json';
+import { RootState } from '@store/index';
+import { selectWalletType } from '@store/keys';
+import { selectActiveNodeApi } from '@store/stacks-node';
+import {
+  selectEstimatedStackingCycleDuration,
+  selectNextCycleInfo,
+  selectPoxInfo,
+} from '@store/stacking';
+import { selectAvailableBalance } from '@store/address';
 
 import { StackingLayout } from './components/stacking-layout';
 import { StackingInfoCard } from './components/stacking-info-card';
@@ -10,17 +21,12 @@ import { StackingFormContainer } from './components/stacking-form-container';
 import { StackingIntro } from './components/stacking-intro';
 
 import { ChooseCycleStep } from './step/choose-cycles';
+import { ChooseAmountStep } from './step/choose-amount';
 import { ChooseBtcAddressStep } from './step/choose-btc-address';
 import { ConfirmAndLockStep } from './step/confirm-and-lock';
-import { useSelector } from 'react-redux';
-import { RootState } from '@store/index';
-import { selectWalletType } from '@store/keys';
-
-import { selectActiveNodeApi } from '@store/stacks-node';
-import { selectEstimatedStackingCycleDuration, selectNextCycleInfo } from '@store/stacking';
-import { selectAddressBalance } from '@store/address';
 
 enum Step {
+  ChooseAmount = 'Choose an amount',
   ChooseCycles = 'Choose your duration',
   ChooseBtcAddress = 'Add your Bitcoin address',
   ConfirmAndLock = 'Confirm and lock',
@@ -31,23 +37,28 @@ type StepState = 'incomplete' | 'complete' | null;
 export const Stacking: FC = () => {
   useBackButton(routes.HOME);
 
+  const [amount, setAmount] = useState<BigNumber | null>(null);
   const [cycles, setCycles] = useState(12);
   const [btcAddress, setBtcAddress] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [stepConfirmation, setStepConfirmation] = useState<Record<Step, StepState>>({
+    [Step.ChooseAmount]: 'incomplete',
     [Step.ChooseCycles]: 'incomplete',
     [Step.ChooseBtcAddress]: 'incomplete',
     [Step.ConfirmAndLock]: null,
   });
 
-  const { stackingCycleDuration, balance, nextCycleInfo } = useSelector((state: RootState) => ({
-    walletType: selectWalletType(state),
-    activeNode: selectActiveNodeApi(state),
-    stackingCycleDuration: selectEstimatedStackingCycleDuration(state),
-    balance: selectAddressBalance(state),
-    nextCycleInfo: selectNextCycleInfo(state),
-  }));
+  const { stackingCycleDuration, availableBalance, nextCycleInfo, poxInfo } = useSelector(
+    (state: RootState) => ({
+      walletType: selectWalletType(state),
+      activeNode: selectActiveNodeApi(state),
+      stackingCycleDuration: selectEstimatedStackingCycleDuration(state),
+      availableBalance: selectAvailableBalance(state),
+      nextCycleInfo: selectNextCycleInfo(state),
+      poxInfo: selectPoxInfo(state),
+    })
+  );
 
   const calcStackingDuration = useCallback(() => stackingCycleDuration * cycles, [
     stackingCycleDuration,
@@ -59,11 +70,14 @@ export const Stacking: FC = () => {
 
   const isComplete = (step: Step) => stepConfirmation[step] === 'complete';
 
-  const formComplete = [Step.ChooseCycles, Step.ChooseBtcAddress].every(isComplete) && !!btcAddress;
+  const formComplete =
+    [Step.ChooseAmount, Step.ChooseCycles, Step.ChooseBtcAddress].every(isComplete) && !!btcAddress;
 
   const estimatedStackingDuration = '~' + (calcStackingDuration() / 60 / 60).toString() + ' hours';
 
-  if (nextCycleInfo === null) return null;
+  const balance = availableBalance === null ? new BigNumber(0) : new BigNumber(availableBalance);
+
+  if (nextCycleInfo === null || poxInfo === null) return null;
 
   const stackingIntro = (
     <StackingIntro timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle} />
@@ -72,14 +86,24 @@ export const Stacking: FC = () => {
   const stackingInfoCard = (
     <StackingInfoCard
       cycles={cycles}
-      balance={balance}
+      balance={amount}
       startDate={nextCycleInfo.nextCycleStartingAt}
+      blocksPerCycle={poxInfo.reward_cycle_length}
       duration={estimatedStackingDuration}
     />
   );
 
   const stackingForm = (
     <StackingFormContainer>
+      <ChooseAmountStep
+        id={Step.ChooseAmount}
+        isComplete={isComplete(Step.ChooseAmount)}
+        value={amount}
+        balance={balance}
+        minimumAmountToStack={poxInfo.paddedMinimumStackingAmountMicroStx}
+        onEdit={() => updateStep(Step.ChooseAmount, 'incomplete')}
+        onComplete={amount => (setAmount(amount), updateStep(Step.ChooseAmount, 'complete'))}
+      />
       <ChooseCycleStep
         id={Step.ChooseCycles}
         cycles={cycles}
@@ -109,9 +133,10 @@ export const Stacking: FC = () => {
 
   return (
     <>
-      {modalOpen && btcAddress && (
+      {modalOpen && btcAddress && amount !== null && (
         <StackingModal
           onClose={() => setModalOpen(false)}
+          amountToStack={amount}
           numCycles={cycles}
           poxAddress={btcAddress}
         />

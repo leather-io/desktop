@@ -1,10 +1,9 @@
-import React, { FC, useRef, useCallback, useEffect } from 'react';
+import React, { FC, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@blockstack/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { Api } from '@api/api';
-import { microStxToStx } from '@utils/unit-convert';
 import { increment, decrement } from '@utils/mutate-numbers';
 import { RootState } from '@store/index';
 import { openInExplorer } from '@utils/external-links';
@@ -110,13 +109,6 @@ export const Home: FC = () => {
   useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs]);
   useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs]);
 
-  useEffect(() => {
-    console.log({
-      blocksToNextCycle: nextCycleInfo?.blocksToNextCycle,
-      nextCycleStartBlock: nextCycleInfo?.nextCycleStartBlock,
-    });
-  }, [nextCycleInfo?.blocksToNextCycle]);
-
   if (!address) return <Spinner />;
 
   const txCount = txs.length + pendingTxs.length;
@@ -167,7 +159,7 @@ export const Home: FC = () => {
     [HomeCardState.LoadingResources]: <StackingLoading />,
     [HomeCardState.NotEnoughStx]: (
       <StackingPromoCard
-        minRequiredStx={microStxToStx(stackingDetails?.min_amount_ustx || 0).toNumber()}
+        minRequiredMicroStx={stackingDetails?.paddedMinimumStackingAmountMicroStx || 0}
       />
     ),
     [HomeCardState.EligibleToParticipate]: <StackingParticipationCard />,
@@ -187,7 +179,6 @@ export const Home: FC = () => {
     <>
       {receiveModalOpen && <ReceiveStxModal address={address} />}
       {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
-      {String(HomeCardState[stackingCardState])}
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}

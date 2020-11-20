@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { BigNumber } from 'bignumber.js';
+import dayjs from 'dayjs';
 
 import { Flex, FlexProps, Text } from '@blockstack/ui';
 
@@ -6,17 +8,20 @@ import { Hr } from '@components/hr';
 
 import { ExplainerTooltip } from '@components/tooltip';
 import { toHumanReadableStx } from '@utils/unit-convert';
-import dayjs from 'dayjs';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
   duration: string;
   startDate: Date;
-  balance: string | null;
+  blocksPerCycle: number;
+  balance: BigNumber | null;
 }
 
 export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { cycles, duration, balance, startDate } = props;
+  const { cycles, duration, balance, blocksPerCycle, startDate } = props;
+
+  const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
+
   return (
     <Flex
       flexDirection="column"
@@ -33,7 +38,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>
         <Text fontSize="24px" fontWeight={600} letterSpacing="-0.04em" mt="extra-tight">
-          {toHumanReadableStx(balance || 0)}
+          {toHumanReadableStx(amountToBeStacked.toString())}
         </Text>
       </Flex>
       <Hr />
@@ -44,7 +49,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
               Cycles
             </Text>
             <ExplainerTooltip>
-              One cycle lasts 1000 blocks on the bitcoin blockchain
+              One cycle lasts {blocksPerCycle} blocks on the Bitcoin blockchain
             </ExplainerTooltip>
           </Flex>
           <Text textAlign="right">{cycles}</Text>

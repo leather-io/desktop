@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { validateMnemonic } from 'bip39';
-import { Text, Input } from '@blockstack/ui';
+import { Text, Input, Flex, Box, ExclamationMarkCircleIcon } from '@blockstack/ui';
 
 import routes from '@constants/routes.json';
 import { Hr } from '@components/hr';
@@ -31,18 +31,13 @@ export const RestoreWallet: React.FC = () => {
     setMnemonic(e.currentTarget.value.trim());
   };
 
+  const mnemonicLength = mnemonic.trim().split(' ').length;
+
   const handleSecretKeyRestore = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const mnemonicLength = mnemonic.trim().split(' ').length;
-    if (mnemonicLength === 12) {
-      setError(
-        'You’ve entered a 12-word Secret Key. Please enter the 24-word Secret Key you received when creating this wallet.'
-      );
-      return;
-    }
-    if (mnemonicLength !== 24) {
-      setError('The Stacks Wallet can only be used with 24-word Secret Keys');
+    if (mnemonicLength !== 12 && mnemonicLength !== 24) {
+      setError('The Stacks Wallet can be used with only 12 and 24-word Secret Keys');
       return;
     }
 
@@ -83,6 +78,24 @@ export const RestoreWallet: React.FC = () => {
         <ErrorLabel>
           <ErrorText>{error}</ErrorText>
         </ErrorLabel>
+      )}
+      {mnemonicLength === 12 && (
+        <Flex
+          mt="base-loose"
+          px="base"
+          py="base-tight"
+          backgroundColor="#FFEDD6"
+          borderRadius="4px"
+        >
+          <Box mr="tight" mt="1px">
+            <ExclamationMarkCircleIcon size="14px" color="#FE9000" />
+          </Box>
+          <Text textStyle="caption" color="#424248" lineHeight="16px">
+            It appears you've entered a Secret Key originally created elsewhere than the Stacks
+            Wallet. We recommend you create a new Secret Key with the Stacks Wallet for greater
+            security.
+          </Text>
+        </Flex>
       )}
       <OnboardingButton mt="loose" type="submit" mode="secondary">
         Continue with Secret Key

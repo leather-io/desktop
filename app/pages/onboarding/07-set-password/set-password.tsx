@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { Text, Input } from '@blockstack/ui';
 
+import { Text, Input } from '@blockstack/ui';
 import { setSoftwareWallet } from '@store/keys';
+import { useBackButton } from '@hooks/use-back-url';
+import routes from '@constants/routes.json';
 import {
   Onboarding,
   OnboardingTitle,
@@ -14,7 +16,7 @@ import {
   validatePassword,
   blankPasswordValidation,
   ValidatedPassword,
-} from '../../../crypto/validate-password';
+} from '@crypto/validate-password';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
   if (result.feedback.suggestions.length > 0) {
@@ -30,6 +32,7 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
 };
 
 export const SetPassword: React.FC = () => {
+  useBackButton(routes.VERIFY_KEY);
   const history = useHistory();
   const dispatch = useDispatch();
   const [password, setPassword] = useState<string | null>(null);

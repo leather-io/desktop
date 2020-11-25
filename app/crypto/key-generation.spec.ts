@@ -14,57 +14,11 @@ describe(deriveKey.name, () => {
     const salt = '$2a$12$BwnByfKrfRbpxsazN712T.';
     const pass = 'f255cadb0af84854819c63f26c53e1a9';
     const { derivedKeyHash } = await deriveKey({ salt, pass });
-    const expectedResultArray = [
-      94,
-      0,
-      166,
-      167,
-      20,
-      189,
-      146,
-      233,
-      48,
-      163,
-      248,
-      178,
-      48,
-      11,
-      140,
-      87,
-      82,
-      126,
-      73,
-      82,
-      237,
-      166,
-      232,
-      173,
-      90,
-      192,
-      67,
-      200,
-      149,
-      147,
-      30,
-      223,
-      60,
-      15,
-      133,
-      99,
-      89,
-      142,
-      223,
-      116,
-      131,
-      24,
-      169,
-      157,
-      157,
-      245,
-      159,
-      140,
-    ];
-    expect(derivedKeyHash).toEqual(Uint8Array.from(expectedResultArray));
+    const hash = Buffer.from(derivedKeyHash).toString('hex');
+    console.log(hash);
+    expect(hash).toEqual(
+      'd941c6ec3f04fa67c68b497169986588436b1697aa6b3a93218152658e5c494d2e3da9ea93522f0e4cb14b414b57b463'
+    );
   });
 });
 

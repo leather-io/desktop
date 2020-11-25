@@ -6,7 +6,8 @@ export async function deriveKey({ pass, salt }: { pass: string; salt: string }) 
     pass,
     salt,
     hashLen: 48,
-    time: 400,
+    time: 44,
+    mem: 1024 * 32,
     type: ArgonType.Argon2id,
   });
   return { derivedKeyHash: result.hash };

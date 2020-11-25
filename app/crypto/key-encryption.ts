@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 
-const algorithmName = 'AES-CBC';
+const algorithmName = 'AES-GCM';
 
 function extractEncryptionKey(hash: Uint8Array) {
   return hash.slice(0, 32);

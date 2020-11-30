@@ -58,7 +58,7 @@ test.skip('making a lock-stx transaction', async () => {
   });
   await waitForTxConfirm(`0x${lockTxid}`);
   const stackerInfo = await client.getStackerInfo(address);
-  if ('error' in stackerInfo) return;
+  if ('error' in stackerInfo) throw new Error('Contains an error response');
   console.log('Stacker Info:');
   console.log('Amount Locked:', stackerInfo.amountMicroStx);
   console.log('Lock Period:', stackerInfo.lockPeriod);

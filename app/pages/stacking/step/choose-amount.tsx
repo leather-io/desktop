@@ -14,7 +14,7 @@ import { ErrorText } from '@components/error-text';
 import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 
-interface ChooseCycleStepProps {
+interface ChooseAmountStepProps {
   id: string;
   balance: BigNumber;
   step?: number;
@@ -27,7 +27,7 @@ interface ChooseCycleStepProps {
 
 const BigNumberFloorRound = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_FLOOR });
 
-export const ChooseAmountStep: FC<ChooseCycleStepProps> = props => {
+export const ChooseAmountStep: FC<ChooseAmountStepProps> = props => {
   const { isComplete, step, id, value, balance, minimumAmountToStack, onEdit, onComplete } = props;
 
   const stxAmountForm = useFormik({
@@ -65,7 +65,7 @@ export const ChooseAmountStep: FC<ChooseCycleStepProps> = props => {
     const updatedAmount = new BigNumberFloorRound(microStxToStx(balance.toString())).decimalPlaces(
       0
     );
-    stxAmountForm.setValues({ stxAmount: updatedAmount.toString() });
+    void stxAmountForm.setValues({ stxAmount: updatedAmount.toString() });
   }, [balance, stxAmountForm]);
 
   const currentValue =

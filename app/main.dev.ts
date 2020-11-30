@@ -81,6 +81,7 @@ const createWindow = async () => {
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     icon: path.join(__dirname, '../resources/icon-no-padding-512x512.png'),
     webPreferences: {
+      disableBlinkFeatures: 'Auxclick',
       webSecurity: true,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,

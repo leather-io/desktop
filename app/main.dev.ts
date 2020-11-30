@@ -16,7 +16,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, ipcMain, Menu, MenuItem } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, MenuItem, session } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
@@ -139,12 +139,17 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
+
+  session
+    .fromPartition('some-partition')
+    .setPermissionRequestHandler((_webContents, _permission, callback) => {
+      callback(false);
+    });
 };
 
 app.on('web-contents-created', (_event, contents) => {
-  contents.on('will-navigate', event => {
-    event.preventDefault();
-  });
+  contents.on('will-navigate', event => event.preventDefault());
+  contents.on('new-window', event => event.preventDefault());
 });
 
 /**

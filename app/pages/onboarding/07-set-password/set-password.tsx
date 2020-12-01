@@ -22,11 +22,14 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
   if (result.feedback.suggestions.length > 0) {
     return `${result.feedback.suggestions.join(' ')}`;
   }
+  if (result.feedback.warning) {
+    return `${result.feedback.warning}`;
+  }
   if (!result.meetsScoreRequirement) {
-    return 'Your password is vulnerable to brute force attacks. Try using a stronger password at least 12 characters in length';
+    return 'Your password is vulnerable to brute force attacks. Try adding more non-alphanumeric characters.';
   }
   if (!result.meetsLengthRequirement) {
-    return 'Your password must also be at least 12 characters long.';
+    return 'Your password must be at least 12 characters long';
   }
   return 'Consider using a password generator to ensure your funds are sufficiently secure';
 };

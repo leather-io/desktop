@@ -19,7 +19,12 @@ import { useHotkeys } from 'react-hotkeys-hook';
 
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
-import { STX_DECIMAL_PRECISION, STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
+import {
+  STX_DECIMAL_PRECISION,
+  STX_DERIVATION_PATH,
+  STX_TRANSFER_TX_SIZE_BYTES,
+} from '@constants/index';
+
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
 import { LedgerConnectStep } from '@hooks/use-ledger';
@@ -127,7 +132,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         ...options,
         publicKey: publicKey.toString('hex'),
       });
-      const resp = await blockstackApp.sign(`m/44'/5757'/0'/0/0`, unsignedTx.serialize());
+      const resp = await blockstackApp.sign(STX_DERIVATION_PATH, unsignedTx.serialize());
 
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');

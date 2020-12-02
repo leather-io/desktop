@@ -4,6 +4,8 @@ type Environments = 'development' | 'testing' | 'production';
 
 export const STX_DECIMAL_PRECISION = 6;
 
+export const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0` as const;
+
 export const ENV = (process.env.NODE_ENV ?? 'production') as Environments;
 
 export const BUY_STX_URL = 'https://coinmarketcap.com/currencies/blockstack/markets';

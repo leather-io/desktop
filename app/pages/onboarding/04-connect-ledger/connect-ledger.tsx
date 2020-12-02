@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 
-import { useDispatch } from 'react-redux';
-
+import { STX_DERIVATION_PATH } from '@constants/index';
 import routes from '@constants/routes.json';
 import {
   Onboarding,
@@ -19,8 +19,6 @@ import { useLedger } from '@hooks/use-ledger';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { useBackButton } from '@hooks/use-back-url';
-
-const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
 
 export enum LedgerConnectStep {
   Disconnected,

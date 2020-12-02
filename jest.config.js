@@ -19,7 +19,7 @@ module.exports = {
   globals: {
     api: true,
     'ts-jest': {
-      tsConfig: 'tsconfig.tests.json',
+      tsconfig: 'tsconfig.tests.json',
       diagnostics: {
         ignoreCodes: [6133, 2304],
       },

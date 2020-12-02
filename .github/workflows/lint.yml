@@ -19,7 +19,7 @@ jobs:
           key: ${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-optional
+        run: yarn
 
       - name: Lint eslint
         run: yarn lint:eslint

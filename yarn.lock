@@ -2071,19 +2071,19 @@
     jsonrpc-lite "^2.2.0"
     ws "^7.3.1"
 
-"@stacks/common@^1.0.0-beta.9":
-  version "1.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.0-beta.9.tgz#f791cf4768aa4c40e581fd22068f342745620ca5"
-  integrity sha512-YpY0/0BwEDfFR/n96nAhNn3Rpeket+ArxHzsscorhx0WpxccT3um/SjJj4yXJHyqR/BhRpIuU+ngQCfrSP6hww==
+"@stacks/common@^1.0.0-beta.17":
+  version "1.0.0-beta.17"
+  resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.0-beta.17.tgz#46ea11aeba821644bc00ed9abc8d996238a6aeb2"
+  integrity sha512-5jgwzeaX5cw92rQHiQCT4ojjNFnKdDkQmfTE5EGe2skqivoyEIbLBzErhV5XpHQo+w8s0Zb9GPZFy2LhrbPRhQ==
   dependencies:
     cross-fetch "^3.0.5"
 
-"@stacks/network@1.0.0-beta.9":
-  version "1.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.0.0-beta.9.tgz#c201256f1b0216ea37259c0af0e0cb1cd21182b5"
-  integrity sha512-cmqznzjtyRDoBibbw+B1h3esZ/2StsnjAMZyqxvH856fVSGVSgxIk5HycA+zGqOUQewjfgHKIiZ9gzaMsETnow==
+"@stacks/network@1.0.0-beta.17":
+  version "1.0.0-beta.17"
+  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.0.0-beta.17.tgz#440d10191bb9ec8f4e1b2ce2ae08a77b2a55f128"
+  integrity sha512-8cOPN685hLRzb2eFPfqzTMuNpuF2NmpXRLV2Cxr7u81KdrLQL+Z8d583KWbw2bM12Azxz1D4WckeSisO0xTghg==
   dependencies:
-    "@stacks/common" "^1.0.0-beta.9"
+    "@stacks/common" "^1.0.0-beta.17"
 
 "@styled-system/background@^5.1.2":
   version "5.1.2"

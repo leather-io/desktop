@@ -9,7 +9,6 @@ import { RootState } from '..';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { NETWORK } from '@constants/index';
-import { StackerInfo, StackerInfoSuccess } from '@utils/stacking/pox';
 import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
   fetchStackingInfo,
@@ -20,6 +19,7 @@ import {
   removeStackingTx,
 } from './stacking.actions';
 import { stxToMicroStx } from '@utils/unit-convert';
+import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
 
 export enum StackingStatus {
   NotStacking = 'NotStacking',
@@ -27,6 +27,12 @@ export enum StackingStatus {
   StackedActive = 'StackedActive',
   FinishedStacking = 'FinishedStacking',
 }
+
+export interface StackerInfoFail {
+  error: string;
+}
+
+type StackerInfo = StackerInfoFromClient | StackerInfoFail;
 
 export interface StackingState {
   initialRequestsComplete: Record<
@@ -38,7 +44,7 @@ export interface StackingState {
   poxInfo: CoreNodePoxResponse | null;
   coreNodeInfo: CoreNodeInfoResponse | null;
   blockTimeInfo: NetworkBlockTimesResponse | null;
-  stackerInfo: StackerInfoSuccess | null;
+  stackerInfo: Required<StackerInfoFromClient>['details'] | null;
 }
 
 const initialState: StackingState = {
@@ -82,14 +88,20 @@ export const stackingSlice = createSlice({
       state.initialRequestsComplete.blockTimeInfo = true;
       state.blockTimeInfo = action.payload;
     },
-    [fetchStackerInfo.fulfilled.toString()]: (state, action: PayloadAction<StackerInfo>) => {
+    [fetchStackerInfo.fulfilled.toString()]: (
+      state,
+      action: PayloadAction<Required<StackerInfo>>
+    ) => {
       state.initialRequestsComplete.stackerInfo = true;
-      if ('error' in action.payload) {
-        state.error = action.payload.error;
+      if ('error' in action.payload || !action.payload.stacked) {
+        state.error = 'There was an error stacking';
         return;
       }
-      state.stackerInfo = action.payload;
+      state.stackerInfo = action.payload.details;
       state.error = null;
+    },
+    [fetchStackerInfo.rejected.toString()]: state => {
+      state.initialRequestsComplete.stackerInfo = true;
     },
     [activeStackingTx.toString()]: (state, action: PayloadAction<{ txId: string }>) => {
       state.contractCallTx = action.payload.txId;
@@ -133,19 +145,19 @@ export const selectStackerInfo = createSelector(selectStackingState, state => {
   if (state.poxInfo === null || state.stackerInfo === null) return null;
 
   const hasStackingCycleStarted =
-    state.poxInfo.reward_cycle_id >= state.stackerInfo.firstRewardCycle;
+    state.poxInfo.reward_cycle_id >= state.stackerInfo.first_reward_cycle;
 
   const hasStackingPeriodFinished =
     state.poxInfo.reward_cycle_id >
-    state.stackerInfo.lockPeriod - 1 + state.stackerInfo.firstRewardCycle;
+    state.stackerInfo.lock_period - 1 + state.stackerInfo.first_reward_cycle;
 
   const currentCycleOfTotal =
-    state.poxInfo.reward_cycle_id - state.stackerInfo.firstRewardCycle < 0
+    state.poxInfo.reward_cycle_id - state.stackerInfo.first_reward_cycle < 0
       ? 0
-      : state.poxInfo.reward_cycle_id - state.stackerInfo.firstRewardCycle + 1;
+      : state.poxInfo.reward_cycle_id - state.stackerInfo.first_reward_cycle + 1;
 
   const isPreStackingPeriodStart =
-    state.poxInfo.reward_cycle_id < state.stackerInfo.firstRewardCycle;
+    state.poxInfo.reward_cycle_id < state.stackerInfo.first_reward_cycle;
 
   const isCurrentlyStacking = hasStackingCycleStarted && !hasStackingPeriodFinished;
 

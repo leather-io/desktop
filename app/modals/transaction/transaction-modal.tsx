@@ -96,12 +96,12 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     })
   );
 
-  type CreateTxOptions = {
+  interface CreateTxOptions {
     recipient: string;
     network: StacksTestnet;
     amount: BN;
     memo: string;
-  };
+  }
 
   const createSoftwareWalletTx = useCallback(
     async (options: CreateTxOptions) => {
@@ -288,12 +288,12 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       const fee = new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);
       const balanceLessFee = new BigNumber(balance).minus(fee.toString());
       if (balanceLessFee.isLessThanOrEqualTo(0)) {
-        form.setFieldTouched('amount');
+        void form.setFieldTouched('amount');
         form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');
         setCalculatingMaxSpend(false);
         return;
       }
-      form.setValues({
+      void form.setValues({
         ...form.values,
         amount: microStxToStx(balanceLessFee.toString()).toString(),
       });

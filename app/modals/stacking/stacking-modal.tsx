@@ -2,7 +2,6 @@ import React, { FC, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
-// import log from 'electron-log';
 import BlockstackApp, { LedgerError, ResponseSign } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
@@ -11,7 +10,7 @@ import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import BN from 'bn.js';
 
 import { RootState } from '@store/index';
-import { NETWORK } from '@constants/index';
+import { NETWORK, STX_DERIVATION_PATH } from '@constants/index';
 import routes from '@constants/routes.json';
 import {
   selectPublicKey,
@@ -42,7 +41,7 @@ import {
 } from './stacking-modal-layout';
 import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
-import { FailedBroadcastError } from './steps/failed-broadcast-error';
+import { StackingFailed } from './steps/stacking-failed';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
@@ -173,7 +172,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
         amountMicroStx: new BN(amountToStack.toString()),
       });
       const resp: ResponseSign = await blockstackApp.sign(
-        `m/44'/5757'/0'/0/0`,
+        STX_DERIVATION_PATH,
         modifiedFeeTx.serialize()
       );
       if (resp.returnCode !== LedgerError.NoErrors) {
@@ -234,6 +233,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
 
       if (error) {
         setHasSubmitted(false);
+        setStep(StackingModalStep.FailedContractCall);
         return;
       }
 
@@ -316,7 +316,9 @@ export const StackingModal: FC<StackingModalProps> = props => {
 
     [StackingModalStep.FailedContractCall]: () => ({
       header: <StackingModalHeader onSelectClose={onClose} />,
-      body: <FailedBroadcastError>{'Failed to call stacking contract'}</FailedBroadcastError>,
+      body: (
+        <StackingFailed walletType={walletType}>Failed to call stacking contract</StackingFailed>
+      ),
       footer: (
         <StackingModalFooter>
           <StackingModalButton mode="tertiary" onClick={onClose}>

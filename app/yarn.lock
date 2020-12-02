@@ -118,7 +118,7 @@
     jsontokens "^3.0.0"
     query-string "^6.13.1"
 
-"@stacks/common@^1.0.0-beta.10", "@stacks/common@^1.0.0-beta.17":
+"@stacks/common@^1.0.0-beta.13", "@stacks/common@^1.0.0-beta.17":
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.0-beta.17.tgz#46ea11aeba821644bc00ed9abc8d996238a6aeb2"
   integrity sha512-5jgwzeaX5cw92rQHiQCT4ojjNFnKdDkQmfTE5EGe2skqivoyEIbLBzErhV5XpHQo+w8s0Zb9GPZFy2LhrbPRhQ==
@@ -141,7 +141,7 @@
     "@stacks/connect-ui" "^2.17.0"
     jsontokens "^3.0.0"
 
-"@stacks/encryption@^1.0.0-beta.10", "@stacks/encryption@^1.0.0-beta.17":
+"@stacks/encryption@^1.0.0-beta.13", "@stacks/encryption@^1.0.0-beta.17":
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@stacks/encryption/-/encryption-1.0.0-beta.17.tgz#b21f706a426e76c04fdce857ce7d74e29b730a5c"
   integrity sha512-pDws33pn/dGW1Yt5z9arPQyLYR9jFA5fxRy/PUxY28N/r3Ifkqf6n6nwZOlVTJL8hQzDIM17L0r8CJOjL6F7qQ==
@@ -155,16 +155,16 @@
     ripemd160-min "^0.0.6"
     sha.js "^2.4.11"
 
-"@stacks/keychain@1.0.0-beta.10":
-  version "1.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@stacks/keychain/-/keychain-1.0.0-beta.10.tgz#d6a88e2e9fce87cd4789af553970d89195f223e7"
-  integrity sha512-qBCbf7fgB7xNM7a5PUIy3TwKgSCz2QkzBDaun1dDFwR8joRB2Kv9fXm+M2JGqcTfVKc2CwHVkYmBVz9HCoYRHw==
+"@stacks/keychain@1.0.0-beta.13":
+  version "1.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@stacks/keychain/-/keychain-1.0.0-beta.13.tgz#a6f2b48961f960ac205ed007bcf657cdb6ba8a6f"
+  integrity sha512-AtndoM60bvUA826UfN4cuLS6OuKMBBzNUTC2ICeWg2KyaXuy/QAIIXQzfzctudzmTMMdWdVZI1/FmubUPZ151A==
   dependencies:
     "@blockstack/rpc-client" "^0.3.0-alpha.11"
-    "@stacks/common" "^1.0.0-beta.10"
-    "@stacks/encryption" "^1.0.0-beta.10"
-    "@stacks/storage" "^1.0.0-beta.10"
-    "@stacks/transactions" "^1.0.0-beta.10"
+    "@stacks/common" "^1.0.0-beta.13"
+    "@stacks/encryption" "^1.0.0-beta.13"
+    "@stacks/storage" "^1.0.0-beta.13"
+    "@stacks/transactions" "^1.0.0-beta.13"
     bip32 "^2.0.4"
     bip39 "^3.0.2"
     bitcoinjs-lib "^5.1.6"
@@ -175,7 +175,7 @@
     triplesec "^3.0.27"
     zone-file "^1.0.0"
 
-"@stacks/network@^1.0.0-beta.10", "@stacks/network@^1.0.0-beta.17":
+"@stacks/network@^1.0.0-beta.13", "@stacks/network@^1.0.0-beta.17":
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.0.0-beta.17.tgz#440d10191bb9ec8f4e1b2ce2ae08a77b2a55f128"
   integrity sha512-8cOPN685hLRzb2eFPfqzTMuNpuF2NmpXRLV2Cxr7u81KdrLQL+Z8d583KWbw2bM12Azxz1D4WckeSisO0xTghg==
@@ -195,7 +195,7 @@
     schema-inspector "^1.7.0"
     zone-file "^1.0.0"
 
-"@stacks/stacking@1.0.0-beta.17":
+"@stacks/stacking@^1.0.0-beta.17":
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@stacks/stacking/-/stacking-1.0.0-beta.17.tgz#bf4b627c4eb028d8f247be8168ca904776a3124f"
   integrity sha512-cecGSkcIA+wNVoRMdUduiBCS8j8k4uqpBABeUXafIicki0TmoA1bEB2TYmbbaZ2N28KGMR2rRZshHx1xVmFSLg==
@@ -209,7 +209,7 @@
     c32check "^1.1.1"
     url-join "^4.0.1"
 
-"@stacks/storage@^1.0.0-beta.10":
+"@stacks/storage@^1.0.0-beta.13":
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@stacks/storage/-/storage-1.0.0-beta.17.tgz#93e1aed0d49113063f143250eed3eefb756edf8b"
   integrity sha512-8dynss8NGNd6U9cXTkAyAN43KmF369Gzd5Th24O9CPA2hBELGJj47Trk/Y9W1ge6y6FranlLuQs5u6Iga96Qog==
@@ -218,13 +218,13 @@
     "@stacks/common" "^1.0.0-beta.17"
     "@stacks/encryption" "^1.0.0-beta.17"
 
-"@stacks/transactions@1.0.0-beta.10":
-  version "1.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.0.0-beta.10.tgz#9589413d6400eaa95cc889a88c615376241ed448"
-  integrity sha512-eC5QnHVfSKZmFLIX+7/9RMBTEl02bca3Ux4dYJHv0Z3r52ToQbaR4VNGJzATU0nRYHFR6Dryu0qln/QkBYC70g==
+"@stacks/transactions@1.0.0-beta.13":
+  version "1.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.0.0-beta.13.tgz#5da06033197a69d3c0dd8436be9e7a235e296ae6"
+  integrity sha512-gMQxULFgxpsku/7hvxsoenfQ510v6GNzWtlm7JRgO6O/khE6qb+N0qz5j3pK/72r7NJi0oaNxIC+KDia8m0YiA==
   dependencies:
-    "@stacks/common" "^1.0.0-beta.10"
-    "@stacks/network" "^1.0.0-beta.10"
+    "@stacks/common" "^1.0.0-beta.13"
+    "@stacks/network" "^1.0.0-beta.13"
     "@types/bn.js" "^4.11.6"
     "@types/elliptic" "^6.4.12"
     "@types/randombytes" "^2.0.0"
@@ -239,7 +239,7 @@
     sha.js "^2.4.11"
     smart-buffer "^4.1.0"
 
-"@stacks/transactions@^1.0.0-beta.10", "@stacks/transactions@^1.0.0-beta.17":
+"@stacks/transactions@^1.0.0-beta.13", "@stacks/transactions@^1.0.0-beta.17":
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.0.0-beta.17.tgz#ae0d5b31772e4c377451a644e965084b86d025eb"
   integrity sha512-D/2O/eYPu96bLcQ8pcGiqDnUWyOsAruN9m1zwPBUivXw7SYmtBPiorPSMCYwsmaJuhu4S6kyJLAa4z+0i7VVQQ==
@@ -546,7 +546,7 @@ bitcoin-ops@^1.3.0, bitcoin-ops@^1.4.0:
   resolved "https://registry.yarnpkg.com/bitcoin-ops/-/bitcoin-ops-1.4.1.tgz#e45de620398e22fd4ca6023de43974ff42240278"
   integrity sha512-pef6gxZFztEhaE9RY9HmWVmiIHqCb2OyS4HPKkpc6CIiiOa3Qmuoylxc5P2EkU3w+5eTSifI9SEZC88idAIGow==
 
-bitcoinjs-lib@^5.1.10, bitcoinjs-lib@^5.1.6, bitcoinjs-lib@^5.2.0:
+bitcoinjs-lib@5.2.0, bitcoinjs-lib@^5.1.10, bitcoinjs-lib@^5.1.6, bitcoinjs-lib@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-5.2.0.tgz#caf8b5efb04274ded1b67e0706960b93afb9d332"
   integrity sha512-5DcLxGUDejgNBYcieMIUfjORtUeNWl828VWLHJGVKZCb4zIS1oOySTUr0LGmcqJBQgTBz3bGbRQla4FgrdQEIQ==

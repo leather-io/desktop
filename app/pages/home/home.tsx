@@ -145,7 +145,7 @@ export const Home: FC = () => {
   );
   const balanceCard = (
     <BalanceCard
-      lockedStx={stackerInfo?.amountMicroStx}
+      lockedStx={stackerInfo?.amount_microstx}
       balance={balance}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}

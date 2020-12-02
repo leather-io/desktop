@@ -6,8 +6,12 @@ import log from 'electron-log';
 import BlockstackApp, { LedgerError, ResponseSign } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
+import { StackingClient } from '@stacks/stacking';
+import { StacksMainnet, StacksTestnet } from '@stacks/network';
+import BN from 'bn.js';
 
 import { RootState } from '@store/index';
+import { NETWORK } from '@constants/index';
 import routes from '@constants/routes.json';
 import {
   selectPublicKey,
@@ -29,7 +33,6 @@ import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance } from '@store/address';
 import { LedgerConnectStep } from '@hooks/use-ledger';
 import { safeAwait } from '@utils/safe-await';
-import { Pox } from '@utils/stacking/pox';
 
 import {
   StackingModalHeader,
@@ -97,27 +100,38 @@ export const StackingModal: FC<StackingModalProps> = props => {
 
   const [step, setStep] = useState(initialStep);
 
+  const initStackingClient = useCallback(() => {
+    const network = NETWORK === 'mainnet' ? new StacksMainnet() : new StacksTestnet();
+    network.coreApiUrl = node.url;
+    return new StackingClient(poxAddress, network as any);
+  }, [node.url, poxAddress]);
+
   const createSoftwareWalletTx = useCallback(async (): Promise<StacksTransaction> => {
     if (!password || !encryptedMnemonic || !salt || !poxInfo || !balance) {
       throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
     }
     if (coreNodeInfo === null) throw new Error('Stacking requires coreNodeInfo');
-    const poxClient = new Pox(node.url);
+
+    const stackingClient = initStackingClient();
     const { privateKey } = await decryptSoftwareWallet({
       ciphertextMnemonic: encryptedMnemonic,
       salt,
       password,
     });
-    const txOptions = poxClient.getLockTxOptions({
-      cycles: numCycles,
+    const txOptions = stackingClient.getStackOptions({
+      amountMicroStx: new BN(amountToStack.toString()),
       poxAddress,
-      amountMicroStx: amountToStack,
+      cycles: numCycles,
       contract: poxInfo.contract_id,
       burnBlockHeight: coreNodeInfo.burn_block_height,
     });
     const tx = await makeContractCall({ ...txOptions, senderKey: privateKey });
-    poxClient.modifyLockTxFee({ tx, amountMicroStx: amountToStack });
-    const signer = new TransactionSigner(tx);
+    const modifiedFeeTx = stackingClient.modifyLockTxFee({
+      tx,
+      amountMicroStx: new BN(amountToStack.toString()),
+    });
+
+    const signer = new TransactionSigner(modifiedFeeTx);
     signer.signOrigin(createStacksPrivateKey(privateKey));
     return tx;
   }, [
@@ -127,22 +141,22 @@ export const StackingModal: FC<StackingModalProps> = props => {
     poxInfo,
     balance,
     coreNodeInfo,
-    node.url,
-    numCycles,
-    poxAddress,
+    initStackingClient,
     amountToStack,
+    poxAddress,
+    numCycles,
   ]);
 
   const createLedgerWalletTx = useCallback(
     async (options: { publicKey: Buffer }): Promise<StacksTransaction> => {
       if (coreNodeInfo === null) throw new Error('Stacking requires coreNodeInfo');
-      const poxClient = new Pox(node.url);
       if (!blockstackApp || !poxInfo || !balance)
         throw new Error('`poxInfo` or `blockstackApp` is not defined');
       // 1. Form unsigned contract call transaction
 
-      const txOptions = poxClient.getLockTxOptions({
-        amountMicroStx: amountToStack,
+      const stackingClient = initStackingClient();
+      const txOptions = stackingClient.getStackOptions({
+        amountMicroStx: new BN(amountToStack.toString()),
         poxAddress,
         cycles: numCycles,
         contract: poxInfo.contract_id,
@@ -154,20 +168,29 @@ export const StackingModal: FC<StackingModalProps> = props => {
         publicKey: options.publicKey.toString('hex'),
       });
 
-      poxClient.modifyLockTxFee({ tx: unsignedTx, amountMicroStx: amountToStack });
-
-      // 2. Sign transaction
+      const modifiedFeeTx = stackingClient.modifyLockTxFee({
+        tx: unsignedTx,
+        amountMicroStx: new BN(amountToStack.toString()),
+      });
       const resp: ResponseSign = await blockstackApp.sign(
         `m/44'/5757'/0'/0/0`,
-        unsignedTx.serialize()
+        modifiedFeeTx.serialize()
       );
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');
       }
-
       return unsignedTx.createTxWithSignature(resp.signatureVRS);
     },
-    [coreNodeInfo, node.url, blockstackApp, poxInfo, amountToStack, poxAddress, numCycles]
+    [
+      coreNodeInfo,
+      blockstackApp,
+      poxInfo,
+      balance,
+      initStackingClient,
+      amountToStack,
+      poxAddress,
+      numCycles,
+    ]
   );
 
   const broadcastTx = async () => {

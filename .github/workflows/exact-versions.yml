@@ -4,20 +4,13 @@ on: [push]
 
 jobs:
   check-versions:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
       - uses: actions/setup-node@v1
 
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-optional
+      - run: yarn add -ED @actions/core
 
       - name: Check exact versions
         uses: ./.github/actions/check-version-lock

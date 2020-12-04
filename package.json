@@ -31,8 +31,9 @@
   },
   "build": {
     "productName": "Stacks Wallet Beta",
-    "appId": "org.blockstack.StacksWallet",
+    "appId": "org.stacks.wallet",
     "icon": "./resources/icon-512x512.png",
+    "artifactName": "stacks-wallet-${version}.${ext}",
     "files": [
       "dist/",
       "node_modules/",
@@ -91,6 +92,37 @@
         "stacks-wallet"
       ]
     }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/*.msi",
+              "label": "Windows distribution"
+            },
+            {
+              "path": "dist/*.dmg",
+              "label": "OSX distribution"
+            },
+            {
+              "path": "dist/*.rpm",
+              "label": "Linux distribution"
+            },
+            {
+              "path": "dist/*.deb",
+              "label": "Debian distribution"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/git"
+    ]
   },
   "repository": {
     "type": "git",

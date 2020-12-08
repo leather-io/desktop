@@ -9,8 +9,14 @@ import {
   CoreNodeInfoResponse,
   NetworkBlockTimesResponse,
 } from '@blockstack/stacks-blockchain-api-types';
+import { Configuration, BurnchainApi } from '@stacks/blockchain-api-client';
 
 export class Api {
+  stacksApiConfig = new Configuration({
+    basePath: this.baseUrl,
+  });
+  burnchainApi = new BurnchainApi(this.stacksApiConfig);
+
   constructor(public baseUrl: string) {}
 
   async getAddressBalance(address: string) {
@@ -65,6 +71,10 @@ export class Api {
     return axios.get<NetworkBlockTimesResponse>(
       urljoin(this.baseUrl, `/extended/v1/info/network_block_times`)
     );
+  }
+
+  getStacksRewards(address: string) {
+    return this.burnchainApi.getBurnchainRewardListByAddress({ address });
   }
 
   async callReadOnly({

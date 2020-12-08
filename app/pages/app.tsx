@@ -86,6 +86,21 @@ export const App: FC = ({ children }) => {
 
   useEffect(() => {
     async function run() {
+      if (!address) return;
+      const [err, awards] = await safeAwait(
+        new Api(activeNode.url).burnchainApi.getBurnchainRewardListByAddress({ address })
+      );
+      console.log({ err, awards });
+      if (err) return;
+      if (awards) {
+        console.log(awards);
+      }
+    }
+    void run();
+  }, [activeNode.url, address]);
+
+  useEffect(() => {
+    async function run() {
       if (!activeStackingTx || !address) return;
       await safeAwait(watchContractExecution({ nodeUrl: activeNode.url, txId: activeStackingTx }));
       dispatch(fetchStackerInfo(address));

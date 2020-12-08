@@ -16,7 +16,6 @@ import {
   OnboardingButton,
   OnboardingText,
   OnboardingFooter,
-  OnboardingFooterLink,
 } from '@components/onboarding';
 
 export const RestoreWallet: React.FC = () => {

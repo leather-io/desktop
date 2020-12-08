@@ -53,7 +53,7 @@ export const configureStore = (initialState?: RootState) => {
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers<any>(...enhancers);
 
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
+  const persistedReducer = persistReducer(persistConfig, rootReducer as any);
 
   // Create Store
   const store = createStore(persistedReducer, initialState, enhancer);

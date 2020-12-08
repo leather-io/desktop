@@ -7,6 +7,7 @@ import { Home } from './pages/home/home';
 import { selectAddress } from './store/keys/keys.reducer';
 
 import {
+  Terms,
   Welcome,
   CreateWallet,
   RestoreWallet,
@@ -25,6 +26,10 @@ export const routerConfig = [
   {
     path: routes.HOME,
     component: Home,
+  },
+  {
+    path: routes.TERMS,
+    component: Terms,
   },
   {
     path: routes.WELCOME,
@@ -72,7 +77,7 @@ export const routerConfig = [
   },
 ];
 
-const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.WELCOME);
+const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.TERMS);
 
 export function Routes() {
   // `useStore` required as we only want the value on initial render

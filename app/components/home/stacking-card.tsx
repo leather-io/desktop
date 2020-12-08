@@ -62,21 +62,21 @@ export const StackingCard: FC<StackingCardProps> = () => {
             <Flex justifyContent="space-between" mt="tight">
               <Text textStyle="body.small.medium">You're stacking for</Text>
               <Text textStyle="body.small">
-                {stackerInfo?.lockPeriod} cycle{stackerInfo.lockPeriod > 1 ? 's' : ''}
+                {stackerInfo?.lock_period} cycle{stackerInfo.lock_period > 1 ? 's' : ''}
               </Text>
             </Flex>
-            {stackerInfo.lockPeriod > 1 && (
+            {stackerInfo.lock_period > 1 && (
               <Flex justifyContent="space-between" mt="tight">
                 <Text textStyle="body.small.medium">Current cycle</Text>
                 <Text textStyle="body.small">
-                  {stackerInfo.currentCycleOfTotal} of {stackerInfo?.lockPeriod}
+                  {stackerInfo.currentCycleOfTotal} of {stackerInfo?.lock_period}
                 </Text>
               </Flex>
             )}
             <Flex flexDirection="column" mt="tight" mb="base-loose">
               <Text textStyle="body.small.medium">Reward to be paid to</Text>
               <Text as="code" fontSize="13px" mt="tight" color="ink.600">
-                {stackerInfo?.btcAddress}
+                {stackerInfo?.pox_address}
               </Text>
             </Flex>
           </Box>

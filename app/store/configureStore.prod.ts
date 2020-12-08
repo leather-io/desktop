@@ -13,7 +13,7 @@ const router = routerMiddleware(history);
 const enhancer = applyMiddleware(thunk, router);
 
 export function configureStore(initialState?: RootState) {
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
+  const persistedReducer = persistReducer(persistConfig, rootReducer as any);
   const store = createStore(persistedReducer, initialState, enhancer);
   const persistor = persistStore(store);
 

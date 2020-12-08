@@ -33,6 +33,6 @@ export const selectAvailableBalance = createSelector(
   (address, stackerInfo) => {
     if (address.balance === null) return null;
     if (stackerInfo === null) return address.balance;
-    return new BigNumber(address.balance).minus(stackerInfo.amountMicroStx).toString();
+    return new BigNumber(address.balance).minus(stackerInfo.amount_microstx).toString();
   }
 );

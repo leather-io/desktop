@@ -1,5 +1,6 @@
 {
   "HOME": "/",
+  "TERMS": "/onboard/terms",
   "WELCOME": "/onboard/welcome",
   "CREATE": "/onboard/create",
   "RESTORE": "/onboard/restore",

@@ -31,7 +31,8 @@
       "@hooks/*": ["app/hooks/*"],
       "@api/*": ["app/api/*"],
       "@assets/*": ["app/assets/*"],
-      "@constants/*": ["app/constants/*"]
+      "@constants/*": ["app/constants/*"],
+      "@constants": ["app/constants"]
     }
   },
   "exclude": [

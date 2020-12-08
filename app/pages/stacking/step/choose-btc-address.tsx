@@ -5,7 +5,7 @@ import validate from 'bitcoin-address-validation';
 
 import { ErrorText } from '@components/error-text';
 import { ErrorLabel } from '@components/error-label';
-import { SUPPORTED_BTC_ADDRESS_FORMATS } from '../../../constants/index';
+import { SUPPORTED_BTC_ADDRESS_FORMATS } from '@constants';
 
 import {
   StackingStep,
@@ -57,7 +57,7 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
           placeholder="Bitcoin address"
           mt="loose"
           maxWidth="400px"
-          fontFamily={btcAddressForm.values.btcAddress.length ? 'monospace' : null}
+          fontFamily={btcAddressForm.values.btcAddress.length ? 'monospace' : undefined}
         />
         {btcAddressForm.touched.btcAddress && btcAddressForm.errors.btcAddress && (
           <ErrorLabel>

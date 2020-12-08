@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { Text, Input } from '@blockstack/ui';
+import { Text, Input } from '@stacks/ui';
 import { setSoftwareWallet } from '@store/keys';
 import { useBackButton } from '@hooks/use-back-url';
 import routes from '@constants/routes.json';
@@ -73,7 +73,7 @@ export const SetPassword: React.FC = () => {
     <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Set a password</OnboardingTitle>
       <OnboardingText>You’ll use your password to confirm transactions</OnboardingText>
-      <Input type="password" mt="extra-loose" onChange={handlePasswordInput} />
+      <Input width="100%" type="password" mt="extra-loose" onChange={handlePasswordInput} />
       <Text display="block" textStyle="body.small" color="ink.600" mt="base">
         Password strength:
         <Text

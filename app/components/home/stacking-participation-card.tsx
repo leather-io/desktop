@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Box, Flex, Text, Button } from '@blockstack/ui';
+import { Box, Flex, Text, Button } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import btcPodium from '../../assets/images/btc-podium.svg';

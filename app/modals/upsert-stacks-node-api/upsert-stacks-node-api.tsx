@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useFormik } from 'formik';
-import { Modal, ButtonGroup, Button, Box, Text, Input } from '@blockstack/ui';
+import { Modal, ButtonGroup, Button, Box, Text, Input } from '@stacks/ui';
 import * as yup from 'yup';
 
 import { StacksNode } from '@store/stacks-node';

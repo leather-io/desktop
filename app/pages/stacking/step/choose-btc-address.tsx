@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Input } from '@blockstack/ui';
+import { Input } from '@stacks/ui';
 import { useFormik } from 'formik';
 import validate from 'bitcoin-address-validation';
 

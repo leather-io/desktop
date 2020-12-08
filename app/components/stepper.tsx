@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, BoxProps, FlexProps } from '@blockstack/ui';
+import { Box, Flex, Text, BoxProps, FlexProps } from '@stacks/ui';
 
 import { increment, decrement } from '@utils/mutate-numbers';
 import { DecrementIcon } from './icons/decrement';

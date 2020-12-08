@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
-import { Box } from '@blockstack/ui';
+import { Box } from '@stacks/ui';
 import { useLedger, LedgerConnectStep } from '@hooks/use-ledger';
 import BlockstackApp from '@zondax/ledger-blockstack';
 import { delay } from '@utils/delay';

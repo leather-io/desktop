@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, BoxProps } from '@blockstack/ui';
+import { Text, BoxProps } from '@stacks/ui';
 
 export const ErrorText: React.FC<BoxProps> = ({ children, ...rest }) => (
   <Text

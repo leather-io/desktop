@@ -1,5 +1,5 @@
 import React, { FC, forwardRef } from 'react';
-import { Flex, FlexProps } from '@blockstack/ui';
+import { Flex, FlexProps } from '@stacks/ui';
 
 import { EnableBefore, listHoverProps, listFocusedProps } from './transaction-list-item-pseudo';
 
@@ -15,7 +15,7 @@ export const TransactionListItemContainer: FC<TransactionListItemContainerProps>
 
     return (
       <Flex
-        ref={ref}
+        ref={ref as any}
         as={EnableBefore}
         mb="loose"
         cursor="pointer"

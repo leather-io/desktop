@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Text, Flex, BoxProps } from '@blockstack/ui';
+import { Text, Flex, BoxProps } from '@stacks/ui';
 import { Link } from 'react-router-dom';
 
 import { templateTxBoxProps } from './transaction-list-item-pseudo';

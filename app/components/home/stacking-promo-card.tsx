@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, Button } from '@blockstack/ui';
+import { Box, Flex, Text, Button } from '@stacks/ui';
 
 import { openExternalLink } from '@utils/external-links';
 import { BUY_STX_URL } from '@constants/index';

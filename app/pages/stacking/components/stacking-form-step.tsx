@@ -7,7 +7,7 @@ import {
   CheckmarkCircleIcon,
   Button,
   ButtonProps,
-} from '@blockstack/ui';
+} from '@stacks/ui';
 
 interface StackingFormStepProps extends FlexProps {
   title: string;

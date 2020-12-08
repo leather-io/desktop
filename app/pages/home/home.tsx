@@ -1,6 +1,6 @@
 import React, { FC, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from '@blockstack/ui';
+import { Spinner } from '@stacks/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { Api } from '@api/api';

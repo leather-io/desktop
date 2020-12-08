@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
-import { Modal } from '@blockstack/ui';
+import { Modal } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 import {
   makeSTXTokenTransfer,

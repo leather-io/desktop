@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Box, Text } from '@blockstack/ui';
+import { Flex, Box, Text } from '@stacks/ui';
 
 import failedCrossSvg from '../../../assets/images/failed-cross.svg';
 

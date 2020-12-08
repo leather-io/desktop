@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, BoxProps } from '@blockstack/ui';
+import { Box, BoxProps } from '@stacks/ui';
 
 export const Explainer = React.forwardRef((props: BoxProps, ref) => (
   <Box ref={ref as any} {...props}>

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, ArrowIcon, ButtonProps } from '@blockstack/ui';
+import { Button, ArrowIcon, ButtonProps } from '@stacks/ui';
 
 interface BackButtonProps extends Omit<ButtonProps, 'children'> {
   backUrl: string | null;

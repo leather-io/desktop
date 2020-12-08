@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box } from '@blockstack/ui';
+import { Box } from '@stacks/ui';
 import ReactCardFlip from 'react-card-flip';
 
 interface WaffleChartProps {

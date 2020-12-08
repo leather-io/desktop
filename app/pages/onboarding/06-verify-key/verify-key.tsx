@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Input } from '@blockstack/ui';
+import { Input } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { selectMnemonic } from '@store/keys';
@@ -50,6 +50,7 @@ export const VerifyKey: React.FC = () => {
         mt="extra-loose"
         height="88px"
         placeholder="24-word Secret Key"
+        width="100%"
         style={{ resize: 'none' }}
       />
       {!mnemonicCorrect && hasSubmitted && (

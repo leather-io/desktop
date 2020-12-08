@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Text, Box } from '@blockstack/ui';
+import { Text, Box } from '@stacks/ui';
 
 import { NETWORK } from '@constants/index';
 

@@ -1,4 +1,6 @@
-import styled from 'styled-components';
+import React from 'react';
+import { Box, BoxProps } from '@stacks/ui';
+import { forwardRefWithAs } from '@stacks/ui-core';
 
 export function listHoverProps(hovered: boolean) {
   return hovered
@@ -31,17 +33,23 @@ export function listFocusedProps(focused: boolean) {
     : {};
 }
 
-// Component is required owing to glitch with ui lib
-// where content style isn't applied to _before prop
-export const EnableBefore = styled.button`
-  width: 100%;
-  &::before {
-    content: '';
-  }
-  &::after {
-    content: '';
-  }
-`;
+export const EnableBefore = forwardRefWithAs<BoxProps, 'button'>(
+  ({ _before, _after, ...rest }, ref) => (
+    <Box
+      width="100%"
+      _before={{
+        content: `''`,
+        ..._before,
+      }}
+      _after={{
+        content: `''`,
+        ..._after,
+      }}
+      {...rest}
+      ref={ref}
+    />
+  )
+);
 
 export const templateTxBoxProps = {
   flexDirection: 'column' as const,

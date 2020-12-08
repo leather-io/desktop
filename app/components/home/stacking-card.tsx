@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Flex, Box, Text } from '@blockstack/ui';
+import { Flex, Box, Text } from '@stacks/ui';
 
 import { WaffleChart } from '@components/chart/waffle-chart';
 import { RootState } from '@store/index';

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Input, Text } from '@blockstack/ui';
+import { Box, Input, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 

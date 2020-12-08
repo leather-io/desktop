@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHotkeys } from 'react-hotkeys-hook';
 import Qr from 'qrcode.react';
-import { Text, Modal, Button, Flex, Box, useClipboard } from '@blockstack/ui';
+import { Text, Modal, Button, Flex, Box, useClipboard } from '@stacks/ui';
 
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
 import { homeActions } from '@store/home/home.reducer';

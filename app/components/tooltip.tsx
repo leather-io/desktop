@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Tippy from '@tippyjs/react';
-import { Box } from '@blockstack/ui';
+import { Box } from '@stacks/ui';
 
 import { Explainer } from './icons/explainer';
 

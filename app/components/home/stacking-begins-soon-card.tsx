@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, Box } from '@blockstack/ui';
+import { Flex, Text, Box } from '@stacks/ui';
 
 interface StackingBeginsSoonCardProps {
   blocksTillNextCycle?: number;

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Spinner } from '@blockstack/ui';
+import { Flex, Spinner } from '@stacks/ui';
 
 export const StackingLoading: FC = () => (
   <Flex

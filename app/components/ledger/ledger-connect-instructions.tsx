@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, CheckmarkCircleIcon } from '@blockstack/ui';
+import { Box, Flex, CheckmarkCircleIcon } from '@stacks/ui';
 
 import { LedgerConnectStep } from '../../pages/onboarding';
 import { LedgerStepText } from './ledger-step-text';

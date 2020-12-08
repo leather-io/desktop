@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import log from 'electron-log';
-import { Box, useClipboard, Text, Button } from '@blockstack/ui';
+import { Box, useClipboard, Text, Button } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { Card } from '@components/card';

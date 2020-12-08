@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Flex, FlexProps } from '@blockstack/ui';
+import { Box, Flex, FlexProps } from '@stacks/ui';
 
 type CalendarIconProps = FlexProps;
 

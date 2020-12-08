@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, BoxProps } from '@blockstack/ui';
+import { Box, BoxProps } from '@stacks/ui';
 
 type NodeSelectProps = BoxProps;
 

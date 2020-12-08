@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonProps } from '@blockstack/ui';
+import { Button, ButtonProps } from '@stacks/ui';
 
 type OnboardingButton = Omit<ButtonProps, 'ref'>;
 

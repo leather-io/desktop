@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { ThemeProvider, theme } from '@blockstack/ui';
+import { ThemeProvider, theme } from '@stacks/ui';
 import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 

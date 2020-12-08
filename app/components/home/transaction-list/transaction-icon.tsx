@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, FlexProps, Box, Spinner, FailedIcon } from '@blockstack/ui';
+import { Flex, FlexProps, Box, Spinner, FailedIcon } from '@stacks/ui';
 
 import { SentArrow } from '@components/icons/sent-arrow';
 import { ReceivedArrow } from '@components/icons/received-arrow';

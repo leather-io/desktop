@@ -1,7 +1,7 @@
 import React, { useContext, FC } from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory, useLocation, matchPath } from 'react-router';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, Box } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { useWindowFocus } from '@hooks/use-window-focus';

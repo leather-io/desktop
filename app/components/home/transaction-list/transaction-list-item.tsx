@@ -1,14 +1,13 @@
 import React, {
   FC,
   MutableRefObject,
-  RefObject,
+  useCallback,
+  useEffect,
   useLayoutEffect,
   useRef,
-  useEffect,
-  useCallback,
 } from 'react';
 import { useSelector } from 'react-redux';
-import { useHover, useFocus } from 'use-events';
+import { useFocus, useHover } from 'use-events';
 import { Box, Text, useClipboard } from '@stacks/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
@@ -24,8 +23,8 @@ import { getRecipientAddress, isStackingTx } from '@utils/tx-utils';
 
 import {
   createTxListContextMenu,
-  registerHandler,
   deregisterHandler,
+  registerHandler,
 } from './transaction-list-context-menu';
 import { TransactionListItemContainer } from './transaction-list-item-container';
 
@@ -121,9 +120,8 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
 
   return (
     <TransactionListItemContainer
-      // UI library bug where it is only considered HTMLDivElement
-      // type casting here so type is correct elsewhere
-      ref={(containerRef as unknown) as RefObject<HTMLDivElement>}
+      // @ts-ignore TODO: kyran pls fix
+      ref={containerRef}
       onClick={() => onSelectTx(tx.tx_id)}
       focused={focused}
       hovered={hovered}

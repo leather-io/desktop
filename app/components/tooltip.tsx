@@ -14,7 +14,7 @@ export const ExplainerTooltip: FC = ({ children }) => {
           background="black"
           borderRadius="6px"
           textStyle="body.small.medium"
-          whiteSpace="wrap"
+          whiteSpace="normal"
           maxWidth="290px"
         >
           {children}

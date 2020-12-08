@@ -32,6 +32,7 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = p
 
   return (
     <TransactionListItemContainer
+      // @ts-ignore TODO: kyran pls fix
       ref={(containerRef as unknown) as RefObject<HTMLDivElement>}
       onClick={() => onSelectTx(tx.tx_id)}
       data-txid={tx.tx_id}

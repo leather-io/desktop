@@ -5,6 +5,7 @@ import { forwardRefWithAs } from '@stacks/ui-core';
 export function listHoverProps(hovered: boolean) {
   return hovered
     ? ({
+        content: `''`,
         background: '#FAFAFC',
         borderRadius: '8px',
         zIndex: -1,
@@ -21,6 +22,7 @@ export function listHoverProps(hovered: boolean) {
 export function listFocusedProps(focused: boolean) {
   return focused
     ? ({
+        content: `''`,
         position: 'absolute',
         border: '1px solid #C5CCFF',
         boxShadow: '0 0 0 3px rgba(170,179,255,0.75)',

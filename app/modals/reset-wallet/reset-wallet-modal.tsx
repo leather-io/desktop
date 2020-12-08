@@ -1,6 +1,6 @@
-import React, { FC, useState, useRef } from 'react';
-import { Modal, ButtonGroup, Button, Box } from '@stacks/ui';
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import React, { FC, useRef, useState } from 'react';
+import { Box, Button, ButtonGroup, Modal } from '@stacks/ui';
+import { TxModalFooter, TxModalHeader } from '../transaction/transaction-modal-layout';
 import { remote } from 'electron';
 import { clearDiskStorage } from '@utils/disk-store';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -39,7 +39,8 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
   const header = <TxModalHeader onSelectClose={closeModal}>Reset wallet</TxModalHeader>;
   const footer = (
     <TxModalFooter>
-      <ButtonGroup size="lg">
+      {/* TODO: fix in ui lib */}
+      <ButtonGroup size={'lg' as any}>
         <Button mode="tertiary" onClick={closeModal} ref={cancelBtnRef as any}>
           Cancel
         </Button>

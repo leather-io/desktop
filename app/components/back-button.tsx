@@ -27,7 +27,10 @@ export const BackButton: FC<BackButtonProps> = ({ backUrl, hasFocus, ...props })
         padding: 0,
       }}
     >
-      <ArrowIcon direction="left" color={backUrl === null || !hasFocus ? '#C1C3CC' : 'ink'} />
+      <ArrowIcon
+        direction={'left' as any}
+        color={backUrl === null || !hasFocus ? '#C1C3CC' : 'ink'}
+      />
     </Button>
   );
 };

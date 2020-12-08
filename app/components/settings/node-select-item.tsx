@@ -20,7 +20,7 @@ export const NodeSelectItem: FC<NodeSelectItemProps> = props => {
       minHeight="72px"
       p="base"
       as="label"
-      borderTop={index > 0 ? '1px solid #F0F0F5' : null}
+      borderTop={index > 0 ? '1px solid #F0F0F5' : undefined}
       {...{ htmlFor: node.id }}
     >
       <Flex width="100%" align-items="stretch">

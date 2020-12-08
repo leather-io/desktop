@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useFormik } from 'formik';
-import { Modal, ButtonGroup, Button, Box, Text, Input } from '@stacks/ui';
+import { Box, Button, ButtonGroup, Input, Modal, Text } from '@stacks/ui';
 import * as yup from 'yup';
 
 import { StacksNode } from '@store/stacks-node';
@@ -11,7 +11,7 @@ import { capitalize } from '@utils/capitalize';
 import { Api } from '@api/api';
 import { safeAwait } from '@utils/safe-await';
 import { generateRandomHexString } from '@crypto/key-generation';
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import { TxModalFooter, TxModalHeader } from '../transaction/transaction-modal-layout';
 
 interface AddNodeSettingsProps {
   isOpen: boolean;
@@ -70,7 +70,8 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
   const header = <TxModalHeader onSelectClose={onClose}>{changeVerb} a node</TxModalHeader>;
   const footer = (
     <TxModalFooter>
-      <ButtonGroup size="lg">
+      {/* TODO: fix in ui lib */}
+      <ButtonGroup size={'lg' as any}>
         <Button type="button" mode="tertiary" onClick={onClose}>
           Cancel
         </Button>
@@ -82,14 +83,13 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
   );
   return (
     <Modal
-      as="form"
       onSubmit={(e: React.FormEvent<HTMLDivElement>) => form.handleSubmit(e as any)}
       isOpen={isOpen}
       headerComponent={header}
       footerComponent={footer}
       minWidth={['100%', '488px']}
     >
-      <Box m="extra-loose">
+      <Box as="form" m="extra-loose">
         <Text textStyle="body.small" lineHeight="20px">
           Enter an address from the Stacks Blockchain API that proxies a node. Before using a node,
           make sure you review and trust the host before configuring a new API.

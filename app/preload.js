@@ -65,7 +65,7 @@ contextBridge.exposeInMainWorld('api', {
       const transport = await TransportNodeHid.open(descriptor);
       transport.on('disconnect', async () => {
         await transport.close();
-        onDisconnect();
+        setTimeout(() => onDisconnect(), 0);
       });
       return {
         transport,

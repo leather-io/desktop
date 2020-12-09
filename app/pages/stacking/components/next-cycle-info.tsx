@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Flex, Text, FlexProps } from '@stacks/ui';
+import { border } from '@utils/border';
 
 import { CalendarIcon } from '@components/icons/calendar-circle';
 
@@ -10,7 +11,7 @@ interface NextCycleInfoProps extends FlexProps {
 export const NextCycleInfo: FC<NextCycleInfoProps> = ({ timeUntilNextCycle, ...props }) => (
   <Flex
     boxShadow="low"
-    border="1px solid #F0F0F5"
+    border={border()}
     borderRadius="8px"
     minHeight="84px"
     alignItems="center"

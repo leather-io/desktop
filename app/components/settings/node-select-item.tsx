@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Box, Flex, Text } from '@stacks/ui';
 
 import { StacksNode } from '@store/stacks-node';
+import { border } from '@utils/border';
 
 interface NodeSelectItemProps {
   node: StacksNode;
@@ -20,7 +21,7 @@ export const NodeSelectItem: FC<NodeSelectItemProps> = props => {
       minHeight="72px"
       p="base"
       as="label"
-      borderTop={index > 0 ? '1px solid #F0F0F5' : undefined}
+      borderTop={index > 0 ? border() : undefined}
       {...{ htmlFor: node.id }}
     >
       <Flex width="100%" align-items="stretch">

@@ -1,10 +1,10 @@
-import React, { FC, useRef, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { FC, useCallback, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Spinner } from '@stacks/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { Api } from '@api/api';
-import { increment, decrement } from '@utils/mutate-numbers';
+import { decrement, increment } from '@utils/mutate-numbers';
 import { RootState } from '@store/index';
 import { openInExplorer } from '@utils/external-links';
 import { selectAddress } from '@store/keys';
@@ -12,8 +12,8 @@ import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance, selectAvailableBalance } from '@store/address';
 import {
   selectTransactionList,
-  selectTransactionsLoading,
   selectTransactionListFetchError,
+  selectTransactionsLoading,
 } from '@store/transaction';
 import { selectPendingTransactions } from '@store/pending-transaction';
 import {
@@ -24,18 +24,18 @@ import {
 } from '@store/stacking';
 import {
   homeActions,
-  selectTxModalOpen,
-  selectReceiveModalOpen,
-  selectHomeCardState,
   HomeCardState,
+  selectHomeCardState,
+  selectReceiveModalOpen,
+  selectTxModalOpen,
 } from '@store/home';
 import {
-  TransactionList,
-  StackingPromoCard,
-  StackingParticipationCard,
-  StackingRewardCard,
-  TransactionListItem,
   BalanceCard,
+  StackingParticipationCard,
+  StackingPromoCard,
+  StackingRewardCard,
+  TransactionList,
+  TransactionListItem,
 } from '@components/home';
 import { TransactionModal } from '@modals/transaction/transaction-modal';
 import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
@@ -177,8 +177,8 @@ export const Home: FC = () => {
 
   return (
     <>
-      {receiveModalOpen && <ReceiveStxModal address={address} />}
-      {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
+      <ReceiveStxModal isOpen={receiveModalOpen} address={address} />
+      <TransactionModal isOpen={txModalOpen} balance={spendableBalance || '0'} address={address} />
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}

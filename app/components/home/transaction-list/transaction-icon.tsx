@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Flex, FlexProps, Box, Spinner, FailedIcon } from '@stacks/ui';
+import { Flex, FlexProps, Box, Spinner, FailedIcon, color } from '@stacks/ui';
+import { border } from '@utils/border';
 
 import { SentArrow } from '@components/icons/sent-arrow';
 import { ReceivedArrow } from '@components/icons/received-arrow';
@@ -33,8 +34,8 @@ export const TransactionIcon: FC<TransactionIconProps> = ({ variant, ...props })
     <Flex
       justifyContent="center"
       alignItems="center"
-      border="1px solid #F0F0F5"
-      background="white"
+      border={border()}
+      background={color('bg-3')}
       borderRadius="8px"
       minWidth="48px"
       minHeight="48px"

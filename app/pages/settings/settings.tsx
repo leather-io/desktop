@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Button } from '@stacks/ui';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, color } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
@@ -9,19 +9,19 @@ import { ResetWalletModal } from '@modals/reset-wallet/reset-wallet-modal';
 
 import { RootState } from '@store/index';
 import {
-  selectStacksNodeApis,
-  upsertStacksNodeApi,
-  selectActiveNodeApi,
-  setActiveStacksNode,
-  removeStacksNodeApi,
   defaultNode,
+  removeStacksNodeApi,
+  selectActiveNodeApi,
+  selectStacksNodeApis,
+  setActiveStacksNode,
+  upsertStacksNodeApi,
 } from '@store/stacks-node';
 import { UpsertStacksNodeSettingsModal } from '@modals/upsert-stacks-node-api/upsert-stacks-node-api';
 import { NodeSelect } from '@components/settings/node-select';
 import { NodeSelectItem } from '@components/settings/node-select-item';
 import { SettingSection } from '@components/settings/settings-section';
 
-import { SettingsLayout, SettingDescription } from './settings-layout';
+import { SettingDescription, SettingsLayout } from './settings-layout';
 
 export const Settings = () => {
   const dispatch = useDispatch();
@@ -70,11 +70,12 @@ export const Settings = () => {
             ' you will need to sign back in with your 24-word Secret Key.'}
           {walletType === 'ledger' && ' you will need to reauthenticate with your Ledger device'}
         </SettingDescription>
+
         <ResetWalletModal isOpen={resetModalOpen} onClose={() => setResetModalOpen(false)} />
 
         <Button
           mt="loose"
-          style={{ background: '#D4001A' }}
+          style={{ background: color('feedback-error') }}
           onClick={() => setResetModalOpen(true)}
         >
           Reset wallet

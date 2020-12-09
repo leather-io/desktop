@@ -12,7 +12,7 @@ import { useBackButton } from '@hooks/use-back-url';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();
-  useBackButton(null);
+  useBackButton(undefined);
   return (
     <Onboarding>
       <OnboardingTitle>Stacks Wallet</OnboardingTitle>

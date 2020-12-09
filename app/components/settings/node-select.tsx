@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Box, BoxProps } from '@stacks/ui';
+import { border } from '@utils/border';
 
 type NodeSelectProps = BoxProps;
 
@@ -7,9 +8,9 @@ export const NodeSelect: FC<NodeSelectProps> = props => (
   <Box
     mt="extra-loose"
     boxShadow="low"
-    border="1px solid #F0F0F5"
+    border={border()}
     borderRadius="8px"
-    width={[null, '432px']}
+    width={['unset', '432px']}
     {...props}
   />
 );

@@ -9,6 +9,7 @@ interface HomeLayoutProps {
   stackingRewardCard: JSX.Element | null;
 }
 
+
 export const HomeLayout: FC<HomeLayoutProps> = props => {
   const { balanceCard, transactionList, stackingCard, stackingRewardCard } = props;
 

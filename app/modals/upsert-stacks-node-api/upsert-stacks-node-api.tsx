@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useFormik } from 'formik';
-import { Box, Button, ButtonGroup, Input, Modal, Text } from '@stacks/ui';
+import { Box, Button, ControlledModal, ButtonGroup, Input, Text, color } from '@stacks/ui';
 import * as yup from 'yup';
 
 import { StacksNode } from '@store/stacks-node';
@@ -22,11 +21,10 @@ interface AddNodeSettingsProps {
 
 export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => {
   const { isOpen, selectedNode, onClose, onUpdateNode } = props;
-
-  const [loading, setLoading] = useState(false);
-
-  useHotkeys('esc', onClose, []);
   const nameFieldRef = useRef<any>();
+  const [loading, setLoading] = useState(false);
+  const changeVerb = selectedNode ? 'Edit' : 'Add';
+
   const form = useFormik({
     initialValues: {
       name: '',
@@ -53,25 +51,19 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
   });
 
   useEffect(() => {
-    if (!selectedNode) return form.resetForm();
-    form.setValues(selectedNode);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, selectedNode]);
-
-  useEffect(() => {
+    if (!selectedNode) {
+      form.resetForm();
+    } else {
+      form.setValues(selectedNode);
+    }
     if (isOpen) nameFieldRef.current?.focus();
-    if (!isOpen) return;
     return () => form.resetForm();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
-
-  const changeVerb = selectedNode ? 'Edit' : 'Add';
+  }, [isOpen, selectedNode]);
 
   const header = <TxModalHeader onSelectClose={onClose}>{changeVerb} a node</TxModalHeader>;
   const footer = (
     <TxModalFooter>
-      {/* TODO: fix in ui lib */}
-      <ButtonGroup size={'lg' as any}>
+      <ButtonGroup size="lg">
         <Button type="button" mode="tertiary" onClick={onClose}>
           Cancel
         </Button>
@@ -82,20 +74,24 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
     </TxModalFooter>
   );
   return (
-    <Modal
-      onSubmit={(e: React.FormEvent<HTMLDivElement>) => form.handleSubmit(e as any)}
-      isOpen={isOpen}
-      headerComponent={header}
-      footerComponent={footer}
-      minWidth={['100%', '488px']}
-    >
-      <Box as="form" m="extra-loose">
+    <ControlledModal handleClose={onClose} isOpen={isOpen} minWidth={['100%', '488px']}>
+      {header}
+      <Box
+        onSubmit={(e: React.FormEvent<HTMLDivElement>) => form.handleSubmit(e as any)}
+        as="form"
+        m="extra-loose"
+      >
         <Text textStyle="body.small" lineHeight="20px">
           Enter an address from the Stacks Blockchain API that proxies a node. Before using a node,
           make sure you review and trust the host before configuring a new API.
         </Text>
-        <Box mt="loose">
-          <Text textStyle="body.small.medium" as="label" {...{ htmlFor: 'name' }}>
+        <Box width="100%" mt="loose">
+          <Text
+            textStyle="body.small.medium"
+            as="label"
+            htmlFor="name"
+            color={color('text-caption')}
+          >
             Name
           </Text>
           <Input
@@ -112,7 +108,12 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
           )}
         </Box>
         <Box mt="loose">
-          <Text textStyle="body.small.medium" as="label" {...{ htmlFor: 'url' }}>
+          <Text
+            textStyle="body.small.medium"
+            as="label"
+            htmlFor="url"
+            color={color('text-caption')}
+          >
             URL
           </Text>
           <Input mt="base-tight" id="url" onChange={form.handleChange} value={form.values.url} />
@@ -123,6 +124,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
           )}
         </Box>
       </Box>
-    </Modal>
+      {footer}
+    </ControlledModal>
   );
 };

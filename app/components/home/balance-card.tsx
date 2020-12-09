@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex } from '@stacks/ui';
+import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';
 
 import { features, NETWORK } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
@@ -38,10 +38,16 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
 
   return (
     <Box>
-      <Text textStyle="body.large.medium" display="block">
+      <Text textStyle="body.large.medium" color={color('text-body')} display="block">
         Total balance
       </Text>
-      <Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em">
+      <Text
+        color={color('text-title')}
+        fontSize="40px"
+        lineHeight="56px"
+        fontWeight="bold"
+        letterSpacing="-0.01em"
+      >
         {balance === null ? '–' : toHumanReadableStx(balance)}
       </Text>
 

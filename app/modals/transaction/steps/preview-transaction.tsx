@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 
-import { Flex, Text, Box } from '@stacks/ui';
+import { Flex, Text, Box, color } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { toHumanReadableStx } from '@utils/unit-convert';
+import { border } from '@utils/border';
 
 export const TxModalPreview: FC = ({ children }) => (
   <Flex flexDirection="column" fontSize="14px" mx="extra-loose" mt="tight">
@@ -16,11 +17,11 @@ interface TxModalPreviewItemProps {
 }
 
 export const TxModalPreviewItem: FC<TxModalPreviewItemProps> = ({ label, children }) => (
-  <Flex alignItems="center" height="64px" borderBottom="1px solid #F0F0F5">
-    <Text textStyle="body.small.medium" width="70px">
+  <Flex alignItems="center" height="64px" borderBottom={border()}>
+    <Text color={color('text-title')} textStyle="body.small.medium" width="70px">
       {label}
     </Text>
-    <Text>{children}</Text>
+    <Text color={color('text-body')}>{children}</Text>
   </Flex>
 );
 

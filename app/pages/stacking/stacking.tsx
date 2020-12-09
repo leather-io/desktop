@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
 
@@ -133,14 +133,14 @@ export const Stacking: FC = () => {
 
   return (
     <>
-      {modalOpen && btcAddress && amount !== null && (
-        <StackingModal
-          onClose={() => setModalOpen(false)}
-          amountToStack={amount}
-          numCycles={cycles}
-          poxAddress={btcAddress}
-        />
-      )}
+      <StackingModal
+        isOpen={!!(modalOpen && btcAddress && amount !== null)}
+        onClose={() => setModalOpen(false)}
+        amountToStack={amount as BigNumber}
+        numCycles={cycles}
+        poxAddress={btcAddress as string}
+      />
+
       <StackingLayout
         intro={stackingIntro}
         stackingInfoCard={stackingInfoCard}

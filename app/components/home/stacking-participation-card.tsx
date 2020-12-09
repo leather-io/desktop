@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Box, Flex, Text, Button } from '@stacks/ui';
+import { border } from '@utils/border';
 
 import routes from '@constants/routes.json';
 import btcPodium from '../../assets/images/btc-podium.svg';
@@ -12,7 +13,7 @@ export const StackingParticipationCard = () => {
       mt="extra-loose"
       borderRadius="8px"
       boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-      border="1px solid #F0F0F5"
+      border={border()}
     >
       <Flex flexDirection="column" mt="40px" mb="extra-loose">
         <img src={btcPodium} />

@@ -1,9 +1,8 @@
 import React, { FC, useRef, useState } from 'react';
-import { Box, Button, ButtonGroup, Modal } from '@stacks/ui';
+import { Box, ControlledModal, Button, ButtonGroup, color } from '@stacks/ui';
 import { TxModalFooter, TxModalHeader } from '../transaction/transaction-modal-layout';
 import { remote } from 'electron';
 import { clearDiskStorage } from '@utils/disk-store';
-import { useHotkeys } from 'react-hotkeys-hook';
 
 interface ResetWalletModalProps {
   isOpen: boolean;
@@ -22,8 +21,6 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
     onClose();
   };
 
-  useHotkeys('esc', closeModal);
-
   const resetWallet = () => {
     setWipingWallet(true);
     // Allow user to grace period to panic cancel operations
@@ -39,27 +36,27 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
   const header = <TxModalHeader onSelectClose={closeModal}>Reset wallet</TxModalHeader>;
   const footer = (
     <TxModalFooter>
-      {/* TODO: fix in ui lib */}
-      <ButtonGroup size={'lg' as any}>
+      <ButtonGroup size={'lg'}>
         <Button mode="tertiary" onClick={closeModal} ref={cancelBtnRef as any}>
           Cancel
         </Button>
-        <Button style={{ background: '#D4001A' }} onClick={resetWallet} isLoading={wipingWallet}>
+        <Button
+          style={{ background: color('feedback-error') }}
+          onClick={resetWallet}
+          isLoading={wipingWallet}
+        >
           Reset wallet
         </Button>
       </ButtonGroup>
     </TxModalFooter>
   );
   return (
-    <Modal
-      isOpen={isOpen}
-      headerComponent={header}
-      footerComponent={footer}
-      minWidth={['100%', '488px']}
-    >
+    <ControlledModal isOpen={isOpen} handleClose={onClose} minWidth={['100%', '488px']}>
+      {header}
       <Box mx="extra-loose" my="loose" textStyle="body.large">
         Warning: you may lose funds if you do not have backups of your 24-word Secret Key
       </Box>
-    </Modal>
+      {footer}
+    </ControlledModal>
   );
 };

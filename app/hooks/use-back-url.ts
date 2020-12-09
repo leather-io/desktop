@@ -1,12 +1,15 @@
-import { useEffect, useContext } from 'react';
-import { BackContext } from '../pages/root';
+import { useContext, useEffect } from 'react';
+import { BackContext, BackContextType } from '../pages/root';
 
-export function useBackButton(urlToGoBackTo: string | null) {
-  const { backUrl, setBackUrl } = useContext(BackContext);
+export function useBackButtonState(): BackContextType {
+  return useContext(BackContext);
+}
+
+export function useBackButton(urlToGoBackTo?: string) {
+  const { setBackUrl } = useBackButtonState();
+
   useEffect(() => {
-    if (!urlToGoBackTo) return;
     setBackUrl(urlToGoBackTo);
-    return () => setBackUrl(null);
+    return () => setBackUrl(undefined);
   }, [setBackUrl, urlToGoBackTo]);
-  return backUrl;
 }

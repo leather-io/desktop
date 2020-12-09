@@ -1,8 +1,8 @@
-import React, { useContext, FC } from 'react';
+import React, { FC, useContext } from 'react';
 import ReactDOM from 'react-dom';
-import { useHistory, useLocation, matchPath } from 'react-router';
-import { Flex, Box } from '@stacks/ui';
-
+import { matchPath, useHistory, useLocation } from 'react-router';
+import { Box, color, Flex, Stack } from '@stacks/ui';
+import { ColorModeButton } from '@components/color-mode-button';
 import routes from '@constants/routes.json';
 import { useWindowFocus } from '@hooks/use-window-focus';
 import { BackContext } from '../pages/root';
@@ -17,7 +17,7 @@ export const TitleBar: FC = () => {
   const { backUrl } = useContext(BackContext);
   const routerHistory = useHistory();
   const handleHistoryBack = () => {
-    if (backUrl === null) return;
+    if (!backUrl) return;
     routerHistory.push(backUrl);
   };
   const winState = useWindowFocus();
@@ -30,13 +30,15 @@ export const TitleBar: FC = () => {
   const content = (
     <Flex
       justifyContent="space-between"
+      alignItems="center"
       pl="90px"
       height="100%"
-      backgroundColor={winState === 'focused' ? 'white' : '#FAFAFC'}
+      backgroundColor={color('bg')}
     >
-      <BackButton backUrl={backUrl} hasFocus={winState === 'focused'} onClick={handleHistoryBack} />
+      <BackButton hasFocus={winState === 'focused'} onClick={handleHistoryBack} />
       <NetworkMessage textColor={dulledTextColor} />
-      <Box>
+      <Stack pr="extra-loose" alignItems="center" isInline spacing="base">
+        <ColorModeButton />
         {!isOnboarding && (
           <Box
             as="button"
@@ -44,16 +46,15 @@ export const TitleBar: FC = () => {
             fontWeight="regular"
             style={{ color: dulledTextColor || '#677282' }}
             textStyle="body.small"
-            p="tight"
-            mt="4px"
-            mr="tight"
+            color={color('text-caption')}
+            _hover={{ color: color('accent') }}
             cursor="default"
             _focus={{ textDecoration: 'underline', outline: 0 }}
           >
             Settings
           </Box>
         )}
-      </Box>
+      </Stack>
     </Flex>
   );
   return ReactDOM.createPortal(content, el);

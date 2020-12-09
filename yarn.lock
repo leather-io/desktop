@@ -2339,37 +2339,38 @@
     camelcase "^6.0.0"
     micro-memoize "^4.0.9"
 
-"@stacks/ui-theme@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@stacks/ui-theme/-/ui-theme-7.0.0.tgz#a0782d7375e68d446c19f84af83acd93d3982be6"
-  integrity sha512-T6ouIjaHZpo0yhPSDEB0MqcYNrNVC32+PJOunv3KofDCDPsRSdUx5k/MNAUe49+mQjdpeOi9GGIkwwOec9ecmQ==
+"@stacks/ui-theme@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@stacks/ui-theme/-/ui-theme-7.1.0.tgz#26c379f6742503e5d1897adf3e7cf1349e6f1eb7"
+  integrity sha512-Kz9/b4O/yjDvZxokyamwbEw5Y8bMPtgswVCQhkkvt7c4c11+vw+GpaUE83EpF6oPRR/G7iBYtW+BTxbzg16unw==
   dependencies:
     type-fest "^0.20.2"
     typescript "^4.1.2"
 
-"@stacks/ui-utils@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@stacks/ui-utils/-/ui-utils-7.0.0.tgz#ef31417997f4678bf10735516fdc6c6c0a24dfc4"
-  integrity sha512-2VQ6ys2AHsCU3M9aoUvYxoR6/hYSUMaJkvbe76vITOi/fBkUwYK9GUv+q5mY4C2wPWsOu+9j2vNcTWtqkRFmKQ==
+"@stacks/ui-utils@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@stacks/ui-utils/-/ui-utils-7.1.0.tgz#890bda90ad4d3fe3642c24ab2e9938cdc7af2f8f"
+  integrity sha512-3jychBVe6JaWoFtM8Zhwnr6O/s076896OphetNx85dHSFkAeh3rGqNMGBHiwP4IU2TvY6hpMiaC7Z1dEj9V2tQ==
   dependencies:
     "@blockstack/stacks-blockchain-api-types" "^0.34.1"
+    "@stacks/ui-theme" "^7.1.0"
     "@types/big.js" "^6.0.0"
     big.js "^6.0.2"
     c32check "^1.1.2"
     type-fest "^0.20.2"
     typescript "^4.1.2"
 
-"@stacks/ui@^7.1.1":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@stacks/ui/-/ui-7.1.1.tgz#46c18af8af4caa7eb60e432ad4532ee5ef935e89"
-  integrity sha512-7/VN6W4lqFLia2QGQ+2ZjwCqjGFOG4KFyV9lHW3cunfFpV6DbV/Zrl0NIzr68oyPeva3NifP1VXYGXcZD3hifQ==
+"@stacks/ui@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@stacks/ui/-/ui-7.3.0.tgz#4d05a919d05055f5f423e00e47d54554d23beb5b"
+  integrity sha512-Ly5aEx72VAXLNRg2APY1QvGHoxMdUxrPLp5SOaVOdaIjY4UdY/4KEUrb3HYhbgBS7U/xZwhfPFeudtkttQKjYw==
   dependencies:
     "@reach/alert" "^0.12.1"
     "@reach/auto-id" "^0.12.1"
     "@reach/rect" "^0.12.1"
     "@stacks/ui-core" "^7.0.0"
-    "@stacks/ui-theme" "^7.0.0"
-    "@stacks/ui-utils" "^7.0.0"
+    "@stacks/ui-theme" "^7.1.0"
+    "@stacks/ui-utils" "^7.1.0"
     "@styled-system/should-forward-prop" "^5.1.5"
     "@styled-system/theme-get" "^5.1.2"
     "@tippyjs/react" "^4.2.0"
@@ -2377,6 +2378,7 @@
     color "3.1.3"
     prism-react-renderer "^1.0.2"
     prismjs "^1.20.0"
+    react-hotkeys-hook "^2.4.0"
     react-transition-group "^4.4.1"
     type-fest "^0.20.2"
     use-events "^1.4.1"
@@ -2494,6 +2496,11 @@
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
+
+"@tabler/icons@^1.37.0":
+  version "1.37.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.37.0.tgz#8fcb8611bcd08e2a18b771d0ed89f8cbee1adabc"
+  integrity sha512-xTky2tu9MOsBSBBr0C9SY1hEPqfPL6HS6qPd6bCr9AWqivaFpD8MrdawzBZXZ4upGfQlQuO49WHBoE3kitz+XA==
 
 "@tippyjs/react@4.2.0", "@tippyjs/react@^4.2.0":
   version "4.2.0"
@@ -10868,7 +10875,7 @@ react-hot-loader@4.13.0:
     shallowequal "^1.1.0"
     source-map "^0.7.3"
 
-react-hotkeys-hook@2.4.0:
+react-hotkeys-hook@2.4.0, react-hotkeys-hook@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-hotkeys-hook/-/react-hotkeys-hook-2.4.0.tgz#becf941641bab04c8095917b5876ad8ed53b0dc6"
   integrity sha512-Veh9FUe+iXab+lZ5shPoyGDnFBu5codQ15omOXiOvCC/Q5QfTY1lefLVx/Zi2NnYBSXfkfQbhnpE+Rnhi2+wBw==

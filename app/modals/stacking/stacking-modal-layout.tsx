@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Flex, Text, CloseIcon, Button, ButtonProps } from '@stacks/ui';
+import {border} from "@utils/border";
 
 export const modalStyle = {
   minWidth: ['100%', '488px'],
@@ -14,7 +15,7 @@ export const StackingModalHeader: FC<StackingModalHeaderProps> = ({ children, on
     height="84px"
     px="extra-loose"
     alignItems="center"
-    borderBottom="1px solid #F0F0F5"
+    borderBottom={border()}
     justifyContent="space-between"
   >
     <Text as="h2" textStyle="display.small">
@@ -35,7 +36,7 @@ export const StackingModalHeader: FC<StackingModalHeaderProps> = ({ children, on
 );
 
 export const StackingModalFooter: FC = ({ children }) => (
-  <Flex justifyContent="flex-end" px="extra-loose" py="base" borderTop="1px solid #F0F0F5">
+  <Flex justifyContent="flex-end" px="extra-loose" py="base" borderTop={border()}>
     {children}
   </Flex>
 );

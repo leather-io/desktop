@@ -1,17 +1,17 @@
-import React, { FC, useState, useRef, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { FC, useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import log from 'electron-log';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
 import { BigNumber } from 'bignumber.js';
-import { Modal } from '@stacks/ui';
+import { ControlledModal } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 import {
-  makeSTXTokenTransfer,
-  MEMO_MAX_LENGTH_BYTES,
-  makeUnsignedSTXTokenTransfer,
   createMessageSignature,
+  makeSTXTokenTransfer,
+  makeUnsignedSTXTokenTransfer,
+  MEMO_MAX_LENGTH_BYTES,
 } from '@stacks/transactions';
 
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
@@ -28,23 +28,23 @@ import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
 import { homeActions } from '@store/home';
 import { broadcastTransaction } from '@store/transaction';
 import {
-  selectEncryptedMnemonic,
-  selectSalt,
   decryptSoftwareWallet,
-  selectWalletType,
+  selectEncryptedMnemonic,
   selectPublicKey,
+  selectSalt,
+  selectWalletType,
 } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
 
 import { validateAddressChain } from '@crypto/validate-address-net';
-import { stxToMicroStx, microStxToStx } from '@utils/unit-convert';
+import { microStxToStx, stxToMicroStx } from '@utils/unit-convert';
 
 import { stacksNetwork } from '../../environment';
 import {
-  TxModalHeader,
-  TxModalFooter,
-  TxModalButton,
   modalStyle,
+  TxModalButton,
+  TxModalFooter,
+  TxModalHeader,
 } from './transaction-modal-layout';
 import { TxModalForm } from './steps/transaction-form';
 import { DecryptWalletForm } from './steps/decrypt-wallet-form';
@@ -57,6 +57,7 @@ import { validateDecimalPrecision } from '../../utils/form/validate-decimals';
 interface TxModalProps {
   balance: string;
   address: string;
+  isOpen: boolean;
 }
 
 enum TxModalStep {
@@ -69,7 +70,7 @@ enum TxModalStep {
 
 type ModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
-export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
+export const TransactionModal: FC<TxModalProps> = ({ balance, address, isOpen }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
@@ -154,7 +155,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
     const broadcastActions = {
       amount,
-      onBroadcastSuccess: closeModal,
+      onBroadcastSuccess: onClose,
       onBroadcastFail: () => setStep(TxModalStep.NetworkError),
     };
 
@@ -272,7 +273,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
   const [ledgerConnectStep, setLedgerConnectStep] = useState(LedgerConnectStep.Disconnected);
 
-  const closeModal = () => dispatch(homeActions.closeTxModal());
+  const onClose = () => dispatch(homeActions.closeTxModal());
 
   const proceedToSignTransactionStep = () =>
     walletType === 'software'
@@ -310,7 +311,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
   const txFormStepMap: Record<TxModalStep, ModalComponents> = {
     [TxModalStep.DescribeTx]: () => ({
-      header: <TxModalHeader onSelectClose={closeModal}>Send STX</TxModalHeader>,
+      header: <TxModalHeader onSelectClose={onClose}>Send STX</TxModalHeader>,
       body: (
         <TxModalForm
           balance={balance}
@@ -321,7 +322,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       ),
       footer: (
         <TxModalFooter>
-          <TxModalButton mode="tertiary" onClick={closeModal}>
+          <TxModalButton mode="tertiary" onClick={onClose}>
             Cancel
           </TxModalButton>
           <TxModalButton onClick={() => form.submitForm()} isLoading={loading}>
@@ -331,7 +332,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       ),
     }),
     [TxModalStep.PreviewTx]: () => ({
-      header: <TxModalHeader onSelectClose={closeModal}>Preview transaction</TxModalHeader>,
+      header: <TxModalHeader onSelectClose={onClose}>Preview transaction</TxModalHeader>,
       body: (
         <PreviewTransaction
           recipient={form.values.recipient}
@@ -358,13 +359,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       ),
     }),
     [TxModalStep.DecryptWalletAndSend]: () => ({
-      header: <TxModalHeader onSelectClose={closeModal}>Confirm and send</TxModalHeader>,
+      header: <TxModalHeader onSelectClose={onClose}>Confirm and send</TxModalHeader>,
       body: (
         <>
           <DecryptWalletForm
             onSetPassword={password => setPassword(password)}
             onForgottenPassword={() => {
-              closeModal();
+              onClose();
               history.push(routes.SETTINGS);
             }}
             hasSubmitted={hasSubmitted}
@@ -388,7 +389,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       ),
     }),
     [TxModalStep.SignWithLedgerAndSend]: () => ({
-      header: <TxModalHeader onSelectClose={closeModal}>Confirm on your Ledger</TxModalHeader>,
+      header: <TxModalHeader onSelectClose={onClose}>Confirm on your Ledger</TxModalHeader>,
       body: <SignTxWithLedger onLedgerConnect={setBlockstackAppCallback} updateStep={updateStep} />,
       footer: (
         <TxModalFooter>
@@ -419,11 +420,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       ),
     }),
     [TxModalStep.NetworkError]: () => ({
-      header: <TxModalHeader onSelectClose={closeModal} />,
+      header: <TxModalHeader onSelectClose={onClose} />,
       body: <FailedBroadcastError />,
       footer: (
         <TxModalFooter>
-          <TxModalButton mode="tertiary" onClick={closeModal}>
+          <TxModalButton mode="tertiary" onClick={onClose}>
             Close
           </TxModalButton>
           <TxModalButton onClick={() => setStep(TxModalStep.DescribeTx)}>Try again</TxModalButton>
@@ -435,8 +436,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const { header, body, footer } = txFormStepMap[step]();
 
   return (
-    <Modal isOpen headerComponent={header} footerComponent={footer} {...modalStyle}>
+    <ControlledModal isOpen={isOpen} handleClose={onClose} {...(modalStyle as any)}>
+      {header}
       {body}
-    </Modal>
+      {footer}
+    </ControlledModal>
   );
 };

@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text } from '@stacks/ui';
+import { Box, color, Flex, Text } from '@stacks/ui';
 import { Hr } from '../hr';
 import { MovementArrow } from '../icons/movement-arrow';
 import { features } from '@constants/index';
+import { border } from '@utils/border';
 
 interface StackingRewardCardProps {
   lifetime: string;
@@ -16,10 +17,10 @@ export const StackingRewardCard: FC<StackingRewardCardProps> = ({ lifetime, last
       mt="extra-loose"
       borderRadius="8px"
       boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-      border="1px solid #F0F0F5"
+      border={border()}
     >
       <Flex m="loose" flexDirection="column">
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color={color('text-title')}>
           Lifetime rewards
         </Text>
         <Flex mt="tight" alignItems="center">

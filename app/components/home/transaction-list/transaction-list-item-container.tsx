@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Flex, FlexProps } from '@stacks/ui';
 
-import { listHoverProps, listFocusedProps } from './transaction-list-item-pseudo';
+import { listFocusedProps, listHoverProps } from './transaction-list-item-pseudo';
 import { forwardRefWithAs } from '@stacks/ui-core';
 
 interface TransactionListItemContainerProps extends FlexProps {
@@ -10,7 +10,7 @@ interface TransactionListItemContainerProps extends FlexProps {
   txId: string;
 }
 
-export const TransactionListItemContainer: FC<TransactionListItemContainerProps> = forwardRefWithAs<
+export const TransactionListItemContainer = forwardRefWithAs<
   TransactionListItemContainerProps,
   'div'
 >((args, ref) => {

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Flex, Spinner } from '@stacks/ui';
+import { border } from '@utils/border';
 
 export const StackingLoading: FC = () => (
   <Flex
@@ -8,7 +9,7 @@ export const StackingLoading: FC = () => (
     mt="extra-loose"
     borderRadius="8px"
     boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-    border="1px solid #F0F0F5"
+    border={border()}
     px="loose"
     minHeight="180px"
   >

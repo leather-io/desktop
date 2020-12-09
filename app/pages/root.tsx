@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 import { PersistGate } from 'redux-persist/integration/react';
-import { CSSReset, ThemeProvider } from '@stacks/ui';
+import { color, CSSReset } from '@stacks/ui';
 import { css, Global } from '@emotion/react';
 import { Store } from '@store/index';
 import { Routes } from '../routes';
@@ -17,7 +17,7 @@ const globalStyles = css`
     height: 100%;
     min-height: 100vh;
     max-height: 100vh;
-    background: white;
+    background: ${color('bg')};
   }
   #root {
     padding-top: 44px;
@@ -33,6 +33,7 @@ const globalStyles = css`
     box-shadow: 0px 1px 2px rgba(15, 17, 23, 0.08);
     -webkit-user-select: none;
     -webkit-app-region: drag;
+    background: ${color('bg')};
   }
 `;
 
@@ -42,36 +43,34 @@ interface RootProps {
   persistor: any;
 }
 
-interface BackContext {
-  backUrl: null | string;
-  setBackUrl(url: null | string): void;
+export interface BackContextType {
+  backUrl?: string;
+  setBackUrl(url?: string | ((s?: string) => void)): void;
 }
 
-export const BackContext = createContext<BackContext>({
-  backUrl: null,
+export const BackContext = createContext<BackContextType>({
+  backUrl: undefined,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setBackUrl: (_url: string) => {},
 });
 
 function Root({ store, history, persistor }: RootProps) {
-  const [backUrl, setBackUrl] = useState<string | null>(null);
+  const [backUrl, setBackUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => void loadFonts(), []);
 
   return (
-    <ThemeProvider>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <BackContext.Provider value={{ backUrl, setBackUrl }}>
-            {CSSReset}
-            <Global styles={globalStyles} />
-            <ConnectedRouter history={history}>
-              <Routes />
-            </ConnectedRouter>
-          </BackContext.Provider>
-        </PersistGate>
-      </Provider>
-    </ThemeProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <BackContext.Provider value={{ backUrl, setBackUrl }}>
+          {CSSReset}
+          <Global styles={globalStyles} />
+          <ConnectedRouter history={history}>
+            <Routes />
+          </ConnectedRouter>
+        </BackContext.Provider>
+      </PersistGate>
+    </Provider>
   );
 }
 

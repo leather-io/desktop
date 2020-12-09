@@ -8,6 +8,7 @@ import { Hr } from '@components/hr';
 
 import { ExplainerTooltip } from '@components/tooltip';
 import { toHumanReadableStx } from '@utils/unit-convert';
+import { border } from '@utils/border';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -26,7 +27,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
     <Flex
       flexDirection="column"
       boxShadow="low"
-      border="1px solid #F0F0F5"
+      border={border()}
       borderRadius="8px"
       minHeight="84px"
       alignItems="flex-start"

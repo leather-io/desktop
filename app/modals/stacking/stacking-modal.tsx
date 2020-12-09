@@ -1,6 +1,6 @@
-import React, { FC, useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Modal } from '@stacks/ui';
+import React, { FC, useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ControlledModal } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 import log from 'electron-log';
 import BlockstackApp, { LedgerError, ResponseSign } from '@zondax/ledger-blockstack';
@@ -14,19 +14,19 @@ import { RootState } from '@store/index';
 import { NETWORK } from '@constants/index';
 import routes from '@constants/routes.json';
 import {
-  selectPublicKey,
-  selectEncryptedMnemonic,
-  selectSalt,
   decryptSoftwareWallet,
+  selectEncryptedMnemonic,
+  selectPublicKey,
+  selectSalt,
   selectWalletType,
 } from '@store/keys';
 import { activeStackingTx, selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
 import {
+  createStacksPrivateKey,
+  makeContractCall,
   makeUnsignedContractCall,
   StacksTransaction,
-  makeContractCall,
   TransactionSigner,
-  createStacksPrivateKey,
 } from '@stacks/transactions';
 import { broadcastTransaction, BroadcastTransactionArgs } from '@store/transaction';
 import { selectActiveNodeApi } from '@store/stacks-node';
@@ -35,10 +35,10 @@ import { LedgerConnectStep } from '@hooks/use-ledger';
 import { safeAwait } from '@utils/safe-await';
 
 import {
-  StackingModalHeader,
-  StackingModalFooter,
-  StackingModalButton,
   modalStyle,
+  StackingModalButton,
+  StackingModalFooter,
+  StackingModalHeader,
 } from './stacking-modal-layout';
 import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
@@ -56,6 +56,7 @@ interface StackingModalProps {
   poxAddress: string;
   numCycles: number;
   amountToStack: BigNumber;
+  isOpen: boolean;
   onClose(): void;
 }
 
@@ -331,8 +332,10 @@ export const StackingModal: FC<StackingModalProps> = props => {
   const { header, body, footer } = txFormStepMap[step]();
 
   return (
-    <Modal isOpen headerComponent={header} footerComponent={footer} {...modalStyle}>
+    <ControlledModal isOpen={props.isOpen} handleClose={onClose} {...(modalStyle as any)}>
+      {header}
       {body}
-    </Modal>
+      {footer}
+    </ControlledModal>
   );
 };

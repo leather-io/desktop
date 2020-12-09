@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, BoxProps } from '@stacks/ui';
 import { forwardRefWithAs } from '@stacks/ui-core';
+import {border} from "@utils/border";
 
 export function listHoverProps(hovered: boolean) {
   return hovered
@@ -57,7 +58,7 @@ export const templateTxBoxProps = {
   flexDirection: 'column' as const,
   borderRadius: '8px',
   boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.04);',
-  border: '1px solid #F0F0F5',
+  border: border(),
   minHeight: ['152px', '152px', '300px', '416px'],
   justifyContent: 'center',
   alignItems: ['center', 'center', null, null],

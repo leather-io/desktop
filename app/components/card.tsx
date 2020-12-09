@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, BoxProps, Text, Flex } from '@stacks/ui';
+import { Box, BoxProps, Text, Flex, color } from '@stacks/ui';
 
 interface CardProps extends BoxProps {
   title: string;
@@ -10,7 +10,7 @@ export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
     <Box
       borderRadius="6px"
       border="1px solid"
-      borderColor="#E1E3E8"
+      borderColor={color('border')}
       boxShadow="mid"
       textAlign="center"
       width="100%"
@@ -18,7 +18,7 @@ export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
     >
       <Flex
         borderBottom="1px solid"
-        borderColor="#E5E5EC"
+        borderColor={color('border')}
         height="40px"
         justifyContent="center"
         alignItems="center"

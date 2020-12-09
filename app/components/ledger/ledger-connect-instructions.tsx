@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Box, Flex, CheckmarkCircleIcon } from '@stacks/ui';
+import { border } from '@utils/border';
 
 import { LedgerConnectStep } from '../../pages/onboarding';
 import { LedgerStepText } from './ledger-step-text';
@@ -15,12 +16,12 @@ export const LedgerConnectInstructions: FC<LedgerConnectInstructions> = ({ step,
   const hasAddress = (step: LedgerConnectStep) => step === LedgerConnectStep.HasAddress;
 
   return (
-    <Box border="1px solid #F0F0F5" mt="extra-loose" borderRadius="8px">
-      <Flex height="56px" alignItems="center" px="extra-loose" borderBottom="1px solid #F0F0F5">
+    <Box border={border()} mt="extra-loose" borderRadius="8px">
+      <Flex height="56px" alignItems="center" px="extra-loose" borderBottom={border()}>
         <LedgerStepText step={LedgerConnectStep.Disconnected}>Connect your Ledger</LedgerStepText>
         {hasConnected(step) && <CheckmarkCircleIcon color="blue" size="16px" ml="tight" />}
       </Flex>
-      <Flex height="56px" alignItems="center" px="extra-loose" borderBottom="1px solid #F0F0F5">
+      <Flex height="56px" alignItems="center" px="extra-loose" borderBottom={border()}>
         <LedgerStepText step={LedgerConnectStep.ConnectedAppClosed}>
           Open the Stacks app
         </LedgerStepText>

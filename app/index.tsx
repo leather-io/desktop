@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { ThemeProvider, theme } from '@stacks/ui';
+import { ThemeProvider, ColorModeProvider } from '@stacks/ui';
 import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 
@@ -13,10 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const Root = require('./pages/root').default;
   render(
-    <ThemeProvider theme={theme}>
-      <AppContainer>
-        <Root store={store} persistor={persistor} history={history} />
-      </AppContainer>
+    <ThemeProvider>
+      <ColorModeProvider>
+        <AppContainer>
+          <Root store={store} persistor={persistor} history={history} />
+        </AppContainer>
+      </ColorModeProvider>
     </ThemeProvider>,
     document.getElementById('root')
   );

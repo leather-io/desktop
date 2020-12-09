@@ -1,58 +1,76 @@
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHotkeys } from 'react-hotkeys-hook';
 import Qr from 'qrcode.react';
-import { Text, Modal, Button, Flex, Box, useClipboard } from '@stacks/ui';
+import {
+  Box,
+  Button,
+  color,
+  ControlledModal,
+  Flex,
+  ModalProps,
+  Text,
+  useClipboard,
+} from '@stacks/ui';
+import { border } from '@utils/border';
 
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import { TxModalFooter, TxModalHeader } from '../transaction/transaction-modal-layout';
 import { homeActions } from '@store/home/home.reducer';
 
-interface ReceiveStxModalProps {
+interface ReceiveStxModalProps extends Partial<ModalProps> {
   address: string;
+  isOpen: boolean;
 }
 
-export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
+export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address, isOpen }) => {
   const dispatch = useDispatch();
-  useHotkeys('esc', () => void dispatch(homeActions.closeReceiveModal()));
   const { hasCopied, onCopy } = useClipboard(address);
-  const closeModal = () => dispatch(homeActions.closeReceiveModal());
+  const closeModal = React.useCallback(() => dispatch(homeActions.closeReceiveModal()), []);
   return (
-    <Modal
-      minWidth="488px"
-      isOpen
-      headerComponent={<TxModalHeader onSelectClose={closeModal}>Receive STX</TxModalHeader>}
-      footerComponent={
-        <TxModalFooter>
-          <Button size="lg" onClick={closeModal}>
-            Close
-          </Button>
-        </TxModalFooter>
-      }
-    >
+    <ControlledModal minWidth="488px" isOpen={isOpen} handleClose={() => closeModal()}>
+      <TxModalHeader onSelectClose={closeModal}>Receive STX</TxModalHeader>
+
       <Flex flexDirection="column" alignItems="center" mx="extra-loose">
-        <Box border="1px solid #F0F0F5" p="base" mt="extra-loose" borderRadius="8px">
+        <Box border={border()} p="base" mt="extra-loose" borderRadius="8px">
           <Qr value={address} shapeRendering="sharp-edges" />
         </Box>
-        <Text textStyle="body.large.medium" mt="loose">
+        <Text textStyle="body.large.medium" mt="loose" color={color('text-caption')}>
           Wallet address
         </Text>
         <Flex
           mt="base-tight"
           justifyContent="center"
           alignItems="center"
-          border="1px solid #E1E3E8"
+          border={border()}
           height="48px"
           borderRadius="6px"
           width="100%"
         >
-          <Text color="ink" fontSize="14px">
+          <Text color={color('text-body')} fontSize="14px">
             {address}
           </Text>
         </Flex>
-        <Button variant="link" mt="tight" mb="loose" onClick={onCopy}>
-          {hasCopied ? 'Copied' : 'Copy address'}
-        </Button>
+
+        <Text
+          _hover={
+            hasCopied
+              ? { pointerEvents: 'none' }
+              : { textDecoration: 'underline', cursor: 'pointer' }
+          }
+          userSelect="none"
+          fontSize={1}
+          color={color('accent')}
+          mt="tight"
+          mb="loose"
+          onClick={onCopy}
+        >
+          {hasCopied ? 'Copied!' : 'Copy address'}
+        </Text>
       </Flex>
-    </Modal>
+      <TxModalFooter>
+        <Button size="lg" onClick={closeModal}>
+          Close
+        </Button>
+      </TxModalFooter>
+    </ControlledModal>
   );
 };

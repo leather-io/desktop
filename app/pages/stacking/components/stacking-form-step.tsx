@@ -1,13 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Box,
-  Flex,
-  Text,
-  FlexProps,
-  CheckmarkCircleIcon,
-  Button,
-  ButtonProps,
-} from '@stacks/ui';
+import { Box, Flex, Text, FlexProps, CheckmarkCircleIcon, Button, ButtonProps } from '@stacks/ui';
 
 interface StackingFormStepProps extends FlexProps {
   title: string;

@@ -1,4 +1,4 @@
-import React, { FC, useRef, RefObject, useEffect, MutableRefObject } from 'react';
+import React, { FC, useRef, useEffect, MutableRefObject } from 'react';
 import { useHover, useFocus } from 'use-events';
 import { Box, Text } from '@stacks/ui';
 
@@ -32,7 +32,7 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = p
 
   return (
     <TransactionListItemContainer
-      ref={(containerRef as unknown) as RefObject<HTMLDivElement>}
+      ref={containerRef}
       onClick={() => onSelectTx(tx.tx_id)}
       data-txid={tx.tx_id}
       focused={focused}

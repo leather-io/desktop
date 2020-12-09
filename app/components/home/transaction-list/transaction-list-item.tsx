@@ -120,7 +120,6 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
 
   return (
     <TransactionListItemContainer
-      // @ts-ignore TODO: kyran pls fix
       ref={containerRef}
       onClick={() => onSelectTx(tx.tx_id)}
       focused={focused}

@@ -1,21 +1,20 @@
 import React, { FC } from 'react';
 import { Flex, Box } from '@stacks/ui';
 import { Screen } from '@components/screen';
+import { BalanceCard } from '@components/home';
 
 interface HomeLayoutProps {
-  balanceCard: JSX.Element;
   transactionList: JSX.Element;
   stackingCard: JSX.Element | null;
   stackingRewardCard: JSX.Element | null;
 }
 
-
 export const HomeLayout: FC<HomeLayoutProps> = props => {
-  const { balanceCard, transactionList, stackingCard, stackingRewardCard } = props;
+  const { transactionList, stackingCard, stackingRewardCard } = props;
 
   return (
     <Screen pt="120px" mb="extra-loose">
-      {balanceCard}
+      <BalanceCard />
       <Flex
         flexDirection={['column', 'column', 'row']}
         justifyContent={[null, null, 'space-between']}

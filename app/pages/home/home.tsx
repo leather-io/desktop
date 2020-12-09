@@ -1,15 +1,13 @@
 import React, { FC, useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Spinner } from '@stacks/ui';
 import { useHotkeys } from 'react-hotkeys-hook';
-
-import { Api } from '@api/api';
 import { decrement, increment } from '@utils/mutate-numbers';
 import { RootState } from '@store/index';
 import { openInExplorer } from '@utils/external-links';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
-import { selectAddressBalance, selectAvailableBalance } from '@store/address';
+import { selectAvailableBalance } from '@store/address';
 import {
   selectTransactionList,
   selectTransactionListFetchError,
@@ -23,14 +21,12 @@ import {
   selectStackerInfo,
 } from '@store/stacking';
 import {
-  homeActions,
   HomeCardState,
   selectHomeCardState,
   selectReceiveModalOpen,
   selectTxModalOpen,
 } from '@store/home';
 import {
-  BalanceCard,
   StackingParticipationCard,
   StackingPromoCard,
   StackingRewardCard,
@@ -43,16 +39,13 @@ import { TransactionListItemPending } from '@components/home/transaction-list/tr
 
 import { HomeLayout } from './home-layout';
 
-import { StackingCard } from '../../components/home/stacking-card';
+import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
 import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';
 
 export const Home: FC = () => {
-  const dispatch = useDispatch();
-
   const {
     address,
-    balance,
     spendableBalance,
     txs,
     pendingTxs,
@@ -63,14 +56,12 @@ export const Home: FC = () => {
     activeNode,
     stackingDetails,
     nextCycleInfo,
-    stackerInfo,
     stackingCardState,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
     spendableBalance: selectAvailableBalance(state),
     pendingTxs: selectPendingTransactions(state),
-    balance: selectAddressBalance(state),
     txModalOpen: selectTxModalOpen(state),
     receiveModalOpen: selectReceiveModalOpen(state),
     loadingTxs: selectTransactionsLoading(state),
@@ -143,17 +134,6 @@ export const Home: FC = () => {
       </TransactionList>
     </>
   );
-  const balanceCard = (
-    <BalanceCard
-      lockedStx={stackerInfo?.amount_microstx}
-      balance={balance}
-      onSelectSend={() => dispatch(homeActions.openTxModal())}
-      onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
-      onRequestTestnetStx={async ({ stacking }) =>
-        new Api(activeNode.url).getFaucetStx(address, stacking)
-      }
-    />
-  );
 
   const stackingCardMap: Record<HomeCardState, JSX.Element> = {
     [HomeCardState.LoadingResources]: <StackingLoading />,
@@ -181,7 +161,6 @@ export const Home: FC = () => {
       <TransactionModal isOpen={txModalOpen} balance={spendableBalance || '0'} address={address} />
       <HomeLayout
         transactionList={transactionList}
-        balanceCard={balanceCard}
         stackingCard={stackingCardMap[stackingCardState]}
         stackingRewardCard={stackingRewardCard}
       />

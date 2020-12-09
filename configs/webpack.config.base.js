@@ -7,6 +7,8 @@ import webpack from 'webpack';
 import { dependencies as externals } from '../app/package.json';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 // eslint-disable-next-line import/no-default-export
 export default {
   externals: [...Object.keys(externals || {})],
@@ -21,6 +23,7 @@ export default {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
+            plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
           },
         },
       },

@@ -4,14 +4,14 @@
  *
  * https://webpack.js.org/concepts/hot-module-replacement/
  */
-
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import path from 'path';
 import fs from 'fs';
 import webpack from 'webpack';
 import chalk from 'chalk';
 import CopyPlugin from 'copy-webpack-plugin';
 import merge from 'webpack-merge';
-import { spawn, execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import baseConfig from './webpack.config.base';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 
@@ -48,7 +48,6 @@ export default merge.smart(baseConfig, {
   target: 'electron-renderer',
 
   entry: [
-    ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
     require.resolve('../app/index.tsx'),
@@ -115,9 +114,8 @@ export default merge.smart(baseConfig, {
           sourceType: 'var',
         }),
 
-    new webpack.HotModuleReplacementPlugin({
-      multiStep: true,
-    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new ReactRefreshWebpackPlugin(),
 
     new webpack.NoEmitOnErrorsPlugin(),
 

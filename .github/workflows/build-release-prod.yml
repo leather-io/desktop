@@ -8,12 +8,12 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-20.04, windows-latest]
         include:
           - os: macos-latest
             NPM_COMMAND: mac
 
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             NPM_COMMAND: linux
 
           - os: windows-latest
@@ -36,9 +36,9 @@ jobs:
           echo "::set-output name=pull_request_id::$(echo $GITHUB_REF)"
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2-beta
         with:
-          node-version: 10
+          node-version: '12'
 
       - name: Install packages
         run: yarn
@@ -69,7 +69,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         name: Upload Linux build
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
         with:
           name: stacks-wallet-prod-${{ steps.vars.outputs.version }}-linux
           path: |

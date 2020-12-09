@@ -72,7 +72,7 @@ jobs:
           node-version: 12
 
       - name: Install packages
-        run: yarn
+        run: yarn --ignore-scripts --ignore-optional
 
       - name: Build releases
         run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}

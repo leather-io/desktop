@@ -33,7 +33,7 @@
     "productName": "Stacks Wallet Beta",
     "appId": "org.stacks.wallet",
     "icon": "./resources/icon-512x512.png",
-    "artifactName": "stacks-wallet-${version}.${ext}",
+    "artifactName": "stacks-wallet.${ext}",
     "files": [
       "dist/",
       "node_modules/",
@@ -97,32 +97,56 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
       [
         "@semantic-release/github",
         {
           "assets": [
             {
-              "path": "dist/*.msi",
+              "path": "dist/**/*.msi",
               "label": "Windows distribution"
             },
             {
-              "path": "dist/*.dmg",
+              "path": "dist/**/*.dmg",
               "label": "OSX distribution"
             },
             {
-              "path": "dist/*.rpm",
+              "path": "dist/**/*.rpm",
               "label": "Linux distribution"
             },
             {
-              "path": "dist/*.deb",
+              "path": "dist/**/*.deb",
               "label": "Debian distribution"
             }
           ]
         }
       ],
-      "@semantic-release/git"
+      "@semantic-release/changelog",
+      "@semantic-release/git",
+      [
+        "semantic-release-slack-bot",
+        {
+          "notifyOnSuccess": true,
+          "notifyOnFail": true,
+          "markdownReleaseNotes": true
+        }
+      ]
     ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "repository": {
     "type": "git",
@@ -160,6 +184,7 @@
     "@blockstack/eslint-config": "1.0.5",
     "@blockstack/prettier-config": "0.0.6",
     "@blockstack/stacks-blockchain-api-types": "0.28.0",
+    "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
     "@types/argon2-browser": "1.12.0",
     "@types/bcryptjs": "2.4.2",
@@ -223,7 +248,7 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "fbjs-scripts": "2.0.0",
     "file-loader": "6.1.1",
-    "husky": "4.3.0",
+    "husky": "4.3.5",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.6.1",
     "lint-staged": "10.5.0",

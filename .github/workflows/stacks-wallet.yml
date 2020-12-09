@@ -1,0 +1,271 @@
+name: stacks-wallet
+
+on:
+  push:
+    branches:
+      - 'master'
+    tags-ignore:
+      - '**'
+    paths-ignore:
+      - '**/CHANGELOG.md'
+      - '**/package.json'
+      - '**/yarn.lock'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  notify-start:
+    runs-on: ubuntu-latest
+    # Only run on non-PR events or only PRs that aren't from forks
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    outputs:
+      slack_message_id: ${{ steps.slack.outputs.message_id }}
+    steps:
+      - name: Notify slack start
+        if: success()
+        id: slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1.1.2
+        with:
+          channel: devops-notify
+          status: STARTING
+          color: warning
+
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        with:
+          header: '> _Currently building new release, please wait for the latest_&nbsp; <img src="https://user-images.githubusercontent.com/1618764/97873036-51dfb200-1d17-11eb-89f5-0a922dc3ac92.gif" width="12" />'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          yarn
+          yarn add -ED @actions/core
+
+      - name: Lint eslint
+        run: yarn lint:eslint
+
+      - name: Check exact versions
+        uses: ./.github/actions/check-version-lock
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            ${{ runner.os }}-yarn
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: Build prod
+        run: yarn build
+
+      - name: Run jest
+        run: yarn test
+
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: macos-latest
+            NPM_COMMAND: mac
+
+          - os: ubuntu-latest
+            NPM_COMMAND: linux
+
+          - os: windows-latest
+            NPM_COMMAND: win
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Variables
+        id: vars
+        run: |
+          echo "::set-output name=branch_name::$(echo ${GITHUB_REF#refs/heads/})"
+          echo "::set-output name=pull_request_id::$(echo $GITHUB_REF)"
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Install packages
+        run: yarn
+
+      - name: Build releases
+        run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
+        env:
+          SHA: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
+          BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
+
+      - uses: actions/upload-artifact@v2
+        name: Windows upload
+        if: matrix.os == 'windows-latest'
+        with:
+          name: stacks-wallet-${{ matrix.NPM_COMMAND }}
+          path: |
+            release/**/*.exe
+            release/**/*.msi
+
+      - uses: actions/upload-artifact@v2
+        name: MacOS upload
+        if: matrix.os == 'macos-latest'
+        with:
+          name: stacks-wallet-${{ matrix.NPM_COMMAND }}
+          path: release/**/*.dmg
+
+      - uses: actions/upload-artifact@v2
+        name: Linux upload
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: stacks-wallet-${{ matrix.NPM_COMMAND }}
+          path: |
+            release/**/*.deb
+            release/**/*.rpm
+
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      new_release_published: ${{ steps.semantic.outputs.new_release_published }}
+      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+    needs:
+      - lint
+      - test
+      - build
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Download distributables
+        uses: actions/download-artifact@v2
+        with:
+          path: dist/
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2.5.3
+        id: semantic
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SEMANTIC_RELEASE_PACKAGE: ${{ github.workflow }}
+        with:
+          # These plugins aren't packaged with semantic-release by default. So specify them here to ensure they get installed during this GH Action
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
+            semantic-release-slack-bot
+
+  # Notify Slack channel of workflow end
+  notify-end:
+    runs-on: ubuntu-latest
+    needs:
+      - notify-start
+      - lint
+      - test
+      - build
+      - release
+    if: always()
+    steps:
+      - name: Notify slack success
+        # Only run on non-PR events or only PRs that aren't from forks
+        if: (!contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1.1.2
+        with:
+          message_id: ${{ needs.notify-start.outputs.slack_message_id }}
+          channel: devops-notify
+          status: SUCCESS
+          color: good
+
+      - name: Notify slack fail
+        # Only run on non-PR events or only PRs that aren't from forks
+        if: (contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1.1.2
+        with:
+          message_id: ${{ needs.notify-start.outputs.slack_message_id }}
+          channel: devops-notify
+          status: FAILED
+          color: danger
+
+      - name: Discord notification
+        # Only run if a new release was published
+        if: needs.release.outputs.new_release_published == 'true'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'A new version (v[${{needs.release.outputs.new_release_version}}](https://github.com/${{ github.repository }}/releases/tag/v${{needs.release.outputs.new_release_version}})) of the ${{ github.workflow }} has been released.'
+
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        # Only run on non-PR events or only PRs that aren't from forks
+        if: (!contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          header: '> [Download the latest builds](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Remove header if build failed
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        # Only run on non-PR events or only PRs that aren't from forks
+        if: (contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          header: '> _Build failed, [see here for details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -225,7 +225,6 @@ export const StackingModal: FC<StackingModalProps> = props => {
 
     if (walletType === 'ledger') {
       if (publicKey === null) {
-        // log.error('Tried to create Ledger transaction without persisted private key');
         return;
       }
 

@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 import { PersistGate } from 'redux-persist/integration/react';
 import { color, CSSReset } from '@stacks/ui';
@@ -75,4 +74,4 @@ function Root({ store, history, persistor }: RootProps) {
 }
 
 // eslint-disable-next-line import/no-default-export
-export default hot(Root);
+export default Root;

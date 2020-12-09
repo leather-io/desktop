@@ -274,10 +274,10 @@
     "yarn": "1.22.5"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.12.10",
     "@blockstack/rpc-client": "0.3.0-alpha.22",
     "@blockstack/ui": "2.13.0",
     "@emotion/react": "^11.1.2",
-    "@hot-loader/react-dom": "17.0.0",
     "@ledgerhq/hw-transport-webusb": "5.26.0",
     "@popperjs/core": "2.5.3",
     "@reduxjs/toolkit": "1.4.0",
@@ -315,8 +315,7 @@
     "qrcode.react": "1.0.0",
     "react": "17.0.1",
     "react-card-flip": "1.0.11",
-    "react-dom": "17.0.1",
-    "react-hot-loader": "4.13.0",
+    "react-dom": "^17.0.1",
     "react-hotkeys-hook": "2.4.0",
     "react-popper": "2.2.3",
     "react-progressbar.js": "0.2.0",

@@ -47,11 +47,7 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-renderer',
 
-  entry: [
-    `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
-    require.resolve('../app/index.tsx'),
-  ],
+  entry: ['core-js', 'regenerator-runtime/runtime', require.resolve('../app/index.tsx')],
 
   output: {
     publicPath: `http://localhost:${port}/dist/`,
@@ -100,11 +96,6 @@ export default merge.smart(baseConfig, {
       },
     ],
   },
-  resolve: {
-    alias: {
-      'react-dom': '@hot-loader/react-dom',
-    },
-  },
   plugins: [
     requiredByDLLConfig
       ? null
@@ -113,9 +104,6 @@ export default merge.smart(baseConfig, {
           manifest: require(manifest),
           sourceType: 'var',
         }),
-
-    new webpack.HotModuleReplacementPlugin(),
-    new ReactRefreshWebpackPlugin(),
 
     new webpack.NoEmitOnErrorsPlugin(),
 
@@ -144,6 +132,8 @@ export default merge.smart(baseConfig, {
     new CopyPlugin({
       patterns: [{ from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' }],
     }),
+
+    new ReactRefreshWebpackPlugin(),
   ],
 
   node: {
@@ -155,7 +145,7 @@ export default merge.smart(baseConfig, {
     port,
     publicPath,
     compress: true,
-    noInfo: true,
+    noInfo: false,
     stats: 'errors-only',
     inline: true,
     lazy: false,

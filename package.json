@@ -108,19 +108,19 @@
         {
           "assets": [
             {
-              "path": "dist/**/*.msi",
+              "path": "release/**/*.msi",
               "label": "Windows distribution"
             },
             {
-              "path": "dist/**/*.dmg",
+              "path": "release/**/*.dmg",
               "label": "OSX distribution"
             },
             {
-              "path": "dist/**/*.rpm",
+              "path": "release/**/*.rpm",
               "label": "Linux distribution"
             },
             {
-              "path": "dist/**/*.deb",
+              "path": "release/**/*.deb",
               "label": "Debian distribution"
             }
           ]

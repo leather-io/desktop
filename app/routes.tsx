@@ -75,7 +75,7 @@ export const routerConfig = [
 const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.WELCOME);
 
 export function Routes() {
-  // `useStore` required as we only want the value on initial render
+  // `useStore` required as we only want the value on the initial render
   const store = useStore();
   const address = selectAddress(store.getState());
   return (

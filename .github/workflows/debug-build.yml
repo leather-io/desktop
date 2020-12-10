@@ -1,0 +1,96 @@
+name: Debug build
+
+on: [pull_request]
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: macos-latest
+            NPM_COMMAND: mac
+
+          - os: ubuntu-latest
+            NPM_COMMAND: linux
+
+          - os: windows-latest
+            NPM_COMMAND: win
+
+    steps:
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        # Only update it once per build
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          header: '> _Currently building new release, please wait for the latest_&nbsp; <img src="https://user-images.githubusercontent.com/1618764/97873036-51dfb200-1d17-11eb-89f5-0a922dc3ac92.gif" width="12" />'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - name: Print environment variables
+        run: |
+          echo "GITHUB_REPOSITORY_SLUG=$GITHUB_REPOSITORY_SLUG"
+          echo "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER"
+          echo "GITHUB_REPOSITORY_OWNER_SLUG=$GITHUB_REPOSITORY_OWNER_SLUG"
+          echo "GITHUB_REPOSITORY_NAME=$GITHUB_REPOSITORY_NAME"
+          echo "GITHUB_REPOSITORY_NAME_SLUG=$GITHUB_REPOSITORY_NAME_SLUG"
+          echo "GITHUB_REF_SLUG=$GITHUB_REF_SLUG"
+          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
+          echo "GITHUB_REF_NAME_SLUG=$GITHUB_REF_NAME_SLUG"
+          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT"
+          echo "GITHUB_SHA=$GITHUB_SHA"
+      - name: Variables
+        id: vars
+        run: |
+          echo "::set-output name=version::$(cat package.json | jq -r .version)"
+          echo "::set-output name=branch_name::$(echo ${GITHUB_REF#refs/heads/})"
+          echo "::set-output name=pull_request_id::$(echo $GITHUB_REF)"
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install packages
+        run: yarn
+
+      - name: Build releases
+        run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
+        env:
+          SHA: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
+          BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Windows build
+        if: matrix.os == 'windows-latest'
+        with:
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-windows
+          path: |
+            release/**/*.exe
+            release/**/*.msi
+      - uses: actions/upload-artifact@v2
+        name: Upload MacOS build
+        if: matrix.os == 'macos-latest'
+        with:
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-macos
+          path: release/**/*.dmg
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Linux build
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-linux
+          path: |
+            release/**/*.deb
+            release/**/*.rpm

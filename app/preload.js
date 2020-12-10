@@ -4,6 +4,8 @@ const { contextBridge, ipcRenderer, app, shell } = require('electron');
 
 const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default;
 
+const argon2 = require('argon2-browser');
+
 const scriptsToLoad = [];
 
 if (process.env.NODE_ENV === 'development') {
@@ -25,6 +27,18 @@ contextBridge.exposeInMainWorld('electron', {
   __filename,
 });
 
+async function deriveKey({ pass, salt }) {
+  const result = await argon2.hash({
+    pass,
+    salt,
+    hashLen: 48,
+    time: 44,
+    mem: 1024 * 32,
+    type: argon2.ArgonType.Argon2id,
+  });
+  return { derivedKeyHash: result.hash };
+}
+
 contextBridge.exposeInMainWorld('process', { ...process });
 
 contextBridge.exposeInMainWorld('api', {
@@ -39,7 +53,7 @@ contextBridge.exposeInMainWorld('api', {
   },
 
   deriveKey: async args => {
-    return ipcRenderer.invoke('derive-key', args);
+    return deriveKey(args);
   },
 
   windowEvents: {

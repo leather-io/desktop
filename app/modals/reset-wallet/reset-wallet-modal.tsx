@@ -36,7 +36,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
   const header = <TxModalHeader onSelectClose={closeModal}>Reset wallet</TxModalHeader>;
   const footer = (
     <TxModalFooter>
-      <ButtonGroup size={'lg'}>
+      <ButtonGroup size="md">
         <Button mode="tertiary" onClick={closeModal} ref={cancelBtnRef as any}>
           Cancel
         </Button>

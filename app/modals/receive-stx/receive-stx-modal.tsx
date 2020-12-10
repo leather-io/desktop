@@ -67,7 +67,7 @@ export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address, isOpen }) =
         </Text>
       </Flex>
       <TxModalFooter>
-        <Button size="lg" onClick={closeModal}>
+        <Button size="md" onClick={closeModal}>
           Close
         </Button>
       </TxModalFooter>

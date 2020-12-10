@@ -64,7 +64,7 @@ export const StackingStepDescription: FC = ({ children }) => (
 );
 
 export const StackingStepAction: FC<ButtonProps> = ({ children, ...props }) => (
-  <Button size="lg" mt="loose" {...(props as unknown)}>
+  <Button size="md" mt="loose" {...(props as unknown)}>
     {children}
   </Button>
 );

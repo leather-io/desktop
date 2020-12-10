@@ -283,7 +283,7 @@
     "@reduxjs/toolkit": "1.4.0",
     "@stacks/blockchain-api-client": "0.28.0",
     "@stacks/network": "1.0.0-beta.17",
-    "@stacks/ui": "^7.3.0",
+    "@stacks/ui": "^7.2.1-beta.1",
     "@stacks/ui-core": "^7.0.0",
     "@stacks/ui-theme": "^7.1.0",
     "@stacks/ui-utils": "^7.1.0",

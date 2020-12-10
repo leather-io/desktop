@@ -47,7 +47,7 @@ export default merge.smart(baseConfig, {
 
   target: 'electron-renderer',
 
-  entry: ['core-js', 'regenerator-runtime/runtime', require.resolve('../app/index.tsx')],
+  entry: [require.resolve('../app/index.tsx')],
 
   output: {
     publicPath: `http://localhost:${port}/dist/`,
@@ -105,6 +105,7 @@ export default merge.smart(baseConfig, {
           sourceType: 'var',
         }),
 
+    new ReactRefreshWebpackPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
 
     /**
@@ -132,8 +133,6 @@ export default merge.smart(baseConfig, {
     new CopyPlugin({
       patterns: [{ from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' }],
     }),
-
-    new ReactRefreshWebpackPlugin(),
   ],
 
   node: {

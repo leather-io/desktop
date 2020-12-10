@@ -9,6 +9,15 @@
     <div class="draggable-bar"></div>
     <div id="root"></div>
     <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('theme');
+          if (!mode) return;
+          document.documentElement.classList.add(mode);
+          var bgValue = getComputedStyle(document.documentElement).getPropertyValue('--colors-bg');
+          document.documentElement.style.background = bgValue;
+        } catch (e) {}
+      })();
       if (typeof process === 'object') {
         const scripts = [];
 

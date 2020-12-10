@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
-import { Button, ButtonProps, CloseIcon, color, Flex, IconButton, Text } from '@stacks/ui';
+import { Button, ButtonProps, Flex } from '@stacks/ui';
 import { border } from '@utils/border';
+import { ModalHeader } from '@components/modal-header';
 
 export const modalStyle = {
   minWidth: ['100%', '488px'],
@@ -11,18 +12,7 @@ interface TxModalHeaderProps {
 }
 
 export const TxModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose }) => (
-  <Flex
-    height="84px"
-    px="extra-loose"
-    alignItems="center"
-    borderBottom={border()}
-    justifyContent="space-between"
-  >
-    <Text color={color('text-title')} as="h2" textStyle="display.small">
-      {children}
-    </Text>
-    <IconButton onClick={onSelectClose} iconSize="12px" icon={CloseIcon} />
-  </Flex>
+  <ModalHeader handleClose={onSelectClose}>{children}</ModalHeader>
 );
 
 export const TxModalFooter: FC = ({ children }) => (
@@ -31,8 +21,8 @@ export const TxModalFooter: FC = ({ children }) => (
   </Flex>
 );
 
-export const TxModalButton: FC<ButtonProps> = ({ children, ...props }) => (
-  <Button ml="base-tight" size="lg" minWidth="70px" {...(props as any)}>
+export const TxModalButton: FC<Omit<ButtonProps, 'size'>> = ({ children, ...props }) => (
+  <Button ml="base-tight" size="md" minWidth="70px" {...props}>
     {children}
   </Button>
 );

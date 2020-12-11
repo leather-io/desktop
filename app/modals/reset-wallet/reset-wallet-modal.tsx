@@ -30,8 +30,8 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
     // will cancel the pending operation
     cancelBtnRef.current?.focus();
     timer.current = setTimeout(() => {
-      clearDiskStorage();
-      api.reloadApp();
+      void clearDiskStorage();
+      void api.reloadApp();
     }, PANIC_CANCEL_TIME);
   };
 

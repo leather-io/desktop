@@ -24,23 +24,23 @@ interface LedgerWallet {
 export type DiskStore = LedgerWallet | SoftwareWallet;
 
 export const persistEncryptedMnemonic = (encryptedMnemonic: string) => {
-  api.store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
+  void api.store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
 };
 
 export const persistStxAddress = (stxAddress: string) => {
-  api.store.set(StoreIndex.StxAddress, stxAddress);
+  void api.store.set(StoreIndex.StxAddress, stxAddress);
 };
 
 export const persistPublicKey = (publicKey: string) => {
-  api.store.set(StoreIndex.PublicKey, publicKey);
+  void api.store.set(StoreIndex.PublicKey, publicKey);
 };
 
 export const persistSalt = (salt: string) => {
-  api.store.set(StoreIndex.Salt, salt);
+  void api.store.set(StoreIndex.Salt, salt);
 };
 
 export const persistWalletType = (walletType: WalletType) => {
-  api.store.set(StoreIndex.WalletType, walletType);
+  void api.store.set(StoreIndex.WalletType, walletType);
 };
 
 export const getInitialStateFromDisk = () => {

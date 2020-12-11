@@ -300,7 +300,7 @@
     "electron-store": "6.0.0",
     "electron-updater": "4.3.1",
     "electron-window-state": "5.0.3",
-    "formik": "2.2.1",
+    "formik": "2.2.5",
     "history": "4.10.1",
     "minimist": "1.2.5",
     "qrcode.react": "1.0.0",

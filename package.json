@@ -127,19 +127,19 @@
           "assets": [
             {
               "path": "release/**/*.msi",
-              "label": "Windows distribution"
+              "label": "stacks-wallet-win-${nextRelease.version}.msi"
             },
             {
               "path": "release/**/*.dmg",
-              "label": "OSX distribution"
+              "label": "stacks-wallet-mac-${nextRelease.version}.dmg"
             },
             {
               "path": "release/**/*.rpm",
-              "label": "Linux distribution"
+              "label": "stacks-wallet-mac-${nextRelease.version}.rpm"
             },
             {
               "path": "release/**/*.deb",
-              "label": "Debian distribution"
+              "label": "stacks-wallet-mac-${lastRelease.version}.deb"
             }
           ]
         }

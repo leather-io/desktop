@@ -1,6 +1,5 @@
 import React, { FC, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import log from 'electron-log';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
@@ -182,7 +181,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
     if (walletType === 'ledger') {
       if (publicKey === null) {
-        log.error('Tried to create Ledger transaction without persisted private key');
         return;
       }
 

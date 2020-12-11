@@ -9,12 +9,13 @@
     "name": "Blockstack PBC"
   },
   "scripts": {
-    "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
+    "build": "concurrently \"yarn build-main\" \"yarn build-renderer\" \"yarn build-preload\" ",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
     "build-e2e": "cross-env E2E_BUILD=true yarn build",
     "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
     "build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.babel.js --colors",
-    "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && cross-env START_HOT=1 yarn start-renderer-dev",
+    "build-preload": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.preload.babel.js --colors",
+    "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && concurrently \"cross-env START_HOT=1 yarn start-renderer-dev\" \"yarn start-preload-dev\"",
     "electron-rebuild": "electron-rebuild --parallel --force --types prod,dev,optional --module-dir app",
     "lint:eslint": "eslint \"app/**/*.{ts,tsx}\"",
     "package": "yarn build && electron-builder build --publish never",
@@ -27,6 +28,7 @@
     "start": "cross-env NODE_ENV=production electron ./app/main.prod.js",
     "start-main-dev": "cross-env START_HOT=1 NODE_ENV=development electron -r ./internals/scripts/BabelRegister ./app/main.dev.ts",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.renderer.dev.babel.js",
+    "start-preload-dev": "cross-env NODE_ENV=development webpack --watch --config configs/webpack.config.preload.babel.js",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest"
   },
   "build": {

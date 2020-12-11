@@ -298,7 +298,7 @@
     "electron-debug": "3.1.0",
     "electron-log": "4.2.2",
     "electron-store": "6.0.0",
-    "electron-updater": "4.3.1",
+    "electron-updater": "4.3.4",
     "electron-window-state": "5.0.3",
     "formik": "2.2.1",
     "history": "4.10.1",

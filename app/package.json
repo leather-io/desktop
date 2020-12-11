@@ -15,10 +15,10 @@
   "license": "MIT",
   "dependencies": {
     "@ledgerhq/hw-transport-node-hid": "5.23.2",
-    "@stacks/keychain": "1.0.0-beta.19",
-    "@stacks/network": "1.0.0-beta.19",
-    "@stacks/stacking": "1.0.0-beta.19",
-    "@stacks/transactions": "1.0.0-beta.19",
+    "@stacks/keychain": "1.0.0-beta.21",
+    "@stacks/network": "1.0.0-beta.20",
+    "@stacks/stacking": "1.0.0-beta.20",
+    "@stacks/transactions": "1.0.0-beta.20",
     "argon2-browser": "1.15.2",
     "bitcoinjs-lib": "5.2.0",
     "blockstack": "21.1.1"

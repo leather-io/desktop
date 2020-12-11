@@ -1,5 +1,14 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, FlexProps, CheckmarkCircleIcon, Button, ButtonProps } from '@stacks/ui';
+import {
+  Box,
+  Flex,
+  Text,
+  FlexProps,
+  CheckmarkCircleIcon,
+  Button,
+  color,
+  ButtonProps,
+} from '@stacks/ui';
 
 interface StackingFormStepProps extends FlexProps {
   title: string;
@@ -14,20 +23,14 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
   if (!step) return null;
   return (
     <Flex flexDirection="column" mt="extra-loose" {...rest}>
-      <Text
-        textStyle="caption.medium"
-        color="ink.600"
-        textTransform="uppercase"
-        fontSize="11px"
-        fontWeight={600}
-      >
+      <Text textStyle="caption.medium" textTransform="uppercase" fontSize="11px" fontWeight={600}>
         Step {step}
       </Text>
       <Flex alignItems="center">
         <Text textStyle="display.small" mt="extra-tight" mr="tight">
           {title}
         </Text>
-        {isComplete && <CheckmarkCircleIcon size="16px" color="blue" />}
+        {isComplete && <CheckmarkCircleIcon size="16px" color={color('feedback-success')} />}
       </Flex>
       {isComplete ? (
         <Box>

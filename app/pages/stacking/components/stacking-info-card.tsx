@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
 
-import { Flex, FlexProps, Text } from '@stacks/ui';
+import { Flex, FlexProps, Text, color } from '@stacks/ui';
 
 import { Hr } from '@components/hr';
 
@@ -27,6 +27,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
     <Flex
       flexDirection="column"
       boxShadow="low"
+      bg={color('bg-2')}
       border={border()}
       borderRadius="8px"
       minHeight="84px"
@@ -34,10 +35,13 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
       minWidth={[null, null, '320px', '420px']}
       position="sticky"
       top="124px"
+      color={color('text-body')}
       {...props}
     >
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
-        <Text textStyle="body.large.medium">You'll lock</Text>
+        <Text textStyle="body.large.medium" color={color('text-caption')}>
+          You'll lock
+        </Text>
         <Text fontSize="24px" fontWeight={600} letterSpacing="-0.04em" mt="extra-tight">
           {toHumanReadableStx(amountToBeStacked.toString())}
         </Text>
@@ -46,7 +50,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
       <Flex flexDirection="column" px={['loose', 'extra-loose']} py="loose" width="100%">
         <Flex justifyContent="space-between">
           <Flex alignItems="center">
-            <Text textStyle="body.large.medium" mr="tight">
+            <Text textStyle="body.large.medium" mr="tight" color={color('text-caption')}>
               Cycles
             </Text>
             <ExplainerTooltip>
@@ -57,7 +61,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
         </Flex>
         <Flex justifyContent="space-between" mt="tight">
           <Flex alignItems="center">
-            <Text textStyle="body.large.medium" mr="tight">
+            <Text textStyle="body.large.medium" mr="tight" color={color('text-caption')}>
               Duration
             </Text>
             <ExplainerTooltip>
@@ -67,7 +71,9 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
           <Text textAlign="right">{duration}</Text>
         </Flex>
         <Flex justifyContent="space-between" mt="tight">
-          <Text textStyle="body.large.medium">Start date</Text>
+          <Text textStyle="body.large.medium" color={color('text-caption')}>
+            Start date
+          </Text>
           <Text textAlign="right">{dayjs(startDate).format('MMMM DD')}</Text>
         </Flex>
       </Flex>

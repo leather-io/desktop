@@ -1,39 +1,39 @@
 import React from 'react';
-import { Box, BoxProps } from '@stacks/ui';
+import { Box, BoxProps, color } from '@stacks/ui';
 import { forwardRefWithAs } from '@stacks/ui-core';
-import {border} from "@utils/border";
+import { border } from '@utils/border';
+import { transition } from '@blockstack/ui';
 
 export function listHoverProps(hovered: boolean) {
-  return hovered
-    ? ({
-        content: `''`,
-        background: '#FAFAFC',
-        borderRadius: '8px',
-        zIndex: -1,
-        position: 'absolute',
-        display: 'block',
-        width: 'calc(100% + 20px)',
-        height: 'calc(100% + 16px)',
-        left: '-8px',
-        top: '-8px',
-      } as const)
-    : {};
+  return {
+    content: `''`,
+    position: 'absolute',
+    background: color('bg-4'),
+    borderRadius: '8px',
+    zIndex: -1,
+    display: 'block',
+    width: 'calc(100% + 20px)',
+    height: 'calc(100% + 16px)',
+    left: '-8px',
+    top: '-8px',
+    transition,
+    opacity: hovered ? 1 : 0,
+  };
 }
 
 export function listFocusedProps(focused: boolean) {
-  return focused
-    ? ({
-        content: `''`,
-        position: 'absolute',
-        border: '1px solid #C5CCFF',
-        boxShadow: '0 0 0 3px rgba(170,179,255,0.75)',
-        borderRadius: '4px',
-        width: 'calc(100% + 20px)',
-        height: 'calc(100% + 16px)',
-        left: '-8px',
-        top: '-8px',
-      } as const)
-    : {};
+  return {
+    content: `''`,
+    position: 'absolute',
+    border: `1px solid ${color('brand') as string}`,
+    boxShadow: '0 0 0 3px rgba(170,179,255,0.75)',
+    borderRadius: '4px',
+    width: 'calc(100% + 20px)',
+    height: 'calc(100% + 16px)',
+    left: '-8px',
+    top: '-8px',
+    opacity: focused ? 1 : 0,
+  };
 }
 
 export const EnableBefore = forwardRefWithAs<BoxProps, 'button'>(
@@ -62,4 +62,5 @@ export const templateTxBoxProps = {
   minHeight: ['152px', '152px', '300px', '416px'],
   justifyContent: 'center',
   alignItems: ['center', 'center', null, null],
+  bg: color('bg-2'),
 };

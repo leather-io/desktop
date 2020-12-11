@@ -71,7 +71,6 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
             right="12px"
             top="22px"
             style={{ position: 'absolute' }}
-            width="80px"
             onClick={onSendEntireBalance}
             isLoading={isCalculatingMaxSpend}
           >

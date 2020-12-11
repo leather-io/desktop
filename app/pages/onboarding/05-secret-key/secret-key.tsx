@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import log from 'electron-log';
-import { Box, useClipboard, Text, Button } from '@stacks/ui';
+import { Box, useClipboard, Text, Button, color } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { Card } from '@components/card';
@@ -42,15 +42,19 @@ export const SecretKey: React.FC = () => {
         <Text textStyle="body.small" mt="loose" mx="loose" lineHeight="20px" display="block">
           {mnemonic}
         </Text>
-        <Button variant="link" mt="tight">
-          <Text textStyle="caption.medium" fontSize="12px" onClick={onCopy}>
-            Copy to clipboard
-          </Text>
+        <Button
+          fontSize="12px"
+          color={color('text-caption')}
+          variant="link"
+          mt="base"
+          onClick={onCopy}
+        >
+          Copy to clipboard
         </Button>
       </Card>
       <Box display="block" as="label" mt="loose">
         <input type="checkbox" onChange={e => setHasSavedMnemonic(e.currentTarget.checked)} />
-        <Text textStyle="body.small" color="#42444E" ml="base-tight">
+        <Text textStyle="body.small" color={color('text-caption')} ml="base-tight">
           I have saved my Secret Key
         </Text>
       </Box>

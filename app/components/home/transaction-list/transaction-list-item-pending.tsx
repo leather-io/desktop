@@ -1,6 +1,6 @@
 import React, { FC, useRef, useEffect, MutableRefObject } from 'react';
 import { useHover, useFocus } from 'use-events';
-import { Box, Text } from '@stacks/ui';
+import { Box, Text, color } from '@stacks/ui';
 
 import { PendingTransaction } from '@store/pending-transaction';
 import { toHumanReadableStx } from '@utils/unit-convert';
@@ -43,19 +43,19 @@ export const TransactionListItemPending: FC<TransactionListItemPendingProps> = p
     >
       <TransactionIcon variant="pending" mr="base-loose" />
       <Box flex={1}>
-        <Text textStyle="body.large.medium" display="block">
+        <Text textStyle="body.large.medium" color={color('text-title')} display="block">
           {tx.isStackingCall ? 'Initiating Stacking…' : 'Sending'}
         </Text>
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color={color('text-caption')}>
           {tx.tx_id.substr(0, 28)}…
         </Text>
       </Box>
       <Box textAlign="right">
-        <Text textStyle="body.large" color="ink.900" display="block">
+        <Text textStyle="body.large" color={color('text-title')} display="block">
           {tx.isStackingCall ? '' : '-'}
           {toHumanReadableStx(tx.amount)}
         </Text>
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color={color('text-caption')}>
           Pending
         </Text>
       </Box>

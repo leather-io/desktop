@@ -23,9 +23,12 @@ const ChangeStepButton: FC<FlexProps> = ({ children, ...props }) => (
     border={border}
     outline={0}
     zIndex={1}
+    _hover={{
+      color: color('brand'),
+    }}
     _focus={{
-      borderColor: '#C5CCFF',
-      boxShadow: '0 0 0 3px rgba(170,179,255,0.75)',
+      borderColor: color('brand'),
+      boxShadow: '0 0 0 3px rgba(170,179,255,0.25)',
     }}
     {...props}
   >

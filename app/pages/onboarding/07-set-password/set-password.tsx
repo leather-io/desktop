@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { Text, Input } from '@stacks/ui';
+import { Text, Input, color } from '@stacks/ui';
 import { setSoftwareWallet } from '@store/keys';
 import { useBackButton } from '@hooks/use-back-url';
 import routes from '@constants/routes.json';
@@ -67,14 +67,14 @@ export const SetPassword: React.FC = () => {
     result.meetsAllStrengthRequirements ? 'Strong' : 'Not strong enough';
 
   const strengthColor = (result: ValidatedPassword) =>
-    result.meetsAllStrengthRequirements ? 'feedback.success' : 'feedback.error';
+    result.meetsAllStrengthRequirements ? color('feedback-success') : color('feedback-error');
 
   return (
     <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Set a password</OnboardingTitle>
       <OnboardingText>You’ll use your password to confirm transactions</OnboardingText>
       <Input width="100%" type="password" mt="extra-loose" onChange={handlePasswordInput} />
-      <Text display="block" textStyle="body.small" color="ink.600" mt="base">
+      <Text display="block" textStyle="body.small" color={color('text-caption')} mt="base">
         Password strength:
         <Text
           textStyle="body.small.medium"

@@ -109,8 +109,9 @@ const Balance: FC<BoxProps> = props => {
         color={color('text-title')}
         fontSize="40px"
         lineHeight="56px"
-        fontWeight="bold"
+        fontWeight="400"
         letterSpacing="-0.01em"
+        fontFamily={`'Open Sauce'`}
       >
         {balance === null ? '–' : toHumanReadableStx(balance)}
       </Text>

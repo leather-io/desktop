@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { Box, Button, Flex, Text, color } from '@stacks/ui';
+import { Box, Button, color, Flex, Text } from '@stacks/ui';
 import { border } from '@utils/border';
 
 import { openExternalLink } from '@utils/external-links';
 import { BUY_STX_URL } from '@constants';
 import { toHumanReadableStx } from '@utils/unit-convert';
-import btcPodium from '../../assets/images/btc-podium.svg';
+import { BTCPodium } from '@components/btc-podium';
 
 interface StackingPromoCardProps {
   minRequiredMicroStx: number;
@@ -17,9 +17,10 @@ export const StackingPromoCard: FC<StackingPromoCardProps> = ({ minRequiredMicro
     borderRadius="8px"
     boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
     border={border()}
+    bg={color('bg-2')}
   >
     <Flex flexDirection="column" mt="40px" mb="extra-loose">
-      <img src={btcPodium} />
+      <BTCPodium mx="auto" />
       <Text
         display="block"
         textAlign="center"

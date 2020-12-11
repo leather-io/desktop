@@ -2977,10 +2977,10 @@
     type-fest "^0.20.2"
     typescript "^4.1.2"
 
-"@stacks/ui@^7.2.1-beta.1":
-  version "7.2.1-beta.1"
-  resolved "https://registry.yarnpkg.com/@stacks/ui/-/ui-7.2.1-beta.1.tgz#0efbb46e0a5359b36cb2a92d7b91fde4cc35d883"
-  integrity sha512-ImAMOKd1CRe9SF72UNeuSJPt0j3h63T/DKvjZ6dBhZfdgXw3Xa7S26lgLe7ut4A2Yc4wDsAy20UyO7cf+XH2Mw==
+"@stacks/ui@^7.3.1-beta.1":
+  version "7.3.1-beta.1"
+  resolved "https://registry.yarnpkg.com/@stacks/ui/-/ui-7.3.1-beta.1.tgz#043da3679044ca68e988e1cbc85e8bf5813bc5f3"
+  integrity sha512-anXihmKgP0JAd9vGM9u0VjatiQp3Q81ryd0BdJdkc/J4gH1vw0yzMi2lZ2nO1jbW4a7uDTW1fTzfi4AMCRUgog==
   dependencies:
     "@reach/alert" "^0.12.1"
     "@reach/auto-id" "^0.12.1"

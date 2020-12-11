@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { useFocus, useHover } from 'use-events';
-import { Box, Text, useClipboard } from '@stacks/ui';
+import { Box, Text, useClipboard, color } from '@stacks/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { RootState } from '@store/index';
@@ -133,24 +133,32 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
         <Text textStyle="body.large.medium" display="block">
           {transactionTitle()}
         </Text>
-        <Text textStyle="body.small" color="ink.600" display={['none', 'none', 'block']}>
+        <Text
+          textStyle="body.small"
+          color={color('text-caption')}
+          display={['none', 'none', 'block']}
+        >
           {txDateFormatted}
         </Text>
-        <Text textStyle="body.small" color="ink.600" display={['block', 'block', 'none']}>
+        <Text
+          textStyle="body.small"
+          color={color('text-caption')}
+          display={['block', 'block', 'none']}
+        >
           {txDateShort}
         </Text>
       </Box>
       <Box textAlign="right">
         <Text
           textStyle="body.large"
-          color="ink.900"
+          color={color('text-title')}
           title={`Fee: ${toHumanReadableStx(tx.fee_rate)}`}
           display="block"
         >
           {sumPrefix +
             toHumanReadableStx(sumStxTxTotal(address, tx, poxInfo?.contract_id).toString())}
         </Text>
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color={color('text-caption')}>
           {memo}
         </Text>
       </Box>

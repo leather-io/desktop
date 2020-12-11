@@ -23,7 +23,7 @@ export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
         justifyContent="center"
         alignItems="center"
       >
-        <Text textStyle="caption" color="ink.600">
+        <Text textStyle="caption" color={color('text-caption')} fontWeight="400">
           {title}
         </Text>
       </Flex>

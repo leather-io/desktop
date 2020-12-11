@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const fs = require('fs');
-const { contextBridge, ipcRenderer, app, shell } = require('electron');
+import { contextBridge, ipcRenderer, shell } from 'electron';
 
-const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid').default;
-
-const argon2 = require('argon2-browser');
+// These two modules are excluded from the bundle, so they can
+// be imported at runtime in the preload's `require`, rather
+// than being bundled in the output script
+import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
+import argon2 from 'argon2-browser';
 
 const scriptsToLoad = [];
 
@@ -27,7 +28,7 @@ contextBridge.exposeInMainWorld('electron', {
   __filename,
 });
 
-async function deriveKey({ pass, salt }) {
+async function deriveKey({ pass, salt }: Record<string, 'pass' | 'salt'>) {
   const result = await argon2.hash({
     pass,
     salt,
@@ -45,37 +46,37 @@ contextBridge.exposeInMainWorld('api', {
   // Expose protected methods that allow the renderer process to use
   // the ipcRenderer without exposing the entire object
   store: {
-    set: (key, value) => ipcRenderer.invoke('store-set', { key, value }),
-    get: key => ipcRenderer.invoke('store-get', { key }),
-    delete: key => ipcRenderer.invoke('store-delete', { key }),
+    set: (key: string, value: string) => ipcRenderer.invoke('store-set', { key, value }),
+    get: (key: string) => ipcRenderer.invoke('store-get', { key }),
+    delete: (key: string) => ipcRenderer.invoke('store-delete', { key }),
     clear: () => ipcRenderer.invoke('store-clear'),
     initialValue: () => ipcRenderer.sendSync('store-getEntireStore'),
   },
 
-  deriveKey: async args => {
+  deriveKey: async (args: any) => {
     return deriveKey(args);
   },
 
   windowEvents: {
-    blur(callback) {
+    blur(callback: () => void) {
       const listener = () => callback();
       ipcRenderer.on('blur', listener);
       return () => ipcRenderer.removeListener('blur', listener);
     },
-    focus(callback) {
+    focus(callback: () => void) {
       const listener = () => callback();
       ipcRenderer.on('focus', listener);
       return () => ipcRenderer.removeListener('focus', listener);
     },
   },
 
-  openExternalLink: url => shell.openExternal(url),
+  openExternalLink: (url: string) => shell.openExternal(url),
 
   reloadApp: () => ipcRenderer.invoke('reload-app'),
 
   nodeHid: {
-    listen: observer => TransportNodeHid.listen(observer),
-    open: async ({ descriptor, onDisconnect }) => {
+    // listen: observer => TransportNodeHid.listen(observer),
+    open: async ({ descriptor, onDisconnect }: any) => {
       const transport = await TransportNodeHid.open(descriptor);
       transport.on('disconnect', async () => {
         await transport.close();

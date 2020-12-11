@@ -14,6 +14,7 @@ if (process.env.NODE_ENV === 'development') {
   // renderer process
   scriptsToLoad.push('../dll/renderer.dev.dll.js');
 }
+
 if (process.env.START_HOT) {
   // Dynamically insert the bundled app script in the renderer process
   const port = process.env.PORT || 1212;
@@ -28,7 +29,7 @@ contextBridge.exposeInMainWorld('electron', {
   __filename,
 });
 
-async function deriveKey({ pass, salt }: Record<string, 'pass' | 'salt'>) {
+async function deriveArgon2Key({ pass, salt }: Record<string, 'pass' | 'salt'>) {
   const result = await argon2.hash({
     pass,
     salt,
@@ -42,20 +43,18 @@ async function deriveKey({ pass, salt }: Record<string, 'pass' | 'salt'>) {
 
 contextBridge.exposeInMainWorld('process', { ...process });
 
-contextBridge.exposeInMainWorld('api', {
+const walletApi = {
   // Expose protected methods that allow the renderer process to use
   // the ipcRenderer without exposing the entire object
   store: {
-    set: (key: string, value: string) => ipcRenderer.invoke('store-set', { key, value }),
-    get: (key: string) => ipcRenderer.invoke('store-get', { key }),
-    delete: (key: string) => ipcRenderer.invoke('store-delete', { key }),
-    clear: () => ipcRenderer.invoke('store-clear'),
+    set: async (key: string, value: string) => ipcRenderer.invoke('store-set', { key, value }),
+    get: async (key: string) => ipcRenderer.invoke('store-get', { key }),
+    delete: async (key: string) => ipcRenderer.invoke('store-delete', { key }),
+    clear: async () => ipcRenderer.invoke('store-clear'),
     initialValue: () => ipcRenderer.sendSync('store-getEntireStore'),
   },
 
-  deriveKey: async (args: any) => {
-    return deriveKey(args);
-  },
+  deriveKey: async (args: any) => deriveArgon2Key(args),
 
   windowEvents: {
     blur(callback: () => void) {
@@ -75,7 +74,7 @@ contextBridge.exposeInMainWorld('api', {
   reloadApp: () => ipcRenderer.invoke('reload-app'),
 
   nodeHid: {
-    // listen: observer => TransportNodeHid.listen(observer),
+    listen: (observer: any) => TransportNodeHid.listen(observer),
     open: async ({ descriptor, onDisconnect }: any) => {
       const transport = await TransportNodeHid.open(descriptor);
       transport.on('disconnect', async () => {
@@ -92,4 +91,10 @@ contextBridge.exposeInMainWorld('api', {
   },
 
   contextMenu: (menuItems: any) => ipcRenderer.send('context-menu-open', { menuItems }),
-});
+};
+
+declare global {
+  const api: typeof walletApi;
+}
+
+contextBridge.exposeInMainWorld('api', walletApi);

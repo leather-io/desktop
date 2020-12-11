@@ -91,5 +91,5 @@ contextBridge.exposeInMainWorld('api', {
     },
   },
 
-  contextMenu: menuItems => ipcRenderer.send('context-menu-open', { menuItems }),
+  contextMenu: (menuItems: any) => ipcRenderer.send('context-menu-open', { menuItems }),
 });

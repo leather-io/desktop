@@ -26,7 +26,7 @@ export const DecryptWalletForm: Props = props => {
       <Input onChange={handlePasswordInput} type="password" mt="base-loose" />
       {hasSubmitted && decryptionError && (
         <ErrorLabel>
-          <ErrorText>Password entered is incorrect</ErrorText>
+          <ErrorText>{decryptionError}</ErrorText>
         </ErrorLabel>
       )}
       <Text textStyle="body.small" mt="base-tight" mb="base-loose" display="block">

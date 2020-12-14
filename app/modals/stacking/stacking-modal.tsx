@@ -213,7 +213,11 @@ export const StackingModal: FC<StackingModalProps> = props => {
 
       if (error) {
         setIsDecrypting(false);
-        setDecryptionError('Unable to decrypt wallet');
+        setDecryptionError(
+          String(error) === 'OperationError'
+            ? 'Unable to decrypt wallet'
+            : 'Something else went wrong'
+        );
         return;
       }
 

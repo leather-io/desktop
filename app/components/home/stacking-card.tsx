@@ -73,12 +73,12 @@ export const StackingCard: FC<StackingCardProps> = () => {
                 </Text>
               </Flex>
             )}
-            <Flex flexDirection="column" mt="tight" mb="base-loose">
+            {/* <Flex flexDirection="column" mt="tight" mb="base-loose">
               <Text textStyle="body.small.medium">Reward to be paid to</Text>
               <Text as="code" fontSize="13px" mt="tight" color="ink.600">
                 {stackerInfo?.pox_address}
               </Text>
-            </Flex>
+            </Flex> */}
           </Box>
         </Box>
       )}

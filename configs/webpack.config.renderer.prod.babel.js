@@ -21,16 +21,26 @@ export default merge(baseConfig, {
 
   mode: 'production',
 
-  // target: 'electron-renderer',
   target: 'web',
 
-  entry: ['core-js', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'app/index.tsx')],
+  entry: [
+    'core-js',
+    'regenerator-runtime/runtime',
+    path.join(__dirname, '..', 'app/polyfill.ts'),
+    path.join(__dirname, '..', 'app/index.tsx'),
+  ],
 
   output: {
     path: path.join(__dirname, '..', 'app/dist'),
     publicPath: './dist/',
     filename: 'renderer.prod.js',
     libraryTarget: 'var',
+  },
+
+  resolve: {
+    alias: {
+      'bn.js': path.join('./node_modules/bn.js'),
+    },
   },
 
   module: {

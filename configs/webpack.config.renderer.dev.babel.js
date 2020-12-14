@@ -45,7 +45,7 @@ export default merge(baseConfig, {
 
   mode: 'development',
 
-  // target: 'electron-renderer',
+  target: 'web',
 
   entry: [
     'core-js',
@@ -53,6 +53,7 @@ export default merge(baseConfig, {
     ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/only-dev-server',
+    require.resolve('../app/polyfill.ts'),
     require.resolve('../app/index.tsx'),
   ],
 
@@ -106,6 +107,7 @@ export default merge(baseConfig, {
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
+      'bn.js': path.join('./node_modules/bn.js'),
     },
   },
   plugins: [
@@ -145,9 +147,9 @@ export default merge(baseConfig, {
       debug: true,
     }),
 
-    new webpack.ProvidePlugin({
-      Buffer: ['buffer', 'Buffer'],
-    }),
+    // new webpack.ProvidePlugin({
+    //   Buffer: ['buffer', 'Buffer'],
+    // }),
 
     new CopyPlugin({
       patterns: [{ from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' }],

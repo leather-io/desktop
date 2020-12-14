@@ -29,7 +29,7 @@ contextBridge.exposeInMainWorld('electron', {
   __filename,
 });
 
-async function deriveArgon2Key({ pass, salt }: Record<string, 'pass' | 'salt'>) {
+async function deriveArgon2Key({ pass, salt }: Record<'pass' | 'salt', string>) {
   const result = await argon2.hash({
     pass,
     salt,
@@ -54,7 +54,7 @@ const walletApi = {
     initialValue: () => ipcRenderer.sendSync('store-getEntireStore'),
   },
 
-  deriveKey: async (args: any) => deriveArgon2Key(args),
+  deriveKey: async (args: Record<'pass' | 'salt', string>) => deriveArgon2Key(args),
 
   windowEvents: {
     blur(callback: () => void) {

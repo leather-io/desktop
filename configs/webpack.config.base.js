@@ -11,8 +11,6 @@ import { dependencies as externals } from '../app/package.json';
 export default {
   target: 'web',
 
-  // externals: [...Object.keys(externals || {})],
-
   module: {
     noParse: [/\.wasm$/],
     rules: [
@@ -46,6 +44,7 @@ export default {
     fs: 'empty',
     Buffer: false,
     process: false,
+    child_process: 'empty',
   },
 
   output: {

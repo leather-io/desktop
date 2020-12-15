@@ -18,20 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     # Only run on non-PR events or only PRs that aren't from forks
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    outputs:
-      slack_message_id: ${{ steps.slack.outputs.message_id }}
-    steps:
-      - name: Notify slack start
-        if: success()
-        id: slack
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@v1.1.2
-        with:
-          channel: devops-notify
-          status: STARTING
-          color: warning
 
+    steps:
       # - name: Discord notification
       #   env:
       #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -209,14 +197,12 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SEMANTIC_RELEASE_PACKAGE: ${{ github.workflow }}
         with:
           # These plugins aren't packaged with semantic-release by default. So specify them here to ensure they get installed during this Github Action
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
-            semantic-release-slack-bot
 
   # Notify Discord channel of workflow end
   notify-end:
@@ -229,30 +215,6 @@ jobs:
       - release
     if: always()
     steps:
-      - name: Notify slack success
-        # Only run on non-PR events or only PRs that aren't from forks
-        if: (!contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@v1.1.2
-        with:
-          message_id: ${{ needs.notify-start.outputs.slack_message_id }}
-          channel: devops-notify
-          status: SUCCESS
-          color: good
-
-      - name: Notify slack fail
-        # Only run on non-PR events or only PRs that aren't from forks
-        if: (contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@v1.1.2
-        with:
-          message_id: ${{ needs.notify-start.outputs.slack_message_id }}
-          channel: devops-notify
-          status: FAILED
-          color: danger
-
       - name: Discord notification
         # Only run if a new release was published
         if: needs.release.outputs.new_release_published == 'true'

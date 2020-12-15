@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Flex, Box, Text } from '@blockstack/ui';
 
-import { WaffleChart } from '@components/chart/waffle-chart';
 import { RootState } from '@store/index';
+import { convertPoxAddressToBtc } from '@utils/stacking';
+import { WaffleChart } from '@components/chart/waffle-chart';
 import {
   selectStackerInfo,
   selectNextCycleInfo,
@@ -73,12 +74,12 @@ export const StackingCard: FC<StackingCardProps> = () => {
                 </Text>
               </Flex>
             )}
-            {/* <Flex flexDirection="column" mt="tight" mb="base-loose">
+            <Flex flexDirection="column" mt="tight" mb="base-loose">
               <Text textStyle="body.small.medium">Reward to be paid to</Text>
               <Text as="code" fontSize="13px" mt="tight" color="ink.600">
-                {stackerInfo?.pox_address}
+                {convertPoxAddressToBtc(stackerInfo?.pox_address)}
               </Text>
-            </Flex> */}
+            </Flex>
           </Box>
         </Box>
       )}

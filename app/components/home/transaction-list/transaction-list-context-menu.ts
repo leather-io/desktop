@@ -1,4 +1,3 @@
-import { useClipboard } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { hasMemo, getRecipientAddress } from '@utils/tx-utils';
@@ -12,54 +11,65 @@ export function deregisterHandler(el: HTMLButtonElement | null, handler: (e: Eve
   if (el === null) return;
   el.removeEventListener('contextmenu', handler);
 }
-
-type UiClipboard = ReturnType<typeof useClipboard>;
-
 interface TxListContextMenu {
   tx: Transaction;
   copy: {
-    txid: UiClipboard;
-    recipientAddress: UiClipboard;
-    memo: UiClipboard;
-    date: UiClipboard;
-    txDetails: UiClipboard;
-    explorerLink: UiClipboard;
+    txid: string;
+    recipientAddress: string;
+    memo: string;
+    date: string;
+    txDetails: string;
+    explorerLink: string;
   };
 }
 
 export function createTxListContextMenu(event: Event, { tx, copy }: TxListContextMenu) {
   event.preventDefault();
-  const menuItems: Electron.MenuItemConstructorOptions[] = [
+  const menuItems: { menu: Electron.MenuItemConstructorOptions; textToCopy?: string }[] = [
     {
-      label: 'Copy to clipboard',
-      enabled: false,
+      menu: {
+        label: 'Copy to clipboard',
+        enabled: false,
+      },
     },
-    { type: 'separator' },
+    { menu: { type: 'separator' } },
     {
-      label: 'Transaction ID',
-      click: () => copy.txid.onCopy(),
-    },
-    {
-      label: 'Recipient address',
-      visible: !!getRecipientAddress(tx),
-      click: () => copy.recipientAddress.onCopy(),
-    },
-    {
-      label: 'Memo',
-      visible: hasMemo(tx),
-      click: () => copy.memo.onCopy(),
+      textToCopy: copy.txid,
+      menu: {
+        label: 'Transaction ID',
+      },
     },
     {
-      label: 'Timestamp',
-      click: () => copy.date.onCopy(),
+      textToCopy: copy.recipientAddress,
+      menu: {
+        label: 'Recipient address',
+        visible: !!getRecipientAddress(tx),
+      },
     },
     {
-      label: 'Transaction (as JSON)',
-      click: () => copy.txDetails.onCopy(),
+      textToCopy: copy.memo,
+      menu: {
+        label: 'Memo',
+        visible: hasMemo(tx),
+      },
     },
     {
-      label: 'Explorer link',
-      click: () => copy.explorerLink.onCopy(),
+      textToCopy: copy.date,
+      menu: {
+        label: 'Timestamp',
+      },
+    },
+    {
+      textToCopy: copy.txDetails,
+      menu: {
+        label: 'Transaction (as JSON)',
+      },
+    },
+    {
+      textToCopy: copy.explorerLink,
+      menu: {
+        label: 'Explorer link',
+      },
     },
   ];
   api.contextMenu(menuItems);

@@ -261,20 +261,3 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: 'A new version (v[${{needs.release.outputs.new_release_version}}](https://github.com/${{ github.repository }}/releases/tag/v${{needs.release.outputs.new_release_version}})) of the ${{ github.workflow }} has been released.'
-
-      - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        # Only run on non-PR events or only PRs that aren't from forks
-        if: (!contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-        with:
-          header: |
-            > [Download the latest builds](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).
-            This will be version ${{needs.release.outputs.new_release_version}} when merged into `master`
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Remove header if build failed
-      - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        # Only run on non-PR events or only PRs that aren't from forks
-        if: (contains(needs.*.result, 'failure')) && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-        with:
-          header: '> _Build failed, [see here for details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

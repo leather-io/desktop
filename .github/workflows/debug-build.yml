@@ -94,3 +94,16 @@ jobs:
           path: |
             release/**/*.deb
             release/**/*.rpm
+
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        if: (!contains(needs.*.result, 'failure'))
+        with:
+          header: '> [Download the latest builds](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Remove header if build failed
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        if: (contains(needs.*.result, 'failure'))
+        with:
+          header: '> _Build failed, [see here for details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

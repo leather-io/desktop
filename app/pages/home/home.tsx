@@ -41,11 +41,11 @@ import { TransactionModal } from '@modals/transaction/transaction-modal';
 import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
-import { HomeLayout } from './home-layout';
-
-import { StackingCard } from '../../components/home/stacking-card';
+import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
 import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';
+
+import { HomeLayout } from './home-layout';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();

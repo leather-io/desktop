@@ -16,7 +16,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, ipcMain, Menu, MenuItem, session } from 'electron';
+import { app, BrowserWindow, clipboard, ipcMain, Menu, session } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
@@ -192,12 +192,32 @@ ipcMain.handle('reload-app', () => {
   mainWindow?.reload();
 });
 
-ipcMain.on('context-menu-open', (_e, { menuItems }) => {
-  const menu = new Menu();
-  menuItems.forEach((item: Electron.MenuItemConstructorOptions) => menu.append(new MenuItem(item)));
-  menu.popup({ window: mainWindow?.getParentWindow() });
-  menu.once('menu-will-close', () => {
-    // `destroy` call untyped
-    (menu as any).destroy();
-  });
-});
+//
+// TODO: refactor to be more generic
+// There's a bug where click handler doesn't fire for the top-level menu
+ipcMain.on(
+  'context-menu-open',
+  (
+    _e,
+    args: { menuItems: { menu: Electron.MenuItemConstructorOptions; textToCopy?: string }[] }
+  ) => {
+    const copyMenu = args.menuItems.map(item => {
+      const newItem = { ...item };
+      if (newItem.textToCopy) {
+        newItem.menu.click = () => clipboard.writeText(newItem.textToCopy as any);
+      }
+      return newItem.menu;
+    });
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Copy',
+        submenu: copyMenu,
+      },
+    ]);
+    contextMenu.popup({ window: mainWindow?.getParentWindow() });
+    contextMenu.once('menu-will-close', () => {
+      // `destroy` call untyped
+      (contextMenu as any).destroy();
+    });
+  }
+);

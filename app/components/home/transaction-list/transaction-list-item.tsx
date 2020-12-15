@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { useHover, useFocus } from 'use-events';
-import { Box, Text, useClipboard } from '@blockstack/ui';
+import { Box, Text } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { RootState } from '@store/index';
@@ -104,12 +104,12 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
   }
 
   const { current: copy } = useRef({
-    txid: useClipboard(tx.tx_id),
-    recipientAddress: useClipboard(getRecipientAddress(tx) || ''),
-    memo: useClipboard(memo || ''),
-    date: useClipboard(txDate.toISOString()),
-    txDetails: useClipboard(JSON.stringify(tx, null, 2)),
-    explorerLink: useClipboard(makeExplorerLink(tx.tx_id)),
+    txid: tx.tx_id,
+    recipientAddress: getRecipientAddress(tx) || '',
+    memo: memo || '',
+    date: txDate.toISOString(),
+    txDetails: JSON.stringify(tx, null, 2),
+    explorerLink: makeExplorerLink(tx.tx_id),
   });
 
   useLayoutEffect(() => {

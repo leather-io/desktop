@@ -21,7 +21,12 @@ export class Api {
 
   async getAddressTransactions(address: string) {
     return axios.get<TransactionResults>(
-      urljoin(this.baseUrl, `/extended/v1/address/${address}/transactions`)
+      urljoin(this.baseUrl, `/extended/v1/address/${address}/transactions`),
+      {
+        params: {
+          limit: 50,
+        },
+      }
     );
   }
 

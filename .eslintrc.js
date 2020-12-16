@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['@blockstack/eslint-config', 'plugin:react-hooks/recommended'],
+  extends: ['@stacks/eslint-config', 'plugin:react-hooks/recommended'],
   plugins: ['react'],
   parser: '@typescript-eslint/parser',
   parserOptions: {

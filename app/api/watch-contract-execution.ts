@@ -31,6 +31,6 @@ export function watchContractExecution(args: WatchContractExecutionArgs) {
         return resolve(true);
       }
     };
-    const interval: number = setInterval(() => void fetchTx(interval), pollingInterval);
+    const interval: number = window.setInterval(() => void fetchTx(interval), pollingInterval);
   });
 }

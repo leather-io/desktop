@@ -1,3 +1,10 @@
+# [4.0.0-beta.4](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2020-12-30)
+
+
+### Features
+
+* add new STX icon, closes [#247](https://github.com/blockstack/stacks-wallet/issues/247) ([492ad88](https://github.com/blockstack/stacks-wallet/commit/492ad8871cff514c83eb66e5e8314a3ba1d29d48)), closes [#263](https://github.com/blockstack/stacks-wallet/issues/263)
+
 # [4.0.0-beta.3](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.2...v4.0.0-beta.3) (2020-12-29)
 
 

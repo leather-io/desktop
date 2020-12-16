@@ -1,8 +1,7 @@
 {
   "name": "stacks-wallet",
-  "productName": "Stacks Wallet",
   "version": "4.0.0-beta.8",
-  "description": "",
+  "description": "Stacks Wallet v4 — Participate in Stacking to earn bitcoin rewards",
   "main": "./main.prod.js",
   "author": {
     "email": "info@blockstack.com",

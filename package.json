@@ -3,10 +3,11 @@
   "productName": "Stacks Wallet",
   "version": "4.0.0",
   "description": "Stacks Wallet 2.0 — Stacking",
-  "prettier": "@blockstack/prettier-config",
+  "prettier": "@stacks/prettier-config",
+  "homepage": "https://www.blockstack.org/testnet-wallet",
   "author": {
     "email": "info@blockstack.com",
-    "name": "Blockstack PBC"
+    "name": "Hiro PBC"
   },
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -75,7 +76,9 @@
         "AppImage"
       ],
       "icon": "icon-512x512.png",
-      "category": "Development"
+      "category": "Development",
+      "synopsis": "Stacks Wallet created by Hiro Systems PBC",
+      "description": "Send and receive STX tokens, and participate in Stacking."
     },
     "directories": {
       "buildResources": "resources",

@@ -71,6 +71,8 @@ const createWindow = async () => {
     defaultHeight: 728,
   });
 
+  console.log(path.join(__dirname, '../resources/icon-512x512.png'));
+
   mainWindow = new BrowserWindow({
     show: false,
     x: mainWindowState.x,
@@ -79,7 +81,7 @@ const createWindow = async () => {
     height: mainWindowState.height,
     frame: process.platform !== 'darwin',
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
-    icon: path.join(__dirname, '../resources/icon-no-padding-512x512.png'),
+    icon: path.join(__dirname, '../resources/icon-512x512.png'),
     webPreferences: {
       disableBlinkFeatures: 'Auxclick',
       webSecurity: true,

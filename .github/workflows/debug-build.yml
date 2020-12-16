@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
+        stx_network: [testnet, mainnet]
         include:
           - os: macos-latest
             NPM_COMMAND: mac
@@ -20,18 +21,6 @@ jobs:
             NPM_COMMAND: win
 
     steps:
-      - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        # Only update it once per build
-        if: matrix.os == 'ubuntu-latest'
-        with:
-          header: '> _Currently building new release, please wait for the latest_&nbsp; <img src="https://user-images.githubusercontent.com/1618764/97873036-51dfb200-1d17-11eb-89f5-0a922dc3ac92.gif" width="12" />'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.6.0
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Check out Git repository
         uses: actions/checkout@v1
 
@@ -58,10 +47,20 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 10
 
+      #
+      # Windows build breaks when using the package.json script to install `app/` packages
+      # using separate run to install those packages separately
       - name: Install packages
-        run: yarn
+        run: yarn --frozen-lockfile --ignore-scripts
+        env:
+          STX_NETWORK: ${{ matrix.stx_network }}
+
+      - name: Install `app/` packages
+        run: cd app && yarn --frozen-lockfile --ignore-scripts
+        env:
+          STX_NETWORK: ${{ matrix.stx_network }}
 
       - name: Build releases
         run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
@@ -70,27 +69,30 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
+          STX_NETWORK: ${{ matrix.stx_network }}
+
+      - run: ls -R release
 
       - uses: actions/upload-artifact@v2
-        name: Upload Windows build
+        name: Upload Windows builds
         if: matrix.os == 'windows-latest'
         with:
-          name: stacks-wallet-${{ steps.vars.outputs.version }}-windows
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-${{ matrix.stx_network }}-windows
           path: |
             release/**/*.exe
             release/**/*.msi
       - uses: actions/upload-artifact@v2
-        name: Upload MacOS build
+        name: Upload MacOS builds
         if: matrix.os == 'macos-latest'
         with:
-          name: stacks-wallet-${{ steps.vars.outputs.version }}-macos
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-${{ matrix.stx_network }}-macos
           path: release/**/*.dmg
 
       - uses: actions/upload-artifact@v2
-        name: Upload Linux build
+        name: Upload Linux builds
         if: matrix.os == 'ubuntu-latest'
         with:
-          name: stacks-wallet-${{ steps.vars.outputs.version }}-linux
+          name: stacks-wallet-${{ steps.vars.outputs.version }}-${{ matrix.stx_network }}-linux
           path: |
             release/**/*.deb
             release/**/*.rpm

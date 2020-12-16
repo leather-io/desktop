@@ -94,22 +94,18 @@
     }
   },
   "release": {
-    "branch": [
-      "+([0-9])?(.{+([0-9]),x}).x",
+    "branches": [
       {
-        "name": "master",
-        "prerelease": true
-      },
-      "next",
-      "next-major",
-      {
-        "name": "beta",
-        "prerelease": true
+        "name": "legacy/3.x.x",
+        "range": "3.x.x",
+        "channel": "3.x.x"
       },
       {
-        "name": "alpha",
+        "name": "next",
+        "range": "4.x.x",
         "prerelease": true
-      }
+      },
+      "master"
     ],
     "plugins": [
       "@semantic-release/commit-analyzer",

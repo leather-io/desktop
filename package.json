@@ -1,12 +1,12 @@
 {
   "name": "stacks-wallet",
-  "productName": "Stacks Wallet",
-  "version": "4.0.0-beta.3",
+  "version": "4.0.0",
   "description": "Stacks Wallet 2.0 — Stacking",
-  "prettier": "@blockstack/prettier-config",
+  "prettier": "@stacks/prettier-config",
+  "homepage": "https://www.blockstack.org/testnet-wallet",
   "author": {
     "email": "info@blockstack.com",
-    "name": "Blockstack PBC"
+    "name": "Hiro PBC"
   },
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\" \"yarn build-preload\" ",
@@ -30,71 +30,6 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.renderer.dev.babel.js",
     "start-preload-dev": "cross-env NODE_ENV=development webpack --watch --config configs/webpack.config.preload.babel.js",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest"
-  },
-  "build": {
-    "productName": "Stacks Wallet Beta",
-    "appId": "org.stacks.wallet",
-    "icon": "./resources/icon-512x512.png",
-    "artifactName": "stacks-wallet.${ext}",
-    "files": [
-      "dist/",
-      "node_modules/",
-      "app.html",
-      "main.prod.js",
-      "main.prod.js.map",
-      "package.json",
-      "preload.js"
-    ],
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "msi"
-      ]
-    },
-    "mac": {
-      "hardenedRuntime": false,
-      "icon": "./resources/icon.icns",
-      "category": "public.app-category.finance"
-    },
-    "linux": {
-      "target": [
-        "deb",
-        "rpm",
-        "AppImage"
-      ],
-      "icon": "icon-512x512.png",
-      "category": "Development"
-    },
-    "directories": {
-      "buildResources": "resources",
-      "output": "release"
-    },
-    "publish": {
-      "provider": "github",
-      "owner": "blockstack",
-      "repo": "blockstack",
-      "private": false
-    },
-    "protocols": {
-      "name": "stacks-wallet",
-      "schemes": [
-        "stacks-wallet"
-      ]
-    }
   },
   "release": {
     "branches": [
@@ -193,7 +128,10 @@
     "@blockstack/eslint-config": "1.0.5",
     "@blockstack/prettier-config": "0.0.6",
     "@blockstack/stacks-blockchain-api-types": "0.34.2",
+    "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
+    "@stacks/eslint-config": "1.0.6",
+    "@stacks/prettier-config": "0.0.7",
     "@types/argon2-browser": "1.12.0",
     "@types/bcryptjs": "2.4.2",
     "@types/bn.js": "4.11.6",
@@ -283,8 +221,7 @@
     "@ledgerhq/hw-transport-webusb": "5.29.0",
     "@popperjs/core": "2.5.4",
     "@reduxjs/toolkit": "1.4.0",
-    "@stacks/blockchain-api-client": "0.34.2",
-    "@stacks/network": "1.0.0-beta.17",
+    "@stacks/blockchain-api-client": "0.28.0",
     "@styled-system/theme-get": "5.1.2",
     "@tippyjs/react": "4.2.0",
     "@zondax/ledger-blockstack": "0.0.2",
@@ -299,6 +236,7 @@
     "connected-react-router": "6.8.0",
     "core-js": "3.7.0",
     "dayjs": "1.9.6",
+    "deepmerge": "4.2.2",
     "devtron": "1.4.0",
     "electron-context-menu": "2.3.0",
     "electron-debug": "3.1.0",

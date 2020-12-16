@@ -29,7 +29,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
     // Focusing cancel btn ensures any key press of: enter, space, esc
     // will cancel the pending operation
     cancelBtnRef.current?.focus();
-    timer.current = setTimeout(() => {
+    timer.current = window.setTimeout(() => {
       void clearDiskStorage();
       void api.reloadApp();
     }, PANIC_CANCEL_TIME);

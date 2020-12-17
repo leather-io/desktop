@@ -20,6 +20,8 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+        env:
+          STX_NETWORK: testnet
 
       - name: Build
         run: yarn tsc

@@ -1,16 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const deepMerge = require('deepmerge');
 
-const network = process.env.STX_NETWORK;
-
-console.log('----------------------------------------------------');
-console.log(network);
-console.log('----------------------------------------------------');
+const network = process.env.STX_NETWORK || 'testnet';
 
 if (!network) throw new Error('Must define STX_NETWORK environment variable');
 
-if (!['mainnet', 'testnet'].includes(network))
-  throw new Error(`Unknown STX_NETWORK type of: ${String(network)}`);
+if (!['mainnet', 'testnet'].includes(process.env.STX_NETWORK)) {
+  console.warn('You have no set a `STX_NETWORK` env var, defaulting to testnet');
+}
 
 const baseConfig = {
   files: ['dist/', 'node_modules/', 'app.html', 'main.prod.js', 'main.prod.js.map', 'package.json'],

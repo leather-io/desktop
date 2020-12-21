@@ -97,12 +97,11 @@
     "branches": [
       {
         "name": "legacy/3.x.x",
-        "range": "3.x.x",
-        "channel": "3.x.x"
+        "range": "3.x",
+        "channel": "3.x"
       },
       {
-        "name": "next",
-        "range": "4.x.x",
+        "name": "beta",
         "prerelease": true
       },
       "master"

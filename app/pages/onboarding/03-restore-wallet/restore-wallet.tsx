@@ -40,11 +40,13 @@ export const RestoreWallet: React.FC = () => {
       return;
     }
 
-    if (!validateMnemonic(mnemonic)) {
+    const parsedMnemonic = mnemonic.toLowerCase().trim();
+
+    if (!validateMnemonic(parsedMnemonic)) {
       setError('Not a valid bip39 mnemonic');
       return;
     }
-    dispatch(persistMnemonic(mnemonic.trim()));
+    dispatch(persistMnemonic(parsedMnemonic));
     history.push(routes.SET_PASSWORD);
   };
 

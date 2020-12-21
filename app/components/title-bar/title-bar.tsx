@@ -5,10 +5,14 @@ import { Flex, Box } from '@blockstack/ui';
 
 import routes from '@constants/routes.json';
 import { useWindowFocus } from '@hooks/use-window-focus';
-import { BackContext } from '../pages/root';
+import { useCheckForUpdates } from '@hooks/use-check-for-updates';
+import { openExternalLink } from '@utils/external-links';
 
+import { BackContext } from '../../pages/root';
 import { NetworkMessage } from './network-message';
-import { BackButton } from './back-button';
+import { BackButton } from '../back-button';
+import { SettingsButton } from './settings-button';
+import { UpdateAvailableButton } from './update-available-button';
 
 export const TitleBar: FC = () => {
   const el = document.querySelector('.draggable-bar');
@@ -21,6 +25,8 @@ export const TitleBar: FC = () => {
     routerHistory.push(backUrl);
   };
   const winState = useWindowFocus();
+
+  const { isNewerReleaseAvailable, latestRelease } = useCheckForUpdates();
 
   const isOnboarding = matchPath(location.pathname, { path: '/onboard' }) !== null;
   const dulledTextColor = winState === 'blurred' ? '#A1A7B3' : undefined;
@@ -35,23 +41,25 @@ export const TitleBar: FC = () => {
       backgroundColor={winState === 'focused' ? 'white' : '#FAFAFC'}
     >
       <BackButton backUrl={backUrl} hasFocus={winState === 'focused'} onClick={handleHistoryBack} />
-      <NetworkMessage textColor={dulledTextColor} />
+      <Flex justifyContent="space-around" flex={1}>
+        <Flex>
+          {isNewerReleaseAvailable && latestRelease && (
+            <UpdateAvailableButton
+              windowState={winState}
+              onClick={() => openExternalLink(latestRelease.html_url)}
+            />
+          )}
+          <Flex alignItems="center" ml="base">
+            <NetworkMessage textColor={dulledTextColor} />
+          </Flex>
+        </Flex>
+      </Flex>
       <Box>
         {!isOnboarding && (
-          <Box
-            as="button"
+          <SettingsButton
             onClick={() => routerHistory.push(routes.SETTINGS)}
-            fontWeight="regular"
             style={{ color: dulledTextColor || '#677282' }}
-            textStyle="body.small"
-            p="tight"
-            mt="4px"
-            mr="tight"
-            cursor="default"
-            _focus={{ textDecoration: 'underline', outline: 0 }}
-          >
-            Settings
-          </Box>
+          />
         )}
       </Box>
     </Flex>

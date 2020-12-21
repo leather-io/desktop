@@ -30,4 +30,5 @@ export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
 export const features = {
   stacking: true,
   lifetimeRewards: false,
+  txContentMenus: false,
 };

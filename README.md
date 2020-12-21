@@ -1,6 +1,8 @@
-# Stacks Wallet 2.0
+# Stacks Wallet
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/blockstack/stacks-wallet/Build)
+
+![Stacks Wallet Hero](/resources/readme.png)
 
 Implementation of the Stacks 2.0 wallet
 
@@ -15,9 +17,3 @@ yarn build
 ```sh
 yarn dev
 ```
-
-## Quality Assurance
-
-Wallet installation files are created by CI. These builds are found as upload artifacts within the `build/release` CI job.
-
-To test Ledger functionality, [see the documentation written by Zondax on their repo](https://github.com/Zondax/ledger-blockstack/).

@@ -1,3 +1,10 @@
+# [4.0.0-beta.2](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2020-12-23)
+
+
+### Features
+
+* add readme img, closes [#243](https://github.com/blockstack/stacks-wallet/issues/243) ([b303bc0](https://github.com/blockstack/stacks-wallet/commit/b303bc0737a0bb5d30816f64eb095066e9aa64fd))
+
 # [4.0.0-beta.1](https://github.com/blockstack/stacks-wallet/compare/v3.0.0...v4.0.0-beta.1) (2020-12-22)
 
 

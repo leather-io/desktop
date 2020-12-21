@@ -11,7 +11,7 @@ import {
 } from '@store/transaction';
 import { getAddressDetails, updateAddressBalance } from '@store/address';
 import { RootState } from '@store/index';
-import { TitleBar } from '@components/title-bar';
+import { TitleBar } from '@components/title-bar/title-bar';
 import { selectAddress } from '@store/keys';
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';

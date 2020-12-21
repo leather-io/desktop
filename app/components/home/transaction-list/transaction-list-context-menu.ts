@@ -1,6 +1,7 @@
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { hasMemo, getRecipientAddress } from '@utils/tx-utils';
+import { features } from '../../../constants/index';
 
 export function registerHandler(el: HTMLButtonElement | null, handler: (e: Event) => void) {
   if (el === null) return;
@@ -25,6 +26,7 @@ interface TxListContextMenu {
 
 export function createTxListContextMenu(event: Event, { tx, copy }: TxListContextMenu) {
   event.preventDefault();
+  if (!features.txContentMenus) return;
   const menuItems: { menu: Electron.MenuItemConstructorOptions; textToCopy?: string }[] = [
     {
       menu: {

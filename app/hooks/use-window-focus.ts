@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export type WindowActiveState = 'focused' | 'blurred';
+import { WindowActiveState } from 'app/types';
 
 export function useWindowFocus() {
   const [windowState, setWindowState] = useState<WindowActiveState>('focused');

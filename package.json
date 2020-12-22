@@ -1,7 +1,7 @@
 {
   "name": "stacks-wallet",
   "productName": "Stacks Wallet",
-  "version": "4.0.0",
+  "version": "4.0.0-beta.1",
   "description": "Stacks Wallet 2.0 — Stacking",
   "prettier": "@blockstack/prettier-config",
   "author": {
@@ -100,12 +100,11 @@
     "branches": [
       {
         "name": "legacy/3.x.x",
-        "range": "3.x.x",
-        "channel": "3.x.x"
+        "range": "3.x",
+        "channel": "3.x"
       },
       {
-        "name": "next",
-        "range": "4.x.x",
+        "name": "beta",
         "prerelease": true
       },
       "master"

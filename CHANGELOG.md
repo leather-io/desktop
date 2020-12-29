@@ -1,3 +1,18 @@
+# [4.0.0-beta.3](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.2...v4.0.0-beta.3) (2020-12-29)
+
+
+### Bug Fixes
+
+* package.json & yarn.lock to reduce vulnerabilities ([a220c51](https://github.com/blockstack/stacks-wallet/commit/a220c51cfca54869a33f73dfd241bcbdab38c545))
+* remove 24 word phrasing, closes [#427](https://github.com/blockstack/stacks-wallet/issues/427) ([f048da0](https://github.com/blockstack/stacks-wallet/commit/f048da0428bd59c7350ada534de8bd404a63dc88))
+* upgrade styled-components from 5.1.1 to 5.2.1 ([0ce9757](https://github.com/blockstack/stacks-wallet/commit/0ce9757443a893c4a49034f5b121f27f517e3a6e))
+
+
+### Features
+
+* add SECURITY.txt ([10c1f8b](https://github.com/blockstack/stacks-wallet/commit/10c1f8bf907aaa86118f90ee440945bea42e0960))
+* update Terms of Service, closes [#171](https://github.com/blockstack/stacks-wallet/issues/171) ([6a770de](https://github.com/blockstack/stacks-wallet/commit/6a770dec86009382398542e39b44a559f989d4bf))
+
 # [4.0.0-beta.2](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2020-12-23)
 
 

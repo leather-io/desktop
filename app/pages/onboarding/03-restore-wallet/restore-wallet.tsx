@@ -69,7 +69,7 @@ export const RestoreWallet: React.FC = () => {
         as="textarea"
         mt="base-tight"
         minHeight="90px"
-        placeholder="24-word Secret Key"
+        placeholder="Secret Key"
         style={{
           resize: 'none',
           border: error ? '2px solid #D4001A' : '',

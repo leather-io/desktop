@@ -1,3 +1,18 @@
+# [4.0.0-beta.4](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2021-01-04)
+
+
+### Bug Fixes
+
+* ledger signing, closes [#432](https://github.com/blockstack/stacks-wallet/issues/432) [#433](https://github.com/blockstack/stacks-wallet/issues/433) ([242da6e](https://github.com/blockstack/stacks-wallet/commit/242da6eab1e2ee0c01ab9a0f22175c9e2750b7d2))
+* test windows ci issue, add module ([cd47f83](https://github.com/blockstack/stacks-wallet/commit/cd47f83e004ead8b9e88e70e459d8030994c5118))
+* **stacking:** allow testnet btc address in testnet mode ([b2892f0](https://github.com/blockstack/stacks-wallet/commit/b2892f048ee17271fa6525ed61d482fc5e19a1f5))
+
+
+### Features
+
+* add new STX icon, closes [#247](https://github.com/blockstack/stacks-wallet/issues/247) ([492ad88](https://github.com/blockstack/stacks-wallet/commit/492ad8871cff514c83eb66e5e8314a3ba1d29d48)), closes [#263](https://github.com/blockstack/stacks-wallet/issues/263)
+* adds update prompts, closes [#274](https://github.com/blockstack/stacks-wallet/issues/274) ([73dddc0](https://github.com/blockstack/stacks-wallet/commit/73dddc0cdd34e7959ec847d7d80f22ce5c2a869f))
+
 # [4.0.0-beta.4](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2020-12-30)
 
 

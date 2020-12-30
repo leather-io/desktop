@@ -1621,7 +1621,7 @@
     "@ledgerhq/hw-transport" "^5.29.0"
     "@ledgerhq/logs" "^5.29.0"
 
-"@ledgerhq/hw-transport@^5.23.0", "@ledgerhq/hw-transport@^5.29.0":
+"@ledgerhq/hw-transport@^5.17.0", "@ledgerhq/hw-transport@^5.29.0":
   version "5.36.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-5.36.0.tgz#b6e951c411182ece59c7b527f948240d1b0a8a51"
   integrity sha512-rwLTBUsdGCC3Ka4G99sqGbbyVhkVxXd4eWWeOb8gnuKhrTydZGkkP3JdZSHgWSrVRYTAUmkE1AnUmchbfh361w==
@@ -2969,13 +2969,13 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zondax/ledger-blockstack@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@zondax/ledger-blockstack/-/ledger-blockstack-0.0.2.tgz#0e272d4a2723aa01457d537337b52f5d78f7adc9"
-  integrity sha512-8Kvi1+cpvMAbT4u8O5a02jSvdWcG2AR+xs3EMOUgg6KnFQLpn1CM6MwAHlLraOiQfIzQ9z8aZHDD983qzg7sKw==
+"@zondax/ledger-blockstack@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@zondax/ledger-blockstack/-/ledger-blockstack-0.1.0.tgz#3e26bc39294a6921f1f169130d1f8874f6d43cdc"
+  integrity sha512-FLRYFQISGeIIFXhYNSMFbbDbT9bgSDhIMvz/8buhn6p/WtbWmWbBaPUBCg8JrKW5NujdydibaESys1xOTg5CPw==
   dependencies:
     "@babel/runtime" "^7.10.3"
-    "@ledgerhq/hw-transport" "^5.23.0"
+    "@ledgerhq/hw-transport" "^5.17.0"
     "@types/ledgerhq__hw-transport" "^4.21.2"
     ts-jest "^26.1.4"
 

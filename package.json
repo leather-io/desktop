@@ -227,7 +227,7 @@
     "@stacks/blockchain-api-client": "0.28.0",
     "@styled-system/theme-get": "5.1.2",
     "@tippyjs/react": "4.2.0",
-    "@zondax/ledger-blockstack": "0.0.2",
+    "@zondax/ledger-blockstack": "0.1.0",
     "argon2-browser": "1.15.2",
     "axios": "0.21.1",
     "bignumber.js": "9.0.1",

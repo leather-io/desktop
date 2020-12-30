@@ -10,7 +10,15 @@ if (!['mainnet', 'testnet'].includes(process.env.STX_NETWORK)) {
 }
 
 const baseConfig = {
-  files: ['dist/', 'node_modules/', 'app.html', 'main.prod.js', 'main.prod.js.map', 'package.json'],
+  files: [
+    'dist/',
+    'node_modules/',
+    'app.html',
+    'main.prod.js',
+    'main.prod.js.map',
+    'preload.js',
+    'package.json',
+  ],
   dmg: {
     contents: [
       {

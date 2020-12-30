@@ -5,7 +5,7 @@ import validate from 'bitcoin-address-validation';
 
 import { ErrorText } from '@components/error-text';
 import { ErrorLabel } from '@components/error-label';
-import { SUPPORTED_BTC_ADDRESS_FORMATS } from '../../../constants/index';
+import { NETWORK, SUPPORTED_BTC_ADDRESS_FORMATS } from '@constants/index';
 
 import {
   StackingStep,
@@ -30,7 +30,9 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
     validate: ({ btcAddress }) => {
       const address = validate(btcAddress);
       if (!address) return { btcAddress: 'Invalid BTC address' };
-      if (address.network === 'testnet') return { btcAddress: 'Testnet addresses not supported' };
+      if (NETWORK === 'mainnet' && address.network === 'testnet') {
+        return { btcAddress: 'Testnet addresses not supported' };
+      }
       // https://github.com/blockstack/stacks-blockchain/issues/1902
       if (!SUPPORTED_BTC_ADDRESS_FORMATS.includes(address.type as any)) {
         return {

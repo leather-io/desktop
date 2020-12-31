@@ -2,6 +2,8 @@
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/blockstack/stacks-wallet/Build)
 
+The Stacks Wallet is a cryptocurrency wallet for managing your STX tokens.
+
 Implementation of the Stacks 2.0 wallet
 
 ## Getting started

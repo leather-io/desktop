@@ -39,7 +39,7 @@ export interface StackingState {
     'poxInfo' | 'coreNodeInfo' | 'blockTimeInfo' | 'stackerInfo',
     boolean
   >;
-  error: string | null;
+  errors: Record<'poxInfo' | 'coreNodeInfo' | 'blockTimeInfo' | 'stackerInfo', boolean>;
   contractCallTx: string | null;
   poxInfo: CoreNodePoxResponse | null;
   coreNodeInfo: CoreNodeInfoResponse | null;
@@ -54,7 +54,12 @@ const initialState: StackingState = {
     blockTimeInfo: false,
     stackerInfo: false,
   },
-  error: null,
+  errors: {
+    poxInfo: false,
+    coreNodeInfo: false,
+    blockTimeInfo: false,
+    stackerInfo: false,
+  },
   contractCallTx: null,
   poxInfo: null,
   coreNodeInfo: null,
@@ -79,14 +84,22 @@ export const stackingSlice = createSlice({
       action: PayloadAction<CoreNodeInfoResponse>
     ) => {
       state.initialRequestsComplete.coreNodeInfo = true;
+      state.errors.coreNodeInfo = false;
       state.coreNodeInfo = action.payload;
+    },
+    [fetchCoreDetails.rejected.toString()]: state => {
+      state.errors.coreNodeInfo = true;
     },
     [fetchBlockTimeInfo.fulfilled.toString()]: (
       state,
       action: PayloadAction<NetworkBlockTimesResponse>
     ) => {
+      state.errors.blockTimeInfo = false;
       state.initialRequestsComplete.blockTimeInfo = true;
       state.blockTimeInfo = action.payload;
+    },
+    [fetchBlockTimeInfo.rejected.toString()]: state => {
+      state.errors.blockTimeInfo = true;
     },
     [fetchStackerInfo.fulfilled.toString()]: (
       state,
@@ -94,11 +107,11 @@ export const stackingSlice = createSlice({
     ) => {
       state.initialRequestsComplete.stackerInfo = true;
       if ('error' in action.payload || !action.payload.stacked) {
-        state.error = 'There was an error stacking';
+        state.errors.stackerInfo = true;
         return;
       }
       state.stackerInfo = action.payload.details;
-      state.error = null;
+      state.errors.stackerInfo = false;
     },
     [fetchStackerInfo.rejected.toString()]: state => {
       state.initialRequestsComplete.stackerInfo = true;
@@ -106,6 +119,9 @@ export const stackingSlice = createSlice({
     [activeStackingTx.toString()]: (state, action: PayloadAction<{ txId: string }>) => {
       state.contractCallTx = action.payload.txId;
     },
+    // [activeStackingTx]: (state, action: PayloadAction<{ txId: string }>) => {
+    //   state.contractCallTx = action.payload.txId;
+    // },
     [removeStackingTx.toString()]: state => {
       state.contractCallTx = null;
     },
@@ -121,7 +137,7 @@ export const selectBlockTimeInfo = createSelector(
   state => state.blockTimeInfo
 );
 
-export const selectStackingError = createSelector(selectStackingState, state => state.error);
+export const selectStackingError = createSelector(selectStackingState, state => state.errors);
 
 export const selectLoadingStacking = createSelector(
   selectStackingState,

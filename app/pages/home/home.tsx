@@ -44,6 +44,7 @@ import { TransactionListItemPending } from '@components/home/transaction-list/tr
 import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
 import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';
+import { StackingError } from '@components/home/stacking-error-card';
 
 import { HomeLayout } from './home-layout';
 
@@ -168,6 +169,7 @@ export const Home: FC = () => {
       <StackingBeginsSoonCard blocksTillNextCycle={nextCycleInfo?.blocksToNextCycle} />
     ),
     [HomeCardState.StackingActive]: <StackingCard />,
+    [HomeCardState.StackingError]: <StackingError error="sldkjfslfd" />,
     [HomeCardState.PostStacking]: <></>,
   };
 

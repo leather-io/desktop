@@ -6,6 +6,7 @@ import {
   selectLoadingStacking,
   selectPoxInfo,
   selectStackerInfo,
+  selectStackingError,
 } from '@store/stacking';
 import BigNumber from 'bignumber.js';
 
@@ -50,6 +51,7 @@ export enum HomeCardState {
   StackingPreCycle,
   StackingActive,
   PostStacking,
+  StackingError,
 }
 
 const selectLoadingCardResources = createSelector(
@@ -67,13 +69,27 @@ const selectMeetsMinStackingThreshold = createSelector(
   }
 );
 
+const selectShowErrorCard = createSelector(selectStackingError, state => {
+  const errorToCheck = [state.blockTimeInfo, state.coreNodeInfo, state.poxInfo];
+  return errorToCheck.some(val => val === true);
+});
+
 export const selectHomeCardState = createSelector(
   selectLoadingCardResources,
   selectActiveStackingTxId,
   selectMeetsMinStackingThreshold,
   selectIsStackingCallPending,
   selectStackerInfo,
-  (loadingResources, activeStackingTxId, meetsMinThreshold, stackingCallPending, stackerInfo) => {
+  selectShowErrorCard,
+  (
+    loadingResources,
+    activeStackingTxId,
+    meetsMinThreshold,
+    stackingCallPending,
+    stackerInfo,
+    stackingErr
+  ) => {
+    if (stackingErr) return HomeCardState.StackingError;
     if (loadingResources) return HomeCardState.LoadingResources;
     if (!meetsMinThreshold) return HomeCardState.NotEnoughStx;
     if (stackingCallPending || typeof activeStackingTxId === 'string')

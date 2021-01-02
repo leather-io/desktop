@@ -42,6 +42,7 @@ import {
 import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { StackingFailed } from './steps/stacking-failed';
+import { delay } from '@utils/delay';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
@@ -206,6 +207,8 @@ export const StackingModal: FC<StackingModalProps> = props => {
     };
 
     setHasSubmitted(true);
+    await delay(100);
+
     if (walletType === 'software') {
       setIsDecrypting(true);
 

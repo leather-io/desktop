@@ -107,7 +107,6 @@ export const stackingSlice = createSlice({
     ) => {
       state.initialRequestsComplete.stackerInfo = true;
       if ('error' in action.payload || !action.payload.stacked) {
-        state.errors.stackerInfo = true;
         return;
       }
       state.stackerInfo = action.payload.details;
@@ -115,13 +114,11 @@ export const stackingSlice = createSlice({
     },
     [fetchStackerInfo.rejected.toString()]: state => {
       state.initialRequestsComplete.stackerInfo = true;
+      state.errors.stackerInfo = true;
     },
     [activeStackingTx.toString()]: (state, action: PayloadAction<{ txId: string }>) => {
       state.contractCallTx = action.payload.txId;
     },
-    // [activeStackingTx]: (state, action: PayloadAction<{ txId: string }>) => {
-    //   state.contractCallTx = action.payload.txId;
-    // },
     [removeStackingTx.toString()]: state => {
       state.contractCallTx = null;
     },

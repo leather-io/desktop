@@ -137,6 +137,12 @@ jobs:
         env:
           STX_NETWORK: testnet
 
+      - name: Install `concat-map` only for Windows
+        run: yarn add concat-map --ignore-scripts --frozen-lockfile
+        if: matrix.os == 'windows-latest'
+        env:
+          STX_NETWORK: testnet
+
       - name: Build releases
         run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
         env:

@@ -169,7 +169,7 @@ export const Home: FC = () => {
       <StackingBeginsSoonCard blocksTillNextCycle={nextCycleInfo?.blocksToNextCycle} />
     ),
     [HomeCardState.StackingActive]: <StackingCard />,
-    [HomeCardState.StackingError]: <StackingError error="sldkjfslfd" />,
+    [HomeCardState.StackingError]: <StackingError />,
     [HomeCardState.PostStacking]: <></>,
   };
 

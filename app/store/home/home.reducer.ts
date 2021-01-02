@@ -70,8 +70,7 @@ const selectMeetsMinStackingThreshold = createSelector(
 );
 
 const selectShowErrorCard = createSelector(selectStackingError, state => {
-  const errorToCheck = [state.blockTimeInfo, state.coreNodeInfo, state.poxInfo];
-  return errorToCheck.some(val => val === true);
+  return Object.values(state).some(val => val === true);
 });
 
 export const selectHomeCardState = createSelector(

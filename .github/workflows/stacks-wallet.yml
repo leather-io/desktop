@@ -94,12 +94,18 @@ jobs:
         include:
           - os: macos-latest
             NPM_COMMAND: mac
+            CSC_LINK: ''
+            CSC_KEY_PASSWORD: ''
 
           - os: ubuntu-latest
             NPM_COMMAND: linux
+            CSC_LINK: ''
+            CSC_KEY_PASSWORD: ''
 
           - os: windows-latest
             NPM_COMMAND: win
+            CSC_LINK: ${{ secrets.CODE_SIGNING_CERTIFICATE_WINDOWS }}
+            CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGNING_PASSWORD_WINDOWS }}
 
     steps:
       - name: Cancel Previous Runs
@@ -145,6 +151,8 @@ jobs:
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
           STX_NETWORK: testnet
+          CSC_LINK: ${{ matrix.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ matrix.CSC_KEY_PASSWORD }}
 
       - uses: actions/upload-artifact@v2
         name: Windows upload

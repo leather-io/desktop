@@ -9,7 +9,6 @@ import { addressReducer, AddressState } from './address';
 import { HomeState, homeSlice } from './home';
 import { pendingTransactionReducer, PendingTransactionState } from './pending-transaction';
 import { stacksNodeReducer, StacksNodeState } from './stacks-node';
-import { MempoolState, mempoolReducer } from './mempool';
 import { StackingState, stackingSlice } from './stacking';
 import { reduxPersistElectronStore } from './persist-middleware';
 import { configureStore } from './configureStore';
@@ -23,7 +22,6 @@ export interface RootState {
   home: HomeState;
   stacksNode: StacksNodeState;
   stacking: StackingState;
-  mempool: MempoolState;
   _persist: any;
 }
 
@@ -52,7 +50,6 @@ export function createRootReducer({ history, keys }: RootReducerArgs) {
     home: homeSlice.reducer,
     stacksNode: stacksNodeReducer,
     stacking: stackingSlice.reducer,
-    mempool: mempoolReducer,
   });
 }
 

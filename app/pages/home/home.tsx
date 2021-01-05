@@ -67,7 +67,6 @@ export const Home: FC = () => {
     nextCycleInfo,
     stackerInfo,
     stackingCardState,
-    // mempoolTxs,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
@@ -84,7 +83,6 @@ export const Home: FC = () => {
     stackerInfo: selectStackerInfo(state),
     stackingLoading: selectLoadingStacking(state),
     stackingCardState: selectHomeCardState(state),
-    // mempoolTxs: selectMempoolTxs(state),
   }));
 
   const { inboundMempoolTxs } = useMempool();

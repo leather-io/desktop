@@ -4,8 +4,10 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import Qr from 'qrcode.react';
 import { Text, Modal, Button, Flex, Box, useClipboard } from '@blockstack/ui';
 
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import { NETWORK } from '@constants/index';
 import { homeActions } from '@store/home/home.reducer';
+import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import { ExchangeWithdrawalWarning } from '@components/testnet/exchange-withdrawal-warning';
 
 interface ReceiveStxModalProps {
   address: string;
@@ -36,6 +38,7 @@ export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
         <Text textStyle="body.large.medium" mt="loose">
           Wallet address
         </Text>
+        {NETWORK === 'testnet' && <ExchangeWithdrawalWarning />}
         <Flex
           mt="base-tight"
           justifyContent="center"

@@ -82,7 +82,7 @@ export const App: FC = ({ children }) => {
       dispatch(fetchStackingInfo());
     }
     dispatch(fetchCoreDetails());
-  }, 5_000);
+  }, 20_000);
 
   useEffect(() => {
     async function run() {

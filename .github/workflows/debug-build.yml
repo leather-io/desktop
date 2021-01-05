@@ -13,12 +13,16 @@ jobs:
         include:
           - os: macos-latest
             NPM_COMMAND: mac
+            CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_APPLE
+            CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_APPLE
 
           - os: ubuntu-latest
             NPM_COMMAND: linux
 
           - os: windows-latest
             NPM_COMMAND: win
+            CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
+            CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 
     steps:
       - name: Check out Git repository
@@ -37,12 +41,20 @@ jobs:
           echo "GITHUB_REF_NAME_SLUG=$GITHUB_REF_NAME_SLUG"
           echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT"
           echo "GITHUB_SHA=$GITHUB_SHA"
+
       - name: Variables
         id: vars
         run: |
           echo "::set-output name=version::$(cat package.json | jq -r .version)"
           echo "::set-output name=branch_name::$(echo ${GITHUB_REF#refs/heads/})"
           echo "::set-output name=pull_request_id::$(echo $GITHUB_REF)"
+
+      - name: Install code-signing certs - Apple only
+        uses: apple-actions/import-codesign-certs@v1
+        if: matrix.os == 'macos-latest'
+        with:
+          p12-file-base64: ${{ secrets.CODE_SIGNING_CERTIFICATE_APPLE }}
+          p12-password: ${{ secrets.CODE_SIGNING_PASSWORD_APPLE }}
 
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
@@ -70,6 +82,10 @@ jobs:
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
           STX_NETWORK: ${{ matrix.stx_network }}
+          CSC_LINK: ${{ secrets[matrix.CSC_LINK_SECRET_NAME] }}
+          CSC_KEY_PASSWORD: ${{ secrets[matrix.CSC_KEY_PASSWORD_SECRET_NAME] }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
 
       - run: ls -R release
 

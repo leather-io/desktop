@@ -10,6 +10,7 @@ if (!['mainnet', 'testnet'].includes(process.env.STX_NETWORK)) {
 }
 
 const baseConfig = {
+  afterSign: "scripts/notarize.js",
   files: [
     'dist/',
     'node_modules/',
@@ -37,7 +38,7 @@ const baseConfig = {
     target: ['nsis', 'msi'],
   },
   mac: {
-    hardenedRuntime: false,
+    hardenedRuntime: true,
     category: 'public.app-category.finance',
   },
   linux: {

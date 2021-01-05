@@ -67,6 +67,11 @@ export class Api {
     );
   }
 
+  async getMempoolTransactions(): Promise<MempoolTransaction[]> {
+    const mempoolTxs = await axios.get(urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=200`));
+    return mempoolTxs.data.results;
+  }
+
   async callReadOnly({
     contract,
     functionName,

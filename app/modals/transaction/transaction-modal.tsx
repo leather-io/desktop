@@ -57,6 +57,7 @@ import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
 import { StacksTestnet } from '@stacks/network';
 import { validateDecimalPrecision } from '../../utils/form/validate-decimals';
+import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 
 interface TxModalProps {
   balance: string;
@@ -84,6 +85,9 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [total, setTotal] = useState(new BigNumber(0));
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
+  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
+    null
+  );
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
@@ -157,7 +161,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     const broadcastActions = {
       amount,
       onBroadcastSuccess: closeModal,
-      onBroadcastFail: () => setStep(TxModalStep.NetworkError),
+      onBroadcastFail: (error?: PostCoreNodeTransactionsError) => {
+        if (error) setNodeResponseError(error);
+        setStep(TxModalStep.NetworkError);
+      },
     };
 
     if (walletType === 'software') {
@@ -422,7 +429,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     }),
     [TxModalStep.NetworkError]: () => ({
       header: <TxModalHeader onSelectClose={closeModal} />,
-      body: <FailedBroadcastError />,
+      body: <FailedBroadcastError errorReason={nodeResponseError?.reason} />,
       footer: (
         <TxModalFooter>
           <TxModalButton mode="tertiary" onClick={closeModal}>

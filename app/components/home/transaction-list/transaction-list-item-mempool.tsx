@@ -31,7 +31,6 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
 
   useEffect(() => {
     if (containerRef.current !== null && domNodeMapRef !== null) {
-      console.log('run mempool effect');
       domNodeMapRef.current[tx.tx_id] = containerRef.current;
     }
   }, [domNodeMapRef, tx.tx_id]);

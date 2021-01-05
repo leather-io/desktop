@@ -1,6 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@blockstack/ui';
-import { Transaction } from '@blockstack/stacks-blockchain-api-types';
+import {
+  Transaction,
+  PostCoreNodeTransactionsError,
+} from '@blockstack/stacks-blockchain-api-types';
 import urljoin from 'url-join';
 import BigNumber from 'bignumber.js';
 import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
@@ -58,7 +61,7 @@ export interface BroadcastTransactionArgs {
   amount: BigNumber;
   isStackingCall?: boolean;
   onBroadcastSuccess(txId: string): void;
-  onBroadcastFail(): void;
+  onBroadcastFail(errorResponse?: PostCoreNodeTransactionsError): void;
 }
 export function broadcastTransaction(args: BroadcastTransactionArgs) {
   const { amount, transaction, isStackingCall = false, onBroadcastSuccess, onBroadcastFail } = args;
@@ -71,14 +74,16 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
     const [error, blockchainResponse] = await safeAwait(
       broadcastRawTransaction(transaction.serialize(), activeNode.url)
     );
+    console.log({ error, blockchainResponse });
     if (error || !blockchainResponse) {
       dispatch(broadcastTxFail(error as any));
+      onBroadcastFail();
       return;
     }
     if (typeof blockchainResponse !== 'string') {
       // setError for ui
-      dispatch(broadcastTxFail(error as any));
-      onBroadcastFail();
+      dispatch(broadcastTxFail(blockchainResponse as any));
+      onBroadcastFail(blockchainResponse);
       return;
     }
     onBroadcastSuccess(safelyFormatHexTxid(blockchainResponse));

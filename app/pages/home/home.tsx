@@ -132,7 +132,7 @@ export const Home: FC = () => {
             activeTxIdRef={focusedTxIdRef}
             key={mempoolTx.tx_id}
             tx={mempoolTx}
-            onSelectTx={openInExplorer}
+            onSelectTx={openTxInExplorer}
           />
         ))}
         {pendingTxs.map(pTx => (

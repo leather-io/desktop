@@ -1,3 +1,10 @@
+# [4.0.0-beta.5](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.4...v4.0.0-beta.5) (2021-01-05)
+
+
+### Features
+
+* provide testnet wallet warnings ([cd4866d](https://github.com/blockstack/stacks-wallet/commit/cd4866dc329a00731c969c1bb29c34482a905449))
+
 # [4.0.0-beta.4](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2021-01-04)
 
 

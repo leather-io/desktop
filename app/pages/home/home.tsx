@@ -47,6 +47,8 @@ import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-ca
 import { StackingError } from '@components/home/stacking-error-card';
 
 import { HomeLayout } from './home-layout';
+import { TransactionListItemMempool } from '@components/home/transaction-list/transaction-list-item-mempool';
+import { useMempool } from '@hooks/use-mempool';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -65,6 +67,7 @@ export const Home: FC = () => {
     nextCycleInfo,
     stackerInfo,
     stackingCardState,
+    // mempoolTxs,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     txs: selectTransactionList(state),
@@ -81,14 +84,17 @@ export const Home: FC = () => {
     stackerInfo: selectStackerInfo(state),
     stackingLoading: selectLoadingStacking(state),
     stackingCardState: selectHomeCardState(state),
+    // mempoolTxs: selectMempoolTxs(state),
   }));
+
+  const { inboundMempoolTxs } = useMempool();
 
   const focusedTxIdRef = useRef<string | null>(null);
   const txDomNodeRefMap = useRef<Record<string, HTMLButtonElement>>({});
 
   const focusTxDomNode = useCallback(
     (shift: (i: number) => number) => {
-      const allTxs = [...pendingTxs, ...txs];
+      const allTxs = [...inboundMempoolTxs, ...pendingTxs, ...txs];
       if (allTxs.length === 0) return;
       if (focusedTxIdRef.current === null) {
         const txId = allTxs[0].tx_id;
@@ -103,15 +109,15 @@ export const Home: FC = () => {
       if (!domNode) return;
       domNode.focus();
     },
-    [pendingTxs, txs]
+    [txs, pendingTxs, inboundMempoolTxs]
   );
 
-  useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs]);
-  useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs]);
+  useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs, inboundMempoolTxs]);
+  useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs, inboundMempoolTxs]);
 
   if (!address) return <Spinner />;
 
-  const txCount = txs.length + pendingTxs.length;
+  const txCount = txs.length + pendingTxs.length + inboundMempoolTxs.length;
 
   const transactionList = (
     <>
@@ -121,6 +127,16 @@ export const Home: FC = () => {
         node={activeNode}
         error={txListFetchError}
       >
+        {inboundMempoolTxs.map(mempoolTx => (
+          <TransactionListItemMempool
+            address={address}
+            domNodeMapRef={txDomNodeRefMap}
+            activeTxIdRef={focusedTxIdRef}
+            key={mempoolTx.tx_id}
+            tx={mempoolTx}
+            onSelectTx={openInExplorer}
+          />
+        ))}
         {pendingTxs.map(pTx => (
           <TransactionListItemPending
             domNodeMapRef={txDomNodeRefMap}
@@ -187,6 +203,9 @@ export const Home: FC = () => {
         stackingCard={stackingCardMap[stackingCardState]}
         stackingRewardCard={stackingRewardCard}
       />
+      <small>
+        <pre>{JSON.stringify(inboundMempoolTxs, null, 2)}</pre>
+      </small>
     </>
   );
 };

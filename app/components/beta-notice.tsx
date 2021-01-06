@@ -69,7 +69,7 @@ export const BetaNotice: FC = () => {
         </Text>
       )}
       {shaShort && (
-        <Text mr="base">
+        <Text mr="base-tight">
           Commit:{' '}
           <Text
             cursor="pointer"

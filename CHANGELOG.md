@@ -1,3 +1,18 @@
+# [4.0.0-beta.6](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.5...v4.0.0-beta.6) (2021-01-06)
+
+
+### Bug Fixes
+
+* title bar centre alignment, beta notice, closes [#439](https://github.com/blockstack/stacks-wallet/issues/439) ([c0d81d7](https://github.com/blockstack/stacks-wallet/commit/c0d81d7ac145ce1bfe6402aec11d8142e50e366b))
+* visual lag when decrypting wallet, closes [#442](https://github.com/blockstack/stacks-wallet/issues/442) ([b5ddedf](https://github.com/blockstack/stacks-wallet/commit/b5ddedf2d155dad93a4177bda2329ac2386e6be7))
+* **stacking:** missing stacking error state, closes [#416](https://github.com/blockstack/stacks-wallet/issues/416) ([ce17445](https://github.com/blockstack/stacks-wallet/commit/ce17445de8ec8d47737dc4c0a7b50d9f99ec6321))
+* update btn not opening Github url ([53555a5](https://github.com/blockstack/stacks-wallet/commit/53555a53537b0e6584520798fa2c0dd50a15e832))
+
+
+### Features
+
+* open address in explorer ([37779ac](https://github.com/blockstack/stacks-wallet/commit/37779aceaada90fd986b44e4b085daf03f7253f3))
+
 # [4.0.0-beta.5](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.4...v4.0.0-beta.5) (2021-01-05)
 
 

@@ -11,6 +11,9 @@ export enum LedgerConnectStep {
   HasAddress,
 }
 
+const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 1000;
+const POLL_LEDGER_INTERVAL = 250;
+
 export function useLedger() {
   const [step, setStep] = useState(LedgerConnectStep.Disconnected);
   const [usbError, setUsbError] = useState<string | null>(null);
@@ -19,8 +22,6 @@ export function useLedger() {
   const listeningForAddEvent = useRef(true);
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const closeTransport = useRef(() => {});
-  const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 1000;
-  const POLL_LEDGER_INTERVAL = 250;
   const createListener = useCallback(() => {
     const tHid = api.nodeHid.listen({
       next: async (event: any) => {

@@ -41,7 +41,15 @@ export const TitleBar: FC = () => {
       backgroundColor={winState === 'focused' ? 'white' : '#FAFAFC'}
     >
       <BackButton backUrl={backUrl} hasFocus={winState === 'focused'} onClick={handleHistoryBack} />
-      <Flex justifyContent="space-around" flex={1}>
+      <Flex
+        justifyContent="space-around"
+        flex={1}
+        // Manages absolute centre alignment of content
+        position={['relative', 'absolute']}
+        width={[null, '100%']}
+        left={[null, 0]}
+        height="100%"
+      >
         <Flex>
           {isNewerReleaseAvailable && latestRelease && (
             <UpdateAvailableButton

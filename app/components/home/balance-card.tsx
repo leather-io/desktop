@@ -6,9 +6,12 @@ import { toHumanReadableStx } from '@utils/unit-convert';
 import { safeAwait } from '@utils/safe-await';
 import { delay } from '@utils/delay';
 import BN from 'bn.js';
+import { ExternalLink } from '@components/external-link';
+import { makeExplorerAddressLink } from '@utils/external-links';
 
 interface BalanceCardProps {
   balance: string | null;
+  address: string | null;
   lockedStx?: string;
   onSelectSend(): void;
   onSelectReceive(): void;
@@ -16,7 +19,7 @@ interface BalanceCardProps {
 }
 
 export const BalanceCard: FC<BalanceCardProps> = props => {
-  const { balance, onSelectReceive, onSelectSend, onRequestTestnetStx, lockedStx } = props;
+  const { balance, address, onSelectReceive, onSelectSend, onRequestTestnetStx, lockedStx } = props;
 
   const [requestingTestnetStx, setRequestingTestnetStx] = useState(false);
 
@@ -38,9 +41,17 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
 
   return (
     <Box>
-      <Text textStyle="body.large.medium" display="block">
-        Total balance
-      </Text>
+      <Flex>
+        <Text textStyle="body.large.medium" display="block">
+          Total balance
+        </Text>
+
+        {address !== null && (
+          <ExternalLink href={makeExplorerAddressLink(address)} textStyle="caption" ml="tight">
+            View on Explorer
+          </ExternalLink>
+        )}
+      </Flex>
       <Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em">
         {balance === null ? '–' : toHumanReadableStx(balance)}
       </Text>

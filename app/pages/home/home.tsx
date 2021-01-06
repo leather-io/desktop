@@ -6,7 +6,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { Api } from '@api/api';
 import { increment, decrement } from '@utils/mutate-numbers';
 import { RootState } from '@store/index';
-import { openInExplorer } from '@utils/external-links';
+import { openTxInExplorer } from '@utils/external-links';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { selectAddressBalance, selectAvailableBalance } from '@store/address';
@@ -128,7 +128,7 @@ export const Home: FC = () => {
             activeTxIdRef={focusedTxIdRef}
             key={pTx.tx_id}
             tx={pTx}
-            onSelectTx={openInExplorer}
+            onSelectTx={openTxInExplorer}
           />
         ))}
         {txs.map(tx => (
@@ -138,7 +138,7 @@ export const Home: FC = () => {
             key={tx.tx_id}
             tx={tx}
             address={address}
-            onSelectTx={openInExplorer}
+            onSelectTx={openTxInExplorer}
           />
         ))}
       </TransactionList>
@@ -146,6 +146,7 @@ export const Home: FC = () => {
   );
   const balanceCard = (
     <BalanceCard
+      address={address}
       lockedStx={stackerInfo?.amount_microstx}
       balance={balance}
       onSelectSend={() => dispatch(homeActions.openTxModal())}

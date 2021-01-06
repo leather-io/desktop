@@ -19,7 +19,7 @@ import { getStxTxDirection } from '@utils/get-stx-transfer-direction';
 import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
 import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
 import { toHumanReadableStx } from '@utils/unit-convert';
-import { makeExplorerLink } from '@utils/external-links';
+import { makeExplorerTxLink } from '@utils/external-links';
 import { getRecipientAddress, isStackingTx } from '@utils/tx-utils';
 
 import {
@@ -109,7 +109,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     memo: memo || '',
     date: txDate.toISOString(),
     txDetails: JSON.stringify(tx, null, 2),
-    explorerLink: makeExplorerLink(tx.tx_id),
+    explorerLink: makeExplorerTxLink(tx.tx_id),
   });
 
   useLayoutEffect(() => {

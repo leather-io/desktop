@@ -46,8 +46,8 @@ export const TitleBar: FC = () => {
         flex={1}
         // Manages absolute centre alignment of content
         position={['relative', 'absolute']}
-        width={[null, '100%']}
-        left={[null, 0]}
+        left={[null, '130px']}
+        right={[null, '130px']}
         height="100%"
       >
         <Flex>

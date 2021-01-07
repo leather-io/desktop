@@ -52,7 +52,7 @@
     }
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "4.16.0",
+    "@ledgerhq/hw-transport-node-hid": "5.17.0",
     "ablankstein-ledger-hw-app-btc": "^4.32.1",
     "bigi": "1.4.2",
     "bignumber.js": "8.1.1",

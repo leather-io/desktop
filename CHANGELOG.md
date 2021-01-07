@@ -1,3 +1,10 @@
+# [4.0.0-beta.8](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.7...v4.0.0-beta.8) (2021-01-07)
+
+
+### Bug Fixes
+
+* mainnet addresses ([a11cb25](https://github.com/blockstack/stacks-wallet/commit/a11cb25cabdec445bf05136ce4205410577f19ff))
+
 # [4.0.0-beta.7](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.6...v4.0.0-beta.7) (2021-01-07)
 
 

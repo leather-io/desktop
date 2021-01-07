@@ -82,6 +82,7 @@ jobs:
         run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
         env:
           SHA: ${{ github.event.pull_request.head.sha }}
+          NODE_ENV: production
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WALLET_VERSION: ${{ steps.extract_version.outputs.version }}
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}

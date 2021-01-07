@@ -1,5 +1,3 @@
-import packageJson from '../../package.json';
-
 export const MNEMONIC_ENTROPY = 256;
 
 type Environments = 'development' | 'testing' | 'production';
@@ -14,7 +12,7 @@ export const FULL_ENTITY_NAME = 'Blockstack PBC';
 
 export const ENV = (process.env.NODE_ENV ?? 'production') as Environments;
 
-export const WALLET_VERSION = packageJson.version;
+export const WALLET_VERSION = process.env.WALLET_VERSION || 'v0.0.0';
 
 export const BUY_STX_URL = 'https://coinmarketcap.com/currencies/blockstack/markets';
 

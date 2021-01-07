@@ -76,28 +76,28 @@ export const App: FC = ({ children }) => {
     }
   }, [address, activeNode, initAppWithStxAddressInfo, dispatch]);
 
-  useInterval(() => {
-    if (address) {
-      dispatch(fetchStackerInfo(address));
-      dispatch(fetchStackingInfo());
-    }
-    dispatch(fetchCoreDetails());
-  }, 5_000);
+  // useInterval(() => {
+  //   if (address) {
+  //     dispatch(fetchStackerInfo(address));
+  //     dispatch(fetchStackingInfo());
+  //   }
+  //   dispatch(fetchCoreDetails());
+  // }, 5_000);
 
-  useEffect(() => {
-    async function run() {
-      if (!address) return;
-      const [err, awards] = await safeAwait(
-        new Api(activeNode.url).burnchainApi.getBurnchainRewardListByAddress({ address })
-      );
-      console.log({ err, awards });
-      if (err) return;
-      if (awards) {
-        console.log(awards);
-      }
-    }
-    void run();
-  }, [activeNode.url, address]);
+  // useEffect(() => {
+  //   async function run() {
+  //     if (!address) return;
+  //     const [err, awards] = await safeAwait(
+  //       new Api(activeNode.url).burnchainApi.getBurnchainRewardListByAddress({ address })
+  //     );
+  //     console.log({ err, awards });
+  //     if (err) return;
+  //     if (awards) {
+  //       console.log(awards);
+  //     }
+  //   }
+  //   void run();
+  // }, [activeNode.url, address]);
 
   useEffect(() => {
     async function run() {

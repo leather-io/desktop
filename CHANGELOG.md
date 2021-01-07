@@ -1,3 +1,10 @@
+# [4.0.0-beta.7](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.6...v4.0.0-beta.7) (2021-01-07)
+
+
+### Features
+
+* add verify ledger address [#462](https://github.com/blockstack/stacks-wallet/issues/462) ([aa1fe37](https://github.com/blockstack/stacks-wallet/commit/aa1fe3729c1cce048d5c5b6664599d42f20e9011))
+
 # [4.0.0-beta.6](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.5...v4.0.0-beta.6) (2021-01-06)
 
 

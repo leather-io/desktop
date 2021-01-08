@@ -3,8 +3,22 @@ name: Debug build
 on: [pull_request]
 
 jobs:
-  release:
+  announce-start:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        with:
+          header: '> _Currently building new release, please wait for the latest_&nbsp; <img src="https://user-images.githubusercontent.com/1618764/97873036-51dfb200-1d17-11eb-89f5-0a922dc3ac92.gif" width="12" />'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  debug-build:
     runs-on: ${{ matrix.os }}
+    needs:
+      - announce-start
+
+    env:
+      STX_NETWORK: ${{ matrix.stx_network }}
 
     strategy:
       matrix:
@@ -13,34 +27,35 @@ jobs:
         include:
           - os: macos-latest
             NPM_COMMAND: mac
+            UPLOAD_ASSETS: release/**/*.dmg
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_APPLE
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_APPLE
 
           - os: ubuntu-latest
             NPM_COMMAND: linux
+            UPLOAD_ASSETS: |
+              release/**/*.deb
+              release/**/*.rpm
 
           - os: windows-latest
             NPM_COMMAND: win
+            UPLOAD_ASSETS: release/**/*.msi
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - uses: FranzDiebold/github-env-vars-action@v1.2.1
-      - name: Print environment variables
-        run: |
-          echo "GITHUB_REPOSITORY_SLUG=$GITHUB_REPOSITORY_SLUG"
-          echo "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER"
-          echo "GITHUB_REPOSITORY_OWNER_SLUG=$GITHUB_REPOSITORY_OWNER_SLUG"
-          echo "GITHUB_REPOSITORY_NAME=$GITHUB_REPOSITORY_NAME"
-          echo "GITHUB_REPOSITORY_NAME_SLUG=$GITHUB_REPOSITORY_NAME_SLUG"
-          echo "GITHUB_REF_SLUG=$GITHUB_REF_SLUG"
-          echo "GITHUB_REF_NAME=$GITHUB_REF_NAME"
-          echo "GITHUB_REF_NAME_SLUG=$GITHUB_REF_NAME_SLUG"
-          echo "GITHUB_SHA_SHORT=$GITHUB_SHA_SHORT"
-          echo "GITHUB_SHA=$GITHUB_SHA"
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Variables
         id: vars
@@ -65,14 +80,15 @@ jobs:
       # Windows build breaks when using the package.json script to install `app/` packages
       # using separate run to install those packages separately
       - name: Install packages
-        run: yarn --frozen-lockfile --ignore-scripts
-        env:
-          STX_NETWORK: ${{ matrix.stx_network }}
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 600
+          max_attempts: 3
+          retry_on: error
+          command: yarn --frozen-lockfile --ignore-scripts
 
       - name: Install `app/` packages
         run: cd app && yarn --frozen-lockfile --ignore-scripts
-        env:
-          STX_NETWORK: ${{ matrix.stx_network }}
 
       - name: Extract version
         id: extract_version
@@ -87,7 +103,6 @@ jobs:
           WALLET_VERSION: ${{ steps.extract_version.outputs.version }}
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
-          STX_NETWORK: ${{ matrix.stx_network }}
           CSC_LINK: ${{ secrets[matrix.CSC_LINK_SECRET_NAME] }}
           CSC_KEY_PASSWORD: ${{ secrets[matrix.CSC_KEY_PASSWORD_SECRET_NAME] }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -96,29 +111,20 @@ jobs:
       - run: ls -R release
 
       - uses: actions/upload-artifact@v2
-        name: Upload Windows builds
-        if: matrix.os == 'windows-latest'
+        name: ${{ matrix.os }} upload
         with:
-          name: stacks-wallet-${{ steps.vars.outputs.version }}-${{ matrix.stx_network }}-windows
-          path: |
-            release/**/*.exe
-            release/**/*.msi
-      - uses: actions/upload-artifact@v2
-        name: Upload MacOS builds
-        if: matrix.os == 'macos-latest'
-        with:
-          name: stacks-wallet-${{ steps.vars.outputs.version }}-${{ matrix.stx_network }}-macos
-          path: release/**/*.dmg
+          name: stacks-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
+          path: ${{ matrix.UPLOAD_ASSETS }}
 
-      - uses: actions/upload-artifact@v2
-        name: Upload Linux builds
-        if: matrix.os == 'ubuntu-latest'
-        with:
-          name: stacks-wallet-${{ steps.vars.outputs.version }}-${{ matrix.stx_network }}-linux
-          path: |
-            release/**/*.deb
-            release/**/*.rpm
+  announce-completion:
+    runs-on: ubuntu-latest
 
+    if: always()
+
+    needs:
+      - debug-build
+
+    steps:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
         if: (!contains(needs.*.result, 'failure'))
         with:

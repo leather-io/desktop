@@ -18,15 +18,20 @@ jobs:
         stx_network: [testnet, mainnet]
         include:
           - os: macos-latest
+            UPLOAD_ASSETS: release/**/*.dmg
             NPM_COMMAND: mac
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_APPLE
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_APPLE
 
           - os: ubuntu-latest
             NPM_COMMAND: linux
+            UPLOAD_ASSETS: |
+              release/**/*.deb
+              release/**/*.rpm
 
           - os: windows-latest
             NPM_COMMAND: win
+            UPLOAD_ASSETS: release/**/*.msi
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 
@@ -38,6 +43,7 @@ jobs:
         uses: styfle/cancel-workflow-action@0.6.0
         with:
           access_token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v2
 
       - uses: actions/cache@v2
@@ -71,7 +77,12 @@ jobs:
       # Windows build breaks when using the package.json script to install `app/` packages
       # using separate run to install those packages separately
       - name: Install packages
-        run: yarn --frozen-lockfile --ignore-scripts
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 600
+          max_attempts: 3
+          retry_on: error
+          command: yarn --frozen-lockfile --ignore-scripts
 
       - name: Install `concat-map` - Windows only
         run: yarn add concat-map --ignore-scripts --frozen-lockfile
@@ -94,29 +105,10 @@ jobs:
           APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
 
       - uses: actions/upload-artifact@v2
-        name: Windows upload
-        if: matrix.os == 'windows-latest'
+        name: ${{ matrix.os }} upload
         with:
           name: stacks-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
-          path: |
-            release/**/*.exe
-            release/**/*.msi
-
-      - uses: actions/upload-artifact@v2
-        name: MacOS upload
-        if: matrix.os == 'macos-latest'
-        with:
-          name: stacks-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
-          path: release/**/*.dmg
-
-      - uses: actions/upload-artifact@v2
-        name: Linux upload
-        if: matrix.os == 'ubuntu-latest'
-        with:
-          name: stacks-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
-          path: |
-            release/**/*.deb
-            release/**/*.rpm
+          path: ${{ matrix.UPLOAD_ASSETS }}
 
   create-release:
     runs-on: ubuntu-latest
@@ -149,7 +141,7 @@ jobs:
       - create-release
 
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         stx_network: [testnet, mainnet]
         ext: [dmg, msi, deb, rpm]
@@ -181,14 +173,10 @@ jobs:
           asset_name: stacks-wallet.${{ matrix.stx_network }}.v${{ needs.build.outputs.version }}.${{ matrix.ext }}
           asset_content_type: application/octet-stream
 
-      - name: Sleep
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '10s'
-
   announce-release:
     runs-on: ubuntu-latest
     needs:
+      - build
       - upload-release-assets
 
     steps:

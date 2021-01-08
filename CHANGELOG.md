@@ -1,3 +1,15 @@
+# [4.0.0-beta.9](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.8...v4.0.0-beta.9) (2021-01-08)
+
+
+### Bug Fixes
+
+* ci job ordering ([934be40](https://github.com/blockstack/stacks-wallet/commit/934be4030118c502b4187fef2f2b76be4fd545b6))
+
+
+### Features
+
+* enable debug prod ([e0b177b](https://github.com/blockstack/stacks-wallet/commit/e0b177be70e6bf8e2c9524f8b93bbdfbf04f5a86))
+
 # [4.0.0-beta.8](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.7...v4.0.0-beta.8) (2021-01-07)
 
 

@@ -1,3 +1,10 @@
+# [4.0.0-beta.10](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.9...v4.0.0-beta.10) (2021-01-08)
+
+
+### Features
+
+* hotfix action ([bf2bd7b](https://github.com/blockstack/stacks-wallet/commit/bf2bd7b21dac1fe4083526ea66927bd812923b11))
+
 # [4.0.0-beta.9](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.8...v4.0.0-beta.9) (2021-01-08)
 
 

@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import { Flex, Box, Text } from '@blockstack/ui';
 
 import { RootState } from '@store/index';
-import { convertPoxAddressToBtc } from '@utils/stacking';
+import { formatPoxAddressToNetwork } from '@utils/stacking';
 import { WaffleChart } from '@components/chart/waffle-chart';
 import {
   selectStackerInfo,
   selectNextCycleInfo,
   selectPoxInfo,
-} from '../../store/stacking/stacking.reducer';
+} from '@store/stacking/stacking.reducer';
 
 type StackingCardProps = any;
 
@@ -77,7 +77,7 @@ export const StackingCard: FC<StackingCardProps> = () => {
             <Flex flexDirection="column" mt="tight" mb="base-loose">
               <Text textStyle="body.small.medium">Reward to be paid to</Text>
               <Text as="code" fontSize="13px" mt="tight" color="ink.600">
-                {convertPoxAddressToBtc(stackerInfo?.pox_address)}
+                {formatPoxAddressToNetwork(stackerInfo?.pox_address)}
               </Text>
             </Flex>
           </Box>

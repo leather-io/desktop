@@ -19,6 +19,9 @@ import {
 } from '@crypto/validate-password';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
+  if (result.isMnemonicPhrase) {
+    return `Don't use your mnemonic Secret Key as your wallet password. This password is used to encrypt your Secret Key.`;
+  }
   if (result.feedback.suggestions.length > 0) {
     return `${result.feedback.suggestions.join(' ')}`;
   }
@@ -48,6 +51,7 @@ export const SetPassword: React.FC = () => {
     const pass = e.currentTarget.value;
     setPassword(pass);
     const result = validatePassword(pass);
+    if (result.isMnemonicPhrase) setHasSubmitted(true);
     setStrengthResult(result);
   };
 

@@ -1,3 +1,10 @@
+# [4.0.0-beta.11](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.10...v4.0.0-beta.11) (2021-01-09)
+
+
+### Features
+
+* mainnet explorer url, faster release (maybe) ([d69f8db](https://github.com/blockstack/stacks-wallet/commit/d69f8dbfc8ddd91c6f28974e629399b0c34e0cf8))
+
 # [4.0.0-beta.10](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.9...v4.0.0-beta.10) (2021-01-08)
 
 

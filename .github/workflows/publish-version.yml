@@ -186,4 +186,4 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            New release: [Stacks Wallet `v${{ needs.build.outputs.version }}`](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.build.outputs.version }}))
+            🔔 New Stacks Wallet released: [Download `v${{ needs.build.outputs.version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.build.outputs.version }})

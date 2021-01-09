@@ -70,6 +70,9 @@ const networkConfigs = {
       icon: 'icon.testnet.icns',
       appId: 'so.hiro.StacksWalletTestnet',
     },
+    win: {
+      icon: 'icon.testnet.ico',
+    },
     linux: {
       icon: './icons',
     },
@@ -86,6 +89,9 @@ const networkConfigs = {
     mac: {
       icon: 'icon.icns',
       appId: 'so.hiro.StacksWallet',
+    },
+    win: {
+      icon: 'icon.mainnet.ico',
     },
     linux: {
       icon: 'icon-512x512.png',

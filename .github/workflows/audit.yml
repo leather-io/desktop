@@ -1,6 +1,9 @@
 name: Audit
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
 
 jobs:
   audit:

@@ -7,6 +7,7 @@ import { WALLET_VERSION, NETWORK } from '@constants/index';
 import { useInterval } from './use-interval';
 
 const UPDATE_CHECK_INTERVAL = 120_000;
+const NEW_WALLET_STARTING_MAJOR_VERSION = 4;
 
 export function useCheckForUpdates() {
   const [newerReleaseAvailable, setNewerReleaseAvailable] = useState(false);
@@ -20,7 +21,12 @@ export function useCheckForUpdates() {
       // Prevent runtime errors incase an invalid tag makes it into upstream
       .filter(release => compareVersions.validate(release.tag_name))
       .filter(release => (NETWORK === 'mainnet' ? !release.prerelease : release.prerelease))
-      .filter(release => !release.tag_name.startsWith('v3'));
+      .filter(release => release.tag_name.startsWith('v'))
+      .filter(
+        release =>
+          typeof release.tag_name[1] === 'number' &&
+          release.tag_name[1] >= NEW_WALLET_STARTING_MAJOR_VERSION
+      );
 
     if (latestReleases[0]) setLatestRelease(latestReleases[0]);
 

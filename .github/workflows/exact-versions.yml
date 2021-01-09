@@ -1,7 +1,9 @@
 name: Exact versions
 
-on: [push]
-
+on:
+  push:
+    branches:
+      - '**'
 jobs:
   check-versions:
     runs-on: ubuntu-latest

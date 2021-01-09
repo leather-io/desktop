@@ -12,14 +12,7 @@ jobs:
 
       - uses: actions/setup-node@v1
 
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn install --ignore-scripts --ignore-optional
+      - run: yarn add @actions/core -E
 
       - name: Check exact versions
-        uses: ./.github/actions/check-version-lock
+        uses: .github/actions/check-version-lock

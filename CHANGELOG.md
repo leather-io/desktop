@@ -1,3 +1,10 @@
+# [4.0.0-beta.13](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.12...v4.0.0-beta.13) (2021-01-09)
+
+
+### Bug Fixes
+
+* up a nice icon for Bill Gates ([480251e](https://github.com/blockstack/stacks-wallet/commit/480251e5436ba56effe9fe325e090f33b119ef19))
+
 # [4.0.0-beta.12](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.11...v4.0.0-beta.12) (2021-01-09)
 
 

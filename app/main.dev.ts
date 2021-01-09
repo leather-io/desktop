@@ -24,6 +24,7 @@ import contextMenu from 'electron-context-menu';
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
 import Store from 'electron-store';
+import { NETWORK } from './constants/index';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -71,7 +72,10 @@ const createWindow = async () => {
     defaultHeight: 728,
   });
 
-  console.log(path.join(__dirname, '../resources/icon-512x512.png'));
+  const iconPath =
+    NETWORK === 'mainnet'
+      ? path.join(__dirname, '../resources/icon-512x512.png')
+      : path.join(__dirname, '../resources/icon-512x512-testnet.png');
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -81,7 +85,7 @@ const createWindow = async () => {
     height: mainWindowState.height,
     frame: process.platform !== 'darwin',
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
-    icon: path.join(__dirname, '../resources/icon-512x512.png'),
+    icon: iconPath,
     webPreferences: {
       disableBlinkFeatures: 'Auxclick',
       webSecurity: true,

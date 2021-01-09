@@ -1,6 +1,6 @@
 {
   "name": "stacks-wallet",
-  "version": "4.0.0-beta.13",
+  "version": "4.0.0-beta.14",
   "description": "Stacks Wallet 2.0 — Stacking",
   "prettier": "@stacks/prettier-config",
   "homepage": "https://www.blockstack.org/testnet-wallet",

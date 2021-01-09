@@ -1,3 +1,4 @@
+import { validateMnemonic } from 'bip39';
 import zxcvbn, { ZXCVBNResult, ZXCVBNScore } from 'zxcvbn';
 
 const truncateCpuDemandingPassword = (input: string) => input.substr(0, 100);
@@ -18,17 +19,21 @@ export interface ValidatedPassword extends ZXCVBNResult {
   meetsLengthRequirement: boolean;
   meetsScoreRequirement: boolean;
   meetsAllStrengthRequirements: boolean;
+  isMnemonicPhrase: boolean;
 }
 
 export function validatePassword(input: string): ValidatedPassword {
+  const isMnemonicPhrase = validateMnemonic(input);
   const password = input.length > 100 ? truncateCpuDemandingPassword(input) : input;
   const result = zxcvbn(password);
   const meetsScoreRequirement = hasHighestPasswordScore(result.score);
   const meetsLengthRequirement = hasSufficientLength(input);
-  const meetsAllStrengthRequirements = meetsScoreRequirement && meetsLengthRequirement;
+  const meetsAllStrengthRequirements =
+    meetsScoreRequirement && meetsLengthRequirement && !isMnemonicPhrase;
 
   return Object.freeze({
     ...result,
+    isMnemonicPhrase,
     meetsScoreRequirement,
     meetsLengthRequirement,
     meetsAllStrengthRequirements,

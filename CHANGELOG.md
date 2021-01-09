@@ -1,3 +1,10 @@
+# [4.0.0-beta.12](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.11...v4.0.0-beta.12) (2021-01-09)
+
+
+### Bug Fixes
+
+* issue with mainnet update available ([94fa75a](https://github.com/blockstack/stacks-wallet/commit/94fa75a708bec0c1356917f61a3778871ffd49fa))
+
 # [4.0.0-beta.11](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.10...v4.0.0-beta.11) (2021-01-09)
 
 

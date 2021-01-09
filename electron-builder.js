@@ -35,7 +35,7 @@ const baseConfig = {
     ],
   },
   win: {
-    target: ['nsis', 'msi'],
+    target: ['msi'],
   },
   mac: {
     hardenedRuntime: true,
@@ -49,12 +49,12 @@ const baseConfig = {
     buildResources: 'resources',
     output: 'release',
   },
-  publish: {
-    provider: 'github',
-    owner: 'blockstack',
-    repo: 'blockstack',
-    private: false,
-  },
+  // publish: {
+  //   provider: 'github',
+  //   owner: 'blockstack',
+  //   repo: 'blockstack',
+  //   private: false,
+  // },
   // protocols: {
   //   name: 'stacks-wallet',
   //   schemes: ['stacks-wallet'],

@@ -1,3 +1,15 @@
+# [4.0.0-beta.15](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.14...v4.0.0-beta.15) (2021-01-10)
+
+
+### Bug Fixes
+
+* check update logic ([be666f2](https://github.com/blockstack/stacks-wallet/commit/be666f275e49b722f2d1a5bf1986c625ea45f681))
+
+
+### Features
+
+* support formatting testnet addresses, closes [#469](https://github.com/blockstack/stacks-wallet/issues/469) ([9eab299](https://github.com/blockstack/stacks-wallet/commit/9eab299eb9adf1b77f9674a553fbd40d216aba4e))
+
 # [4.0.0-beta.14](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.13...v4.0.0-beta.14) (2021-01-09)
 
 

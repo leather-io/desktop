@@ -33,6 +33,9 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
       if (NETWORK === 'mainnet' && address.network === 'testnet') {
         return { btcAddress: 'Testnet addresses not supported on Mainnet' };
       }
+      if (NETWORK === 'testnet' && address.network !== 'testnet') {
+        return { btcAddress: 'Mainnet addresses not supported on Testnet' };
+      }
       // https://github.com/blockstack/stacks-blockchain/issues/1902
       if (!SUPPORTED_BTC_ADDRESS_FORMATS.includes(address.type as any)) {
         return {

@@ -16,7 +16,7 @@ export const StackingTerms: FC<StackingTermsProps> = props => {
           <EncryptionIcon width={['12px', '16px']} />
         </Box>
         <Text>
-          Your STX will be locked for {estimatedDuration}, starting in {timeUntilNextCycle}
+          Your STX will be locked for ≈{estimatedDuration}, starting in about {timeUntilNextCycle}
         </Text>
       </Flex>
       <Flex alignItems="center" mt="base-loose">

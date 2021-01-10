@@ -1,3 +1,10 @@
+# [4.0.0-beta.16](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.15...v4.0.0-beta.16) (2021-01-10)
+
+
+### Bug Fixes
+
+* improve timing communication, closes [#470](https://github.com/blockstack/stacks-wallet/issues/470) ([c901a22](https://github.com/blockstack/stacks-wallet/commit/c901a229a9851b4d3be98971da0451de9460dc9c))
+
 # [4.0.0-beta.15](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.14...v4.0.0-beta.15) (2021-01-10)
 
 

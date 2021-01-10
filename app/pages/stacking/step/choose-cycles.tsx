@@ -27,7 +27,7 @@ export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
       <StackingStepDescription>
         Choose the amount of cycles to lock your STX. One cycle typically lasts between 6 and 8
         days, depending on the Bitcoin block time. At the end of each cycle, you'll have the chance
-        to earn Bitcoin.
+        to earn bitcoin.
       </StackingStepDescription>
       <Stepper
         mt="loose"

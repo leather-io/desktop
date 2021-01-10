@@ -11,8 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
 
       - name: Install dependencies
         run: yarn
@@ -20,4 +19,4 @@ jobs:
           STX_NETWORK: testnet
 
       - name: Build
-        run: yarn tsc
+        run: yarn tsc --noEmit

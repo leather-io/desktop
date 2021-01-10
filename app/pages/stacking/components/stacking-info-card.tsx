@@ -63,7 +63,7 @@ export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
               The duration is an estimation that varies depending on the Bitcoin block time
             </ExplainerTooltip>
           </Flex>
-          <Text textAlign="right">{duration}</Text>
+          <Text textAlign="right">≈{duration}</Text>
         </Flex>
         <Flex justifyContent="space-between" mt="tight">
           <Text textStyle="body.large.medium">Start date</Text>

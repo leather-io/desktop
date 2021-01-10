@@ -103,7 +103,6 @@ jobs:
           SHA: ${{ github.event.pull_request.head.sha }}
           NODE_ENV: production
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WALLET_VERSION: ${{ steps.extract_version.outputs.version }}
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
           CSC_LINK: ${{ secrets[matrix.CSC_LINK_SECRET_NAME] }}

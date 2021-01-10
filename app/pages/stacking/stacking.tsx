@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
 
@@ -9,7 +9,7 @@ import { RootState } from '@store/index';
 import { selectWalletType } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import {
-  selectEstimatedStackingCycleDuration,
+  selectEstimatedStackingDuration,
   selectNextCycleInfo,
   selectPoxInfo,
 } from '@store/stacking';
@@ -53,17 +53,12 @@ export const Stacking: FC = () => {
     (state: RootState) => ({
       walletType: selectWalletType(state),
       activeNode: selectActiveNodeApi(state),
-      stackingCycleDuration: selectEstimatedStackingCycleDuration(state),
+      stackingCycleDuration: selectEstimatedStackingDuration(cycles)(state),
       availableBalance: selectAvailableBalance(state),
       nextCycleInfo: selectNextCycleInfo(state),
       poxInfo: selectPoxInfo(state),
     })
   );
-
-  const calcStackingDuration = useCallback(() => stackingCycleDuration * cycles, [
-    stackingCycleDuration,
-    cycles,
-  ]);
 
   const updateStep = (step: Step, to: StepState) =>
     setStepConfirmation(state => ({ ...state, [step]: to }));
@@ -72,8 +67,6 @@ export const Stacking: FC = () => {
 
   const formComplete =
     [Step.ChooseAmount, Step.ChooseCycles, Step.ChooseBtcAddress].every(isComplete) && !!btcAddress;
-
-  const estimatedStackingDuration = '~' + (calcStackingDuration() / 60 / 60).toString() + ' hours';
 
   const balance = availableBalance === null ? new BigNumber(0) : new BigNumber(availableBalance);
 
@@ -89,7 +82,7 @@ export const Stacking: FC = () => {
       balance={amount}
       startDate={nextCycleInfo.nextCycleStartingAt}
       blocksPerCycle={poxInfo.reward_cycle_length}
-      duration={estimatedStackingDuration}
+      duration={stackingCycleDuration}
     />
   );
 
@@ -124,7 +117,7 @@ export const Stacking: FC = () => {
       <ConfirmAndLockStep
         id={Step.ConfirmAndLock}
         formComplete={formComplete}
-        estimatedDuration={estimatedStackingDuration}
+        estimatedDuration={stackingCycleDuration}
         timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle}
         onConfirmAndLock={() => setModalOpen(true)}
       />

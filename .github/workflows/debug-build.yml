@@ -72,10 +72,10 @@ jobs:
           p12-file-base64: ${{ secrets.CODE_SIGNING_CERTIFICATE_APPLE }}
           p12-password: ${{ secrets.CODE_SIGNING_PASSWORD_APPLE }}
 
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+      - name: Setup node
+        uses: actions/setup-node@v2
         with:
-          node-version: 10
+          node-version: 12
 
       #
       # Windows build breaks when using the package.json script to install `app/` packages
@@ -98,10 +98,11 @@ jobs:
         uses: Saionaro/extract-package-version@v1.0.6
 
       - name: Build releases
-        run: ./node_modules/.bin/cross-env DEBUG_PROD=true yarn package-${{ matrix.NPM_COMMAND }}
+        run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
         env:
-          SHA: ${{ github.event.pull_request.head.sha }}
+          DEBUG_PROD: true
           NODE_ENV: production
+          SHA: ${{ github.event.pull_request.head.sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}

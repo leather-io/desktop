@@ -65,9 +65,9 @@ jobs:
           p12-password: ${{ secrets.CODE_SIGNING_PASSWORD_APPLE }}
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: 10
+          node-version: 12
 
       - name: Extract version
         id: extract_version
@@ -84,17 +84,18 @@ jobs:
           retry_on: error
           command: yarn --frozen-lockfile --ignore-scripts
 
+      - name: Install `app/` packages
+        run: cd app && yarn --frozen-lockfile --ignore-scripts
+
       - name: Install `concat-map` - Windows only
         run: yarn add concat-map --ignore-scripts --frozen-lockfile
         if: matrix.os == 'windows-latest'
 
-      - name: Install `app/` packages
-        run: cd app && yarn --frozen-lockfile --ignore-scripts
-
       - name: Build releases
-        run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
+        run: yarn package-${{ matrix.NPM_COMMAND }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_ENV: production
           SHA: ${{ github.event.pull_request.head.sha }}
           PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}

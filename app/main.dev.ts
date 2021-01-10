@@ -21,10 +21,12 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
+import Store from 'electron-store';
+
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
-import Store from 'electron-store';
 import { NETWORK } from './constants/index';
+import { validateConfig } from './main/validate-config';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -178,7 +180,11 @@ app.on('activate', () => {
   if (mainWindow === null) void createWindow();
 });
 
-const store = new Store();
+validateConfig(app);
+
+const store = new Store({
+  clearInvalidConfig: true,
+});
 
 ipcMain.handle('store-set', (_e, { key, value }: any) => store.set(key, value));
 ipcMain.handle('store-get', (_e, { key }: any) => store.get(key));

@@ -8,6 +8,7 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { NETWORK } from '@constants/index';
 import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
@@ -20,6 +21,9 @@ import {
 } from './stacking.actions';
 import { stxToMicroStx } from '@utils/unit-convert';
 import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 export enum StackingStatus {
   NotStacking = 'NotStacking',
@@ -203,30 +207,29 @@ export const selectNextCycleInfo = createSelector(
       ((coreNodeInfo.burn_block_height - poxInfo.first_burnchain_block_height - 1) %
         poxInfo.reward_cycle_length);
 
+    console.log(blockTimeInfo[NETWORK].target_block_time);
     const secondsToNextCycle = blocksToNextCycle * blockTimeInfo[NETWORK].target_block_time;
 
     const nextCycleStartingAt = new Date();
     nextCycleStartingAt.setSeconds(nextCycleStartingAt.getSeconds() + secondsToNextCycle);
-    dayjs.extend(duration);
 
-    const timeUntilCycle = {
-      hours: dayjs.duration(secondsToNextCycle, 'seconds').asHours(),
-      days: dayjs.duration(secondsToNextCycle, 'seconds').asDays(),
-      weeks: dayjs.duration(secondsToNextCycle, 'seconds').asWeeks(),
-    };
+    const now = dayjs();
+    const timeOfNextCycle = now.add(secondsToNextCycle, 'second');
+    const formattedTimeToNextCycle = dayjs().to(timeOfNextCycle, true);
 
-    const formattedTimeToNextCycle =
-      timeUntilCycle.weeks > 1
-        ? '~' + Math.ceil(timeUntilCycle.weeks).toString() + ' weeks'
-        : timeUntilCycle.days < 1
-        ? '~' + Math.ceil(timeUntilCycle.hours).toString() + ' hours'
-        : '~' + Math.ceil(timeUntilCycle.days).toString() + ' days';
+    const estimateCycleDurationSeconds =
+      poxInfo.reward_cycle_length * blockTimeInfo[NETWORK].target_block_time;
+
+    const estimateCycleDuration = dayjs
+      .duration(estimateCycleDurationSeconds, 'seconds')
+      .humanize();
 
     return {
       nextCycleStartBlock,
       secondsToNextCycle,
+      estimateCycleDurationSeconds,
+      estimateCycleDuration,
       nextCycleStartingAt,
-      timeUntilCycle,
       formattedTimeToNextCycle,
       blocksToNextCycle,
       isStackingCallPending,
@@ -238,10 +241,13 @@ export const selectNextCycleInfo = createSelector(
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const stackingWillBeExecuted = createSelector(selectStackingState, () => {});
 
-export const selectEstimatedStackingCycleDuration = createSelector(
-  selectStackingState,
-  ({ poxInfo, blockTimeInfo }) => {
-    if (poxInfo === null || blockTimeInfo === null) return 0;
-    return poxInfo.reward_cycle_length * blockTimeInfo[NETWORK].target_block_time;
-  }
-);
+export const selectEstimatedStackingDuration = (cycles: number) =>
+  createSelector(selectStackingState, ({ poxInfo, blockTimeInfo }) => {
+    if (poxInfo === null || blockTimeInfo === null) return '—';
+    return dayjs
+      .duration(
+        poxInfo.reward_cycle_length * blockTimeInfo[NETWORK].target_block_time * cycles,
+        'seconds'
+      )
+      .humanize();
+  });

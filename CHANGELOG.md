@@ -1,3 +1,10 @@
+# [4.0.0-beta.17](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.16...v4.0.0-beta.17) (2021-01-11)
+
+
+### Bug Fixes
+
+* wiping a corrupt wallet file ([5f23875](https://github.com/blockstack/stacks-wallet/commit/5f23875904f04f0cd7b15f15c5a653d3c424e1c1))
+
 # [4.0.0-beta.16](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.15...v4.0.0-beta.16) (2021-01-10)
 
 

@@ -15,7 +15,6 @@ describe(deriveKey.name, () => {
     const pass = 'f255cadb0af84854819c63f26c53e1a9';
     const { derivedKeyHash } = await deriveKey({ salt, pass });
     const hash = Buffer.from(derivedKeyHash).toString('hex');
-    console.log(hash);
     expect(hash).toEqual(
       'd941c6ec3f04fa67c68b497169986588436b1697aa6b3a93218152658e5c494d2e3da9ea93522f0e4cb14b414b57b463'
     );

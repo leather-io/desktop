@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const deepMerge = require('deepmerge');
+const packageJson = require('./package.json');
 
 const network = process.env.STX_NETWORK || 'testnet';
 
@@ -35,30 +36,25 @@ const baseConfig = {
     ],
   },
   win: {
-    target: ['msi'],
+    // Don't use `msi` installer issues
+    target: ['nsis'],
+    publisherName: 'Hiro Systems PBC',
   },
   mac: {
     hardenedRuntime: true,
     category: 'public.app-category.finance',
   },
   linux: {
-    target: ['deb', 'rpm', 'AppImage'],
+    target: ['deb', 'rpm'],
     category: 'Development',
   },
   directories: {
     buildResources: 'resources',
     output: 'release',
   },
-  // publish: {
-  //   provider: 'github',
-  //   owner: 'blockstack',
-  //   repo: 'blockstack',
-  //   private: false,
-  // },
-  // protocols: {
-  //   name: 'stacks-wallet',
-  //   schemes: ['stacks-wallet'],
-  // },
+  extraMetadata: {
+    version: packageJson.version,
+  },
 };
 
 const networkConfigs = {
@@ -68,7 +64,6 @@ const networkConfigs = {
     artifactName: 'stacks-wallet.testnet.${ext}',
     mac: {
       icon: 'icon.testnet.icns',
-      appId: 'so.hiro.StacksWalletTestnet',
     },
     win: {
       icon: 'icon.testnet.ico',
@@ -78,7 +73,8 @@ const networkConfigs = {
     },
     // macos `Application Support` dir name
     extraMetadata: {
-      productName: 'StacksWalletTestnet',
+      name: 'stacks-wallet-testnet',
+      productName: 'Stacks Wallet Testnet',
     },
   },
   mainnet: {
@@ -88,7 +84,6 @@ const networkConfigs = {
     artifactName: 'stacks-wallet.mainnet.${ext}',
     mac: {
       icon: 'icon.icns',
-      appId: 'so.hiro.StacksWallet',
     },
     win: {
       icon: 'icon.mainnet.ico',
@@ -97,7 +92,8 @@ const networkConfigs = {
       icon: './icons-mainnet',
     },
     extraMetadata: {
-      productName: 'StacksWallet',
+      name: 'stacks-wallet',
+      productName: 'Stacks Wallet',
     },
   },
 };

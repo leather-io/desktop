@@ -92,7 +92,7 @@ jobs:
         if: matrix.os == 'windows-latest'
 
       - name: Build releases
-        run: yarn package-${{ matrix.NPM_COMMAND }}
+        run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_ENV: production

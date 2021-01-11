@@ -29,6 +29,7 @@ export enum LedgerConnectStep {
 
 export const ConnectLedger: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [didRejectTx, setDidRejectTx] = useState(false);
   const [hasConfirmedAddress, setHasConfirmedAddress] = useState(false);
   const [deviceError, setDeviceError] = useState<string | null>(null);
   useBackButton(routes.CREATE);
@@ -39,6 +40,7 @@ export const ConnectLedger: React.FC = () => {
 
   async function handleLedger() {
     setDeviceError(null);
+    setLoading(true);
     const usbTransport = transport;
 
     if (usbTransport === null) return;
@@ -49,10 +51,18 @@ export const ConnectLedger: React.FC = () => {
       await app.getVersion();
 
       const confirmedResponse = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
-      if (confirmedResponse.returnCode !== LedgerError.NoErrors) {
-        setDeviceError('Has your Ledger device locked itself?');
+
+      if (confirmedResponse.returnCode === LedgerError.TransactionRejected) {
+        setDidRejectTx(true);
+        setLoading(false);
         return;
       }
+
+      if (confirmedResponse.returnCode !== LedgerError.NoErrors) {
+        setLoading(false);
+        return;
+      }
+
       if (confirmedResponse.address) {
         setLoading(true);
         setHasConfirmedAddress(true);
@@ -87,6 +97,11 @@ export const ConnectLedger: React.FC = () => {
       {error && (
         <ErrorLabel mt="base-loose">
           <ErrorText>{error}</ErrorText>
+        </ErrorLabel>
+      )}
+      {didRejectTx && (
+        <ErrorLabel mt="base-loose">
+          <ErrorText>You must approve the transaction that appears on your Ledger device</ErrorText>
         </ErrorLabel>
       )}
       <OnboardingButton

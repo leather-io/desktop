@@ -15,4 +15,4 @@ jobs:
       - run: yarn add @actions/core -E
 
       - name: Check exact versions
-        uses: .github/actions/check-version-lock
+        uses: ./.github/actions/check-version-lock

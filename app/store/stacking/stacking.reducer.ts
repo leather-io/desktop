@@ -207,7 +207,6 @@ export const selectNextCycleInfo = createSelector(
       ((coreNodeInfo.burn_block_height - poxInfo.first_burnchain_block_height - 1) %
         poxInfo.reward_cycle_length);
 
-    console.log(blockTimeInfo[NETWORK].target_block_time);
     const secondsToNextCycle = blocksToNextCycle * blockTimeInfo[NETWORK].target_block_time;
 
     const nextCycleStartingAt = new Date();

@@ -6,7 +6,7 @@
   "homepage": "https://www.blockstack.org/testnet-wallet",
   "author": {
     "email": "info@blockstack.com",
-    "name": "Hiro PBC"
+    "name": "Hiro Systems PBC"
   },
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\" \"yarn build-preload\" ",
@@ -26,7 +26,7 @@
     "package-win": "yarn build && electron-builder build --win --x64",
     "postinstall": "node -r @babel/register internals/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn build-dll",
     "start": "cross-env NODE_ENV=production electron ./app/main.prod.js",
-    "start-main-dev": "cross-env START_HOT=1 NODE_ENV=development electron -r ./internals/scripts/BabelRegister ./app/main.dev.ts",
+    "start-main-dev": "cross-env START_HOT=1 NODE_ENV=production electron -r ./internals/scripts/BabelRegister ./app/main.dev.ts",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.renderer.dev.babel.js",
     "start-preload-dev": "cross-env NODE_ENV=development webpack --watch --config configs/webpack.config.preload.babel.js",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest"
@@ -171,6 +171,7 @@
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.22.0",
     "eslint-plugin-react-hooks": "4.2.0",
+    "extended-define-webpack-plugin": "0.1.3",
     "fbjs-scripts": "2.0.0",
     "file-loader": "6.2.0",
     "husky": "4.3.6",

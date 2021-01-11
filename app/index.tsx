@@ -7,7 +7,7 @@ import { configureStore, history } from './store/configureStore';
 
 const { store, persistor } = configureStore();
 
-const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
+const AppContainer = CONFIG.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 
 document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires

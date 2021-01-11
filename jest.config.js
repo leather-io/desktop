@@ -18,6 +18,7 @@ module.exports = {
   setupFiles: ['./internals/scripts/CheckBuildsExist.js'],
   globals: {
     api: true,
+    CONFIG: true,
     'ts-jest': {
       tsconfig: 'tsconfig.tests.json',
       diagnostics: {

@@ -1,11 +1,10 @@
 {
-  "name": "stacks-wallet",
-  "version": "4.0.0-beta.8",
+  "name": "stacks-wallet-inner-package",
   "description": "Stacks Wallet v4 — Participate in Stacking to earn bitcoin rewards",
   "main": "./main.prod.js",
   "author": {
     "email": "info@blockstack.com",
-    "name": "Blockstack PBC"
+    "name": "Hiro Systems PBC"
   },
   "scripts": {
     "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",

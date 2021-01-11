@@ -126,13 +126,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     async (options: CreateTxOptions & { publicKey: Buffer }) => {
       if (!publicKey || !blockstackApp)
         throw new Error('`publicKey` or `blockstackApp` is not defined');
-
       const unsignedTx = await makeUnsignedSTXTokenTransfer({
         ...options,
         publicKey: publicKey.toString('hex'),
       });
       const resp = await blockstackApp.sign(STX_DERIVATION_PATH, unsignedTx.serialize());
-
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');
       }
@@ -190,6 +188,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
       if (error) {
         setHasSubmitted(false);
+        setStep(TxModalStep.NetworkError);
         return;
       }
 

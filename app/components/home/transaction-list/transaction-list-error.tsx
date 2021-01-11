@@ -30,7 +30,7 @@ export const TransactionListError: FC<TransactionListErrorProps> = ({ node, erro
       <Text textStyle="caption" color="ink.600" textAlign="center" mx="base" lineHeight="20px">
         {usingPbcHostedNode && (
           <>
-            Unable to connect to the Blockstack PBC hosted node.
+            Unable to connect to the Hiro Systems PBC hosted node.
             <br />
             <Text {...linkProps} onClick={() => void openExternalLink(STATUS_PAGE_URL)}>
               Check the status page

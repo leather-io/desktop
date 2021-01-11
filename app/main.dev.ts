@@ -18,15 +18,16 @@ import 'regenerator-runtime/runtime';
 import path from 'path';
 import { app, BrowserWindow, clipboard, ipcMain, Menu, session } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import Store from 'electron-store';
 import log from 'electron-log';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
-import Store from 'electron-store';
 
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
 import { NETWORK } from './constants/index';
 import { validateConfig } from './main/validate-config';
+import { getUserDataPath } from './main/get-user-data-path';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -54,6 +55,9 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   require('electron-debug')();
 }
 
+app.setPath('userData', getUserDataPath(app));
+app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
+
 const installExtensions = () => {
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
@@ -68,6 +72,10 @@ const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await installExtensions();
   }
+
+  // https://github.com/electron/electron/issues/22995
+  session.defaultSession.setSpellCheckerDictionaryDownloadURL('https://00.00/');
+  session.fromPartition('some-partition').setSpellCheckerDictionaryDownloadURL('https://00.00/');
 
   const mainWindowState = windowState({
     defaultWidth: 1024,
@@ -88,8 +96,10 @@ const createWindow = async () => {
     frame: process.platform !== 'darwin',
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     icon: iconPath,
+    title: `Stacks Wallet` + (NETWORK === 'testnet' ? ' Testnet' : ''),
     webPreferences: {
       disableBlinkFeatures: 'Auxclick',
+      spellcheck: false,
       webSecurity: true,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
@@ -148,11 +158,9 @@ const createWindow = async () => {
   // eslint-disable-next-line
   new AppUpdater();
 
-  session
-    .fromPartition('some-partition')
-    .setPermissionRequestHandler((_webContents, _permission, callback) => {
-      callback(false);
-    });
+  session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => {
+    callback(false);
+  });
 };
 
 app.on('web-contents-created', (_event, contents) => {
@@ -191,7 +199,6 @@ ipcMain.handle('store-get', (_e, { key }: any) => store.get(key));
 ipcMain.handle('store-delete', (_e, { key }: any) => store.delete(key));
 // ipcMain.handle('store-getEntireStore', () => store.store);
 ipcMain.handle('store-clear', () => store.clear());
-
 ipcMain.on('store-getEntireStore', event => {
   event.returnValue = store.store;
 });

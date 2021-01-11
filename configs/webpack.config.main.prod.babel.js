@@ -31,18 +31,12 @@ export default merge(baseConfig, {
     filename: './app/main.prod.js',
   },
 
-  // optimization: {
-  // minimizer: process.env.E2E_BUILD
-  // ? []
-  // : [
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  //   new TerserPlugin({
-  //     parallel: true,
-  //     sourceMap: true,
-  //     cache: true,
-  //   }),
-  // ],
-  // },
+  optimization: {
+    minimizer: [
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      // new TerserPlugin({}),
+    ],
+  },
 
   plugins: [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -65,6 +59,7 @@ export default merge(baseConfig, {
       DEBUG_PROD: false,
       START_MINIMIZED: false,
       E2E_BUILD: false,
+      STX_NETWORK: process.env.STX_NETWORK,
     }),
   ],
 

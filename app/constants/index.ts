@@ -2,9 +2,9 @@ import packageJson from '../../package.json';
 
 type Environments = 'development' | 'testing' | 'production';
 
-export const NETWORK = process.env.STX_NETWORK as 'mainnet' | 'testnet';
+export const NETWORK = CONFIG.STX_NETWORK;
 
-export const ENV = (process.env.NODE_ENV ?? 'production') as Environments;
+export const ENV = (CONFIG.NODE_ENV ?? 'production') as Environments;
 
 export const MNEMONIC_ENTROPY = 256;
 

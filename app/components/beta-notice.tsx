@@ -5,10 +5,10 @@ import { openExternalLink } from '@utils/external-links';
 import { NETWORK } from '@constants/index';
 import packageJson from '../../package.json';
 
-const sha = process.env.SHA;
+const sha = CONFIG.SHA;
 const shaShort = sha && sha.substr(0, 7);
-const pullRequest = process.env.PULL_REQUEST;
-const branchName = process.env.BRANCH_NAME;
+const pullRequest = CONFIG.PULL_REQUEST;
+const branchName = CONFIG.BRANCH_NAME;
 const version = packageJson.version;
 
 const issueParams = new URLSearchParams();

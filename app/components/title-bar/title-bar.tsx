@@ -36,7 +36,7 @@ export const TitleBar: FC = () => {
   const content = (
     <Flex
       justifyContent="space-between"
-      pl="90px"
+      pl={process.platform === 'darwin' ? '90px' : 'tight'}
       height="100%"
       backgroundColor={winState === 'focused' ? 'white' : '#FAFAFC'}
     >

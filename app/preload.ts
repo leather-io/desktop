@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 
 if (process.env.START_HOT) {
   // Dynamically insert the bundled app script in the renderer process
-  const port = process.env.PORT || 1212;
+  const port = 1212;
   scriptsToLoad.push(`http://localhost:${port}/dist/renderer.dev.js`);
 } else {
   scriptsToLoad.push('./dist/renderer.prod.js');
@@ -91,6 +91,8 @@ const walletApi = {
   },
 
   contextMenu: (menuItems: any) => ipcRenderer.send('context-menu-open', { menuItems }),
+
+  installPath: () => ipcRenderer.sendSync('installPath'),
 };
 
 declare global {

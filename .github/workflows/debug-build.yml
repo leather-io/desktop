@@ -39,7 +39,7 @@ jobs:
 
           - os: windows-latest
             NPM_COMMAND: win
-            UPLOAD_ASSETS: release/**/*.msi
+            UPLOAD_ASSETS: release/**/*.exe
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 
@@ -56,7 +56,7 @@ jobs:
         id: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
 
       - name: Variables
         id: vars

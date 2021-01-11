@@ -1,3 +1,12 @@
+# [4.0.0-beta.18](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.17...v4.0.0-beta.18) (2021-01-11)
+
+
+### Bug Fixes
+
+* linux icons ([6622e80](https://github.com/blockstack/stacks-wallet/commit/6622e80f4e3d32c6696f71de2ca54b59053e70dc))
+* show error step on Ledger error, closes [#296](https://github.com/blockstack/stacks-wallet/issues/296) ([a2fca81](https://github.com/blockstack/stacks-wallet/commit/a2fca8128ddb16efba720c5d2a0febb81ebb2d6e))
+* windows install issues ([73ea00a](https://github.com/blockstack/stacks-wallet/commit/73ea00a32dc70bf5b4d937809eb62794bdc7c435))
+
 # [4.0.0-beta.17](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.16...v4.0.0-beta.17) (2021-01-11)
 
 

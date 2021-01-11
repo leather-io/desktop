@@ -50,7 +50,6 @@ import { HomeLayout } from './home-layout';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
-
   const {
     address,
     balance,

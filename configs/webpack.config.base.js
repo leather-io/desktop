@@ -5,6 +5,8 @@
 import path from 'path';
 import webpack from 'webpack';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import ExtendedDefinePlugin from 'extended-define-webpack-plugin';
+
 import { dependencies as externals } from '../app/package.json';
 
 // eslint-disable-next-line import/no-default-export
@@ -67,9 +69,19 @@ export default {
   },
 
   plugins: [
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
-      SHA: '',
+    new ExtendedDefinePlugin({
+      CONFIG: {
+        NODE_ENV: process.env.NODE_ENV,
+        PLAIN_HMR: process.env.PLAIN_HMR,
+        STX_NETWORK: process.env.STX_NETWORK || 'testnet',
+        DEBUG_PROD: process.env.DEBUG_PROD,
+        START_HOT: process.env.START_HOT,
+        PORT: process.env.PORT,
+        PULL_REQUEST: process.env.PULL_REQUEST,
+        BRANCH_NAME: process.env.BRANCH_NAME,
+        SHA: process.env.SHA,
+        PULL_REQUEST: process.env.PULL_REQUEST,
+      },
     }),
   ],
 };

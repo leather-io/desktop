@@ -74,7 +74,7 @@ const networkConfigs = {
       icon: 'icon.testnet.ico',
     },
     linux: {
-      icon: './icons',
+      icon: './icons-testnet',
     },
     // macos `Application Support` dir name
     extraMetadata: {
@@ -94,7 +94,7 @@ const networkConfigs = {
       icon: 'icon.mainnet.ico',
     },
     linux: {
-      icon: 'icon-512x512.png',
+      icon: './icons-mainnet',
     },
     extraMetadata: {
       productName: 'StacksWallet',

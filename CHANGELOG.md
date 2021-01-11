@@ -1,3 +1,10 @@
+# [4.0.0-beta.19](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.18...v4.0.0-beta.19) (2021-01-11)
+
+
+### Bug Fixes
+
+* you're listening to hotfix fm ([7f8a11c](https://github.com/blockstack/stacks-wallet/commit/7f8a11cf0fc1b5ecbc7e424450957c43db184c9a))
+
 # [4.0.0-beta.18](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.17...v4.0.0-beta.18) (2021-01-11)
 
 

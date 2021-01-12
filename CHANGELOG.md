@@ -1,3 +1,11 @@
+# [4.0.0-beta.21](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.20...v4.0.0-beta.21) (2021-01-12)
+
+
+### Bug Fixes
+
+* install set up ([9cffdc8](https://github.com/blockstack/stacks-wallet/commit/9cffdc8ed68ab7b76468edaa98d3853652370ce4))
+* install set up ([b398cc5](https://github.com/blockstack/stacks-wallet/commit/b398cc585a73ba77c00c77cbcca280cdfd81fe94))
+
 # [4.0.0-beta.20](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.19...v4.0.0-beta.20) (2021-01-12)
 
 

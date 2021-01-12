@@ -13,11 +13,13 @@ import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { StackingStepState } from '../stacking';
 
 interface ChooseAmountStepProps {
   id: string;
   balance: BigNumber;
   step?: number;
+  state: StackingStepState;
   minimumAmountToStack: number;
   isComplete: boolean;
   value: BigNumber | null;
@@ -28,7 +30,17 @@ interface ChooseAmountStepProps {
 const BigNumberFloorRound = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_FLOOR });
 
 export const ChooseAmountStep: FC<ChooseAmountStepProps> = props => {
-  const { isComplete, step, id, value, balance, minimumAmountToStack, onEdit, onComplete } = props;
+  const {
+    isComplete,
+    state,
+    step,
+    id,
+    value,
+    balance,
+    minimumAmountToStack,
+    onEdit,
+    onComplete,
+  } = props;
 
   const stxAmountForm = useFormik({
     initialValues: { stxAmount: '' },
@@ -76,6 +88,7 @@ export const ChooseAmountStep: FC<ChooseAmountStepProps> = props => {
       step={step}
       title={id}
       value={currentValue.toString()}
+      state={state}
       isComplete={isComplete}
       onEdit={onEdit}
     >

@@ -35,13 +35,15 @@ contextMenu({ showCopyImage: false, showSearchWithGoogle: false });
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
+  // const sourceMapSupport = require('source-map-support');
+  // sourceMapSupport.install();
 }
 
 if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  require('electron-debug')();
+  // require('electron-debug')();
 }
+
+console.log('sdlkfjsldkfjslkdjfl');
 
 app.setPath('userData', getUserDataPath(app));
 app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
@@ -58,7 +60,7 @@ const installExtensions = () => {
 
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
+    // await installExtensions();
   }
 
   // https://github.com/electron/electron/issues/22995
@@ -94,7 +96,7 @@ const createWindow = async () => {
       nodeIntegrationInSubFrames: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.resolve('./app/preload.js'),
     },
   });
 
@@ -103,6 +105,7 @@ const createWindow = async () => {
   mainWindowState.manage(mainWindow);
 
   if (process.env.NODE_ENV === 'development' && process.env.DEBUG_PROD !== 'true') {
+    console.log('load dev window');
     void mainWindow.loadFile(`app-dev.html`);
   }
 

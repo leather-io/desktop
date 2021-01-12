@@ -13,14 +13,22 @@ import baseConfig from './webpack.config.base';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fs = require('fs');
+
 // CheckNodeEnv('production');
 // DeleteSourceMaps();
 
 // eslint-disable-next-line import/no-default-export
 export default merge(baseConfig, {
-  mode: 'production',
+  mode: 'development',
 
-  externals: ['@ledgerhq/hw-transport-node-hid', 'argon2-browser'],
+  externals: {
+    '@ledgerhq/hw-transport-node-hid': 'require("@ledgerhq/hw-transport-node-hid")',
+    'argon2-browser': 'require("argon2-browser")',
+  },
+
+  devtool: 'none',
 
   target: 'electron-preload',
 
@@ -29,7 +37,7 @@ export default merge(baseConfig, {
   output: {
     path: path.join(__dirname, '..'),
     filename: './app/preload.js',
-    libraryTarget: 'commonjs2',
+    // libraryTarget: 'var',
   },
 
   plugins: [

@@ -1,11 +1,24 @@
+import 'regenerator-runtime/runtime';
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { contextBridge, ipcRenderer, shell } from 'electron';
 
 // These two modules are excluded from the bundle, so they can
 // be imported at runtime in the preload's `require`, rather
 // than being bundled in the output script
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
+// import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import argon2 from 'argon2-browser';
+import { contextBridge, ipcRenderer, shell } from 'electron';
+
+console.log(contextBridge, ipcRenderer);
+
+// const fs = require('fs');
+
+// console.log(TransportNodeHid);
+
+// console.log(ipcRenderer);
+// const TransportNodeHid = require('@ledgerhq/hw-transport-node-hid');
+// console.log(TransportNodeHid);
+
+console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
 
 const scriptsToLoad = [];
 
@@ -53,9 +66,7 @@ const walletApi = {
     clear: async () => ipcRenderer.invoke('store-clear'),
     initialValue: () => ipcRenderer.sendSync('store-getEntireStore'),
   },
-
   deriveKey: async (args: Record<'pass' | 'salt', string>) => deriveArgon2Key(args),
-
   windowEvents: {
     blur(callback: () => void) {
       const listener = () => callback();
@@ -68,30 +79,25 @@ const walletApi = {
       return () => ipcRenderer.removeListener('focus', listener);
     },
   },
-
   openExternalLink: (url: string) => shell.openExternal(url),
-
   reloadApp: () => ipcRenderer.invoke('reload-app'),
-
-  nodeHid: {
-    listen: (observer: any) => TransportNodeHid.listen(observer),
-    open: async ({ descriptor, onDisconnect }: any) => {
-      const transport = await TransportNodeHid.open(descriptor);
-      transport.on('disconnect', async () => {
-        await transport.close();
-        setTimeout(() => onDisconnect(), 0);
-      });
-      return {
-        transport,
-        closeTransportConnection: async () => {
-          await transport.close();
-        },
-      };
-    },
-  },
-
+  // nodeHid: {
+  //   listen: (observer: any) => TransportNodeHid.listen(observer),
+  //   open: async ({ descriptor, onDisconnect }: any) => {
+  //     const transport = await TransportNodeHid.open(descriptor);
+  //     transport.on('disconnect', async () => {
+  //       await transport.close();
+  //       setTimeout(() => onDisconnect(), 0);
+  //     });
+  //     return {
+  //       transport,
+  //       closeTransportConnection: async () => {
+  //         await transport.close();
+  //       },
+  //     };
+  //   },
+  // },
   contextMenu: (menuItems: any) => ipcRenderer.send('context-menu-open', { menuItems }),
-
   installPath: () => ipcRenderer.sendSync('installPath'),
 };
 

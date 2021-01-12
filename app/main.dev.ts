@@ -25,7 +25,6 @@ import contextMenu from 'electron-context-menu';
 
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
-import { NETWORK } from './constants/index';
 import { validateConfig } from './main/validate-config';
 import { getUserDataPath } from './main/get-user-data-path';
 
@@ -83,7 +82,7 @@ const createWindow = async () => {
   });
 
   const iconPath =
-    NETWORK === 'mainnet'
+    process.env.STX_NETWORK === 'mainnet'
       ? path.join(__dirname, '../resources/icon-512x512.png')
       : path.join(__dirname, '../resources/icon-512x512-testnet.png');
 
@@ -96,7 +95,7 @@ const createWindow = async () => {
     frame: process.platform !== 'darwin',
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     icon: iconPath,
-    title: `Stacks Wallet` + (NETWORK === 'testnet' ? ' Testnet' : ''),
+    title: `Stacks Wallet` + (process.env.STX_NETWORK === 'testnet' ? ' Testnet' : ''),
     webPreferences: {
       disableBlinkFeatures: 'Auxclick',
       spellcheck: false,

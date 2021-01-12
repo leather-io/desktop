@@ -44,6 +44,8 @@ const baseConfig = {
   mac: {
     hardenedRuntime: true,
     category: 'public.app-category.finance',
+    entitlements: 'resources/entitlements.mac.plist',
+    entitlementsInherit: 'resources/entitlements.mac.plist',
   },
   linux: {
     target: ['deb', 'rpm'],

@@ -1,3 +1,10 @@
+# [4.0.0-beta.20](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.19...v4.0.0-beta.20) (2021-01-12)
+
+
+### Features
+
+* improve stacking flow, closes [#343](https://github.com/blockstack/stacks-wallet/issues/343) ([2141120](https://github.com/blockstack/stacks-wallet/commit/21411206fd21b938c61c708e2b749136a4133d5c))
+
 # [4.0.0-beta.19](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.18...v4.0.0-beta.19) (2021-01-11)
 
 

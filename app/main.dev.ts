@@ -17,9 +17,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
 import { app, BrowserWindow, clipboard, ipcMain, Menu, session } from 'electron';
-import { autoUpdater } from 'electron-updater';
 import Store from 'electron-store';
-import log from 'electron-log';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
 
@@ -31,15 +29,6 @@ import { getUserDataPath } from './main/get-user-data-path';
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
-
-// eslint-disable-next-line import/no-default-export
-export default class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    void autoUpdater.checkForUpdatesAndNotify();
-  }
-}
 
 contextMenu({ showCopyImage: false, showSearchWithGoogle: false });
 
@@ -152,10 +141,6 @@ const createWindow = async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
 
   session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => {
     callback(false);

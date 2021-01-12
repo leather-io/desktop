@@ -2,7 +2,6 @@ import { createKeysReducer, KeysState } from './keys.reducer';
 import { persistMnemonicSafe, persistMnemonic } from './keys.actions';
 
 jest.mock('electron-store');
-jest.mock('electron-log');
 
 describe('keysReducer', () => {
   let reducer: ReturnType<typeof createKeysReducer>;

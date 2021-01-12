@@ -46,7 +46,7 @@ const baseConfig = {
   },
   linux: {
     target: ['deb', 'rpm'],
-    category: 'Development',
+    category: 'Finance',
   },
   directories: {
     buildResources: 'resources',
@@ -69,7 +69,7 @@ const networkConfigs = {
       icon: 'icon.testnet.ico',
     },
     linux: {
-      icon: './icons-testnet',
+      icon: './resources/icons-testnet',
     },
     // macos `Application Support` dir name
     extraMetadata: {
@@ -88,9 +88,7 @@ const networkConfigs = {
     win: {
       icon: 'icon.mainnet.ico',
     },
-    linux: {
-      icon: './icons-mainnet',
-    },
+    linux: {},
     extraMetadata: {
       name: 'stacks-wallet',
       productName: 'Stacks Wallet',
@@ -99,6 +97,8 @@ const networkConfigs = {
 };
 
 const mergedConfig = deepMerge(baseConfig, networkConfigs[network]);
+
+console.log(process.env.CI, process.platform);
 
 console.log(JSON.stringify(mergedConfig, null, 2));
 

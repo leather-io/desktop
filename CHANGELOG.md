@@ -1,3 +1,10 @@
+# [4.0.0-beta.22](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.21...v4.0.0-beta.22) (2021-01-13)
+
+
+### Bug Fixes
+
+* code signing breaking MacOS ledger integration, closes [#487](https://github.com/blockstack/stacks-wallet/issues/487) ([31ee0a8](https://github.com/blockstack/stacks-wallet/commit/31ee0a88aa5b1f72b174b45cc0e0df1025f8f0da))
+
 # [4.0.0-beta.21](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.20...v4.0.0-beta.21) (2021-01-12)
 
 

@@ -1,5 +1,4 @@
 import { createReducer, createSelector } from '@reduxjs/toolkit';
-// import log from 'electron-log';
 
 import { RootState } from '..';
 import { WalletType } from '../../types/wallet-type';
@@ -32,9 +31,6 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
     builder
       .addCase(persistMnemonicSafe, (state, action) => {
         if (state.mnemonic !== null) {
-          // log.warn(
-          //   'generateMnemonicSafe failed. Tried to create mnemonic when one already exists.'
-          // );
           return state;
         }
         return { ...state, mnemonic: action.payload };

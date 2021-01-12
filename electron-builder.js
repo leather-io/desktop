@@ -15,6 +15,7 @@ const baseConfig = {
   files: [
     'dist/',
     'node_modules/',
+    'resources/',
     'app.html',
     'main.prod.js',
     'main.prod.js.map',
@@ -69,7 +70,7 @@ const networkConfigs = {
       icon: 'icon.testnet.ico',
     },
     linux: {
-      icon: './resources/icons-testnet',
+      icon: 'icons-testnet',
     },
     // macos `Application Support` dir name
     extraMetadata: {
@@ -88,7 +89,9 @@ const networkConfigs = {
     win: {
       icon: 'icon.mainnet.ico',
     },
-    linux: {},
+    linux: {
+      icon: 'icons-mainnet',
+    },
     extraMetadata: {
       name: 'stacks-wallet',
       productName: 'Stacks Wallet',

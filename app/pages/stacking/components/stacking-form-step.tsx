@@ -9,17 +9,20 @@ import {
   ButtonProps,
 } from '@blockstack/ui';
 
+import { StackingStepState } from '../stacking';
 interface StackingFormStepProps extends FlexProps {
   title: string;
   isComplete: boolean;
+  state: StackingStepState;
   value?: string;
   step?: number;
   onEdit?(step: number): void;
 }
 
 export const StackingStep: FC<StackingFormStepProps> = props => {
-  const { step, title, isComplete, value, children, onEdit, ...rest } = props;
+  const { step, title, state, isComplete, value, children, onEdit, ...rest } = props;
   if (!step) return null;
+  const showCompeteCheckmark = isComplete && state !== 'open';
   return (
     <Flex flexDirection="column" mt="extra-loose" {...rest}>
       <Text
@@ -35,9 +38,9 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
         <Text textStyle="display.small" mt="extra-tight" mr="tight">
           {title}
         </Text>
-        {isComplete && <CheckmarkCircleIcon size="16px" color="blue" />}
+        {showCompeteCheckmark && <CheckmarkCircleIcon size="16px" color="blue" />}
       </Flex>
-      {isComplete ? (
+      {state === 'closed' ? (
         <Box>
           {value && (
             <Text display="block" mt="tight" textStyle="body.large">

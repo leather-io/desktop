@@ -44,6 +44,7 @@ export const fetchStackerInfo = createAsyncThunk(
     const stackingClient = new StackingClient(address, network as any);
     const [error, resp] = await safeAwait(stackingClient.getStatus());
     if (resp) return resp;
+    console.log('stacking info ', resp);
     if (error) return { error };
     throw new Error();
   }

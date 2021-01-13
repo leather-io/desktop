@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
-
+import { Flex } from '@blockstack/ui';
 import { StacksNode } from '@store/stacks-node';
-
 import { TransactionListTitle } from './transaction-list-title';
 import { TransactionListEmpty } from './transaction-list-empty';
 import { TransactionListLoading } from './transaction-list-loading';
@@ -23,7 +22,10 @@ export const TransactionList: FC<TransactionListProps> = props => {
 
   return (
     <>
-      <TransactionListTitle>Activity</TransactionListTitle>
+      <Flex mb="loose" justifyContent="space-between" alignItems="flex-end">
+        <TransactionListTitle>Activity</TransactionListTitle>
+        {/* TODO: show all pending tx number here and link to explorer */}
+      </Flex>
       {children}
     </>
   );

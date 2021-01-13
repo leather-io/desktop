@@ -1,3 +1,18 @@
+# [4.0.0-beta.24](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.23...v4.0.0-beta.24) (2021-01-13)
+
+
+### Bug Fixes
+
+* exact dep version ([fd940ac](https://github.com/blockstack/stacks-wallet/commit/fd940ac4f2d4b54cf82b992bf07e6e32dda4b57a))
+
+
+### Features
+
+* finish pending tx work ([7747b21](https://github.com/blockstack/stacks-wallet/commit/7747b212e042f60fa5ab14a5cdac062d7532252e))
+* improve conflicting nonce error ([f15e751](https://github.com/blockstack/stacks-wallet/commit/f15e751fd921aa8086d6d892491f20b5e04b2e42))
+* show mempool txs ([a9788fd](https://github.com/blockstack/stacks-wallet/commit/a9788fdfa8aedf2297104bb4b6dbaf089a1109eb))
+* useSWR for mempool ([d485727](https://github.com/blockstack/stacks-wallet/commit/d4857279c1675649e72249222cad6a28a124d512))
+
 # [4.0.0-beta.23](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.22...v4.0.0-beta.23) (2021-01-13)
 
 

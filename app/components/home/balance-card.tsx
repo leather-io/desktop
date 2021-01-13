@@ -64,7 +64,6 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
           <Text>{toHumanReadableStx(available)} available</Text>
         </Flex>
       )}
-
       <Box mt="loose">
         <Button size="md" onClick={onSelectSend} isDisabled={balance === '0' || balance === null}>
           <ArrowIcon direction="up" mr="base-tight" />

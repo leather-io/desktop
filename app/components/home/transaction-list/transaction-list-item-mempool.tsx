@@ -52,7 +52,7 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
   )
     return null;
 
-  const txDate = new Date(tx.receipt_time);
+  const txDate = new Date(tx.receipt_time_iso);
   const txDateShort = txDate.toLocaleString();
 
   return (

@@ -202,6 +202,7 @@
     "@popperjs/core": "2.6.0",
     "@reduxjs/toolkit": "1.5.0",
     "@stacks/blockchain-api-client": "0.38.1",
+    "@stacks/ui-utils": "^7.1.1-beta.1",
     "@styled-system/theme-get": "5.1.2",
     "@tippyjs/react": "4.2.0",
     "@zondax/ledger-blockstack": "0.1.0",

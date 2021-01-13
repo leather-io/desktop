@@ -8,7 +8,11 @@ export function sumStxTxTotal(address: string, tx: Transaction, poxContractId?: 
   if (tx.tx_type === 'token_transfer') {
     return new BigNumber(tx.token_transfer.amount).plus(dir === 'sent' ? tx.fee_rate : 0);
   }
-  if (tx.tx_type === 'coinbase' || tx.tx_type === 'poison_microblock') {
+  if (
+    tx.tx_type === 'coinbase' ||
+    tx.tx_type === 'poison_microblock' ||
+    (tx.tx_type === 'contract_call' && tx.tx_status === 'pending')
+  ) {
     return new BigNumber(tx.fee_rate);
   }
 

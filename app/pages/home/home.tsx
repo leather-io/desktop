@@ -39,7 +39,6 @@ import {
 } from '@components/home';
 import { TransactionModal } from '@modals/transaction/transaction-modal';
 import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
-import { TransactionListItemPending } from '@components/home/transaction-list/transaction-list-item-pending';
 
 import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
@@ -135,15 +134,6 @@ export const Home: FC = () => {
             onSelectTx={openTxInExplorer}
           />
         ))}
-        {pendingTxs.map(pTx => (
-          <TransactionListItemPending
-            domNodeMapRef={txDomNodeRefMap}
-            activeTxIdRef={focusedTxIdRef}
-            key={pTx.tx_id}
-            tx={pTx}
-            onSelectTx={openTxInExplorer}
-          />
-        ))}
         {txs.map(tx => (
           <TransactionListItem
             domNodeMapRef={txDomNodeRefMap}
@@ -201,9 +191,6 @@ export const Home: FC = () => {
         stackingCard={stackingCardMap[stackingCardState]}
         stackingRewardCard={stackingRewardCard}
       />
-      <small>
-        <pre>{JSON.stringify(inboundMempoolTxs, null, 2)}</pre>
-      </small>
     </>
   );
 };

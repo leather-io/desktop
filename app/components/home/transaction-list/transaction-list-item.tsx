@@ -9,9 +9,10 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { useHover, useFocus } from 'use-events';
-import { Box, Text } from '@blockstack/ui';
+import { Box, Stack, Text } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
+import { getContractName, getTxTypeName } from '@stacks/ui-utils';
 import { RootState } from '@store/index';
 import { selectPoxInfo } from '@store/stacking';
 import { capitalize } from '@utils/capitalize';
@@ -29,20 +30,12 @@ import {
 } from './transaction-list-context-menu';
 import { TransactionListItemContainer } from './transaction-list-item-container';
 
-const dateOptions = {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-};
-
 interface TransactionListItemProps {
   tx: Transaction;
   address: string;
   activeTxIdRef: MutableRefObject<any>;
   domNodeMapRef: MutableRefObject<any>;
+
   onSelectTx(txId: string): void;
 }
 
@@ -54,8 +47,11 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
 
   const direction = getStxTxDirection(address, tx);
 
+  const txFailed =
+    tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition';
+
   const getTxIconVariant = useCallback((): TransactionIconVariants => {
-    if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition') {
+    if (txFailed) {
       return 'failed';
     }
     if (tx.tx_type === 'token_transfer') {
@@ -75,6 +71,9 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
         return 'Stacking initiation failed';
       return 'Stacking initiated successfully';
     }
+    if (tx.tx_type === 'smart_contract') {
+      return getContractName(tx.smart_contract.contract_id);
+    }
     return capitalize(tx.tx_type).replace('_', ' ');
   }, [direction, poxInfo?.contract_id, tx]);
 
@@ -86,7 +85,6 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
       'hex'
     ).toString('utf8');
   const txDate = new Date(tx.burn_block_time_iso);
-  const txDateFormatted = new Intl.DateTimeFormat('en-US', dateOptions).format(txDate);
   const txDateShort = txDate.toLocaleString();
 
   const containerRef = useRef<HTMLButtonElement>(null);
@@ -136,12 +134,14 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
         <Text textStyle="body.large.medium" display="block">
           {transactionTitle()}
         </Text>
-        <Text textStyle="body.small" color="ink.600" display={['none', 'none', 'block']}>
-          {txDateFormatted}
-        </Text>
-        <Text textStyle="body.small" color="ink.600" display={['block', 'block', 'none']}>
-          {txDateShort}
-        </Text>
+        <Stack isInline spacing="tight">
+          <Text textStyle="body.small" color="ink.600">
+            {getTxTypeName(tx)}
+          </Text>
+          <Text textStyle="body.small" color="ink.600">
+            {txDateShort}
+          </Text>
+        </Stack>
       </Box>
       <Box textAlign="right">
         <Text
@@ -150,6 +150,11 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
           title={`Fee: ${toHumanReadableStx(tx.fee_rate)}`}
           display="block"
         >
+          {txFailed ? (
+            <Text mr="tight" color="feedback.error" fontSize={0} fontWeight={500}>
+              Failed
+            </Text>
+          ) : null}
           {sumPrefix +
             toHumanReadableStx(sumStxTxTotal(address, tx, poxInfo?.contract_id).toString())}
         </Text>

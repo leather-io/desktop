@@ -17,7 +17,6 @@ import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { useInterval } from '@hooks/use-interval';
-import { selectPendingTransactions } from '@store/pending-transaction';
 import { watchContractExecution } from '../api/watch-contract-execution';
 import {
   fetchBlockTimeInfo,
@@ -31,10 +30,9 @@ import {
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
 
-  const { address, activeNode, pendingTxs, activeStackingTx } = useSelector((state: RootState) => ({
+  const { address, activeNode, activeStackingTx } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     activeNode: selectActiveNodeApi(state),
-    pendingTxs: selectPendingTransactions(state),
     activeStackingTx: selectActiveStackingTxId(state),
   }));
 
@@ -50,21 +48,9 @@ export const App: FC = ({ children }) => {
     dispatch(getAddressDetails(address));
   }, [address, dispatch]);
 
-  const checkIfPendingTxIsComplete = async (txId: string) => {
-    const [error, txResponse] = await safeAwait(new Api(activeNode.url).getTxDetails(txId));
-    if (error || !txResponse || txResponse.data.tx_status === 'pending') {
-      return;
-    }
-    if (txResponse.data.tx_status !== ('pending' as any)) {
-      dispatch(pendingTransactionSuccessful(txResponse.data));
-    }
-  };
-
   useNavigatorOnline({ onReconnect: initAppWithStxAddressInfo });
 
-  useInterval(() => refreshWalletDetailsWithoutLoader(), 60_000);
-
-  useInterval(() => pendingTxs.forEach(tx => void checkIfPendingTxIsComplete(tx.tx_id)), 15_000);
+  useInterval(() => refreshWalletDetailsWithoutLoader(), 1_500);
 
   useEffect(() => {
     initAppWithStxAddressInfo();
@@ -91,6 +77,7 @@ export const App: FC = ({ children }) => {
       dispatch(fetchStackerInfo(address));
       setTimeout(() => dispatch(removeStackingTx()), 2000);
     }
+
     void run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStackingTx]);
@@ -99,6 +86,7 @@ export const App: FC = ({ children }) => {
     const wsUrl = new URL(activeNode.url);
     wsUrl.protocol = 'ws:';
     let client: null | StacksApiWebSocketClient;
+
     async function run() {
       client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'extended', 'v1', 'ws'));
       if (!address) return;
@@ -112,6 +100,7 @@ export const App: FC = ({ children }) => {
         dispatch(pendingTransactionSuccessful(newTx.data));
       });
     }
+
     void run();
     return () => {
       if (client) client.webSocket.close();

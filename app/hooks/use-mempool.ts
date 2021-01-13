@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import useSWR from 'swr';
 import { useSelector } from 'react-redux';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
@@ -8,10 +8,14 @@ import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
 
-function filteredResults(txs: MempoolTransaction[], address = '') {
-  return txs.filter(
-    tx => tx.tx_type === 'token_transfer' && tx.token_transfer.recipient_address === address
-  );
+function getPendingTxsByAddress(address = '', txs: MempoolTransaction[] | undefined) {
+  return txs
+    ? txs.filter(
+        tx =>
+          (tx.tx_type === 'token_transfer' && tx.token_transfer.recipient_address === address) ||
+          tx.sender_address === address
+      )
+    : [];
 }
 
 export function useMempool() {
@@ -22,8 +26,11 @@ export function useMempool() {
   const mempoolFetcher = useCallback(() => new Api(activeNode.url).getMempoolTransactions(), [
     activeNode,
   ]);
-  const { data: mempoolTxs } = useSWR('mempool', mempoolFetcher, { refreshInterval: 30_000 });
-  if (mempoolTxs === undefined) return { inboundMempoolTxs: [] };
-  const inboundMempoolTxs = filteredResults(mempoolTxs, address);
-  return { inboundMempoolTxs };
+  const { data: mempoolTxs } = useSWR('mempool', mempoolFetcher, { refreshInterval: 1_500 });
+  const inboundMempoolTxs = useMemo(() => getPendingTxsByAddress(address, mempoolTxs), [
+    mempoolTxs,
+    address,
+  ]);
+  const nonTokenTransferTxs = inboundMempoolTxs.filter(tx => tx.tx_type !== 'token_transfer');
+  return { inboundMempoolTxs, nonTokenTransferTxs };
 }

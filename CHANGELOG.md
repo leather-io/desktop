@@ -1,3 +1,10 @@
+# [4.0.0-beta.23](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.22...v4.0.0-beta.23) (2021-01-13)
+
+
+### Bug Fixes
+
+* improve ledger error messaging ([894f8a6](https://github.com/blockstack/stacks-wallet/commit/894f8a6c442ec9d910d19d79920d8ed9abc34b17))
+
 # [4.0.0-beta.22](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.21...v4.0.0-beta.22) (2021-01-13)
 
 

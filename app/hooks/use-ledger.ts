@@ -43,7 +43,11 @@ export function useLedger() {
             })
           );
           if (error) {
-            setUsbError('Unable to connect to device. You may need to configure your udev rules.');
+            setUsbError(
+              `Unable to connect to device. Make sure you're using a USB data cable. Ensure other apps using your hardware wallet, such as Ledger Live, are closed. ${
+                process.platform === 'linux' ? 'You may need to configure your udev rules.' : ''
+              }`
+            );
             return;
           }
           if (resp) {

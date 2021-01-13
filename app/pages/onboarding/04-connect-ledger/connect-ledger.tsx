@@ -83,7 +83,7 @@ export const ConnectLedger: React.FC = () => {
   return (
     <Onboarding>
       <OnboardingTitle>Connect your Ledger</OnboardingTitle>
-      <OnboardingText>Follow these steps to connect your Ledger S or X</OnboardingText>
+      <OnboardingText>Follow these steps to connect your Ledger Nano S or X</OnboardingText>
 
       <LedgerConnectInstructions
         action="Confirm your address"

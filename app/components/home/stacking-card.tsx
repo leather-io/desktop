@@ -4,20 +4,15 @@ import { Flex, Box, Text } from '@blockstack/ui';
 
 import { RootState } from '@store/index';
 import { formatPoxAddressToNetwork } from '@utils/stacking';
-import { WaffleChart } from '@components/chart/waffle-chart';
-import {
-  selectStackerInfo,
-  selectNextCycleInfo,
-  selectPoxInfo,
-} from '@store/stacking/stacking.reducer';
+import { selectStackerInfo } from '@store/stacking/stacking.reducer';
+import { PercentageCircle } from '@components/chart/percentage-circle';
+import BigNumber from 'bignumber.js';
 
 type StackingCardProps = any;
 
 export const StackingCard: FC<StackingCardProps> = () => {
-  const { stackingDetails, stackerInfo, nextCycleInfo } = useSelector((state: RootState) => ({
-    stackingDetails: selectPoxInfo(state),
+  const { stackerInfo } = useSelector((state: RootState) => ({
     stackerInfo: selectStackerInfo(state),
-    nextCycleInfo: selectNextCycleInfo(state),
   }));
 
   return (
@@ -32,52 +27,30 @@ export const StackingCard: FC<StackingCardProps> = () => {
     >
       {stackerInfo?.isCurrentlyStacking && (
         <Box>
-          <Text display="block" textStyle="body.large.medium" mt="base-loose" textAlign="center">
+          <Flex mt="loose" justifyContent="center">
+            <PercentageCircle percentage={stackerInfo.stackingPercentage} />
+          </Flex>
+          <Text
+            display="block"
+            color="ink.600"
+            textStyle="caption"
+            mt="base-tight"
+            textAlign="center"
+          >
             Stacking progress
           </Text>
-          <Flex justifyContent="space-between" mt="base">
-            <Text textStyle="body.small.medium">Current stacking cycle</Text>
-          </Flex>
-          <Flex
-            maxWidth={[null, null, '325px']}
-            flexWrap="wrap"
-            alignContent="flex-start"
-            mt="tight"
-          >
-            <WaffleChart
-              points={[
-                ...Array.from({
-                  length:
-                    (stackingDetails?.reward_cycle_length || 0) -
-                    (nextCycleInfo?.blocksToNextCycle || 0),
-                }).map(() => true),
-                ...Array.from({ length: nextCycleInfo?.blocksToNextCycle || 0 }).map(() => false),
-              ]}
-            />
+          <Flex justifyContent="center" mt="tight">
+            <Text textStyle="body.large.medium" fontSize="24px">
+              {new BigNumber(stackerInfo.stackingPercentage).toPrecision(3).toString()}% complete
+            </Text>
           </Flex>
           <Box mr="2px">
-            <Flex justifyContent="space-between" mt="base">
-              <Text textStyle="body.small.medium">Blocks until next cycle</Text>
-              <Text textStyle="body.small">{nextCycleInfo?.blocksToNextCycle}</Text>
-            </Flex>
-            <Flex justifyContent="space-between" mt="tight">
-              <Text textStyle="body.small.medium">You're stacking for</Text>
-              <Text textStyle="body.small">
-                {stackerInfo?.lock_period} cycle{stackerInfo.lock_period > 1 ? 's' : ''}
+            <Flex flexDirection="column" alignItems="center" mt="base-tight" mb="base-loose">
+              <Text textStyle="caption" color="ink.600">
+                Reward to be paid to
               </Text>
-            </Flex>
-            {stackerInfo.lock_period > 1 && (
-              <Flex justifyContent="space-between" mt="tight">
-                <Text textStyle="body.small.medium">Current cycle</Text>
-                <Text textStyle="body.small">
-                  {stackerInfo.currentCycleOfTotal} of {stackerInfo?.lock_period}
-                </Text>
-              </Flex>
-            )}
-            <Flex flexDirection="column" mt="tight" mb="base-loose">
-              <Text textStyle="body.small.medium">Reward to be paid to</Text>
-              <Text as="code" fontSize="13px" mt="tight" color="ink.600">
-                {formatPoxAddressToNetwork(stackerInfo?.pox_address)}
+              <Text fontSize="13px" mt="tight" color="ink">
+                {formatPoxAddressToNetwork(stackerInfo?.details.pox_address)}
               </Text>
             </Flex>
           </Box>

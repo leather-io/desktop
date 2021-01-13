@@ -1,5 +1,6 @@
 import axios from 'axios';
 import urljoin from 'url-join';
+import { AccountsApi, Configuration } from '@stacks/blockchain-api-client';
 import {
   Transaction,
   TransactionResults,
@@ -11,6 +12,12 @@ import {
 } from '@blockstack/stacks-blockchain-api-types';
 
 export class Api {
+  stacksApiConfig = new Configuration({
+    basePath: this.baseUrl,
+  });
+
+  accountsApi = new AccountsApi(this.stacksApiConfig);
+
   constructor(public baseUrl: string) {}
 
   async getAddressBalance(address: string) {

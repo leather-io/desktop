@@ -16,7 +16,7 @@ export const Terms: React.FC = () => {
   const history = useHistory();
   useBackButton(null);
   return (
-    <Onboarding maxWidth="800px">
+    <Onboarding maxWidth="800px" px="base-loose">
       <OnboardingTitle mb="base" mt="extra-loose">
         Terms of Service
       </OnboardingTitle>

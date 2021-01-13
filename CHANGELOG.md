@@ -1,3 +1,11 @@
+# [4.0.0-beta.25](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.24...v4.0.0-beta.25) (2021-01-13)
+
+
+### Bug Fixes
+
+* date formatting ([0452589](https://github.com/blockstack/stacks-wallet/commit/0452589b590fdd1648ad59e7782488b643085571))
+* **stacking:** miscalculation of starting block ([1978629](https://github.com/blockstack/stacks-wallet/commit/197862996c7e63597a3978d2b82b13c80446d8fa))
+
 # [4.0.0-beta.24](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.23...v4.0.0-beta.24) (2021-01-13)
 
 

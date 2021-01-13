@@ -1752,7 +1752,7 @@
     type-fest "^0.20.2"
     typescript "^4.1.2"
 
-"@stacks/ui-utils@^7.1.1-beta.1":
+"@stacks/ui-utils@7.1.1-beta.1":
   version "7.1.1-beta.1"
   resolved "https://registry.yarnpkg.com/@stacks/ui-utils/-/ui-utils-7.1.1-beta.1.tgz#b2f447c50dfe5ba393d6147d848c4e699f78bdce"
   integrity sha512-CxfhoZ0+VxIcjaEMN3pJCy2E1tWC178cjk/dr+msPBprmQfrsJJ/iCiax2zID4e99KWGFIKomH2hOwWIVPWV2A==

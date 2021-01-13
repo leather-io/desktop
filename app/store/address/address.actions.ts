@@ -16,10 +16,6 @@ export function getAddressDetails(address: string) {
   return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(fetchAddress());
     const activeNode = selectActiveNodeApi(getState());
-    // const [, xxx] = await safeAwait(
-    //   new Api(activeNode.url).accountsApi.getAccountStxBalance({ principal: address })
-    // );
-    // console.log(xxx);
     const [error, response] = await safeAwait(
       new Api(activeNode.url).accountsApi.getAccountStxBalance({ principal: address })
     );

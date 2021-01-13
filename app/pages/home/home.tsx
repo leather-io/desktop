@@ -149,7 +149,7 @@ export const Home: FC = () => {
   const balanceCard = (
     <BalanceCard
       address={address}
-      lockedStx={stackerInfo?.details.amount_microstx}
+      lockedStx={balance?.locked}
       balance={balance?.balance || null}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}

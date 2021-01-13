@@ -63,7 +63,6 @@ export const Home: FC = () => {
     receiveModalOpen,
     activeNode,
     stackingDetails,
-    nextCycleInfo,
     stackerInfo,
     stackingCardState,
   } = useSelector((state: RootState) => ({
@@ -150,8 +149,8 @@ export const Home: FC = () => {
   const balanceCard = (
     <BalanceCard
       address={address}
-      lockedStx={stackerInfo?.amount_microstx}
-      balance={balance}
+      lockedStx={stackerInfo?.details.amount_microstx}
+      balance={balance?.balance || null}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
       onRequestTestnetStx={async ({ stacking }) =>
@@ -170,7 +169,7 @@ export const Home: FC = () => {
     [HomeCardState.EligibleToParticipate]: <StackingParticipationCard />,
     [HomeCardState.StackingPendingContactCall]: <StackingLoading />,
     [HomeCardState.StackingPreCycle]: (
-      <StackingBeginsSoonCard blocksTillNextCycle={nextCycleInfo?.blocksToNextCycle} />
+      <StackingBeginsSoonCard blocksTillNextCycle={stackerInfo?.blocksUntilStackingCycleBegins} />
     ),
     [HomeCardState.StackingActive]: <StackingCard />,
     [HomeCardState.StackingError]: <StackingError />,

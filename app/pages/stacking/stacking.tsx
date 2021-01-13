@@ -146,7 +146,6 @@ export const Stacking: FC = () => {
 
   return (
     <>
-      a
       {modalOpen && btcAddress && amount !== null && (
         <StackingModal
           onClose={() => setModalOpen(false)}

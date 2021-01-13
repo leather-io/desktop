@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { selectAddressBalance } from '@store/address';
+import { selectAddressBalance as selectAddressDetails } from '@store/address';
 import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
   selectActiveStackingTxId,
@@ -55,17 +55,19 @@ export enum HomeCardState {
 }
 
 const selectLoadingCardResources = createSelector(
-  selectAddressBalance,
+  selectAddressDetails,
   selectLoadingStacking,
   (balance, isLoadingStacking) => balance === null || isLoadingStacking
 );
 
 const selectMeetsMinStackingThreshold = createSelector(
-  selectAddressBalance,
+  selectAddressDetails,
   selectPoxInfo,
-  (balance, poxInfo) => {
-    if (balance === null || poxInfo === null) return false;
-    return new BigNumber(balance).isGreaterThan(poxInfo.paddedMinimumStackingAmountMicroStx);
+  (addressDetails, poxInfo) => {
+    if (addressDetails === null || poxInfo === null) return false;
+    return new BigNumber(addressDetails.balance).isGreaterThan(
+      poxInfo.paddedMinimumStackingAmountMicroStx
+    );
   }
 );
 

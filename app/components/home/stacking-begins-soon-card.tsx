@@ -25,11 +25,11 @@ export const StackingBeginsSoonCard: FC<StackingBeginsSoonCardProps> = ({
       <Text display="block" textStyle="body.small" color="ink.600" width="100%">
         Stacking will begin in the next cycle
       </Text>
-      {blocksTillNextCycle && (
+      {typeof blocksTillNextCycle === 'number' ? (
         <Text textStyle="caption" color="ink.600">
           {blocksTillNextCycle} block{blocksTillNextCycle > 1 && 's'} to go
         </Text>
-      )}
+      ) : null}
     </Box>
   </Flex>
 );

@@ -151,6 +151,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const broadcastTx = async () => {
     setHasSubmitted(true);
 
+    stacksNetwork.coreApiUrl = node.url;
+
     const txDetails = {
       recipient: form.values.recipient,
       network: stacksNetwork,

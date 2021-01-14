@@ -84,40 +84,33 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.23.0.tgz#7a86b1e6479c8aa8e8b9affe00eb8e369efdbc3b"
   integrity sha512-88M8RkVHl44k6MAhfrYhx25opnJV24/2XpuTUVklID11f9rBdE+6RZ9OMs39dyX2sDv7TuzIPi5nTRoCqZMDYw==
 
-"@stacks/auth@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/auth/-/auth-1.0.0-beta.20.tgz#87ad5d5b7c2ef72da833e02003c38a890d256e43"
-  integrity sha512-TkK4mkYpvcRSVVmsMqKff7bBIQVvM2LZEjei2EseLJVGbvGM2SamGaj160V+RCxzQOKquL41A1ceJYC4DWCkyQ==
+"@stacks/auth@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/auth/-/auth-1.0.0.tgz#4c694c62be52cc16324305aa31ee6f36df686c80"
+  integrity sha512-m6+2NfMFktEfaZYolrNgNCikIXDYB3zqXDlolDYH56HJmu8CYqO1s+3SDNa98tKGHCTFjDvGsKnrFFdg1ljzog==
   dependencies:
-    "@stacks/common" "^1.0.0-beta.20"
-    "@stacks/encryption" "^1.0.0-beta.20"
-    "@stacks/network" "^1.0.0-beta.20"
-    "@stacks/profile" "^1.0.0-beta.20"
+    "@stacks/common" "^1.0.0"
+    "@stacks/encryption" "^1.0.0"
+    "@stacks/network" "^1.0.0"
+    "@stacks/profile" "^1.0.0"
     codecov "^3.7.2"
     cross-fetch "^3.0.5"
     jsontokens "^3.0.0"
     query-string "^6.13.1"
 
-"@stacks/common@^1.0.0":
+"@stacks/common@^1.0.0", "@stacks/common@^1.0.0-beta.20":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.0.tgz#f1dfcb8ebd62f8087ca441b4beeed93ab98436b0"
   integrity sha512-6TkxBtuufGVOSZn9wIqbE4J2Uqn9XdJgGZi5YhIw3gGBesde4fhslsUlaFHJuj8H0EmyXpKg33vgorMF97cMDw==
   dependencies:
     cross-fetch "^3.0.6"
 
-"@stacks/common@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.0-beta.20.tgz#2654ef9d72301335f2ec93cfb1dba427026b6ee7"
-  integrity sha512-Je1MEO+63A44HZE0JzjQM5giSrNgY3bep2jaGAq8if5uIV9qKiFu7rZD9jQVc7lw3gmt+/S2zuvaM8K6Qs8ZtA==
+"@stacks/encryption@^1.0.0", "@stacks/encryption@^1.0.0-beta.20":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/encryption/-/encryption-1.0.0.tgz#a51540787af664036d6a5f72a401f2b1eb44a33c"
+  integrity sha512-lk438ugxY1EiNuUvbWRJ/VByMlV+/Zz5rd1xu/DFhCrAS9p03aunxar0akXpbtzHYgRl0ApkhGuZozAsoP7gJA==
   dependencies:
-    cross-fetch "^3.0.5"
-
-"@stacks/encryption@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/encryption/-/encryption-1.0.0-beta.20.tgz#761c46c5773d916edee65060183091936e2413fb"
-  integrity sha512-2UL2TE6ItrvtaDsUrEpsndsbDos+wyx8OSvsAsoBvFRSGH4onZylrk2PYO1JXyS8f4ft13X4IK4ckUkDJK0EcA==
-  dependencies:
-    "@stacks/common" "^1.0.0-beta.20"
+    "@stacks/common" "^1.0.0"
     bip39 "^3.0.2"
     bitcoinjs-lib "^5.1.10"
     bn.js "^5.1.2"
@@ -146,28 +139,21 @@
     triplesec "^3.0.27"
     zone-file "^1.0.0"
 
-"@stacks/network@1.0.0-beta.20", "@stacks/network@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.0.0-beta.20.tgz#ce0da0394d865e276da23813d19bb312afe3f1e3"
-  integrity sha512-wHGnX1D0k9N0UJzZcQ9JmvDmLOmQPTPEKz1w/8Daa9ok7HYl/Fs8Fu1CPd+q97o5+8myLGIhidsysro0ojEGOA==
-  dependencies:
-    "@stacks/common" "^1.0.0-beta.20"
-
-"@stacks/network@^1.0.0":
+"@stacks/network@1.0.0", "@stacks/network@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.0.0.tgz#b13c26553665bbe97d15e1a56c9320f1e96c1f04"
   integrity sha512-7qI8AmPCeN3a7/9PRnTQBKaNLADjcIR25ocEG3zxx9qS7nkh9Xw3EcvB0cw0dglkVE9U6vFQMbl1hBBCX+ovDA==
   dependencies:
     "@stacks/common" "^1.0.0"
 
-"@stacks/profile@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/profile/-/profile-1.0.0-beta.20.tgz#1404dfe877acb3cdd58de1d46aa91798b6d3d89d"
-  integrity sha512-aukm6eyzk+uSlzFhKiWD1axq4N10yyVL4hPo7vID+op0L3880YMGrnVBLdaf13OFddlA0ylnVdQ4m9C7j5Vk8w==
+"@stacks/profile@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/profile/-/profile-1.0.0.tgz#0e05ffbadd96b6b96135318968bd448deaf1e086"
+  integrity sha512-VuFK2nf3g1vaUXhiGl4yBwbi3weLhCAdMKMty8t4uR36CuYQiCzwc05KBmhwTc1xM92czMm+QzARUcwpcT8jSA==
   dependencies:
-    "@stacks/common" "^1.0.0-beta.20"
-    "@stacks/encryption" "^1.0.0-beta.20"
-    "@stacks/network" "^1.0.0-beta.20"
+    "@stacks/common" "^1.0.0"
+    "@stacks/encryption" "^1.0.0"
+    "@stacks/network" "^1.0.0"
     bitcoinjs-lib "^5.1.10"
     jsontokens "^3.0.0"
     schema-inspector "^1.7.0"
@@ -188,36 +174,15 @@
     url-join "^4.0.1"
 
 "@stacks/storage@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/storage/-/storage-1.0.0-beta.20.tgz#c53486c7baafcf820233ceb768f0676dcca91bf0"
-  integrity sha512-PHHrP/NRbkpMTd9BhTZ6ZlcYn31TOlVB7K6A0FzMAGeRX5hCvCaeaGt6PzPya2lwy4QmRhoWEJ+ew8E7dhtHbA==
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/storage/-/storage-1.0.0.tgz#506c737d8bdc1b637f5cff82e8e7cb5058a686d5"
+  integrity sha512-/scDgfYzbn8E77ZUcffsvYT4oYYgabhz3FEN+gtqVWjtFReBZ5ZDn8ANM+53BN4ZLrvYvgPDzd70+UahRtNKdQ==
   dependencies:
-    "@stacks/auth" "^1.0.0-beta.20"
-    "@stacks/common" "^1.0.0-beta.20"
-    "@stacks/encryption" "^1.0.0-beta.20"
+    "@stacks/auth" "^1.0.0"
+    "@stacks/common" "^1.0.0"
+    "@stacks/encryption" "^1.0.0"
 
-"@stacks/transactions@1.0.0-beta.20", "@stacks/transactions@^1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.0.0-beta.20.tgz#5bf8d1623f157d90c06a23d0cbb93848e20e21e1"
-  integrity sha512-tp0MC700zjktzNlYpZ76/ukMFMgUjhEqdNIUMTBVJAwsu2EUqkrHk7kcshzpSYsx6elJZr2XhRgBXXrE0sQNTA==
-  dependencies:
-    "@stacks/common" "^1.0.0-beta.20"
-    "@stacks/network" "^1.0.0-beta.20"
-    "@types/bn.js" "^4.11.6"
-    "@types/elliptic" "^6.4.12"
-    "@types/randombytes" "^2.0.0"
-    "@types/sha.js" "^2.4.0"
-    bn.js "^4.11.9"
-    c32check "^1.1.1"
-    cross-fetch "^3.0.5"
-    elliptic "^6.5.3"
-    lodash "^4.17.20"
-    randombytes "^2.1.0"
-    ripemd160-min "^0.0.6"
-    sha.js "^2.4.11"
-    smart-buffer "^4.1.0"
-
-"@stacks/transactions@^1.0.0":
+"@stacks/transactions@1.0.0", "@stacks/transactions@^1.0.0", "@stacks/transactions@^1.0.0-beta.20":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.0.0.tgz#29266aa756b1dfc8a45328957d2fd3c90f432a11"
   integrity sha512-Z68c9aRgglW2KRIiJH8W5A6PidqOCk2rePkMbMxiOfRIhc17MXxbXcQPe0eiU+Cr4isYH6cj/w8gHd3rnE2FDg==

@@ -98,6 +98,13 @@
     jsontokens "^3.0.0"
     query-string "^6.13.1"
 
+"@stacks/common@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.0.tgz#f1dfcb8ebd62f8087ca441b4beeed93ab98436b0"
+  integrity sha512-6TkxBtuufGVOSZn9wIqbE4J2Uqn9XdJgGZi5YhIw3gGBesde4fhslsUlaFHJuj8H0EmyXpKg33vgorMF97cMDw==
+  dependencies:
+    cross-fetch "^3.0.6"
+
 "@stacks/common@^1.0.0-beta.20":
   version "1.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.0-beta.20.tgz#2654ef9d72301335f2ec93cfb1dba427026b6ee7"
@@ -146,6 +153,13 @@
   dependencies:
     "@stacks/common" "^1.0.0-beta.20"
 
+"@stacks/network@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.0.0.tgz#b13c26553665bbe97d15e1a56c9320f1e96c1f04"
+  integrity sha512-7qI8AmPCeN3a7/9PRnTQBKaNLADjcIR25ocEG3zxx9qS7nkh9Xw3EcvB0cw0dglkVE9U6vFQMbl1hBBCX+ovDA==
+  dependencies:
+    "@stacks/common" "^1.0.0"
+
 "@stacks/profile@^1.0.0-beta.20":
   version "1.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@stacks/profile/-/profile-1.0.0-beta.20.tgz#1404dfe877acb3cdd58de1d46aa91798b6d3d89d"
@@ -159,14 +173,14 @@
     schema-inspector "^1.7.0"
     zone-file "^1.0.0"
 
-"@stacks/stacking@1.0.0-beta.20":
-  version "1.0.0-beta.20"
-  resolved "https://registry.yarnpkg.com/@stacks/stacking/-/stacking-1.0.0-beta.20.tgz#7e4272b095cf775f87d22b05b4150062d988ae67"
-  integrity sha512-+Ns/dEVrN5Z4NPYW8YsSwR+PmPE/3x9IftWybhi0udwSJ6u4Eigr5UV5uPA+tePVr65SpzCNTpQct5lUzkD/og==
+"@stacks/stacking@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/stacking/-/stacking-1.0.0.tgz#64f35a6fa5f94c56a6e70848401046858790bcb1"
+  integrity sha512-BZcFV6czbXYxTPw3/ELQiExQimtF2NCNa/VS30yU+okQotR5WeuN8i5vHjKmM2zft+tgmBpTgpeLrqWeGLVvsQ==
   dependencies:
-    "@stacks/network" "^1.0.0-beta.20"
-    "@stacks/transactions" "^1.0.0-beta.20"
-    axios "^0.21.0"
+    "@stacks/network" "^1.0.0"
+    "@stacks/transactions" "^1.0.0"
+    axios "^0.21.1"
     bignumber.js "^9.0.1"
     bitcoinjs-lib "^5.2.0"
     bn.js "^4.11.6"
@@ -189,6 +203,27 @@
   dependencies:
     "@stacks/common" "^1.0.0-beta.20"
     "@stacks/network" "^1.0.0-beta.20"
+    "@types/bn.js" "^4.11.6"
+    "@types/elliptic" "^6.4.12"
+    "@types/randombytes" "^2.0.0"
+    "@types/sha.js" "^2.4.0"
+    bn.js "^4.11.9"
+    c32check "^1.1.1"
+    cross-fetch "^3.0.5"
+    elliptic "^6.5.3"
+    lodash "^4.17.20"
+    randombytes "^2.1.0"
+    ripemd160-min "^0.0.6"
+    sha.js "^2.4.11"
+    smart-buffer "^4.1.0"
+
+"@stacks/transactions@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.0.0.tgz#29266aa756b1dfc8a45328957d2fd3c90f432a11"
+  integrity sha512-Z68c9aRgglW2KRIiJH8W5A6PidqOCk2rePkMbMxiOfRIhc17MXxbXcQPe0eiU+Cr4isYH6cj/w8gHd3rnE2FDg==
+  dependencies:
+    "@stacks/common" "^1.0.0"
+    "@stacks/network" "^1.0.0"
     "@types/bn.js" "^4.11.6"
     "@types/elliptic" "^6.4.12"
     "@types/randombytes" "^2.0.0"
@@ -394,10 +429,10 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.0.tgz#26df088803a2350dff2c27f96fef99fe49442aca"
-  integrity sha512-fmkJBknJKoZwem3/IKSSLpkdNXZeBu5Q7GA/aRsr2btgrptmSCxi2oFjZHqGdK9DoTil9PIHlPIZw2EcRJXRvw==
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
   dependencies:
     follow-redirects "^1.10.0"
 
@@ -693,7 +728,7 @@ create-hmac@^1.1.3, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-fetch@^3.0.4, cross-fetch@^3.0.5:
+cross-fetch@^3.0.4, cross-fetch@^3.0.5, cross-fetch@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
   integrity sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==

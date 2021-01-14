@@ -1,3 +1,10 @@
+# [4.0.0-beta.26](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.25...v4.0.0-beta.26) (2021-01-14)
+
+
+### Bug Fixes
+
+* close wallet on terms reject, increase ledger poll ([9bc6100](https://github.com/blockstack/stacks-wallet/commit/9bc6100576c9376d71b07f6537d5e4a31eec1c55))
+
 # [4.0.0-beta.25](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.24...v4.0.0-beta.25) (2021-01-13)
 
 

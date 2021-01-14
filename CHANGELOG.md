@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/blockstack/stacks-wallet/compare/v4.0.0...v4.0.1) (2021-01-14)
+
+
+### Bug Fixes
+
+* **transactions:** failed fee estimation ([1fce4a2](https://github.com/blockstack/stacks-wallet/commit/1fce4a295e7a4ac40cda85cf1b3a622d1e7e35f9))
+
 # [4.0.0](https://github.com/blockstack/stacks-wallet/compare/v3.0.0...v4.0.0) (2021-01-14)
 
 

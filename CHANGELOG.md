@@ -1,3 +1,12 @@
+# [4.0.0-beta.27](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.26...v4.0.0-beta.27) (2021-01-14)
+
+
+### Bug Fixes
+
+* handle error case if mainnet wallet attempted to generate testnet ([1514b00](https://github.com/blockstack/stacks-wallet/commit/1514b007a52280edad2add60e874e51f80bbd8ea))
+* remove ledger for testnet ([6eccbf4](https://github.com/blockstack/stacks-wallet/commit/6eccbf49afb065c5b00c88d4adc2cd7adabbc504))
+* update to stacking v1 ([72d7aeb](https://github.com/blockstack/stacks-wallet/commit/72d7aebd004c9977d30410a8eb650f30a32efe56))
+
 # [4.0.0-beta.26](https://github.com/blockstack/stacks-wallet/compare/v4.0.0-beta.25...v4.0.0-beta.26) (2021-01-14)
 
 

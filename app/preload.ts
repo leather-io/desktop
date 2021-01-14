@@ -93,6 +93,8 @@ const walletApi = {
   contextMenu: (menuItems: any) => ipcRenderer.send('context-menu-open', { menuItems }),
 
   installPath: () => ipcRenderer.sendSync('installPath'),
+
+  closeWallet: () => ipcRenderer.send('closeWallet'),
 };
 
 declare global {

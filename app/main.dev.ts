@@ -195,6 +195,8 @@ ipcMain.handle('reload-app', () => {
   mainWindow?.reload();
 });
 
+ipcMain.on('closeWallet', () => app.exit(0));
+
 //
 // TODO: refactor to be more generic
 // There's a bug where click handler doesn't fire for the top-level menu

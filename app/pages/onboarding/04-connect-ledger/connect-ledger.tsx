@@ -32,6 +32,8 @@ export const ConnectLedger: React.FC = () => {
   const [didRejectTx, setDidRejectTx] = useState(false);
   const [hasConfirmedAddress, setHasConfirmedAddress] = useState(false);
   const [deviceError, setDeviceError] = useState<string | null>(null);
+
+  const [ledgerLaunchVersionError, setLedgerLaunchVersionError] = useState<string | null>(null);
   useBackButton(routes.CREATE);
 
   const dispatch = useDispatch();
@@ -67,6 +69,14 @@ export const ConnectLedger: React.FC = () => {
         setLoading(true);
         setHasConfirmedAddress(true);
         await delay(750);
+
+        if (CONFIG.STX_NETWORK === 'mainnet' && !confirmedResponse.address.startsWith('SP')) {
+          setLedgerLaunchVersionError(
+            'Make sure you have the most recent version of Ledger app. Address generated is for testnet'
+          );
+          return;
+        }
+
         dispatch(
           setLedgerWallet({
             address: confirmedResponse.address,
@@ -97,6 +107,11 @@ export const ConnectLedger: React.FC = () => {
       {error && (
         <ErrorLabel mt="base-loose">
           <ErrorText>{error}</ErrorText>
+        </ErrorLabel>
+      )}
+      {ledgerLaunchVersionError !== null && (
+        <ErrorLabel mt="base-loose">
+          <ErrorText>{ledgerLaunchVersionError}</ErrorText>
         </ErrorLabel>
       )}
       {didRejectTx && (

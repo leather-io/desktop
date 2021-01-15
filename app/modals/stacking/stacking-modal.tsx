@@ -6,11 +6,10 @@ import BlockstackApp, { LedgerError, ResponseSign } from '@zondax/ledger-blockst
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
 import { StackingClient } from '@stacks/stacking';
-import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import BN from 'bn.js';
 
 import { RootState } from '@store/index';
-import { NETWORK, STX_DERIVATION_PATH } from '@constants/index';
+import { STX_DERIVATION_PATH } from '@constants/index';
 import routes from '@constants/routes.json';
 import {
   selectPublicKey,
@@ -43,6 +42,7 @@ import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { StackingFailed } from './steps/stacking-failed';
 import { delay } from '@utils/delay';
+import { stacksNetwork } from '../../environment';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
@@ -101,7 +101,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
   const [step, setStep] = useState(initialStep);
 
   const initStackingClient = useCallback(() => {
-    const network = NETWORK === 'mainnet' ? new StacksMainnet() : new StacksTestnet();
+    const network = stacksNetwork;
     network.coreApiUrl = node.url;
     return new StackingClient(poxAddress, network as any);
   }, [node.url, poxAddress]);

@@ -73,7 +73,7 @@ export default {
       CONFIG: {
         NODE_ENV: process.env.NODE_ENV,
         PLAIN_HMR: process.env.PLAIN_HMR,
-        STX_NETWORK: process.env.STX_NETWORK || 'testnet',
+        STX_NETWORK: process.env.STX_NETWORK,
         DEBUG_PROD: process.env.DEBUG_PROD,
         START_HOT: process.env.START_HOT,
         PORT: process.env.PORT,
@@ -82,6 +82,10 @@ export default {
         SHA: process.env.SHA,
         PULL_REQUEST: process.env.PULL_REQUEST,
       },
+    }),
+
+    new webpack.EnvironmentPlugin({
+      STX_NETWORK: process.env.STX_NETWORK,
     }),
   ],
 };

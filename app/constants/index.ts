@@ -1,5 +1,4 @@
 import packageJson from '../../package.json';
-import { whenNetwork } from '../utils/network-utils';
 
 type Environments = 'development' | 'testing' | 'production';
 
@@ -25,10 +24,7 @@ export const STATUS_PAGE_URL = 'http://status.test-blockstack.com';
 
 export const DEFAULT_STACKS_NODE_URL = 'https://stacks-node-api.blockstack.org';
 
-export const EXPLORER_URL = whenNetwork<string>({
-  mainnet: 'https://explorer.stacks.co',
-  testnet: 'https://testnet-explorer.blockstack.org',
-});
+export const EXPLORER_URL = 'https://explorer.stacks.co';
 
 export const GITHUB_ORG = 'blockstack';
 

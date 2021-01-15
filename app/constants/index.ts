@@ -1,3 +1,4 @@
+import { whenNetwork } from '@utils/network-utils';
 import packageJson from '../../package.json';
 
 type Environments = 'development' | 'testing' | 'production';
@@ -22,7 +23,10 @@ export const BUY_STX_URL = 'https://coinmarketcap.com/currencies/blockstack/mark
 
 export const STATUS_PAGE_URL = 'http://status.test-blockstack.com';
 
-export const DEFAULT_STACKS_NODE_URL = 'https://stacks-node-api.blockstack.org';
+export const DEFAULT_STACKS_NODE_URL = whenNetwork<string>({
+  mainnet: 'https://stacks-node-api.mainnet.stacks.co',
+  testnet: 'https://stacks-node-api.testnet.stacks.co',
+});
 
 export const EXPLORER_URL = 'https://explorer.stacks.co';
 

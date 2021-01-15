@@ -7,7 +7,7 @@ import { safeAwait } from '@utils/safe-await';
 import { whenNetwork } from '@utils/network-utils';
 import { useInterval } from './use-interval';
 
-const UPDATE_CHECK_INTERVAL = 120_000;
+const UPDATE_CHECK_INTERVAL = 300_000;
 const NEW_WALLET_STARTING_MAJOR_VERSION = whenNetwork<string>({
   mainnet: '4.0.0',
   testnet: '4.0.0-beta.0',

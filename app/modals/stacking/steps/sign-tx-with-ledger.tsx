@@ -1,8 +1,10 @@
 import React, { FC, useEffect } from 'react';
+import BlockstackApp from '@zondax/ledger-blockstack';
+
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import { Box } from '@blockstack/ui';
+import { LedgerXWarning } from '@components/ledger-x-warning';
 import { useLedger, LedgerConnectStep } from '@hooks/use-ledger';
-import BlockstackApp from '@zondax/ledger-blockstack';
 import { delay } from '@utils/delay';
 
 interface SignTxWithLedgerProps {
@@ -36,6 +38,7 @@ export const SignTxWithLedger: FC<SignTxWithLedgerProps> = ({ onLedgerConnect, u
 
   return (
     <Box mx="extra-loose" mb="extra-loose">
+      <LedgerXWarning />
       <LedgerConnectInstructions action="Sign transaction on Ledger" step={step} />
     </Box>
   );

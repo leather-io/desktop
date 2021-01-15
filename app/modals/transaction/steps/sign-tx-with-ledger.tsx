@@ -6,6 +6,7 @@ import BlockstackApp from '@zondax/ledger-blockstack';
 import { delay } from '@utils/delay';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
+import { LedgerXWarning } from '@components/ledger-x-warning';
 
 interface SignTxWithLedgerProps {
   onLedgerConnect(app: BlockstackApp): void;
@@ -40,6 +41,7 @@ export const SignTxWithLedger: FC<SignTxWithLedgerProps> = props => {
 
   return (
     <Box mx="extra-loose" mb="extra-loose">
+      <LedgerXWarning mt="base-loose" />
       <LedgerConnectInstructions action="Sign transaction on Ledger" step={step} />
       {ledgerError && (
         <ErrorLabel mt="base-loose">

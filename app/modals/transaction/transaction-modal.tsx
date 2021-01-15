@@ -59,6 +59,7 @@ import { PreviewTransaction } from './steps/preview-transaction';
 import { StacksTestnet } from '@stacks/network';
 import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { delay } from '@utils/delay';
 
 interface TxModalProps {
   balance: string;
@@ -184,7 +185,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
     if (walletType === 'software') {
       setIsDecrypting(true);
-
+      await delay(100);
       const [decryptionError, privateKey] = await safeAwait(getSoftwareWalletPrivateKey());
 
       if (decryptionError) {
@@ -361,7 +362,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       body: (
         <TxModalForm
           balance={balance}
-          form={form}
+          form={form && form}
           isCalculatingMaxSpend={calculatingMaxSpend}
           onSendEntireBalance={updateAmountFieldToMaxBalance}
           feeEstimateError={feeEstimateError}

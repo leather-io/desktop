@@ -57,7 +57,7 @@ import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
 import { StacksTestnet } from '@stacks/network';
-import { validateDecimalPrecision } from '../../utils/form/validate-decimals';
+import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 
 interface TxModalProps {

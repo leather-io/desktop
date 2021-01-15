@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import {
   makeSTXTokenTransfer,
   MEMO_MAX_LENGTH_BYTES,
+  StacksTransaction,
   makeUnsignedSTXTokenTransfer,
   createMessageSignature,
 } from '@stacks/transactions';
@@ -84,7 +85,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [password, setPassword] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [total, setTotal] = useState(new BigNumber(0));
-  const [decryptionError, setDecryptionError] = useState<string | null>(null);
+  const [passwordFormError, setPasswordFormError] = useState<string | null>(null);
+  const [ledgerError, setLedgerError] = useState<string | null>(null);
   const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
     null
   );
@@ -111,29 +113,39 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     memo: string;
   }
 
-  const createSoftwareWalletTx = useCallback(
-    async (options: CreateTxOptions) => {
-      if (!password || !encryptedMnemonic || !salt) {
-        throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
-      }
-      const { privateKey } = await decryptSoftwareWallet({
-        ciphertextMnemonic: encryptedMnemonic,
-        salt,
-        password,
-      });
-      return makeSTXTokenTransfer({ ...options, senderKey: privateKey });
+  const getSoftwareWalletPrivateKey = useCallback(async () => {
+    if (!password || !encryptedMnemonic || !salt) {
+      throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
+    }
+    const { privateKey } = await decryptSoftwareWallet({
+      ciphertextMnemonic: encryptedMnemonic,
+      salt,
+      password,
+    });
+    return privateKey;
+  }, [encryptedMnemonic, password, salt]);
+
+  const signSoftwareWalletTx = useCallback(
+    async (options: CreateTxOptions & { privateKey: string }) => {
+      return makeSTXTokenTransfer({ ...options, senderKey: options.privateKey });
     },
-    [encryptedMnemonic, password, salt]
+    []
   );
 
-  const createLedgerWalletTx = useCallback(
+  const createUnsignedLedgerTx = useCallback(
     async (options: CreateTxOptions & { publicKey: Buffer }) => {
-      if (!publicKey || !blockstackApp)
-        throw new Error('`publicKey` or `blockstackApp` is not defined');
-      const unsignedTx = await makeUnsignedSTXTokenTransfer({
+      if (!publicKey) throw new Error('`publicKey` is not defined');
+      return makeUnsignedSTXTokenTransfer({
         ...options,
         publicKey: publicKey.toString('hex'),
       });
+    },
+    [publicKey]
+  );
+
+  const signLedgerTransaction = useCallback(
+    async (unsignedTx: StacksTransaction) => {
+      if (!blockstackApp) throw new Error('``blockstackApp` is not defined');
       const resp = await blockstackApp.sign(STX_DERIVATION_PATH, unsignedTx.serialize());
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');
@@ -145,7 +157,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       }
       return unsignedTx;
     },
-    [blockstackApp, publicKey]
+    [blockstackApp]
   );
 
   const broadcastTx = async () => {
@@ -172,37 +184,57 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     if (walletType === 'software') {
       setIsDecrypting(true);
 
-      const [error, transaction] = await safeAwait(createSoftwareWalletTx(txDetails));
+      const [decryptionError, privateKey] = await safeAwait(getSoftwareWalletPrivateKey());
 
-      if (error) {
+      if (decryptionError) {
         setIsDecrypting(false);
-        setDecryptionError('Unable to decrypt wallet');
+        setPasswordFormError('Password incorrect');
         return;
       }
 
-      if (transaction) {
+      if (privateKey) {
         setIsDecrypting(false);
-        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
+
+        try {
+          const transaction = await signSoftwareWalletTx({ ...txDetails, privateKey });
+          dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
+        } catch (e) {
+          setPasswordFormError('Network failed requesting fee estimate');
+          return;
+        }
       }
     }
 
     if (walletType === 'ledger') {
-      if (publicKey === null) {
-        return;
-      }
+      if (publicKey === null) return;
 
-      const [error, transaction] = await safeAwait(
-        createLedgerWalletTx({ ...txDetails, publicKey })
+      setLedgerError(null);
+
+      const [unsignedTxError, unsignedTx] = await safeAwait(
+        createUnsignedLedgerTx({ ...txDetails, publicKey })
       );
 
-      if (error) {
+      if (unsignedTxError) {
         setHasSubmitted(false);
-        setStep(TxModalStep.NetworkError);
+        setLedgerError('Network error fetching fee estimation');
         return;
       }
 
-      if (transaction) {
-        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
+      if (unsignedTx) {
+        const [transactionSigningError, signedLedgerTransaction] = await safeAwait(
+          signLedgerTransaction(unsignedTx)
+        );
+
+        if (transactionSigningError) {
+          setHasSubmitted(false);
+          setLedgerError('Unable to sign transaction on Ledger device');
+          setStep(TxModalStep.NetworkError);
+        }
+        if (signedLedgerTransaction) {
+          dispatch(
+            broadcastTransaction({ ...broadcastActions, transaction: signedLedgerTransaction })
+          );
+        }
       }
     }
   };
@@ -265,7 +297,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     }),
     onSubmit: async () => {
       setLoading(true);
-      setDecryptionError(null);
+      setPasswordFormError(null);
       const [error, feeRate] = await safeAwait(new Api(node.url).getFeeRate());
       if (feeRate) {
         const fee = new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);
@@ -379,7 +411,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
               history.push(routes.SETTINGS);
             }}
             hasSubmitted={hasSubmitted}
-            decryptionError={decryptionError}
+            decryptionError={passwordFormError}
           />
         </>
       ),
@@ -400,7 +432,13 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     }),
     [TxModalStep.SignWithLedgerAndSend]: () => ({
       header: <TxModalHeader onSelectClose={closeModal}>Confirm on your Ledger</TxModalHeader>,
-      body: <SignTxWithLedger onLedgerConnect={setBlockstackAppCallback} updateStep={updateStep} />,
+      body: (
+        <SignTxWithLedger
+          onLedgerConnect={setBlockstackAppCallback}
+          ledgerError={ledgerError}
+          updateStep={updateStep}
+        />
+      ),
       footer: (
         <TxModalFooter>
           <TxModalButton

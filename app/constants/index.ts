@@ -45,6 +45,8 @@ export const STX_TRANSFER_TX_SIZE_BYTES = 180;
 
 export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
 
+export const DEFAULT_POLLING_INTERVAL = 10_000;
+
 export const features = {
   stacking: true,
   lifetimeRewards: false,

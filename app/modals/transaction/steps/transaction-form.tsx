@@ -11,10 +11,11 @@ interface TxModalFormProps {
   form: FormikProps<{ recipient: string; amount: string; memo: string }>;
   isCalculatingMaxSpend: boolean;
   onSendEntireBalance(): void;
+  feeEstimateError: string | null;
 }
 
 export const TxModalForm: FC<TxModalFormProps> = props => {
-  const { balance, form, isCalculatingMaxSpend, onSendEntireBalance } = props;
+  const { balance, form, isCalculatingMaxSpend, feeEstimateError, onSendEntireBalance } = props;
   return (
     <Box mb="extra-loose">
       <Flex flexDirection="column" alignItems="center" mt="48px">
@@ -98,6 +99,11 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
         {form.touched.memo && form.errors.memo && (
           <ErrorLabel>
             <ErrorText>{capitalize(form.errors.memo)}</ErrorText>
+          </ErrorLabel>
+        )}
+        {feeEstimateError && (
+          <ErrorLabel>
+            <ErrorText>{feeEstimateError}</ErrorText>
           </ErrorLabel>
         )}
       </Flex>

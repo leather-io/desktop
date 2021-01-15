@@ -15,7 +15,7 @@
     "build-main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.prod.babel.js --colors",
     "build-renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.prod.babel.js --colors",
     "build-preload": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.preload.babel.js --colors",
-    "dev": "cross-env START_HOT=1 node -r @babel/register ./internals/scripts/CheckPortInUse.js && concurrently \"cross-env START_HOT=1 yarn start-renderer-dev\" \"yarn start-preload-dev\"",
+    "dev": "concurrently \"cross-env START_HOT=1 yarn start-renderer-dev\" \"yarn start-preload-dev\"",
     "electron-rebuild": "electron-rebuild --parallel --force --types prod,dev,optional --module-dir app",
     "lint:eslint": "eslint \"app/**/*.{ts,tsx}\"",
     "package": "yarn build && electron-builder build --publish never",

@@ -86,6 +86,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [total, setTotal] = useState(new BigNumber(0));
   const [passwordFormError, setPasswordFormError] = useState<string | null>(null);
+  const [feeEstimateError, setFeeEstimateError] = useState<string | null>(null);
   const [ledgerError, setLedgerError] = useState<string | null>(null);
   const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
     null
@@ -298,7 +299,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     onSubmit: async () => {
       setLoading(true);
       setPasswordFormError(null);
+      setFeeEstimateError(null);
       const [error, feeRate] = await safeAwait(new Api(node.url).getFeeRate());
+      if (error) {
+        setFeeEstimateError('Error fetching estimate fees');
+      }
       if (feeRate) {
         const fee = new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);
         const amount = stxToMicroStx(form.values.amount);
@@ -308,7 +313,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
         setStep(TxModalStep.PreviewTx);
       }
       setLoading(false);
-      if (error) return;
     },
   });
 
@@ -360,6 +364,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           form={form}
           isCalculatingMaxSpend={calculatingMaxSpend}
           onSendEntireBalance={updateAmountFieldToMaxBalance}
+          feeEstimateError={feeEstimateError}
         />
       ),
       footer: (

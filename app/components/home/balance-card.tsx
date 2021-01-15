@@ -8,6 +8,7 @@ import { delay } from '@utils/delay';
 import BN from 'bn.js';
 import { ExternalLink } from '@components/external-link';
 import { makeExplorerAddressLink } from '@utils/external-links';
+import { isTestnet } from '@utils/network-utils';
 
 interface BalanceCardProps {
   balance: string | null;
@@ -73,7 +74,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
           <ArrowIcon direction="down" mr="base-tight" />
           Receive
         </Button>
-        {NETWORK === 'testnet' && (
+        {isTestnet() && (
           <Button
             mode="secondary"
             size="md"

@@ -1,3 +1,13 @@
+## [4.0.2](https://github.com/blockstack/stacks-wallet/compare/v4.0.1...v4.0.2) (2021-01-15)
+
+
+### Bug Fixes
+
+* improve handling of failed requests ([67e2183](https://github.com/blockstack/stacks-wallet/commit/67e21834cbf15d746d6b1ea63fab78ba996da02c))
+* increase API polling interval ([0ce1d07](https://github.com/blockstack/stacks-wallet/commit/0ce1d07031d6eabd9509a276f982e9b9e5ce71e6))
+* tx flow error handling ([2563efa](https://github.com/blockstack/stacks-wallet/commit/2563efaea894337a2722cc2f41673f2b2e336af4))
+* **ledger:** increase polling time ([2e10c06](https://github.com/blockstack/stacks-wallet/commit/2e10c06e556c6bf2af346af52379e18f19fe80e1))
+
 ## [4.0.1](https://github.com/blockstack/stacks-wallet/compare/v4.0.0...v4.0.1) (2021-01-14)
 
 

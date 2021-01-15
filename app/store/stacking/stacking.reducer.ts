@@ -82,7 +82,13 @@ export const stackingSlice = createSlice({
       action: PayloadAction<CoreNodePoxResponse>
     ) => {
       state.initialRequestsComplete.poxInfo = true;
+      state.errors.poxInfo = false;
       state.poxInfo = action.payload;
+    },
+    [fetchStackingInfo.rejected.toString()]: state => {
+      if (!state.initialRequestsComplete.poxInfo) {
+        state.errors.poxInfo = true;
+      }
     },
     [fetchCoreDetails.fulfilled.toString()]: (
       state,
@@ -93,7 +99,9 @@ export const stackingSlice = createSlice({
       state.coreNodeInfo = action.payload;
     },
     [fetchCoreDetails.rejected.toString()]: state => {
-      state.errors.coreNodeInfo = true;
+      if (!state.initialRequestsComplete.coreNodeInfo) {
+        state.errors.coreNodeInfo = true;
+      }
     },
     [fetchBlockTimeInfo.fulfilled.toString()]: (
       state,
@@ -104,22 +112,24 @@ export const stackingSlice = createSlice({
       state.blockTimeInfo = action.payload;
     },
     [fetchBlockTimeInfo.rejected.toString()]: state => {
-      state.errors.blockTimeInfo = true;
+      if (!state.initialRequestsComplete.blockTimeInfo) {
+        state.errors.blockTimeInfo = true;
+      }
     },
     [fetchStackerInfo.fulfilled.toString()]: (
       state,
       action: PayloadAction<Required<StackerInfo>>
     ) => {
       state.initialRequestsComplete.stackerInfo = true;
+      state.errors.stackerInfo = false;
       if ('error' in action.payload || !action.payload.stacked) {
         return;
       }
       state.stackerInfo = action.payload;
-      state.errors.stackerInfo = false;
     },
     [fetchStackerInfo.rejected.toString()]: state => {
       state.initialRequestsComplete.stackerInfo = true;
-      state.errors.stackerInfo = true;
+      if (!state.initialRequestsComplete.stackerInfo) state.errors.stackerInfo = true;
     },
     [activeStackingTx.toString()]: (state, action: PayloadAction<{ txId: string }>) => {
       state.contractCallTx = action.payload.txId;

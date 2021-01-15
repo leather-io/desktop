@@ -11,8 +11,8 @@ export enum LedgerConnectStep {
   HasAddress,
 }
 
-const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 1000;
-const POLL_LEDGER_INTERVAL = 750;
+const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 1_000;
+const POLL_LEDGER_INTERVAL = 1_250;
 
 export function useLedger() {
   const [step, setStep] = useState(LedgerConnectStep.Disconnected);

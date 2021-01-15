@@ -9,6 +9,7 @@ import {
   addNewTransaction,
   pendingTransactionSuccessful,
 } from '@store/transaction';
+import { DEFAULT_POLLING_INTERVAL } from '@constants/index';
 import { getAddressDetails, updateAddressBalance } from '@store/address';
 import { RootState } from '@store/index';
 import { TitleBar } from '@components/title-bar/title-bar';
@@ -50,7 +51,7 @@ export const App: FC = ({ children }) => {
 
   useNavigatorOnline({ onReconnect: initAppWithStxAddressInfo });
 
-  useInterval(() => refreshWalletDetailsWithoutLoader(), 1_500);
+  useInterval(() => refreshWalletDetailsWithoutLoader(), DEFAULT_POLLING_INTERVAL);
 
   useEffect(() => {
     initAppWithStxAddressInfo();

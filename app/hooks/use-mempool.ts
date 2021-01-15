@@ -7,6 +7,7 @@ import { Api } from '@api/api';
 import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
+import { DEFAULT_POLLING_INTERVAL } from '@constants/index';
 
 function getPendingTxsByAddress(address = '', txs: MempoolTransaction[] | undefined) {
   return txs
@@ -26,7 +27,9 @@ export function useMempool() {
   const mempoolFetcher = useCallback(() => new Api(activeNode.url).getMempoolTransactions(), [
     activeNode,
   ]);
-  const { data: mempoolTxs } = useSWR('mempool', mempoolFetcher, { refreshInterval: 1_500 });
+  const { data: mempoolTxs } = useSWR('mempool', mempoolFetcher, {
+    refreshInterval: DEFAULT_POLLING_INTERVAL,
+  });
   const inboundMempoolTxs = useMemo(() => getPendingTxsByAddress(address, mempoolTxs), [
     mempoolTxs,
     address,

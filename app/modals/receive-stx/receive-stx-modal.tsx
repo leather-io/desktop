@@ -12,17 +12,18 @@ import {
   ExclamationMarkCircleIcon,
 } from '@blockstack/ui';
 
+import BlockstackApp from '@zondax/ledger-blockstack';
+import { isTestnet } from '@utils/network-utils';
 import { RootState } from '@store/index';
 import { selectWalletType } from '@store/keys';
 import { homeActions } from '@store/home';
 import { useLedger, LedgerConnectStep } from '@hooks/use-ledger';
 
-import { NETWORK, STX_DERIVATION_PATH } from '@constants/index';
+import { STX_DERIVATION_PATH } from '@constants/index';
 import { ExchangeWithdrawalWarning } from '@components/testnet/exchange-withdrawal-warning';
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import { delay } from '@utils/delay';
-import BlockstackApp from '@zondax/ledger-blockstack';
 
 interface ReceiveStxModalProps {
   address: string;
@@ -80,7 +81,7 @@ export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
       }
     >
       <Flex flexDirection="column" alignItems="center" mx="extra-loose">
-        {NETWORK === 'testnet' && <ExchangeWithdrawalWarning />}
+        {isTestnet() && <ExchangeWithdrawalWarning />}
         {view === 'main' && (
           <>
             <Box border="1px solid #F0F0F5" p="base" mt="base" borderRadius="8px">

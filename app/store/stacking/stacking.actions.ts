@@ -1,12 +1,11 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import { StackingClient } from '@stacks/stacking';
-import { StacksMainnet, StacksTestnet } from '@stacks/network';
 
-import { NETWORK } from '@constants/index';
 import { selectActiveNodeApi } from '@store/stacks-node/stacks-node.reducer';
 import { RootState } from '@store/index';
 import { Api } from '@api/api';
 import { safeAwait } from '@utils/safe-await';
+import { stacksNetwork } from '../../environment';
 
 export const fetchStackingInfo = createAsyncThunk('stacking/details', async (_arg, thunkApi) => {
   const state = thunkApi.getState() as RootState;
@@ -39,7 +38,7 @@ export const fetchStackerInfo = createAsyncThunk(
   async (address: string, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const node = selectActiveNodeApi(state);
-    const network = NETWORK === 'mainnet' ? new StacksMainnet() : new StacksTestnet();
+    const network = stacksNetwork;
     network.coreApiUrl = node.url;
     const stackingClient = new StackingClient(address, network as any);
     const [error, resp] = await safeAwait(stackingClient.getStatus());

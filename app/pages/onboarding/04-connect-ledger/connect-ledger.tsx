@@ -19,6 +19,7 @@ import { useLedger } from '@hooks/use-ledger';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { useBackButton } from '@hooks/use-back-url';
+import { isMainnet } from '@utils/network-utils';
 
 export enum LedgerConnectStep {
   Disconnected,
@@ -70,7 +71,7 @@ export const ConnectLedger: React.FC = () => {
         setHasConfirmedAddress(true);
         await delay(750);
 
-        if (CONFIG.STX_NETWORK === 'mainnet' && !confirmedResponse.address.startsWith('SP')) {
+        if (isMainnet() && !confirmedResponse.address.startsWith('SP')) {
           setLedgerLaunchVersionError(
             'Make sure you have the most recent version of Ledger app. Address generated is for testnet'
           );

@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 
 import { templateTxBoxProps } from './transaction-list-item-pseudo';
 import { StacksNode } from '@store/stacks-node';
-import { STATUS_PAGE_URL } from '@constants/index';
-import { openExternalLink } from '@utils/external-links';
 
 const linkProps: BoxProps = {
   color: 'blue',
@@ -28,15 +26,7 @@ export const TransactionListError: FC<TransactionListErrorProps> = ({ node, erro
         {error}
       </Text>
       <Text textStyle="caption" color="ink.600" textAlign="center" mx="base" lineHeight="20px">
-        {usingPbcHostedNode && (
-          <>
-            Unable to connect to the Hiro Systems PBC hosted node.
-            <br />
-            <Text {...linkProps} onClick={() => void openExternalLink(STATUS_PAGE_URL)}>
-              Check the status page
-            </Text>
-          </>
-        )}
+        {usingPbcHostedNode && <>Unable to connect to the Hiro Systems PBC hosted node.</>}
         {!usingPbcHostedNode && (
           <>
             Make sure you're connecting to a working Stacks Node

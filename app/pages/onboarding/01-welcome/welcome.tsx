@@ -9,6 +9,7 @@ import {
   OnboardingText,
 } from '@components/onboarding';
 import { useBackButton } from '@hooks/use-back-url';
+import { WalletWarning } from '@components/wallet-warning';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();
@@ -26,6 +27,7 @@ export const Welcome: React.FC = () => {
       <OnboardingButton onClick={() => history.push(routes.RESTORE)} mt="base" mode="secondary">
         I already have a wallet
       </OnboardingButton>
+      <WalletWarning mt="extra-loose" />
     </Onboarding>
   );
 };

@@ -10,6 +10,7 @@ import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { persistMnemonic } from '@store/keys/keys.actions';
 import { useBackButton } from '@hooks/use-back-url';
+
 import {
   Onboarding,
   OnboardingTitle,
@@ -57,13 +58,20 @@ export const RestoreWallet: React.FC = () => {
         Sign in to your wallet by connecting your Ledger hardware wallet or a by entering your
         Secret Key
       </OnboardingText>
-      <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
-        Continue with Ledger
-      </OnboardingButton>
 
-      <Hr my="extra-loose" />
+      {CONFIG.STX_NETWORK === 'mainnet' && (
+        <>
+          <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
+            Continue with Ledger
+          </OnboardingButton>
 
-      <Text textStyle="body.small.medium">Secret Key</Text>
+          <Hr mt="extra-loose" />
+        </>
+      )}
+
+      <Text textStyle="body.small.medium" mt="extra-loose" display="block">
+        Secret Key
+      </Text>
       <Input
         onChange={handleMnemonicInput}
         as="textarea"

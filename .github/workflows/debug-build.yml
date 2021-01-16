@@ -40,7 +40,7 @@ jobs:
 
           - os: windows-latest
             NPM_COMMAND: win
-            UPLOAD_ASSETS: release/**/*.exe
+            UPLOAD_ASSETS: release/*/*.exe
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 
@@ -56,6 +56,13 @@ jobs:
       - name: Add required Linux dependencies
         uses: ./.github/actions/linux-deps
         if: matrix.os == 'ubuntu-latest'
+
+      - name: Import GPG key
+        id: import_gpg_key
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
       - uses: actions/cache@v2
         id: cache-node-modules
@@ -124,6 +131,36 @@ jobs:
           name: stacks-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
           path: ${{ matrix.UPLOAD_ASSETS }}
 
+  asset-signatures:
+    runs-on: ubuntu-latest
+    needs:
+      - debug-build
+
+    steps:
+      - name: Download binaries
+        uses: actions/download-artifact@v2
+        with:
+          path: downloads
+
+      - name: Import GPG key
+        id: import_gpg_key
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Generate binary shasums
+        run: |
+          find downloads -type f -exec mv '{}' . \; && rm -rf downloads
+          ls | xargs -I{} shasum -a 256 {} | grep -v shasum.txt | tee -a shasum.txt
+          gpg --armor --output shasum.txt.asc --clearsign shasum.txt
+
+      - name: Upload binary shasums
+        uses: actions/upload-artifact@v2
+        with:
+          name: shasum.txt.asc
+          path: shasum.txt.asc
+
   announce-completion:
     runs-on: ubuntu-latest
 
@@ -139,7 +176,6 @@ jobs:
           header: '> [Download the latest build](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Remove header if build failed
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
         if: (contains(needs.*.result, 'failure')) && github.repository == 'blockstack/stacks-wallet'
         with:

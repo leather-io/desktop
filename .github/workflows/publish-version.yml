@@ -124,6 +124,36 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
 
+      - name: Download binaries
+        uses: actions/download-artifact@v2
+        with:
+          path: release
+
+      - name: Move binaries to root directory
+        run: mv release/*/stacks-wallet* .
+
+      - name: Download release-notes.txt from create-version workflow
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: create-version.yml
+          name: release-notes
+
+      - name: Import GPG key
+        id: import_gpg_key
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Prepare release notes
+        run: |
+          sed -i '1d' release-notes.txt
+          echo "\`\`\`" >> release-notes.txt
+          shasum -a 256 stacks-wallet* >> shasums.txt
+          gpg --armor --output shasums.txt.asc --clearsign shasums.txt
+          cat release-notes.txt shasums.txt.asc > release-body.txt
+          echo "\`\`\`" >> release-body.txt
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -134,6 +164,7 @@ jobs:
           release_name: Stacks Wallet v${{ needs.build.outputs.version }}
           draft: false
           prerelease: ${{ contains(needs.build.outputs.version, 'beta') }}
+          body_path: release-body.txt
 
   upload-release-assets:
     runs-on: ubuntu-latest
@@ -176,12 +207,14 @@ jobs:
 
   announce-release:
     runs-on: ubuntu-latest
+
     needs:
       - build
       - upload-release-assets
 
     steps:
       - name: Discord notification
+        if: github.ref == 'refs/heads/master'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master

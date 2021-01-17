@@ -8,12 +8,10 @@ Implementation of the Stacks 2.0 wallet
 
 ## Getting started
 
-To run development mode:
-
 ```sh
-yarn build
+yarn
 ```
 
 ```sh
-yarn dev
+yarn dev:testnet
 ```

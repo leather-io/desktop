@@ -43,19 +43,15 @@ export const HomeLayout: FC<HomeLayoutProps> = props => {
               color="ink.600"
               lineHeight="18px"
             >
-              ⚠️ We're currently resolving a number of issues related to network connectivity and
-              Ledger devices.
-              <br />
-              <br />
-              Your STX holdings on the Stacks blockchain are safe. Please check back later for more
-              updates.
+              ⚠️ Please check our status page for known issues if you’re experiencing any
+              difficulties
               <br />
               <br />
               <ExternalLink
                 fontSize="12px"
                 href="https://www.hiro.so/questions/what-known-issues-are-currently-affecting-the-stacks-wallet"
               >
-                Read more on our support page
+                Check status
               </ExternalLink>
             </Box>
           </Box>

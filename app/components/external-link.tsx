@@ -19,6 +19,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({ href, children, ...props }
       outline={0}
       _hover={{ textDecoration: 'underline' }}
       _focus={{ textDecoration: 'underline' }}
+      {...{ type: 'button' }}
       {...props}
     >
       {children}

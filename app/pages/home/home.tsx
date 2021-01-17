@@ -123,16 +123,18 @@ export const Home: FC = () => {
         node={activeNode}
         error={txListFetchError}
       >
-        {inboundMempoolTxs.map(mempoolTx => (
-          <TransactionListItemMempool
-            address={address}
-            domNodeMapRef={txDomNodeRefMap}
-            activeTxIdRef={focusedTxIdRef}
-            key={mempoolTx.tx_id}
-            tx={mempoolTx}
-            onSelectTx={openTxInExplorer}
-          />
-        ))}
+        {inboundMempoolTxs
+          .filter(mempoolTx => !txs.map(tx => tx.tx_id).includes(mempoolTx.tx_id))
+          .map(mempoolTx => (
+            <TransactionListItemMempool
+              address={address}
+              domNodeMapRef={txDomNodeRefMap}
+              activeTxIdRef={focusedTxIdRef}
+              key={mempoolTx.tx_id}
+              tx={mempoolTx}
+              onSelectTx={openTxInExplorer}
+            />
+          ))}
         {txs.map(tx => (
           <TransactionListItem
             domNodeMapRef={txDomNodeRefMap}

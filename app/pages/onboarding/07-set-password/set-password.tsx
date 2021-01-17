@@ -2,9 +2,10 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { Text, Input } from '@blockstack/ui';
+import { Text, Input, Flex } from '@blockstack/ui';
 import { setSoftwareWallet } from '@store/keys';
 import { useBackButton } from '@hooks/use-back-url';
+import { FULL_ENTITY_NAME } from '@constants/index';
 
 import {
   Onboarding,
@@ -17,6 +18,7 @@ import {
   blankPasswordValidation,
   ValidatedPassword,
 } from '@crypto/validate-password';
+import { ExplainerTooltip } from '@components/tooltip';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
   if (result.isMnemonicPhrase) {
@@ -29,12 +31,12 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
     return `${result.feedback.warning}`;
   }
   if (!result.meetsScoreRequirement) {
-    return 'Your password is vulnerable to brute force attacks. Try adding more non-alphanumeric characters.';
+    return 'This password is vulnerable to brute force attacks. Try adding more non-alphanumeric characters.';
   }
   if (!result.meetsLengthRequirement) {
     return 'Your password must be at least 12 characters long';
   }
-  return 'Consider using a password generator to ensure your funds are sufficiently secure';
+  return 'Consider using a password generator to ensure your funds are sufficiently secure.';
 };
 
 export const SetPassword: React.FC = () => {
@@ -80,10 +82,22 @@ export const SetPassword: React.FC = () => {
     <Onboarding as="form" onSubmit={handleSubmit}>
       <OnboardingTitle>Set a password</OnboardingTitle>
       <OnboardingText>
-        You’ll use your password to confirm transactions. If you forget your password, you can
-        restore your wallet from your Secret Key.
+        You’ll use your password when sending transactions. <br />
+        If you forget it, you can restore your wallet from your Secret Key.
       </OnboardingText>
-      <Input type="password" mt="extra-loose" onChange={handlePasswordInput} />
+      <Flex mt="base-loose">
+        <ExplainerTooltip textStyle="caption">
+          Your password encrypts your Secret Key on your computer. This way, you can keep your
+          Secret Key safe, and only ever have to access it when restoring your wallet.
+          <br />
+          <br />
+          No one from {FULL_ENTITY_NAME} will ever ask for your password or Secret Key.
+        </ExplainerTooltip>
+        <Text textStyle="caption" color="ink.600" ml="tight">
+          Why do I need to set a password?
+        </Text>
+      </Flex>
+      <Input type="password" mt="base-tight" onChange={handlePasswordInput} />
       <Text display="block" textStyle="body.small" color="ink.600" mt="base">
         Password strength:
         <Text

@@ -16,7 +16,6 @@ import {
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
-  OnboardingFooter,
 } from '@components/onboarding';
 
 export const RestoreWallet: React.FC = () => {
@@ -58,29 +57,32 @@ export const RestoreWallet: React.FC = () => {
   return (
     <Onboarding as="form" onSubmit={handleSecretKeyRestore}>
       <OnboardingTitle>Sign in to your wallet</OnboardingTitle>
-      <OnboardingText>
-        Sign in to your wallet by connecting your Ledger hardware wallet or a by entering your
-        Secret Key
-      </OnboardingText>
 
       {CONFIG.STX_NETWORK === 'mainnet' && (
         <>
+          <OnboardingText>
+            Connect your Ledger hardware wallet or enter your Secret Key
+          </OnboardingText>
           <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
             Continue with Ledger
           </OnboardingButton>
           <Hr mt="extra-loose" />
         </>
       )}
-
-      <Text textStyle="body.small.medium" mt="extra-loose" display="block">
-        Secret Key
-      </Text>
+      <Box>
+        <Text textStyle="body.small.medium" mt="extra-loose" display="block">
+          Secret Key
+        </Text>
+        <Text textStyle="caption" color="ink.600">
+          Your Secret Key is a series of random words also known as a seed phrase
+        </Text>
+      </Box>
       <Input
         onChange={handleMnemonicInput}
         as="textarea"
         mt="base-tight"
         minHeight="90px"
-        placeholder="Secret Key"
+        placeholder="apple bounce ladder..."
         style={{
           resize: 'none',
           border: error ? '2px solid #D4001A' : '',
@@ -103,18 +105,15 @@ export const RestoreWallet: React.FC = () => {
             <ExclamationMarkCircleIcon size="14px" color="#FE9000" />
           </Box>
           <Text textStyle="caption" color="#424248" lineHeight="16px">
-            It appears you've entered a Secret Key originally created elsewhere than the Stacks
-            Wallet. We recommend you create a new Secret Key with the Stacks Wallet for greater
-            security.
+            It appears you have a Secret Key created somewhere other than the Stacks Wallet.
+            Consider creating a new Secret Key with the Stacks Wallet, or using a hardware wallet,
+            for greater security
           </Text>
         </Flex>
       )}
       <OnboardingButton mt="loose" type="submit" mode="secondary">
         Continue with Secret Key
       </OnboardingButton>
-      <OnboardingFooter>
-        {/* <OnboardingFooterLink>I have a Trezor wallet</OnboardingFooterLink> */}
-      </OnboardingFooter>
     </Onboarding>
   );
 };

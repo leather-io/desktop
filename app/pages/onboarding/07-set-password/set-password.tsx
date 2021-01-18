@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { Text, Input } from '@blockstack/ui';
 import { setSoftwareWallet } from '@store/keys';
 import { useBackButton } from '@hooks/use-back-url';
-import routes from '@constants/routes.json';
+
 import {
   Onboarding,
   OnboardingTitle,
@@ -38,13 +38,19 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
 };
 
 export const SetPassword: React.FC = () => {
-  useBackButton(routes.VERIFY_KEY);
   const history = useHistory();
+
   const dispatch = useDispatch();
   const [password, setPassword] = useState<string | null>(null);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(false);
+
+  const handleBack = useCallback(() => {
+    history.goBack();
+  }, [history]);
+
+  useBackButton(btnDisabled ? null : handleBack);
 
   const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();

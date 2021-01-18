@@ -13,7 +13,7 @@ import { WalletWarning } from '@components/wallet-warning';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();
-  useBackButton(null);
+  useBackButton(routes.TERMS);
 
   return (
     <Onboarding>

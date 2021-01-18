@@ -41,32 +41,32 @@ interface RootProps {
   persistor: any;
 }
 
-interface BackContext {
-  backUrl: null | string;
-  setBackUrl(url: null | string): void;
+export interface BackContext {
+  backUrl: null | string | (() => void);
+  setBackUrl(url: null | string | (() => void)): void;
 }
 
-export const BackContext = createContext<BackContext>({
+export const BackActionContext = createContext<BackContext>({
   backUrl: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setBackUrl: (_url: string) => {},
+  setBackUrl: (_url: string | (() => void)) => {},
 });
 
 function Root({ store, history, persistor }: RootProps) {
-  const [backUrl, setBackUrl] = useState<string | null>(null);
+  const [backUrl, setBackUrl] = useState<string | (() => void) | null>(null);
 
   useEffect(() => void loadFonts(), []);
 
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <BackContext.Provider value={{ backUrl, setBackUrl }}>
+        <BackActionContext.Provider value={{ backUrl, setBackUrl }}>
           <CSSReset />
           <GlobalStyle />
           <ConnectedRouter history={history}>
             <Routes />
           </ConnectedRouter>
-        </BackContext.Provider>
+        </BackActionContext.Provider>
       </PersistGate>
     </Provider>
   );

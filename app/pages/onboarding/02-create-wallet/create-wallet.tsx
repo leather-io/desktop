@@ -23,7 +23,7 @@ export const CreateWallet: React.FC = () => {
   useBackButton(routes.WELCOME);
 
   const createSoftwareWallet = () => {
-    dispatch(onboardingMnemonicGenerationStep({ stepDelayMs: 1_500 }));
+    dispatch(onboardingMnemonicGenerationStep({ stepDelayMs: 1_250 }));
     history.push(routes.GENERATING);
   };
 

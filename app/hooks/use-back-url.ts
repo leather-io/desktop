@@ -1,12 +1,32 @@
-import { useEffect, useContext } from 'react';
-import { BackContext } from '../pages/root';
+import { useEffect, useContext, useCallback } from 'react';
+import { BackActionContext, BackContext } from '../pages/root';
+import { useHistory } from 'react-router';
 
-export function useBackButton(urlToGoBackTo: string | null) {
-  const { backUrl, setBackUrl } = useContext(BackContext);
+export function useBackButtonState(): BackContext {
+  return useContext(BackActionContext);
+}
+
+export function useBack(): [any, () => void] {
+  const { backUrl } = useBackButtonState();
+  const history = useHistory();
+
+  const handleOnBack = useCallback(() => {
+    if (backUrl === null) return;
+    if (typeof backUrl === 'string') {
+      history.push(backUrl);
+    }
+    if (typeof backUrl === 'function') {
+      backUrl();
+    }
+  }, [backUrl, history]);
+
+  return [backUrl, handleOnBack];
+}
+
+export function useBackButton(urlToGoBackTo: string | null | (() => void)) {
+  const { setBackUrl } = useBackButtonState();
   useEffect(() => {
-    if (!urlToGoBackTo) return;
-    setBackUrl(urlToGoBackTo);
+    setBackUrl(() => urlToGoBackTo);
     return () => setBackUrl(null);
   }, [setBackUrl, urlToGoBackTo]);
-  return backUrl;
 }

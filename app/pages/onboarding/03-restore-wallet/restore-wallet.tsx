@@ -23,11 +23,14 @@ export const RestoreWallet: React.FC = () => {
   useBackButton(routes.WELCOME);
 
   const [mnemonic, setMnemonic] = useState('');
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const handleMnemonicInput = (e: React.FormEvent<HTMLInputElement>) => {
+    if (hasSubmitted) setHasSubmitted(false);
+    if (error) setError(null);
     setMnemonic(e.currentTarget.value.trim());
   };
 
@@ -35,6 +38,7 @@ export const RestoreWallet: React.FC = () => {
 
   const handleSecretKeyRestore = (e: React.FormEvent) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     if (mnemonicLength !== 12 && mnemonicLength !== 24) {
       setError('The Stacks Wallet can be used with only 12 and 24-word Secret Keys');
@@ -64,7 +68,6 @@ export const RestoreWallet: React.FC = () => {
           <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
             Continue with Ledger
           </OnboardingButton>
-
           <Hr mt="extra-loose" />
         </>
       )}
@@ -88,7 +91,7 @@ export const RestoreWallet: React.FC = () => {
           <ErrorText>{error}</ErrorText>
         </ErrorLabel>
       )}
-      {mnemonicLength === 12 && (
+      {mnemonicLength === 12 && hasSubmitted && (
         <Flex
           mt="base-loose"
           px="base"

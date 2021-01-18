@@ -1,4 +1,4 @@
-import React, { useContext, FC } from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory, useLocation, matchPath } from 'react-router';
 import { Flex, Box } from '@blockstack/ui';
@@ -8,7 +8,6 @@ import { useWindowFocus } from '@hooks/use-window-focus';
 import { useCheckForUpdates } from '@hooks/use-check-for-updates';
 import { openExternalLink } from '@utils/external-links';
 
-import { BackContext } from '../../pages/root';
 import { NetworkMessage } from './network-message';
 import { BackButton } from '../back-button';
 import { SettingsButton } from './settings-button';
@@ -18,18 +17,14 @@ export const TitleBar: FC = () => {
   const el = document.querySelector('.draggable-bar');
   const location = useLocation();
 
-  const { backUrl } = useContext(BackContext);
   const routerHistory = useHistory();
-  const handleHistoryBack = () => {
-    if (backUrl === null) return;
-    routerHistory.push(backUrl);
-  };
+
   const winState = useWindowFocus();
 
   const { isNewerReleaseAvailable, latestRelease } = useCheckForUpdates();
 
   const isOnboarding = matchPath(location.pathname, { path: '/onboard' }) !== null;
-  const dulledTextColor = winState === 'blurred' ? '#A1A7B3' : undefined;
+  const dulledTextColor = winState === 'blurred' ? '#a1a7b3' : undefined;
 
   if (!el) return null;
 
@@ -38,9 +33,9 @@ export const TitleBar: FC = () => {
       justifyContent="space-between"
       pl={process.platform === 'darwin' ? '90px' : 'tight'}
       height="100%"
-      backgroundColor={winState === 'focused' ? 'white' : '#FAFAFC'}
+      backgroundColor={winState === 'focused' ? 'white' : '#fafafc'}
     >
-      <BackButton backUrl={backUrl} hasFocus={winState === 'focused'} onClick={handleHistoryBack} />
+      <BackButton />
       <Flex
         justifyContent="space-around"
         flex={1}

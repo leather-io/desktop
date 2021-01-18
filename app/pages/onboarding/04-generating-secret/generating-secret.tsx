@@ -2,8 +2,10 @@ import React from 'react';
 import { Flex, Spinner } from '@blockstack/ui';
 
 import { Onboarding, OnboardingTitle } from '@components/onboarding';
+import { useBackButton } from '@hooks/use-back-url';
 
 export const GeneratingSecret: React.FC = () => {
+  useBackButton(null);
   return (
     <Onboarding>
       <Flex>

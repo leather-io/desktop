@@ -11,7 +11,6 @@ import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 import { Api } from '../../api/api';
 import { stacksNetwork } from '../../environment';
 import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
-import { addPendingTransaction } from '@store/pending-transaction';
 import { Dispatch, GetState } from '@store/index';
 import { selectActiveNodeApi } from '@store/stacks-node';
 
@@ -64,38 +63,31 @@ export interface BroadcastTransactionArgs {
   onBroadcastFail(errorResponse?: PostCoreNodeTransactionsError): void;
 }
 export function broadcastTransaction(args: BroadcastTransactionArgs) {
-  const { amount, transaction, isStackingCall = false, onBroadcastSuccess, onBroadcastFail } = args;
+  const { transaction, onBroadcastSuccess, onBroadcastFail } = args;
   return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(broadcastTx());
 
     const activeNode = selectActiveNodeApi(getState());
     stacksNetwork.coreApiUrl = activeNode.url;
 
-    const [error, blockchainResponse] = await safeAwait(
-      broadcastRawTransaction(transaction.serialize(), activeNode.url)
-    );
-    console.log({ error, blockchainResponse });
-    if (error || !blockchainResponse) {
-      dispatch(broadcastTxFail(error as any));
+    try {
+      const blockchainResponse = await broadcastRawTransaction(
+        transaction.serialize(),
+        activeNode.url
+      );
+      if (typeof blockchainResponse !== 'string') {
+        // setError for ui
+        dispatch(broadcastTxFail(blockchainResponse as any));
+        onBroadcastFail(blockchainResponse);
+        return;
+      }
+      onBroadcastSuccess(safelyFormatHexTxid(blockchainResponse));
+      return blockchainResponse;
+    } catch (e) {
+      dispatch(broadcastTxFail(e));
       onBroadcastFail();
       return;
     }
-    if (typeof blockchainResponse !== 'string') {
-      // setError for ui
-      dispatch(broadcastTxFail(blockchainResponse as any));
-      onBroadcastFail(blockchainResponse);
-      return;
-    }
-    onBroadcastSuccess(safelyFormatHexTxid(blockchainResponse));
-    dispatch(
-      addPendingTransaction({
-        tx_id: safelyFormatHexTxid(blockchainResponse),
-        amount: amount.toString(),
-        time: +new Date(),
-        isStackingCall,
-      })
-    );
-    return blockchainResponse;
   };
 }
 

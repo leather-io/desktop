@@ -475,7 +475,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     }),
     [TxModalStep.NetworkError]: () => ({
       header: <TxModalHeader onSelectClose={closeModal} />,
-      body: <FailedBroadcastError errorReason={nodeResponseError?.reason} />,
+      body: <FailedBroadcastError error={nodeResponseError} />,
       footer: (
         <TxModalFooter>
           <TxModalButton mode="tertiary" onClick={closeModal}>

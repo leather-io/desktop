@@ -1,22 +1,33 @@
-import React, { FC } from 'react';
-import { Flex, Box, Text } from '@blockstack/ui';
+import React, { FC, useState } from 'react';
+import { Flex, Box, Text, Button } from '@blockstack/ui';
+import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 
 import failedCrossSvg from '../../../assets/images/failed-cross.svg';
 
 interface FailedBroadcastErrorProps {
-  errorReason?: string;
+  error: PostCoreNodeTransactionsError | null;
 }
 
 export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
+  const { error } = props;
+  const [showErrorDetails, setShowErrorDetails] = useState(false);
   let errorBody: JSX.Element;
-  switch (props.errorReason) {
+  switch (error?.reason) {
     case 'ConflictingNonceInMempool':
       errorBody = (
         <>
           <Text as="h1" textStyle="display.small" display="block">
             Conflicting Nonce In Mempool
           </Text>
-          <Text as="p" mt="base" mb="extra-loose" mx="loose" display="block" textStyle="body.large">
+          <Text
+            as="p"
+            mt="base"
+            mb="extra-loose"
+            mx="loose"
+            display="block"
+            textStyle="body.small"
+            color="ink.600"
+          >
             A transaction with this nonce value is already in the mempool. Try again shortly.
           </Text>
         </>
@@ -28,7 +39,15 @@ export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
           <Text as="h1" textStyle="display.small" display="block">
             Bad Nonce
           </Text>
-          <Text as="p" mt="base" mb="extra-loose" mx="loose" display="block" textStyle="body.large">
+          <Text
+            as="p"
+            mt="base"
+            mb="extra-loose"
+            mx="extra-loose"
+            display="block"
+            textStyle="body.small"
+            color="ink.600"
+          >
             Transaction failed owing to a bad nonce value. Try again shortly.
           </Text>
         </>
@@ -36,23 +55,37 @@ export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
       break;
     default:
       errorBody = (
-        <>
+        <Box px="extra-loose">
           <Text as="h1" textStyle="display.small" display="block">
-            Your transaction failed to verify
+            Failed to broadcast transaction
           </Text>
-          <Text as="p" mt="base" mb="extra-loose" mx="loose" display="block" textStyle="body.large">
-            Please make sure you are signing your transaction with the same Ledger or Secret Key
-            used to set up your wallet.
+          <Text textStyle="body.small" color="ink.600" mt="tight" display="block">
+            The Stacks Blockchain API you're connected to returned a HTTP error code, preventing
+            this transaction from broadcasting.
           </Text>
-        </>
+        </Box>
       );
   }
   return (
-    <Flex flexDirection="column" textAlign="center">
+    <Flex flexDirection="column" textAlign="center" mb="extra-loose">
       <Box mx="auto" my="extra-loose">
         <img src={failedCrossSvg} alt="" />
       </Box>
       {errorBody}
+      {error !== null && (
+        <Box mt="base-tight">
+          <Button variant="link" my="base" onClick={() => setShowErrorDetails(!showErrorDetails)}>
+            {showErrorDetails ? 'Hide' : 'Show'} response details
+          </Button>
+          {showErrorDetails && (
+            <Box fontSize="12px" textAlign="left" px="base">
+              <Box as="pre" maxWidth="100%" overflowX="scroll">
+                <code>{JSON.stringify(error, null, 2)}</code>
+              </Box>
+            </Box>
+          )}
+        </Box>
+      )}
     </Flex>
   );
 };

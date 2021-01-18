@@ -38,7 +38,7 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
 };
 
 export const SetPassword: React.FC = () => {
-  useBackButton(routes.VERIFY_KEY);
+  // useBackButton(routes.VERIFY_KEY);
   const history = useHistory();
   const dispatch = useDispatch();
   const [password, setPassword] = useState<string | null>(null);

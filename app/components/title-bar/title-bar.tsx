@@ -20,10 +20,13 @@ export const TitleBar: FC = () => {
 
   const { backUrl } = useContext(BackContext);
   const routerHistory = useHistory();
+
   const handleHistoryBack = () => {
     if (backUrl === null) return;
-    routerHistory.push(backUrl);
+    if (typeof backUrl === 'string') routerHistory.push(backUrl);
+    if (typeof backUrl === 'function') backUrl();
   };
+
   const winState = useWindowFocus();
 
   const { isNewerReleaseAvailable, latestRelease } = useCheckForUpdates();

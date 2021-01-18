@@ -42,18 +42,18 @@ interface RootProps {
 }
 
 interface BackContext {
-  backUrl: null | string;
-  setBackUrl(url: null | string): void;
+  backUrl: null | string | (() => void);
+  setBackUrl(url: null | string | (() => void)): void;
 }
 
 export const BackContext = createContext<BackContext>({
   backUrl: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setBackUrl: (_url: string) => {},
+  setBackUrl: (_url: string | (() => void)) => {},
 });
 
 function Root({ store, history, persistor }: RootProps) {
-  const [backUrl, setBackUrl] = useState<string | null>(null);
+  const [backUrl, setBackUrl] = useState<string | (() => void) | null>(null);
 
   useEffect(() => void loadFonts(), []);
 

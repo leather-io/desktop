@@ -41,12 +41,12 @@ interface RootProps {
   persistor: any;
 }
 
-interface BackContext {
+export interface BackContext {
   backUrl: null | string | (() => void);
   setBackUrl(url: null | string | (() => void)): void;
 }
 
-export const BackContext = createContext<BackContext>({
+export const BackActionContext = createContext<BackContext>({
   backUrl: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setBackUrl: (_url: string | (() => void)) => {},
@@ -60,13 +60,13 @@ function Root({ store, history, persistor }: RootProps) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <BackContext.Provider value={{ backUrl, setBackUrl }}>
+        <BackActionContext.Provider value={{ backUrl, setBackUrl }}>
           <CSSReset />
           <GlobalStyle />
           <ConnectedRouter history={history}>
             <Routes />
           </ConnectedRouter>
-        </BackContext.Provider>
+        </BackActionContext.Provider>
       </PersistGate>
     </Provider>
   );

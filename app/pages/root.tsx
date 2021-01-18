@@ -41,12 +41,12 @@ interface RootProps {
   persistor: any;
 }
 
-interface BackContext {
+export interface BackContextType {
   backUrl: null | string | (() => void);
   setBackUrl(url: null | string | (() => void)): void;
 }
 
-export const BackContext = createContext<BackContext>({
+export const BackContext = createContext<BackContextType>({
   backUrl: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setBackUrl: (_url: string | (() => void)) => {},

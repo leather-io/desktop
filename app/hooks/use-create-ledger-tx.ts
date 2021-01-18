@@ -1,16 +1,14 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import StacksApp, { LedgerError, ResponseSign } from '@zondax/ledger-blockstack';
+import { LedgerError } from '@zondax/ledger-blockstack';
 
 import { RootState } from '@store/index';
-import { STX_DERIVATION_PATH } from '@constants/index';
 import { ContractCallOptions, makeUnsignedContractCall } from '@stacks/transactions';
 import { selectPublicKey } from '@store/keys';
 import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
 
 interface UseCreateLedgerTxArgs {
   txOptions: ContractCallOptions;
-  stacksApp: StacksApp;
 }
 
 export function useCreateLedgerTx() {
@@ -22,7 +20,7 @@ export function useCreateLedgerTx() {
 
   const createLedgerContractCallTx = useCallback(
     async (args: UseCreateLedgerTxArgs) => {
-      const { txOptions, stacksApp } = args;
+      const { txOptions } = args;
       if (coreNodeInfo === null || !publicKey) throw new Error('Stacking requires coreNodeInfo');
 
       if (!poxInfo) throw new Error('`poxInfo` or `stacksApp` is not defined');
@@ -32,7 +30,7 @@ export function useCreateLedgerTx() {
         publicKey: publicKey.toString('hex'),
       });
 
-      const resp: ResponseSign = await stacksApp.sign(STX_DERIVATION_PATH, unsignedTx.serialize());
+      const resp = await api.ledger.signTransaction(unsignedTx.serialize().toString('hex'));
 
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');

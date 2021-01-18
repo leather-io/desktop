@@ -12,6 +12,7 @@ if (!['mainnet', 'testnet'].includes(process.env.STX_NETWORK)) {
 
 const baseConfig = {
   afterSign: 'scripts/notarize.js',
+  asarUnpack: ['**/*.node'],
   files: [
     'dist/',
     'node_modules/',

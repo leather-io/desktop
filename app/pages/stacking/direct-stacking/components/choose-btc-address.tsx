@@ -57,7 +57,6 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
     initialValues: { btcAddress: '' },
     validate: ({ btcAddress }) => {
       const validationReport = validate(btcAddress);
-      console.log(validationReport);
       if (!validationReport) return { btcAddress: 'Invalid BTC address' };
       if (isMainnet() && validationReport.network === 'testnet') {
         return { btcAddress: 'Testnet addresses not supported on Mainnet' };

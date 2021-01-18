@@ -38,8 +38,8 @@ const weakPasswordWarningMessage = (result: ValidatedPassword) => {
 };
 
 export const SetPassword: React.FC = () => {
-  // useBackButton(routes.VERIFY_KEY);
   const history = useHistory();
+  useBackButton(() => history.goBack());
   const dispatch = useDispatch();
   const [password, setPassword] = useState<string | null>(null);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);

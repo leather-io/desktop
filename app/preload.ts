@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { contextBridge, ipcRenderer, shell } from 'electron';
 
-// These two modules are excluded from the bundle, so they can
-// be imported at runtime in the preload's `require`, rather
-// than being bundled in the output script
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import argon2 from 'argon2-browser';
+import type {
+  LedgerRequestSignTx,
+  LedgerRequestStxAddress,
+} from './main/register-ledger-listeners';
 
 const scriptsToLoad = [];
 
@@ -41,7 +41,14 @@ async function deriveArgon2Key({ pass, salt }: Record<'pass' | 'salt', string>) 
   return { derivedKeyHash: result.hash };
 }
 
-contextBridge.exposeInMainWorld('process', { ...process });
+contextBridge.exposeInMainWorld('process', {
+  version: process.version,
+  platform: process.platform,
+  nextTick: process.nextTick,
+  env: {
+    REACT_APP_SC_ATTR: null,
+  },
+});
 
 const walletApi = {
   // Expose protected methods that allow the renderer process to use
@@ -73,32 +80,31 @@ const walletApi = {
 
   reloadApp: () => ipcRenderer.invoke('reload-app'),
 
-  nodeHid: {
-    listen: (observer: any) => TransportNodeHid.listen(observer),
-    open: async ({ descriptor, onDisconnect }: any) => {
-      const transport = await TransportNodeHid.open(descriptor);
-      transport.on('disconnect', async () => {
-        await transport.close();
-        setTimeout(() => onDisconnect(), 0);
-      });
-      return {
-        transport,
-        closeTransportConnection: async () => {
-          await transport.close();
-        },
-      };
-    },
-  },
-
   contextMenu: (menuItems: any) => ipcRenderer.send('context-menu-open', { menuItems }),
 
   installPath: () => ipcRenderer.sendSync('installPath'),
 
   closeWallet: () => ipcRenderer.send('closeWallet'),
+
+  ledger: {
+    createListener: () => ipcRenderer.send('create-ledger-listener'),
+    removeListener: () => ipcRenderer.send('remove-ledger-listener'),
+    async signTransaction(unsignedTxHex: string) {
+      return ipcRenderer.invoke('ledger-request-sign-tx', unsignedTxHex) as LedgerRequestSignTx;
+    },
+    async requestAndConfirmStxAddress() {
+      return ipcRenderer.invoke('ledger-request-stx-address') as LedgerRequestStxAddress;
+    },
+  },
 };
 
+contextBridge.exposeInMainWorld('api', walletApi);
 declare global {
   const api: typeof walletApi;
 }
 
-contextBridge.exposeInMainWorld('api', walletApi);
+function postMessageToApp(data: unknown) {
+  window.postMessage(data, '*');
+}
+
+ipcRenderer.on('message-event', (_event, data) => postMessageToApp({ ...data }));

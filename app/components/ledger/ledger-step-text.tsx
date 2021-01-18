@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Text } from '@blockstack/ui';
-import { LedgerConnectStep } from '../../pages/onboarding/04-connect-ledger/connect-ledger';
+import { LedgerConnectStep } from '@hooks/use-prepare-ledger';
 
 interface LedgerStepTextProps {
   step: LedgerConnectStep;

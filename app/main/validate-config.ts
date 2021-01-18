@@ -9,7 +9,6 @@ export function validateConfig(app: App) {
     try {
       JSON.parse(walletConfigText);
     } catch (e) {
-      console.log('Backing up wallet');
       const now = new Date().toISOString();
       const corruptFilePath = path.join(
         app.getPath('userData'),

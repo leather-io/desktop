@@ -2,7 +2,6 @@ import React, { FC, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
-import StacksApp from '@zondax/ledger-blockstack';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
@@ -15,7 +14,6 @@ import { selectPoxInfo } from '@store/stacking';
 
 import { broadcastTransaction, BroadcastTransactionArgs } from '@store/transaction';
 import { selectAddressBalance } from '@store/address';
-import { LedgerConnectStep } from '@hooks/use-ledger';
 import { safeAwait } from '@utils/safe-await';
 
 import {
@@ -37,6 +35,7 @@ import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
 import { useCreateLedgerTx } from '@hooks/use-create-ledger-tx';
 import { useCreateSoftwareTx } from '@hooks/use-create-software-tx';
 import { delay } from '@utils/delay';
+import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
@@ -65,13 +64,13 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
 
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
-  const [stacksApp, setStacksApp] = useState<null | StacksApp>(null);
 
   const { walletType, whenWallet } = useWalletType();
   const { stackingClient } = useStackingClient();
   const { decryptWallet } = useDecryptWallet();
   const { createLedgerContractCallTx } = useCreateLedgerTx();
   const { createSoftwareTx } = useCreateSoftwareTx();
+  const { step: ledgerStep, isLocked } = usePrepareLedger();
 
   const api = useApi();
 
@@ -104,12 +103,8 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
   }, [password, decryptWallet, createDelegationTxOptions, createSoftwareTx]);
 
   const createLedgerWalletTx = useCallback(async () => {
-    if (!stacksApp || !poxInfo) throw new Error('`poxInfo` or `blockstackApp` is not defined');
-    return createLedgerContractCallTx({
-      txOptions: createDelegationTxOptions(),
-      stacksApp: stacksApp,
-    });
-  }, [stacksApp, createDelegationTxOptions, createLedgerContractCallTx, poxInfo]);
+    return createLedgerContractCallTx({ txOptions: createDelegationTxOptions() });
+  }, [createDelegationTxOptions, createLedgerContractCallTx]);
 
   const broadcastTx = async () => {
     if (balance === null) return;
@@ -160,11 +155,6 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
     }
   };
 
-  const [ledgerConnectStep, setLedgerConnectStep] = useState(LedgerConnectStep.Disconnected);
-
-  const setBlockstackAppCallback = useCallback(blockstackApp => setStacksApp(blockstackApp), []);
-  const updateStep = useCallback(step => setLedgerConnectStep(step), []);
-
   const txFormStepMap: Record<StackingModalStep, StackingModalComponents> = {
     [StackingModalStep.DecryptWalletAndSend]: () => ({
       header: (
@@ -201,13 +191,7 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
       header: (
         <StackingModalHeader onSelectClose={onClose}>Confirm on your Ledger</StackingModalHeader>
       ),
-      body: (
-        <SignTxWithLedger
-          onLedgerConnect={setBlockstackAppCallback}
-          updateStep={updateStep}
-          ledgerError={null}
-        />
-      ),
+      body: <SignTxWithLedger step={ledgerStep} isLocked={isLocked} ledgerError={null} />,
       footer: (
         <StackingModalFooter>
           <StackingModalButton
@@ -221,15 +205,10 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
           </StackingModalButton>
           <StackingModalButton
             isDisabled={
-              stacksApp === null ||
-              hasSubmitted ||
-              ledgerConnectStep !== LedgerConnectStep.ConnectedAppOpen
+              hasSubmitted || ledgerStep !== LedgerConnectStep.ConnectedAppOpen || isLocked
             }
             isLoading={hasSubmitted}
-            onClick={() => {
-              if (stacksApp === null) return;
-              void broadcastTx();
-            }}
+            onClick={() => void broadcastTx()}
           >
             Sign transaction
           </StackingModalButton>

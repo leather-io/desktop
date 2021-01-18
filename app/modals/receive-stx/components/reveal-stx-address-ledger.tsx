@@ -1,20 +1,20 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
-import BlockstackApp from '@zondax/ledger-blockstack';
+
 import { Box, Button, Flex, Stack } from '@blockstack/ui';
 
 import { delay } from '@utils/delay';
-import { STX_DERIVATION_PATH } from '@constants/index';
-import { LedgerConnectStep, useLedger } from '@hooks/use-ledger';
+
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import { selectAddress } from '@store/keys';
 import { RootState } from '@store/index';
 
 import { AddressDisplayer } from './address-displayer';
 import { SevereWarning } from '@components/severe-warning';
+import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
 
 export const RevealStxAddressLedger: FC = () => {
-  const { transport, step } = useLedger();
+  const { step } = usePrepareLedger();
   const [isWaitingLedger, setIsWaitingLedger] = useState(false);
   const [address, setAddress] = useState<null | string>(null);
   const [success, setSuccess] = useState(false);
@@ -23,21 +23,13 @@ export const RevealStxAddressLedger: FC = () => {
     address: selectAddress(state),
   }));
 
-  const stepToShow = success ? LedgerConnectStep.HasAddress : step;
+  const stepToShow = success ? LedgerConnectStep.ActionComplete : step;
 
   const showAddress = persistedAddress === address && address !== null;
 
   const verifyAddress = useCallback(async () => {
-    const usbTransport = transport;
-    if (usbTransport === null) return;
-    setIsWaitingLedger(true);
-
-    const app = new BlockstackApp(usbTransport);
-
     try {
-      await app.getVersion();
-      await delay(1);
-      const resp = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
+      const resp = await api.ledger.requestAndConfirmStxAddress();
       if (resp && resp.address) {
         setSuccess(resp.address === persistedAddress);
         await delay(1500);
@@ -47,7 +39,7 @@ export const RevealStxAddressLedger: FC = () => {
     } catch (e) {
       setIsWaitingLedger(false);
     }
-  }, [persistedAddress, transport]);
+  }, [persistedAddress]);
 
   return (
     <Flex

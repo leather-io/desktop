@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
+import { LedgerError } from '@zondax/ledger-blockstack';
 import { Box, Text } from '@blockstack/ui';
 
-import { STX_DERIVATION_PATH } from '@constants/index';
 import routes from '@constants/routes.json';
 import {
   Onboarding,
@@ -14,20 +13,15 @@ import {
 } from '@components/onboarding';
 import { setLedgerWallet } from '@store/keys';
 
-import { delay } from '@utils/delay';
+import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';
+import { useBackButton } from '@hooks/use-back-url';
+
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
-import { useLedger } from '@hooks/use-ledger';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { useBackButton } from '@hooks/use-back-url';
-import { isMainnet } from '@utils/network-utils';
 
-export enum LedgerConnectStep {
-  Disconnected,
-  ConnectedAppClosed,
-  ConnectedAppOpen,
-  HasAddress,
-}
+import { isMainnet } from '@utils/network-utils';
+import { delay } from '@utils/delay';
 
 export const ConnectLedger: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -38,57 +32,48 @@ export const ConnectLedger: React.FC = () => {
   const [ledgerLaunchVersionError, setLedgerLaunchVersionError] = useState<string | null>(null);
   useBackButton(routes.CREATE);
 
+  const { step, isLocked } = usePrepareLedger();
+
   const dispatch = useDispatch();
   const history = useHistory();
-  const { transport, step, error } = useLedger();
 
   async function handleLedger() {
     setDeviceError(null);
     setLoading(true);
-    const usbTransport = transport;
-
-    if (usbTransport === null) return;
-
-    const app = new BlockstackApp(usbTransport);
 
     try {
-      await app.getVersion();
-
-      const confirmedResponse = await app.showAddressAndPubKey(STX_DERIVATION_PATH);
-
-      if (confirmedResponse.returnCode === LedgerError.TransactionRejected) {
+      const deviceResponse = await api.ledger.requestAndConfirmStxAddress();
+      if (deviceResponse.returnCode === LedgerError.TransactionRejected) {
         setDidRejectTx(true);
         setLoading(false);
         return;
       }
 
-      if (confirmedResponse.returnCode !== LedgerError.NoErrors) {
-        setLoading(false);
-        return;
+      if (deviceResponse.returnCode === 0xffff) {
+        throw new Error(deviceResponse.errorMessage);
       }
 
-      if (confirmedResponse.address) {
+      if ('publicKey' in deviceResponse) {
         setLoading(true);
         setHasConfirmedAddress(true);
         await delay(750);
-
-        if (isMainnet() && !confirmedResponse.address.startsWith('SP')) {
+        if (isMainnet() && !deviceResponse.address.startsWith('SP')) {
           setLedgerLaunchVersionError(
             'Make sure you have the most recent version of Ledger app. Address generated is for testnet'
           );
           return;
         }
-
         dispatch(
           setLedgerWallet({
-            address: confirmedResponse.address,
-            publicKey: (confirmedResponse.publicKey as unknown) as Buffer,
+            address: deviceResponse.address,
+            publicKey: deviceResponse.publicKey,
             onSuccess: () => history.push(routes.HOME),
           })
         );
       }
     } catch (e) {
-      console.warn(e);
+      setLoading(false);
+      setDeviceError(String(e));
     }
   }
 
@@ -105,22 +90,18 @@ export const ConnectLedger: React.FC = () => {
           textAlign="center"
           lineHeight="18px"
         >
-          Double press the top two buttons on your Ledger device simultaneously when it displays
-          "Pending Ledger review"
+          Press both buttons on your Ledger device simultaneously when it displays "Pending Ledger
+          review"
         </Text>
       </Box>
       <LedgerConnectInstructions
         action="Confirm your address"
-        step={hasConfirmedAddress ? LedgerConnectStep.HasAddress : step}
+        step={hasConfirmedAddress ? LedgerConnectStep.ActionComplete : step}
+        isLocked={isLocked}
       />
       {deviceError && (
         <ErrorLabel mt="base-loose">
           <ErrorText>{deviceError}</ErrorText>
-        </ErrorLabel>
-      )}
-      {error && (
-        <ErrorLabel mt="base-loose">
-          <ErrorText>{error}</ErrorText>
         </ErrorLabel>
       )}
       {ledgerLaunchVersionError !== null && (
@@ -130,13 +111,13 @@ export const ConnectLedger: React.FC = () => {
       )}
       {didRejectTx && (
         <ErrorLabel mt="base-loose">
-          <ErrorText>You must approve the transaction that appears on your Ledger device</ErrorText>
+          <ErrorText>You must approve the action that appears on your Ledger device</ErrorText>
         </ErrorLabel>
       )}
       <OnboardingButton
         mt="loose"
         onClick={handleLedger}
-        isDisabled={step < 2 || loading}
+        isDisabled={step < 2 || loading || isLocked}
         isLoading={loading}
       >
         Continue

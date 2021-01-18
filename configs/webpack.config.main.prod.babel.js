@@ -24,6 +24,11 @@ export default merge(baseConfig, {
 
   target: 'electron-main',
 
+  externals: {
+    'node-hid': 'commonjs node-hid',
+    usb: 'commonjs usb',
+  },
+
   entry: './app/main.dev.ts',
 
   output: {

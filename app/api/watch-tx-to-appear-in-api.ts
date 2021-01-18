@@ -18,7 +18,6 @@ export function watchForNewTxToAppear({ txId, nodeUrl }: WatchForNewTxAppearArgs
       }
       retryCount += 1;
 
-      console.log(retryCount);
       const [error, txResponse] = await safeAwait(new Api(nodeUrl).getTxDetails(txId));
 
       if (error || !txResponse) return fetchTx();

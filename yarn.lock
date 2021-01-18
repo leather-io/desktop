@@ -1528,7 +1528,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@ledgerhq/devices@^5.29.0", "@ledgerhq/devices@^5.36.0":
+"@ledgerhq/devices@^5.36.0":
   version "5.36.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-5.36.0.tgz#f4493bea44390325fcc7a2a0d03bba69fc1604ec"
   integrity sha512-EwQwLZcz66a2V07Bad0J+Q67LR2afj2NJChJNcA6/gqvzXrtNtJ37u1co9eLU7S5GGll5JGi7KdBqAD9ZTHaaQ==
@@ -1537,22 +1537,12 @@
     "@ledgerhq/logs" "^5.36.0"
     rxjs "^6.6.3"
 
-"@ledgerhq/errors@^5.29.0", "@ledgerhq/errors@^5.36.0":
+"@ledgerhq/errors@^5.36.0":
   version "5.36.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-5.36.0.tgz#9d178b54116ae81b1fbdfa80afcd33981453be4c"
   integrity sha512-VS6aFzn3IDUmSLaX2kAPg5sQOc5m7IwvswAGvoMc3FCi9/a1dXWwtiYn5rWd1QjDJlTKSfCwmSpvUMp8FKoY2Q==
 
-"@ledgerhq/hw-transport-webusb@5.29.0":
-  version "5.29.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-webusb/-/hw-transport-webusb-5.29.0.tgz#cd97303ed3713e41f744598dec31f5da62c628ca"
-  integrity sha512-tRYR5uutWMwoAgSLe0Xiz/yC59u0b0Bjld1uSps7Mwe4nMYv+pTwUdHiDOeS37ulC+r8i1qMk4lzt3/9E0rX9g==
-  dependencies:
-    "@ledgerhq/devices" "^5.29.0"
-    "@ledgerhq/errors" "^5.29.0"
-    "@ledgerhq/hw-transport" "^5.29.0"
-    "@ledgerhq/logs" "^5.29.0"
-
-"@ledgerhq/hw-transport@^5.17.0", "@ledgerhq/hw-transport@^5.29.0":
+"@ledgerhq/hw-transport@^5.17.0":
   version "5.36.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-5.36.0.tgz#b6e951c411182ece59c7b527f948240d1b0a8a51"
   integrity sha512-rwLTBUsdGCC3Ka4G99sqGbbyVhkVxXd4eWWeOb8gnuKhrTydZGkkP3JdZSHgWSrVRYTAUmkE1AnUmchbfh361w==
@@ -1561,7 +1551,7 @@
     "@ledgerhq/errors" "^5.36.0"
     events "^3.2.0"
 
-"@ledgerhq/logs@^5.29.0", "@ledgerhq/logs@^5.36.0":
+"@ledgerhq/logs@^5.36.0":
   version "5.36.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.36.0.tgz#78721347162fb834d90effa1123b363dc46e3a52"
   integrity sha512-HnD/hByteUL1MsJu1lMinY9bNq8++5mWJ8qHCW9dLC9LbsvWIqwLwmZiGcW0D2tX9p0/C5ESuIpJ9B/d2dReuw==
@@ -10764,6 +10754,13 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   integrity sha1-6Eg5bwV9Ij8kOGkkYY4laUFh7Ec=
   dependencies:
     aproba "^1.1.1"
+
+rxjs@6.6.6:
+  version "6.6.6"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.6.tgz#14d8417aa5a07c5e633995b525e1e3c0dec03b70"
+  integrity sha512-/oTwee4N4iWzAMAL9xdGKjkEHmIwupR3oXbQjCKywF1BeFohswF3vZdogbmEF6pZkOsXTzWkrZszrWpQTByYVg==
+  dependencies:
+    tslib "^1.9.0"
 
 rxjs@^6.3.1, rxjs@^6.5.2, rxjs@^6.6.3:
   version "6.6.3"

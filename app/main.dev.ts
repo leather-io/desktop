@@ -25,6 +25,7 @@ import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
 import { validateConfig } from './main/validate-config';
 import { getUserDataPath } from './main/get-user-data-path';
+import { registerLedgerListeners } from './main/register-ledger-listeners';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -145,6 +146,8 @@ const createWindow = async () => {
   session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => {
     callback(false);
   });
+
+  registerLedgerListeners(mainWindow.webContents);
 };
 
 app.on('web-contents-created', (_event, contents) => {

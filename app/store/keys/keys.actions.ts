@@ -36,15 +36,15 @@ export const persistLedgerWallet = createAction<PersistLedgerWalletAction>(
 
 interface SetLedgerAddress {
   address: string;
-  publicKey: Buffer;
+  publicKey: string;
   onSuccess: () => void;
 }
 export function setLedgerWallet({ address, publicKey, onSuccess }: SetLedgerAddress) {
   return (dispatch: Dispatch) => {
     persistStxAddress(address);
-    persistPublicKey(publicKey.toString('hex'));
+    persistPublicKey(publicKey);
     persistWalletType('ledger');
-    dispatch(persistLedgerWallet({ address, publicKey: publicKey.toString('hex') }));
+    dispatch(persistLedgerWallet({ address, publicKey }));
     onSuccess();
   };
 }

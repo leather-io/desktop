@@ -15,7 +15,7 @@ import {
   makeUnsignedSTXTokenTransfer,
   createMessageSignature,
 } from '@stacks/transactions';
-import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
+import { LedgerError } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { StacksTestnet } from '@stacks/network';
@@ -24,15 +24,10 @@ import { delay } from '@utils/delay';
 import { useLatestNonce } from '@hooks/use-latest-nonce';
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
-import {
-  STX_DECIMAL_PRECISION,
-  STX_DERIVATION_PATH,
-  STX_TRANSFER_TX_SIZE_BYTES,
-} from '@constants/index';
+import { STX_DECIMAL_PRECISION, STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
 
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
-import { LedgerConnectStep } from '@hooks/use-ledger';
 import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
 
 import { homeActions } from '@store/home';
@@ -60,6 +55,7 @@ import { TxModalForm } from './steps/transaction-form';
 import { SignTxWithLedger } from '../components/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
+import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';
 import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
 
 interface TxModalProps {
@@ -95,10 +91,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   );
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
+
+  const { step: ledgerStep, isLocked } = usePrepareLedger();
 
   const interactedWithSendAllBtn = useRef(false);
-
   const { nonce } = useLatestNonce();
 
   const { encryptedMnemonic, salt, walletType, publicKey, node } = useSelector(
@@ -148,22 +144,19 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     [publicKey]
   );
 
-  const signLedgerTransaction = useCallback(
-    async (unsignedTx: StacksTransaction) => {
-      if (!blockstackApp) throw new Error('``blockstackApp` is not defined');
-      const resp = await blockstackApp.sign(STX_DERIVATION_PATH, unsignedTx.serialize());
-      if (resp.returnCode !== LedgerError.NoErrors) {
-        throw new Error('Ledger responded with errors');
-      }
-      if (unsignedTx.auth.spendingCondition) {
-        (unsignedTx.auth.spendingCondition as any).signature = createMessageSignature(
-          resp.signatureVRS.toString('hex')
-        );
-      }
-      return unsignedTx;
-    },
-    [blockstackApp]
-  );
+  const signLedgerTransaction = useCallback(async (unsignedTx: StacksTransaction) => {
+    const serializedTx = unsignedTx.serialize().toString('hex');
+    const resp = await api.ledger.signTransaction(serializedTx);
+    if (resp.returnCode !== LedgerError.NoErrors) {
+      throw new Error('Ledger responded with errors');
+    }
+    if (unsignedTx.auth.spendingCondition) {
+      (unsignedTx.auth.spendingCondition as any).signature = createMessageSignature(
+        resp.signatureVRS
+      );
+    }
+    return unsignedTx;
+  }, []);
 
   const broadcastTx = async () => {
     setHasSubmitted(true);
@@ -326,7 +319,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   });
 
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
-  const [ledgerConnectStep, setLedgerConnectStep] = useState(LedgerConnectStep.Disconnected);
 
   const closeModal = () => dispatch(homeActions.closeTxModal());
 
@@ -357,12 +349,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       setTimeout(() => (interactedWithSendAllBtn.current = false), 1000);
     }
   };
-
-  const setBlockstackAppCallback = useCallback(
-    blockstackApp => setBlockstackApp(blockstackApp),
-    []
-  );
-  const updateStep = useCallback(step => setLedgerConnectStep(step), []);
 
   const txFormStepMap: Record<TxModalStep, ModalComponents> = {
     [TxModalStep.DescribeTx]: () => ({
@@ -445,13 +431,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     }),
     [TxModalStep.SignWithLedgerAndSend]: () => ({
       header: <TxModalHeader onSelectClose={closeModal}>Confirm on your Ledger</TxModalHeader>,
-      body: (
-        <SignTxWithLedger
-          onLedgerConnect={setBlockstackAppCallback}
-          ledgerError={ledgerError}
-          updateStep={updateStep}
-        />
-      ),
+      body: <SignTxWithLedger step={ledgerStep} isLocked={isLocked} ledgerError={ledgerError} />,
       footer: (
         <TxModalFooter>
           <TxModalButton
@@ -465,15 +445,10 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
           </TxModalButton>
           <TxModalButton
             isDisabled={
-              blockstackApp === null ||
-              hasSubmitted ||
-              ledgerConnectStep !== LedgerConnectStep.ConnectedAppOpen
+              hasSubmitted || ledgerStep !== LedgerConnectStep.ConnectedAppOpen || isLocked
             }
             isLoading={hasSubmitted}
-            onClick={() => {
-              if (blockstackApp === null) return;
-              void broadcastTx();
-            }}
+            onClick={() => void broadcastTx()}
           >
             Sign transaction
           </TxModalButton>

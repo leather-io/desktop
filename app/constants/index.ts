@@ -13,9 +13,9 @@ export const STX_DECIMAL_PRECISION = 6;
 
 export const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0` as const;
 
-export const ENTITY_NAME = 'Blockstack';
+export const ENTITY_NAME = 'Hiro Systems';
 
-export const FULL_ENTITY_NAME = 'Blockstack PBC';
+export const FULL_ENTITY_NAME = 'Hiro Systems PBC';
 
 export const WALLET_VERSION = packageJson.version;
 

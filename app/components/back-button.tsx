@@ -3,6 +3,12 @@ import { Button, ArrowIcon, ButtonProps } from '@blockstack/ui';
 import { useWindowFocus } from '@hooks/use-window-focus';
 import { useBack } from '@hooks/use-back-url';
 
+const dimmedColor = '#c1c3cc';
+
+const hasDimmedColor = (hasBackAction: boolean, isFocused: boolean) => {
+  return !hasBackAction || !isFocused;
+};
+
 // Cannot use cursor pointer in top bar area of window
 // https://github.com/electron/electron/issues/5723
 export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...props }) => {
@@ -10,6 +16,7 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
   const isFocused = winState === 'focused';
   const [backUrl, handleBack] = useBack();
   const hasBackState = !!backUrl;
+
   return (
     <Button
       variant="unstyled"
@@ -32,7 +39,10 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
       isDisabled={!hasBackState}
       {...(props as any)}
     >
-      <ArrowIcon direction="left" color={!hasBackState || !isFocused ? '#c1c3cc' : 'ink'} />
+      <ArrowIcon
+        direction="left"
+        color={hasDimmedColor(hasBackState, isFocused) ? dimmedColor : 'ink'}
+      />
     </Button>
   );
 };

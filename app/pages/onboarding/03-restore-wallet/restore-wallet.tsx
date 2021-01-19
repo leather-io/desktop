@@ -73,7 +73,7 @@ export const RestoreWallet: React.FC = () => {
       <Box>
         <Flex flexDirection="row" alignItems="baseline">
           <Text textStyle="body.small.medium" mt="extra-loose" display="block">
-            Secret Key{' '}
+            Secret Key
           </Text>
           <ExternalLink
             href="https://www.hiro.so/questions/what-are-secret-keys-and-how-do-they-work"

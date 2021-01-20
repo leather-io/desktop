@@ -1,3 +1,12 @@
+## [4.0.3](https://github.com/blockstack/stacks-wallet/compare/v4.0.2...v4.0.3) (2021-01-20)
+
+
+### Bug Fixes
+
+* confirmed & mempool txs showing at same time ([c9e6425](https://github.com/blockstack/stacks-wallet/commit/c9e64254e139f47810ffef92e7b0dbe078975ed0))
+* display API response on error screen ([4cc061e](https://github.com/blockstack/stacks-wallet/commit/4cc061e6a79e9f4274acf4a5651485dfffb60c54))
+* improve flow of typing in phrase, closes [#526](https://github.com/blockstack/stacks-wallet/issues/526) ([cb0d52f](https://github.com/blockstack/stacks-wallet/commit/cb0d52fab9797b7ea150c18188c93ae4fdd22c9e))
+
 ## [4.0.2](https://github.com/blockstack/stacks-wallet/compare/v4.0.1...v4.0.2) (2021-01-15)
 
 

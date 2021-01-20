@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
+import { Box, Text } from '@blockstack/ui';
 
 import { STX_DERIVATION_PATH } from '@constants/index';
 import routes from '@constants/routes.json';
@@ -95,7 +96,19 @@ export const ConnectLedger: React.FC = () => {
     <Onboarding>
       <OnboardingTitle>Connect your Ledger</OnboardingTitle>
       <OnboardingText>Follow these steps to connect your Ledger Nano S or X</OnboardingText>
-
+      <Box>
+        <Text
+          textStyle="caption"
+          color="ink.600"
+          mt="tight"
+          display="block"
+          textAlign="center"
+          lineHeight="18px"
+        >
+          Double press the top two buttons on your Ledger device simultaneously when it displays
+          "Pending Ledger review"
+        </Text>
+      </Box>
       <LedgerConnectInstructions
         action="Confirm your address"
         step={hasConfirmedAddress ? LedgerConnectStep.HasAddress : step}

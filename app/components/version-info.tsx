@@ -38,9 +38,7 @@ const openIssueLink = () =>
 const openPullRequestLink = () =>
   openExternalLink(`https://github.com/blockstack/stacks-wallet/pull/${String(pullRequest)}`);
 
-export const BetaNotice: FC = () => {
-  if (!sha && !version.includes('beta')) return null;
-
+export const VersionInfo: FC = () => {
   return (
     <Flex
       textStyle="caption.medium"
@@ -82,7 +80,7 @@ export const BetaNotice: FC = () => {
           </Text>
         </Text>
       )}
-      <Text>[{packageJson.version}]</Text>
+      {CONFIG.NODE_ENV === 'production' && <Text>[v{packageJson.version}]</Text>}
     </Flex>
   );
 };

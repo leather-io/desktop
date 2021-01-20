@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import urljoin from 'url-join';
 import { connectWebSocketClient, StacksApiWebSocketClient } from '@stacks/blockchain-api-client';
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
-import { BetaNotice } from '@components/beta-notice';
+import { VersionInfo } from '@components/version-info';
 import {
   getAddressTransactions,
   addNewTransaction,
@@ -112,7 +112,7 @@ export const App: FC = ({ children }) => {
     <>
       <TitleBar />
       {children}
-      <BetaNotice />
+      <VersionInfo />
     </>
   );
 };

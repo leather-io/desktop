@@ -96,9 +96,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_ENV: production
-          SHA: ${{ github.event.pull_request.head.sha }}
-          PULL_REQUEST: ${{ steps.vars.outputs.pull_request_id }}
-          BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
           CSC_LINK: ${{ secrets[matrix.CSC_LINK_SECRET_NAME] }}
           CSC_KEY_PASSWORD: ${{ secrets[matrix.CSC_KEY_PASSWORD_SECRET_NAME] }}
           APPLE_ID: ${{ secrets.APPLE_ID }}

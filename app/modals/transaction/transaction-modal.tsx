@@ -185,7 +185,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
     if (walletType === 'software') {
       setIsDecrypting(true);
-      await delay(100);
+      await delay(300);
+
       const [decryptionError, privateKey] = await safeAwait(getSoftwareWalletPrivateKey());
 
       if (decryptionError) {

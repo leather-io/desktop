@@ -57,17 +57,12 @@ export const VersionInfo: FC = () => {
         Found a bug? Open an issue
       </Text>
       {pullRequest && branchName && (
-        <Text
-          mr="base-tight"
-          onClick={openPullRequestLink}
-          textDecoration="underline"
-          cursor="pointer"
-        >
+        <Text mr="tight" onClick={openPullRequestLink} textDecoration="underline" cursor="pointer">
           {branchName}
         </Text>
       )}
       {shaShort && (
-        <Text mr="base-tight">
+        <Text mr="tight">
           Commit:{' '}
           <Text
             cursor="pointer"

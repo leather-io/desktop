@@ -184,7 +184,7 @@ export const Home: FC = () => {
 
   return (
     <>
-      {receiveModalOpen && <ReceiveStxModal address={address} />}
+      {receiveModalOpen && <ReceiveStxModal />}
       {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
       <HomeLayout
         transactionList={transactionList}

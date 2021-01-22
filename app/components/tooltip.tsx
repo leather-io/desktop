@@ -7,6 +7,7 @@ import { Explainer } from './icons/explainer';
 export const ExplainerTooltip: FC<BoxProps> = ({ children, ...props }) => {
   return (
     <Tippy
+      zIndex={9999999}
       content={
         <Box
           p="base-tight"

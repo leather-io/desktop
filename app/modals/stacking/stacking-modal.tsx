@@ -198,7 +198,6 @@ export const StackingModal: FC<StackingModalProps> = props => {
 
     const broadcastActions: Omit<BroadcastTransactionArgs, 'transaction'> = {
       amount: amountToStack,
-      isStackingCall: true,
       onBroadcastSuccess: txId => {
         dispatch(activeStackingTx({ txId }));
         history.push(routes.HOME);

@@ -83,14 +83,14 @@ export const Home: FC = () => {
     stackingCardState: selectHomeCardState(state),
   }));
 
-  const { inboundMempoolTxs } = useMempool();
+  const { mempoolTxs } = useMempool();
 
   const focusedTxIdRef = useRef<string | null>(null);
   const txDomNodeRefMap = useRef<Record<string, HTMLButtonElement>>({});
 
   const focusTxDomNode = useCallback(
     (shift: (i: number) => number) => {
-      const allTxs = [...inboundMempoolTxs, ...pendingTxs, ...txs];
+      const allTxs = [...mempoolTxs, ...pendingTxs, ...txs];
       if (allTxs.length === 0) return;
       if (focusedTxIdRef.current === null) {
         const txId = allTxs[0].tx_id;
@@ -105,15 +105,15 @@ export const Home: FC = () => {
       if (!domNode) return;
       domNode.focus();
     },
-    [txs, pendingTxs, inboundMempoolTxs]
+    [txs, pendingTxs, mempoolTxs]
   );
 
-  useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs, inboundMempoolTxs]);
-  useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs, inboundMempoolTxs]);
+  useHotkeys('j', () => focusTxDomNode(increment), [txs, pendingTxs, mempoolTxs]);
+  useHotkeys('k', () => focusTxDomNode(decrement), [txs, pendingTxs, mempoolTxs]);
 
   if (!address) return <Spinner />;
 
-  const txCount = txs.length + pendingTxs.length + inboundMempoolTxs.length;
+  const txCount = txs.length + pendingTxs.length + mempoolTxs.length;
 
   const transactionList = (
     <>
@@ -123,7 +123,7 @@ export const Home: FC = () => {
         node={activeNode}
         error={txListFetchError}
       >
-        {inboundMempoolTxs
+        {mempoolTxs
           .filter(mempoolTx => !txs.map(tx => tx.tx_id).includes(mempoolTx.tx_id))
           .map(mempoolTx => (
             <TransactionListItemMempool

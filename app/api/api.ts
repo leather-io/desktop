@@ -1,6 +1,6 @@
 import axios from 'axios';
 import urljoin from 'url-join';
-import { AccountsApi, Configuration } from '@stacks/blockchain-api-client';
+import { AccountsApi, TransactionsApi, Configuration } from '@stacks/blockchain-api-client';
 import {
   Transaction,
   TransactionResults,
@@ -17,6 +17,7 @@ export class Api {
   });
 
   accountsApi = new AccountsApi(this.stacksApiConfig);
+  transactionApi = new TransactionsApi(this.stacksApiConfig);
 
   constructor(public baseUrl: string) {}
 
@@ -24,6 +25,11 @@ export class Api {
     return axios.get<AddressBalanceResponse>(
       urljoin(this.baseUrl, `/extended/v1/address/${address}/balances`)
     );
+  }
+
+  async getNonce(address: string) {
+    const { data } = await axios.get(urljoin(this.baseUrl, `/v2/accounts/${address}`));
+    return data;
   }
 
   async getAddressTransactions(address: string) {
@@ -74,8 +80,10 @@ export class Api {
     );
   }
 
-  async getMempoolTransactions(): Promise<MempoolTransaction[]> {
-    const mempoolTxs = await axios.get(urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=200`));
+  async getMempoolTransactions(address: string): Promise<MempoolTransaction[]> {
+    const mempoolTxs = await axios.get(
+      urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=200&address=${address}`)
+    );
     return mempoolTxs.data.results;
   }
 

@@ -1080,10 +1080,10 @@
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.6.tgz#8a41cd378ba061b79770987f2a6ad0c92b64bd72"
   integrity sha512-ke0MdyblmoUqSJBEutsG8/6G7KAjCB+uOcgZHPJvJr4R+i5yRhT4GSe5nV/wREINuK0jj2GvaA6qlx4PQTKQUA==
 
-"@blockstack/stacks-blockchain-api-types@0.38.1":
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.38.1.tgz#975ee4385ad6a01334c78f7c33dd644387f93dd8"
-  integrity sha512-DuMQrqzwgddLrR9gsg5/TKh4jRyotWV8VmIsyH/A6FAz3HEIQ8g13SVsjWu321ItYCfahlCkCflUtusl1hUPKg==
+"@blockstack/stacks-blockchain-api-types@0.44.0":
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.44.0.tgz#d6f35dc5c793e81095a829f9dd4de09a610dbab7"
+  integrity sha512-C+8i3OQpZQzB+booZ/C6NsUSdB+GpNKToRh7WPu23XOK471nuETYdWACVLho79LxNWn+t5qNN8Ge3UIsYHYzag==
 
 "@blockstack/stacks-blockchain-api-types@^0.34.1":
   version "0.34.2"
@@ -1712,10 +1712,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@stacks/blockchain-api-client@0.38.1":
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.38.1.tgz#d55a01e5454cd1b1b903d5940392ddfa14109dcc"
-  integrity sha512-zChUp4QA/NBBC6X8qqluQwkGYYSI1Hrbpa0GGS7q1qmkEKWqN8DLUD7X9sZA8a3CXwcF98bafDSfEEKLt2SUyw==
+"@stacks/blockchain-api-client@0.44.0":
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/@stacks/blockchain-api-client/-/blockchain-api-client-0.44.0.tgz#df2eeeb863cdcdeec3ce81f219020f26a47ee9f0"
+  integrity sha512-yTQrbGm2EenHr52FXK3ojbs4NbMK9R+oDDQGrofuy9FuV0m8koCpbqp7wnOe5PhuJxCKIbrOlcApOzhcpv6aXg==
   dependencies:
     "@blockstack/stacks-blockchain-api-types" "^0.34.1"
     "@types/ws" "^7.4.0"

@@ -58,7 +58,6 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
 export interface BroadcastTransactionArgs {
   transaction: StacksTransaction;
   amount: BigNumber;
-  isStackingCall?: boolean;
   onBroadcastSuccess(txId: string): void;
   onBroadcastFail(errorResponse?: PostCoreNodeTransactionsError): void;
 }

@@ -21,10 +21,10 @@ export const addressReducer = createReducer(initialState, builder =>
       state.loading = false;
       state.details = payload;
     })
-    .addCase(updateAddressBalance, (state, action) => ({
-      ...state,
-      balance: action.payload.balance,
-    }))
+    .addCase(updateAddressBalance, (state, action) => {
+      if (state.details === null) return;
+      state.details.balance = action.payload.balance;
+    })
 );
 
 export const selectAddressState = (state: RootState) => state.address;

@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
+import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 import { BigNumber } from 'bignumber.js';
 import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
+import { mutate } from 'swr';
 import {
   makeSTXTokenTransfer,
   MEMO_MAX_LENGTH_BYTES,
@@ -13,10 +15,13 @@ import {
   makeUnsignedSTXTokenTransfer,
   createMessageSignature,
 } from '@stacks/transactions';
-
 import BlockstackApp, { LedgerError } from '@zondax/ledger-blockstack';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import { StacksTestnet } from '@stacks/network';
+import { validateDecimalPrecision } from '@utils/form/validate-decimals';
+import { delay } from '@utils/delay';
+import { useLatestNonce } from '@hooks/use-latest-nonce';
 import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
 import {
@@ -56,10 +61,6 @@ import { DecryptWalletForm } from './steps/decrypt-wallet-form';
 import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
-import { StacksTestnet } from '@stacks/network';
-import { validateDecimalPrecision } from '@utils/form/validate-decimals';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
-import { delay } from '@utils/delay';
 
 interface TxModalProps {
   balance: string;
@@ -97,6 +98,8 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
 
   const interactedWithSendAllBtn = useRef(false);
+
+  const { nonce } = useLatestNonce();
 
   const { encryptedMnemonic, salt, walletType, publicKey, node } = useSelector(
     (state: RootState) => ({
@@ -172,11 +175,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       network: stacksNetwork,
       amount: new BN(stxToMicroStx(form.values.amount).toString()),
       memo: form.values.memo,
+      nonce: new BN(nonce),
     };
 
     const broadcastActions = {
       amount,
-      onBroadcastSuccess: closeModal,
+      onBroadcastSuccess() {
+        closeModal();
+        void mutate('mempool');
+      },
       onBroadcastFail: (error?: PostCoreNodeTransactionsError) => {
         if (error) setNodeResponseError(error);
         setStep(TxModalStep.NetworkError);
@@ -410,17 +417,15 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     [TxModalStep.DecryptWalletAndSend]: () => ({
       header: <TxModalHeader onSelectClose={closeModal}>Confirm and send</TxModalHeader>,
       body: (
-        <>
-          <DecryptWalletForm
-            onSetPassword={password => setPassword(password)}
-            onForgottenPassword={() => {
-              closeModal();
-              history.push(routes.SETTINGS);
-            }}
-            hasSubmitted={hasSubmitted}
-            decryptionError={passwordFormError}
-          />
-        </>
+        <DecryptWalletForm
+          onSetPassword={password => setPassword(password)}
+          onForgottenPassword={() => {
+            closeModal();
+            history.push(routes.SETTINGS);
+          }}
+          hasSubmitted={hasSubmitted}
+          decryptionError={passwordFormError}
+        />
       ),
       footer: (
         <TxModalFooter>

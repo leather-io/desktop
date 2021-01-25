@@ -39,7 +39,12 @@ const baseConfig = {
   },
   win: {
     // Don't use `msi` installer issues
-    target: ['nsis'],
+    target: [
+      {
+        target: 'nsis',
+        arch: ['x64', 'ia32'],
+      },
+    ],
     publisherName: 'Hiro Systems PBC',
   },
   mac: {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { validateMnemonic } from 'bip39';
-import { Text, Input, Flex, Box, ExclamationMarkCircleIcon } from '@blockstack/ui';
+import { Text, Input, Flex, Box } from '@blockstack/ui';
 
 import routes from '@constants/routes.json';
 import { Hr } from '@components/hr';
@@ -18,6 +18,7 @@ import {
   OnboardingText,
 } from '@components/onboarding';
 import { ExternalLink } from '@components/external-link';
+import { parseSeedPhraseInput } from '@utils/parse-seed-phrase';
 
 export const RestoreWallet: React.FC = () => {
   useBackButton(routes.WELCOME);
@@ -34,23 +35,29 @@ export const RestoreWallet: React.FC = () => {
     setMnemonic(e.currentTarget.value.trim());
   };
 
-  const mnemonicLength = mnemonic.trim().split(' ').length;
-
   const handleSecretKeyRestore = (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
+
+    const parsedMnemonic = parseSeedPhraseInput(mnemonic);
+
+    if (parsedMnemonic === null) {
+      setError('Unable to parse Secret Key input');
+      return;
+    }
+
+    const mnemonicLength = parsedMnemonic.split(' ').length;
 
     if (mnemonicLength !== 12 && mnemonicLength !== 24) {
       setError('The Stacks Wallet can be used with only 12 and 24-word Secret Keys');
       return;
     }
 
-    const parsedMnemonic = mnemonic.toLowerCase().trim();
-
     if (!validateMnemonic(parsedMnemonic)) {
       setError('Not a valid bip39 mnemonic');
       return;
     }
+
     dispatch(persistMnemonic(parsedMnemonic));
     history.push(routes.SET_PASSWORD);
   };
@@ -103,24 +110,6 @@ export const RestoreWallet: React.FC = () => {
         <ErrorLabel>
           <ErrorText>{error}</ErrorText>
         </ErrorLabel>
-      )}
-      {mnemonicLength === 12 && hasSubmitted && (
-        <Flex
-          mt="base-loose"
-          px="base"
-          py="base-tight"
-          backgroundColor="#FFEDD6"
-          borderRadius="4px"
-        >
-          <Box mr="tight" mt="1px">
-            <ExclamationMarkCircleIcon size="14px" color="#FE9000" />
-          </Box>
-          <Text textStyle="caption" color="#424248" lineHeight="16px">
-            It appears you have a Secret Key created somewhere other than the Stacks Wallet.
-            Consider creating a new Secret Key with the Stacks Wallet, or using a hardware wallet,
-            for greater security
-          </Text>
-        </Flex>
       )}
       <OnboardingButton mt="loose" type="submit" mode="secondary">
         Continue with Secret Key

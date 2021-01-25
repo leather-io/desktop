@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import useSWR from 'swr';
 import { useSelector } from 'react-redux';
+import BigNumber from 'bignumber.js';
 
 import { Api } from '@api/api';
 import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
 import { useMempool } from '@hooks/use-mempool';
-import BigNumber from 'bignumber.js';
 
 export function useLatestNonce() {
   const { address, activeNode } = useSelector((state: RootState) => ({
@@ -25,6 +25,9 @@ export function useLatestNonce() {
   if (!data) return { nonce: 0 };
 
   return {
-    nonce: new BigNumber(data.nonce).plus(outboundMempoolTxs.length).toNumber(),
+    nonce: BigNumber.max(
+      data.nonce,
+      ...outboundMempoolTxs.map(tx => new BigNumber(tx.nonce).plus(1))
+    ).toNumber(),
   };
 }

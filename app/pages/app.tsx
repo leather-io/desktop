@@ -27,6 +27,7 @@ import {
   removeStackingTx,
   selectActiveStackingTxId,
 } from '@store/stacking';
+import { SWRConfig } from 'swr';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
@@ -109,10 +110,10 @@ export const App: FC = ({ children }) => {
   }, [address, dispatch, activeNode.url]);
 
   return (
-    <>
+    <SWRConfig value={{ refreshInterval: DEFAULT_POLLING_INTERVAL }}>
       <TitleBar />
       {children}
       <VersionInfo />
-    </>
+    </SWRConfig>
   );
 };

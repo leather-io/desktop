@@ -19,7 +19,7 @@ export const FULL_ENTITY_NAME = 'Hiro Systems PBC';
 
 export const WALLET_VERSION = packageJson.version;
 
-export const BUY_STX_URL = 'https://coinmarketcap.com/currencies/stacks/markets/';
+export const BUY_STX_URL = 'https://coinmarketcap.com/currencies/stacks/markets';
 
 export const STATUS_PAGE_URL = 'http://status.test-blockstack.com';
 

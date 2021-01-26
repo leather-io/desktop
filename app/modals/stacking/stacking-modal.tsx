@@ -59,6 +59,8 @@ interface StackingModalProps {
   onClose(): void;
 }
 
+const CONTRACT_CALL_FEE = 260;
+
 export const StackingModal: FC<StackingModalProps> = props => {
   const { onClose, numCycles, poxAddress, amountToStack } = props;
 
@@ -93,6 +95,10 @@ export const StackingModal: FC<StackingModalProps> = props => {
     balance: selectAddressBalance(state),
   }));
 
+  const accountBalance = new BigNumber(balance?.balance ?? 0);
+
+  const shouldModifyTxFee = accountBalance.minus(amountToStack).isLessThan(CONTRACT_CALL_FEE);
+
   const initialStep =
     walletType === 'software'
       ? StackingModalStep.DecryptWalletAndSend
@@ -126,10 +132,12 @@ export const StackingModal: FC<StackingModalProps> = props => {
       burnBlockHeight: coreNodeInfo.burn_block_height,
     });
     const tx = await makeContractCall({ ...txOptions, senderKey: privateKey });
-    const modifiedFeeTx = stackingClient.modifyLockTxFee({
-      tx,
-      amountMicroStx: new BN(amountToStack.toString()),
-    });
+    const modifiedFeeTx = shouldModifyTxFee
+      ? stackingClient.modifyLockTxFee({
+          tx,
+          amountMicroStx: new BN(amountToStack.toString()),
+        })
+      : tx;
 
     const signer = new TransactionSigner(modifiedFeeTx);
     signer.signOrigin(createStacksPrivateKey(privateKey));
@@ -145,6 +153,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
     amountToStack,
     poxAddress,
     numCycles,
+    shouldModifyTxFee,
   ]);
 
   const createLedgerWalletTx = useCallback(
@@ -168,10 +177,12 @@ export const StackingModal: FC<StackingModalProps> = props => {
         publicKey: options.publicKey.toString('hex'),
       });
 
-      const modifiedFeeTx = stackingClient.modifyLockTxFee({
-        tx: unsignedTx,
-        amountMicroStx: new BN(amountToStack.toString()),
-      });
+      const modifiedFeeTx = shouldModifyTxFee
+        ? stackingClient.modifyLockTxFee({
+            tx: unsignedTx,
+            amountMicroStx: new BN(amountToStack.toString()),
+          })
+        : unsignedTx;
       const resp: ResponseSign = await blockstackApp.sign(
         STX_DERIVATION_PATH,
         modifiedFeeTx.serialize()
@@ -190,6 +201,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
       amountToStack,
       poxAddress,
       numCycles,
+      shouldModifyTxFee,
     ]
   );
 

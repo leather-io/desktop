@@ -181,10 +181,12 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
     const broadcastActions = {
       amount,
       onBroadcastSuccess() {
+        setIsDecrypting(false);
         closeModal();
         void mutate('mempool');
       },
       onBroadcastFail: (error?: PostCoreNodeTransactionsError) => {
+        setIsDecrypting(false);
         if (error) setNodeResponseError(error);
         setStep(TxModalStep.NetworkError);
       },
@@ -203,8 +205,6 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       }
 
       if (privateKey) {
-        setIsDecrypting(false);
-
         try {
           const transaction = await signSoftwareWalletTx({ ...txDetails, privateKey });
           dispatch(broadcastTransaction({ ...broadcastActions, transaction }));

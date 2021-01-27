@@ -1,3 +1,15 @@
+## [4.0.4](https://github.com/blockstack/stacks-wallet/compare/v4.0.3...v4.0.4) (2021-01-27)
+
+
+### Bug Fixes
+
+* calculate nonce, closes [#513](https://github.com/blockstack/stacks-wallet/issues/513), [#552](https://github.com/blockstack/stacks-wallet/issues/552) ([6180fbf](https://github.com/blockstack/stacks-wallet/commit/6180fbf1236ff470b5602f21ffeffd50448a770c))
+* remove slack in path ([5f9ad59](https://github.com/blockstack/stacks-wallet/commit/5f9ad5980e17bdf3070172c4239949bf915d808a))
+* stacking fee adjustment ([327191e](https://github.com/blockstack/stacks-wallet/commit/327191efc70109985123f6d08150963896496119))
+* support mnemonics formatted in many ways, closes [#538](https://github.com/blockstack/stacks-wallet/issues/538) ([9076b34](https://github.com/blockstack/stacks-wallet/commit/9076b34ac203897181525d7dba7b694c0f12f3b6))
+* update coinmarketcap Stacks URL ([29f4c43](https://github.com/blockstack/stacks-wallet/commit/29f4c43c42f91b61a79896aea73ed94df37f8ac0))
+* update recieve address flow ([604b85c](https://github.com/blockstack/stacks-wallet/commit/604b85c051779cae55de86e626f76a57c748b20f))
+
 ## [4.0.3](https://github.com/blockstack/stacks-wallet/compare/v4.0.2...v4.0.3) (2021-01-20)
 
 

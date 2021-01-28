@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Flex, Text, EncryptionIcon } from '@blockstack/ui';
 import { ClockIcon } from '@components/icons/clock';
-import { RewindArrow } from '../../../components/icons/rewind-arrow';
+import { RewindArrow } from '@components/icons/rewind-arrow';
 
 interface StackingTermsProps {
   timeUntilNextCycle: string;

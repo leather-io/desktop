@@ -5,7 +5,6 @@ import {
   PostCoreNodeTransactionsError,
 } from '@blockstack/stacks-blockchain-api-types';
 import urljoin from 'url-join';
-import BigNumber from 'bignumber.js';
 import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 
 import { Api } from '../../api/api';
@@ -57,7 +56,6 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
 
 export interface BroadcastTransactionArgs {
   transaction: StacksTransaction;
-  amount: BigNumber;
   onBroadcastSuccess(txId: string): void;
   onBroadcastFail(errorResponse?: PostCoreNodeTransactionsError): void;
 }

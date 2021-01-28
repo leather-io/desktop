@@ -16,12 +16,7 @@ import {
   selectTransactionListFetchError,
 } from '@store/transaction';
 import { selectPendingTransactions } from '@store/pending-transaction';
-import {
-  selectLoadingStacking,
-  selectNextCycleInfo,
-  selectPoxInfo,
-  selectStackerInfo,
-} from '@store/stacking';
+import { selectLoadingStacking, selectNextCycleInfo, selectStackerInfo } from '@store/stacking';
 import {
   homeActions,
   selectTxModalOpen,
@@ -32,7 +27,6 @@ import {
 import {
   TransactionList,
   StackingPromoCard,
-  StackingParticipationCard,
   StackingRewardCard,
   TransactionListItem,
   BalanceCard,
@@ -48,9 +42,16 @@ import { StackingError } from '@components/home/stacking-error-card';
 import { HomeLayout } from './home-layout';
 import { TransactionListItemMempool } from '@components/home/transaction-list/transaction-list-item-mempool';
 import { useMempool } from '@hooks/use-mempool';
+import { DelegationCard } from '@components/home/delegation-card';
+import { useDelegationStatus } from '@hooks/use-delegation-status';
+import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';
+import { selectRevokeDelegationModalOpen } from '../../store/home/home.reducer';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
+
+  const { delegated: isDelegated } = useDelegationStatus();
+
   const {
     address,
     balance,
@@ -61,8 +62,8 @@ export const Home: FC = () => {
     txModalOpen,
     txListFetchError,
     receiveModalOpen,
+    revokeDelegationModalOpen,
     activeNode,
-    stackingDetails,
     stackerInfo,
     stackingCardState,
   } = useSelector((state: RootState) => ({
@@ -72,12 +73,12 @@ export const Home: FC = () => {
     pendingTxs: selectPendingTransactions(state),
     balance: selectAddressBalance(state),
     txModalOpen: selectTxModalOpen(state),
+    revokeDelegationModalOpen: selectRevokeDelegationModalOpen(state),
     receiveModalOpen: selectReceiveModalOpen(state),
     loadingTxs: selectTransactionsLoading(state),
     txListFetchError: selectTransactionListFetchError(state),
     activeNode: selectActiveNodeApi(state),
     nextCycleInfo: selectNextCycleInfo(state),
-    stackingDetails: selectPoxInfo(state),
     stackerInfo: selectStackerInfo(state),
     stackingLoading: selectLoadingStacking(state),
     stackingCardState: selectHomeCardState(state),
@@ -135,6 +136,18 @@ export const Home: FC = () => {
               onSelectTx={openTxInExplorer}
             />
           ))}
+        {pendingTxs
+          // .filter(pendingTx => !txs.map(tx => tx.tx_id).includes(pendingTx.tx_id))
+          .map(pendingTx => (
+            <TransactionListItemMempool
+              address={address}
+              domNodeMapRef={txDomNodeRefMap}
+              activeTxIdRef={focusedTxIdRef}
+              key={pendingTx.tx_id}
+              tx={pendingTx}
+              onSelectTx={openTxInExplorer}
+            />
+          ))}
         {txs.map(tx => (
           <TransactionListItem
             domNodeMapRef={txDomNodeRefMap}
@@ -163,12 +176,8 @@ export const Home: FC = () => {
 
   const stackingCardMap: Record<HomeCardState, JSX.Element> = {
     [HomeCardState.LoadingResources]: <StackingLoading />,
-    [HomeCardState.NotEnoughStx]: (
-      <StackingPromoCard
-        minRequiredMicroStx={stackingDetails?.paddedMinimumStackingAmountMicroStx || 0}
-      />
-    ),
-    [HomeCardState.EligibleToParticipate]: <StackingParticipationCard />,
+    [HomeCardState.NotEnoughStx]: <StackingPromoCard />,
+    [HomeCardState.EligibleToParticipate]: <StackingPromoCard />,
     [HomeCardState.StackingPendingContactCall]: <StackingLoading />,
     [HomeCardState.StackingPreCycle]: (
       <StackingBeginsSoonCard blocksTillNextCycle={stackerInfo?.blocksUntilStackingCycleBegins} />
@@ -186,10 +195,11 @@ export const Home: FC = () => {
     <>
       {receiveModalOpen && <ReceiveStxModal />}
       {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
+      {revokeDelegationModalOpen && <RevokeDelegationModal />}
       <HomeLayout
         transactionList={transactionList}
         balanceCard={balanceCard}
-        stackingCard={stackingCardMap[stackingCardState]}
+        stackingCard={isDelegated ? <DelegationCard /> : stackingCardMap[stackingCardState]}
         stackingRewardCard={stackingRewardCard}
       />
     </>

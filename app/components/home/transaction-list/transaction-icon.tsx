@@ -5,13 +5,24 @@ import { SentArrow } from '@components/icons/sent-arrow';
 import { ReceivedArrow } from '@components/icons/received-arrow';
 import { LockedIcon } from '@components/icons/locked';
 import { StxTxDirection } from '@utils/get-stx-transfer-direction';
+import { DelegatedIcon } from '@components/icons/delegated-icon';
+import { RevokedDelegationIcon } from '../../icons/revoked-delegation-icon';
 
-export type TransactionIconVariants = StxTxDirection | 'pending' | 'locked' | 'failed' | 'default';
+export type TransactionIconVariants =
+  | StxTxDirection
+  | 'pending'
+  | 'locked'
+  | 'delegated'
+  | 'revoked'
+  | 'failed'
+  | 'default';
 
-const iconMap: Record<TransactionIconVariants, () => JSX.Element> = {
+const iconMap: Record<TransactionIconVariants, FC> = {
   sent: SentArrow,
   received: ReceivedArrow,
   locked: LockedIcon,
+  delegated: DelegatedIcon,
+  revoked: RevokedDelegationIcon,
   failed: () => <FailedIcon size="16px" />,
   pending: () => <Spinner size="xs" color="#5548FF" />,
   default: () => <Box width="16px" height="16px" borderRadius="50%" backgroundColor="ink.100" />,

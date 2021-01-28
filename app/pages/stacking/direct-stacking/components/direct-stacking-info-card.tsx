@@ -17,7 +17,7 @@ interface StackingInfoCardProps extends FlexProps {
   balance: BigNumber | null;
 }
 
-export const StackingInfoCard: FC<StackingInfoCardProps> = props => {
+export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
   const { cycles, duration, balance, blocksPerCycle, startDate } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;

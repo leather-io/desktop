@@ -3,23 +3,20 @@ import useSWR from 'swr';
 import { useSelector } from 'react-redux';
 import BigNumber from 'bignumber.js';
 
-import { Api } from '@api/api';
 import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
-import { selectActiveNodeApi } from '@store/stacks-node';
+
 import { useMempool } from '@hooks/use-mempool';
+import { useApi } from '@hooks/use-api';
 
 export function useLatestNonce() {
-  const { address, activeNode } = useSelector((state: RootState) => ({
+  const { address } = useSelector((state: RootState) => ({
     address: selectAddress(state),
-    activeNode: selectActiveNodeApi(state),
   }));
+  const api = useApi();
   const { outboundMempoolTxs } = useMempool();
 
-  const nonceFetcher = useCallback(() => new Api(activeNode.url).getNonce(address || ''), [
-    activeNode.url,
-    address,
-  ]);
+  const nonceFetcher = useCallback(() => api.getNonce(address || ''), [api, address]);
   const { data } = useSWR('nonce', nonceFetcher);
 
   if (!data) return { nonce: 0 };

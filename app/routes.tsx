@@ -20,7 +20,9 @@ import {
 
 import { App } from './pages/app';
 import { Settings } from './pages/settings/settings';
-import { Stacking } from './pages/stacking/stacking';
+import { DirectStacking } from './pages/stacking/direct-stacking/direct-stacking';
+import { ChooseStackingMethod } from './pages/start-stacking/start-stacking';
+import { StackingDelegation } from './pages/stacking/delegated-stacking/delegated-stacking';
 
 export const routerConfig = [
   {
@@ -72,8 +74,16 @@ export const routerConfig = [
     component: Settings,
   },
   {
+    path: routes.CHOOSE_STACKING_METHOD,
+    component: ChooseStackingMethod,
+  },
+  {
+    path: routes.DELEGATED_STACKING,
+    component: StackingDelegation,
+  },
+  {
     path: routes.STACKING,
-    component: Stacking,
+    component: DirectStacking,
   },
 ];
 

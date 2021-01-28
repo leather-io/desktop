@@ -1,6 +1,12 @@
 import axios from 'axios';
 import urljoin from 'url-join';
-import { AccountsApi, TransactionsApi, Configuration } from '@stacks/blockchain-api-client';
+import {
+  AccountsApi,
+  TransactionsApi,
+  Configuration,
+  SmartContractsApi,
+  GetContractDataMapEntryRequest,
+} from '@stacks/blockchain-api-client';
 import {
   Transaction,
   TransactionResults,
@@ -18,6 +24,7 @@ export class Api {
 
   accountsApi = new AccountsApi(this.stacksApiConfig);
   transactionApi = new TransactionsApi(this.stacksApiConfig);
+  smartContractsApi = new SmartContractsApi(this.stacksApiConfig);
 
   constructor(public baseUrl: string) {}
 
@@ -78,6 +85,10 @@ export class Api {
     return axios.get<NetworkBlockTimesResponse>(
       urljoin(this.baseUrl, `/extended/v1/info/network_block_times`)
     );
+  }
+
+  async getContractDataMapEntry(args: GetContractDataMapEntryRequest) {
+    return this.smartContractsApi.getContractDataMapEntry({ ...args, proof: 0 });
   }
 
   async getMempoolTransactions(address: string): Promise<MempoolTransaction[]> {

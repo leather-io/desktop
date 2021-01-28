@@ -7,6 +7,7 @@ import { formatPoxAddressToNetwork } from '@utils/stacking';
 import { selectStackerInfo } from '@store/stacking/stacking.reducer';
 import { PercentageCircle } from '@components/chart/percentage-circle';
 import BigNumber from 'bignumber.js';
+import { ExplainerTooltip } from '@components/tooltip';
 
 type StackingCardProps = any;
 
@@ -46,9 +47,15 @@ export const StackingCard: FC<StackingCardProps> = () => {
           </Flex>
           <Box mr="2px">
             <Flex flexDirection="column" alignItems="center" mt="base-tight" mb="base-loose">
-              <Text textStyle="caption" color="ink.600">
-                Reward to be paid to
-              </Text>
+              <Flex alignItems="center">
+                <Text textStyle="caption" color="ink.600" mr="extra-tight">
+                  Reward to be paid to
+                </Text>
+                <ExplainerTooltip mt="1px">
+                  This is the address your BTC reward will be paid to. If delegated, this is the
+                  address of your delegator.
+                </ExplainerTooltip>
+              </Flex>
               <Text fontSize="13px" mt="tight" color="ink">
                 {formatPoxAddressToNetwork(stackerInfo?.details.pox_address)}
               </Text>

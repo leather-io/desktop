@@ -1,5 +1,6 @@
 import { whenNetwork } from '@utils/network-utils';
 import packageJson from '../../package.json';
+import { stxToMicroStx } from '../utils/unit-convert';
 
 type Environments = 'development' | 'testing' | 'production';
 
@@ -40,6 +41,10 @@ export const TREZOR_HELP_URL =
 export const MAX_STACKING_CYCLES = 12;
 
 export const MIN_STACKING_CYCLES = 1;
+
+export const MIN_DELEGATED_STACKING_AMOUNT_USTX = 50_000_000;
+
+export const MAX_DELEGATED_STACKING_AMOUNT_USTX = stxToMicroStx(10_000_000_000);
 
 export const STX_TRANSFER_TX_SIZE_BYTES = 180;
 

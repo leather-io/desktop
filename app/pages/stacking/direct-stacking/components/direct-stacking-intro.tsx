@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 
 import { ExternalLink } from '@components/external-link';
-import { StackingTitle } from './stacking-title';
-import { StackingDescription } from './stacking-description';
-import { NextCycleInfo } from './next-cycle-info';
+import { StackingTitle } from '../../components/stacking-title';
+import { StackingDescription } from '../../components/stacking-description';
+import { NextCycleInfo } from '../../components/next-cycle-info';
 
 interface StackingIntroProps {
   timeUntilNextCycle: string;
 }
-export const StackingIntro: FC<StackingIntroProps> = ({ timeUntilNextCycle }) => (
+export const DirectStackingIntro: FC<StackingIntroProps> = ({ timeUntilNextCycle }) => (
   <>
     <StackingTitle>Start earning Bitcoin</StackingTitle>
     <StackingDescription mt="base-tight">

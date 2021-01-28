@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { NETWORK } from '@constants/index';
-import { selectIsStackingCallPending } from '@store/pending-transaction';
+import { selectIsStackingCallPending, selectPendingTransactions } from '@store/pending-transaction';
 import {
   fetchStackingInfo,
   fetchCoreDetails,
@@ -22,6 +22,8 @@ import {
 import { stxToMicroStx } from '@utils/unit-convert';
 import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
 import { selectAddressBalance } from '@store/address';
+import BigNumber from 'bignumber.js';
+import { isRevokingDelegationTx, isDelegateStxTx } from '@utils/tx-utils';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -49,7 +51,19 @@ export interface StackingState {
   poxInfo: CoreNodePoxResponse | null;
   coreNodeInfo: CoreNodeInfoResponse | null;
   blockTimeInfo: NetworkBlockTimesResponse | null;
-  stackerInfo: Required<StackerInfoFromClient> | null;
+  stackerInfo: {
+    stacked: true;
+    details: {
+      amount_microstx: string;
+      first_reward_cycle: number;
+      lock_period: number;
+      unlock_height: number;
+      pox_address: {
+        version: Buffer;
+        hashbytes: Buffer;
+      };
+    };
+  } | null;
 }
 
 const initialState: StackingState = {
@@ -269,6 +283,17 @@ export const selectNextCycleInfo = createSelector(
   }
 );
 
+export const selectMeetsMinStackingThreshold = createSelector(
+  selectAddressBalance,
+  selectPoxInfo,
+  (addressDetails, poxInfo) => {
+    if (addressDetails === null || poxInfo === null) return false;
+    return new BigNumber(addressDetails.balance).isGreaterThan(
+      poxInfo.paddedMinimumStackingAmountMicroStx
+    );
+  }
+);
+
 // `rejection_votes_left_required` not returned by API
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const stackingWillBeExecuted = createSelector(selectStackingState, () => {});
@@ -283,3 +308,15 @@ export const selectEstimatedStackingDuration = (cycles: number) =>
       )
       .humanize();
   });
+
+export const selectHasPendingRevokingDelegationCall = createSelector(
+  selectPendingTransactions,
+  selectPoxInfo,
+  (pendingTxs, pox) => pendingTxs.some(tx => isRevokingDelegationTx(tx, pox?.contract_id))
+);
+
+export const selectHasPendingDelegateStxCall = createSelector(
+  selectPendingTransactions,
+  selectPoxInfo,
+  (pendingTxs, pox) => pendingTxs.some(tx => isDelegateStxTx(tx, pox?.contract_id))
+);

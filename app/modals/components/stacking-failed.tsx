@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { Flex, Box, Text } from '@blockstack/ui';
 
-import { WalletType } from '../../../types/wallet-type';
-import failedCrossSvg from '../../../assets/images/failed-cross.svg';
-
+import failedCrossSvg from '@assets/images/failed-cross.svg';
+import { WalletType } from '../../types/wallet-type';
 interface StackingFailedProps {
   walletType: WalletType;
 }

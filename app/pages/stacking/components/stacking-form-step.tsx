@@ -9,11 +9,11 @@ import {
   ButtonProps,
 } from '@blockstack/ui';
 
-import { StackingStepState } from '../stacking';
+import { StackingStepView } from '../utils/use-stacking-form-step';
 interface StackingFormStepProps extends FlexProps {
   title: string;
   isComplete: boolean;
-  state: StackingStepState;
+  state: StackingStepView;
   value?: string;
   step?: number;
   onEdit?(step: number): void;

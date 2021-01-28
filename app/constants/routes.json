@@ -9,6 +9,8 @@
   "SECRET_KEY": "/onboard/secret-key",
   "VERIFY_KEY": "/onboard/verify-key",
   "SET_PASSWORD": "/onboard/set-password",
+  "CHOOSE_STACKING_METHOD": "/choose-stacking-method",
   "STACKING": "/stacking",
+  "DELEGATED_STACKING": "/delegated-stacking",
   "SETTINGS": "/settings"
 }

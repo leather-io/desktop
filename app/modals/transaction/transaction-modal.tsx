@@ -57,10 +57,10 @@ import {
   modalStyle,
 } from './transaction-modal-layout';
 import { TxModalForm } from './steps/transaction-form';
-import { DecryptWalletForm } from './steps/decrypt-wallet-form';
-import { SignTxWithLedger } from './steps/sign-tx-with-ledger';
+import { SignTxWithLedger } from '../components/sign-tx-with-ledger';
 import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
+import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
 
 interface TxModalProps {
   balance: string;
@@ -418,6 +418,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       header: <TxModalHeader onSelectClose={closeModal}>Confirm and send</TxModalHeader>,
       body: (
         <DecryptWalletForm
+          description="Enter your password to send the transaction"
           onSetPassword={password => setPassword(password)}
           onForgottenPassword={() => {
             closeModal();

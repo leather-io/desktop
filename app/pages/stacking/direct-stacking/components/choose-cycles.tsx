@@ -3,18 +3,14 @@ import React, { FC } from 'react';
 import { Stepper } from '@components/stepper';
 import { MAX_STACKING_CYCLES, MIN_STACKING_CYCLES } from '@constants/index';
 
+import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
-  StackingStep,
-  StackingStepAction,
-  StackingStepDescription,
-} from '../components/stacking-form-step';
-import { StackingStepState } from '../stacking';
+  StackingStep as Step,
+  StackingStepAction as Action,
+  StackingStepDescription as Description,
+} from '../../components/stacking-form-step';
 
-interface ChooseCycleStepProps {
-  id: string;
-  step?: number;
-  isComplete: boolean;
-  state: StackingStepState;
+interface ChooseCycleStepProps extends StackingStepBaseProps {
   cycles: number;
   onEdit(): void;
   onComplete(cycle: number): void;
@@ -22,22 +18,22 @@ interface ChooseCycleStepProps {
 }
 
 export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
-  const { isComplete, state, step, cycles, id, onUpdate, onEdit, onComplete } = props;
+  const { isComplete, state, step, cycles, title, onUpdate, onEdit, onComplete } = props;
   const value = `${cycles} cycle${cycles !== 1 ? 's' : ''} selected`;
   return (
-    <StackingStep
+    <Step
       step={step}
-      title={id}
+      title={title}
       value={value}
       state={state}
       isComplete={isComplete}
       onEdit={onEdit}
     >
-      <StackingStepDescription>
+      <Description>
         Choose the amount of cycles to lock your STX. One cycle typically lasts between 6 and 8
         days, depending on the Bitcoin block time. At the end of each cycle, you'll have the chance
         to earn bitcoin.
-      </StackingStepDescription>
+      </Description>
       <Stepper
         mt="loose"
         amount={cycles}
@@ -50,7 +46,7 @@ export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
           onUpdate(cycle);
         }}
       />
-      <StackingStepAction onClick={() => onComplete(cycles)}>Continue</StackingStepAction>
-    </StackingStep>
+      <Action onClick={() => onComplete(cycles)}>Continue</Action>
+    </Step>
   );
 };

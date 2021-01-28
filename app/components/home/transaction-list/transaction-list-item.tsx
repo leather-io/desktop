@@ -21,7 +21,13 @@ import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
 import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { makeExplorerTxLink } from '@utils/external-links';
-import { getRecipientAddress, isStackingTx } from '@utils/tx-utils';
+import {
+  getRecipientAddress,
+  isStackingTx,
+  isDelegateStxTx,
+  isRevokingDelegationTx,
+  isDelegatedStackingTx,
+} from '@utils/tx-utils';
 
 import {
   createTxListContextMenu,
@@ -35,7 +41,6 @@ interface TransactionListItemProps {
   address: string;
   activeTxIdRef: MutableRefObject<any>;
   domNodeMapRef: MutableRefObject<any>;
-
   onSelectTx(txId: string): void;
 }
 
@@ -57,19 +62,40 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     if (tx.tx_type === 'token_transfer') {
       return direction;
     }
-    if (tx.tx_type === 'contract_call' && isStackingTx(tx, poxInfo?.contract_id)) {
+    if (isStackingTx(tx, poxInfo?.contract_id) || isDelegatedStackingTx(tx, poxInfo?.contract_id)) {
       return 'locked';
     }
+    if (isDelegateStxTx(tx, poxInfo?.contract_id)) {
+      return 'delegated';
+    }
+    if (isRevokingDelegationTx(tx, poxInfo?.contract_id)) {
+      return 'revoked';
+    }
     return 'default';
-  }, [direction, poxInfo?.contract_id, tx]);
+  }, [direction, poxInfo?.contract_id, tx, txFailed]);
 
   const transactionTitle = useCallback(() => {
     if (tx.tx_type === 'token_transfer') return capitalize(direction);
-    if (tx.tx_type === 'contract_call' && isStackingTx(tx, poxInfo?.contract_id)) {
+    if (isStackingTx(tx, poxInfo?.contract_id)) {
       if (tx.tx_status === 'pending') return 'Initiating Stacking';
       if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition')
         return 'Stacking initiation failed';
       return 'Stacking initiated successfully';
+    }
+    if (isDelegatedStackingTx(tx, poxInfo?.contract_id)) {
+      return 'Delegator Stacked STX';
+    }
+    if (isDelegateStxTx(tx, poxInfo?.contract_id)) {
+      if (tx.tx_status === 'pending') return 'Initiating delegation';
+      if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition')
+        return 'Failed to delegate STX';
+      return 'Delegated STX';
+    }
+    if (isRevokingDelegationTx(tx, poxInfo?.contract_id)) {
+      if (tx.tx_status === 'pending') return 'Initiating revocation';
+      if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition')
+        return 'Failed to revoke delegation';
+      return 'Revoked STX';
     }
     if (tx.tx_type === 'smart_contract') {
       return getContractName(tx.smart_contract.contract_id);
@@ -105,7 +131,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     txid: tx.tx_id,
     recipientAddress: getRecipientAddress(tx) || '',
     memo: memo || '',
-    date: txDate.toISOString(),
+    date: txDate && txDate.toISOString(),
     txDetails: JSON.stringify(tx, null, 2),
     explorerLink: makeExplorerTxLink(tx.tx_id),
   });

@@ -1,40 +1,53 @@
-import React, { FC } from 'react';
-import { Box, Flex, Text, Button } from '@blockstack/ui';
+import React, { FC, memo, useEffect } from 'react';
+import { Box, Button, Flex, Text } from '@blockstack/ui';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { openExternalLink } from '@utils/external-links';
-import { BUY_STX_URL } from '@constants/index';
-import { toHumanReadableStx } from '@utils/unit-convert';
-import btcPodium from '../../assets/images/btc-podium.svg';
+import routes from '@constants/routes.json';
+import abstractBtcChart from '../../assets/images/abstract-btc-chart.svg';
+import { selectHasPendingDelegateStxCall } from '@store/stacking';
+import { useDelegationStatus } from '@hooks/use-delegation-status';
 
-interface StackingPromoCardProps {
-  minRequiredMicroStx: number;
-}
+export const StackingPromoCard: FC = memo(() => {
+  const history = useHistory();
+  const hasPendingDelegateStxCall = useSelector(selectHasPendingDelegateStxCall);
 
-export const StackingPromoCard: FC<StackingPromoCardProps> = ({ minRequiredMicroStx }) => (
-  <Box
-    mt="extra-loose"
-    borderRadius="8px"
-    boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-    border="1px solid #F0F0F5"
-  >
-    <Flex flexDirection="column" mt="40px" mb="extra-loose">
-      <img src={btcPodium} />
-      <Text display="block" textAlign="center" textStyle="display.small" mt="loose">
-        Earn Bitcoin rewards with Stacking
-      </Text>
-      <Text display="block" mt="tight" textAlign="center" maxWidth="320px" mx="auto">
-        You can earn Bitcoin by temporarily locking {toHumanReadableStx(minRequiredMicroStx)} or
-        more
-      </Text>
-      <Button
-        size="md"
-        mt="base"
-        mx="auto"
-        width="272px"
-        onClick={() => openExternalLink(BUY_STX_URL)}
-      >
-        Buy STX
-      </Button>
-    </Flex>
-  </Box>
-);
+  const { update } = useDelegationStatus();
+
+  useEffect(() => {
+    void update();
+  }, [hasPendingDelegateStxCall, update]);
+
+  return (
+    <Box
+      mt="extra-loose"
+      borderRadius="8px"
+      boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
+      border="1px solid #F0F0F5"
+    >
+      <Flex flexDirection="column" mx="loose" pb="90px" position="relative">
+        <Box position="absolute" right="0px" bottom="0px">
+          <img
+            src={abstractBtcChart}
+            alt="Faint bar chart balancing blue bitcoin icons on the 3rd and 5th bar"
+          />
+        </Box>
+        <Text textStyle="body.large.medium" color="ink.600" mt="loose">
+          Stacking
+        </Text>
+        <Text textStyle="display.large" mt="tight">
+          Earn bitcoin when you lock your STX temporarily
+        </Text>
+        <Button
+          mt="base"
+          alignSelf="flex-start"
+          mode="tertiary"
+          isDisabled={hasPendingDelegateStxCall}
+          onClick={() => history.push(routes.CHOOSE_STACKING_METHOD)}
+        >
+          {hasPendingDelegateStxCall ? 'Delegation pending' : 'Get started →'}
+        </Button>
+      </Flex>
+    </Box>
+  );
+});

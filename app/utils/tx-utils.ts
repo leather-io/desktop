@@ -14,11 +14,48 @@ export function getRecipientAddress(tx: Transaction) {
   return tx.token_transfer.recipient_address;
 }
 
-export function isStackingTx(
+export function isContractCall(
+  tx: Transaction | MempoolTransaction
+): tx is ContractCallTransaction {
+  return tx.tx_type === 'contract_call';
+}
+
+export function isStackingTx(tx: Transaction | MempoolTransaction, poxContractId?: string) {
+  return (
+    isContractCall(tx) &&
+    tx.contract_call.contract_id === poxContractId &&
+    tx.contract_call.function_name === 'stack-stx'
+  );
+}
+
+export function isDelegatedStackingTx(
   tx: Transaction | MempoolTransaction,
   poxContractId?: string
-): tx is ContractCallTransaction {
-  return tx.tx_type === 'contract_call' && tx.contract_call.contract_id === poxContractId;
+) {
+  return (
+    isContractCall(tx) &&
+    tx.contract_call.contract_id === poxContractId &&
+    tx.contract_call.function_name === 'delegate-stack-stx'
+  );
+}
+
+export function isDelegateStxTx(tx: Transaction | MempoolTransaction, poxContractId?: string) {
+  return (
+    isContractCall(tx) &&
+    tx.contract_call.contract_id === poxContractId &&
+    tx.contract_call.function_name === 'delegate-stx'
+  );
+}
+
+export function isRevokingDelegationTx(
+  tx: Transaction | MempoolTransaction,
+  poxContractId?: string
+) {
+  return (
+    isContractCall(tx) &&
+    tx.contract_call.contract_id === poxContractId &&
+    tx.contract_call.function_name === 'revoke-delegate-stx'
+  );
 }
 
 export function isMempoolTx(tx: Transaction | MempoolTransaction): tx is MempoolTransaction {

@@ -4,11 +4,11 @@ import {
   StackingStep,
   StackingStepAction,
   StackingStepDescription,
-} from '../components/stacking-form-step';
-import { StackingTerms } from '../components/stacking-terms';
+} from '../../components/stacking-form-step';
+import { StackingTerms } from '../../components/stacking-terms';
 
 interface ConfirmAndLockStepProps {
-  id: string;
+  title: string;
   formComplete: boolean;
   step?: number;
   timeUntilNextCycle: string;
@@ -17,10 +17,17 @@ interface ConfirmAndLockStepProps {
 }
 
 export const ConfirmAndLockStep: FC<ConfirmAndLockStepProps> = props => {
-  const { step, id, formComplete, timeUntilNextCycle, estimatedDuration, onConfirmAndLock } = props;
+  const {
+    step,
+    title,
+    formComplete,
+    timeUntilNextCycle,
+    estimatedDuration,
+    onConfirmAndLock,
+  } = props;
 
   return (
-    <StackingStep title={id} step={step} isComplete={false} state="open" mb="300px">
+    <StackingStep title={title} step={step} isComplete={false} state="open" mb="300px">
       <StackingStepDescription>
         When you confirm, your STX will be locked in your wallet.
         <br />

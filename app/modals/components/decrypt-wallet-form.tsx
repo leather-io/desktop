@@ -6,6 +6,7 @@ import { ErrorText } from '@components/error-text';
 interface DecryptWalletFormProps {
   hasSubmitted: boolean;
   decryptionError: string | null;
+  description: string;
   onForgottenPassword(): void;
   onSetPassword(password: string): void;
 }
@@ -13,7 +14,7 @@ interface DecryptWalletFormProps {
 type Props = FC<DecryptWalletFormProps>;
 
 export const DecryptWalletForm: Props = props => {
-  const { onSetPassword, decryptionError, hasSubmitted, onForgottenPassword } = props;
+  const { description, onSetPassword, decryptionError, hasSubmitted, onForgottenPassword } = props;
 
   const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -22,7 +23,7 @@ export const DecryptWalletForm: Props = props => {
   };
   return (
     <Box mx="extra-loose" mt="extra-loose">
-      <Text textStyle="body.large">Enter your password to initiate Stacking</Text>
+      <Text textStyle="body.large">{description}</Text>
       <Input onChange={handlePasswordInput} type="password" mt="base-loose" />
       {hasSubmitted && decryptionError && (
         <ErrorLabel>

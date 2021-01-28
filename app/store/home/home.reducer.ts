@@ -4,32 +4,35 @@ import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
   selectActiveStackingTxId,
   selectLoadingStacking,
-  selectPoxInfo,
+  selectMeetsMinStackingThreshold,
   selectStackerInfo,
   selectStackingError,
 } from '@store/stacking';
-import BigNumber from 'bignumber.js';
 
 import { RootState } from '..';
 
+type HomeModals = 'txModal' | 'receiveModal' | 'revokeDelegationModal';
+
 export interface HomeState {
-  txModalOpen: boolean;
-  receiveModalOpen: boolean;
+  activeModal: HomeModals | null;
 }
 
 const initialState: HomeState = {
-  txModalOpen: false,
-  receiveModalOpen: false,
+  activeModal: null,
 };
 
 export const homeSlice = createSlice({
   name: 'home',
   initialState,
   reducers: {
-    openTxModal: () => ({ txModalOpen: true, receiveModalOpen: false }),
-    closeTxModal: state => ({ ...state, txModalOpen: false }),
-    openReceiveModal: () => ({ receiveModalOpen: true, txModalOpen: false }),
-    closeReceiveModal: state => ({ ...state, receiveModalOpen: false }),
+    //
+    // TODO: refactor post-delegation
+    openTxModal: () => ({ activeModal: 'txModal' as HomeModals }),
+    closeTxModal: () => ({ activeModal: null }),
+    openReceiveModal: () => ({ activeModal: 'receiveModal' as HomeModals }),
+    closeReceiveModal: () => ({ activeModal: null }),
+    openRevokeDelegationModal: () => ({ activeModal: 'revokeDelegationModal' as HomeModals }),
+    closeRevokeDelegationModal: () => ({ activeModal: null }),
   },
 });
 
@@ -37,10 +40,17 @@ export const homeActions = homeSlice.actions;
 
 export const selectHomeState = (state: RootState) => state.home;
 
-export const selectTxModalOpen = createSelector(selectHomeState, state => state.txModalOpen);
+export const selectTxModalOpen = createSelector(
+  selectHomeState,
+  state => state.activeModal === 'txModal'
+);
 export const selectReceiveModalOpen = createSelector(
   selectHomeState,
-  state => state.receiveModalOpen
+  state => state.activeModal === 'receiveModal'
+);
+export const selectRevokeDelegationModalOpen = createSelector(
+  selectHomeState,
+  state => state.activeModal === 'revokeDelegationModal'
 );
 
 export enum HomeCardState {
@@ -58,17 +68,6 @@ const selectLoadingCardResources = createSelector(
   selectAddressDetails,
   selectLoadingStacking,
   (balance, isLoadingStacking) => balance === null || isLoadingStacking
-);
-
-const selectMeetsMinStackingThreshold = createSelector(
-  selectAddressDetails,
-  selectPoxInfo,
-  (addressDetails, poxInfo) => {
-    if (addressDetails === null || poxInfo === null) return false;
-    return new BigNumber(addressDetails.balance).isGreaterThan(
-      poxInfo.paddedMinimumStackingAmountMicroStx
-    );
-  }
 );
 
 const selectShowErrorCard = createSelector(selectStackingError, state => {

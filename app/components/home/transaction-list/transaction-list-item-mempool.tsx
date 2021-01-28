@@ -2,12 +2,30 @@ import React, { FC, useRef, RefObject, useEffect, MutableRefObject } from 'react
 import { useHover, useFocus } from 'use-events';
 import { Box, Flex, Stack, Text } from '@blockstack/ui';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
-import { TransactionIcon } from './transaction-icon';
-import { TransactionListItemContainer } from './transaction-list-item-container';
+import { getTxTypeName } from '@stacks/ui-utils';
+
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
-import { truncateMiddle } from '@utils/tx-utils';
-import { getTxTypeName } from '@stacks/ui-utils';
+import {
+  isStackingTx,
+  truncateMiddle,
+  isDelegatedStackingTx,
+  isDelegateStxTx,
+  isRevokingDelegationTx,
+} from '@utils/tx-utils';
+
+import { TransactionIcon } from './transaction-icon';
+import { TransactionListItemContainer } from './transaction-list-item-container';
+import { useSelector } from 'react-redux';
+import { selectPoxInfo } from '@store/stacking';
+import { getMempoolTxLabel } from './mempool-tx-label';
+
+const shouldShowMempoolTx = (tx: MempoolTransaction, contractId?: string) =>
+  tx.tx_type === 'token_transfer' ||
+  isStackingTx(tx, contractId) ||
+  isDelegatedStackingTx(tx, contractId) ||
+  isDelegateStxTx(tx, contractId) ||
+  isRevokingDelegationTx(tx, contractId);
 
 interface TransactionListItemMempoolProps {
   tx: MempoolTransaction;
@@ -22,6 +40,7 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
   const [hovered, bindHover] = useHover();
   const [focused, bindFocus] = useFocus();
   const containerRef = useRef<HTMLButtonElement>(null);
+  const poxInfo = useSelector(selectPoxInfo);
   const memo =
     tx.tx_type === 'token_transfer' &&
     Buffer.from(
@@ -41,16 +60,9 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
 
   const isSender = tx.sender_address === address;
 
-  const isStackingTx =
-    tx.tx_type === 'contract_call' && tx.contract_call.function_name === 'stack-stx';
-
-  if (
-    tx.tx_type === 'smart_contract' ||
-    tx.tx_type === 'coinbase' ||
-    tx.tx_type === 'poison_microblock' ||
-    (tx.tx_type === 'contract_call' && !isStackingTx)
-  )
+  if (!shouldShowMempoolTx(tx, poxInfo?.contract_id)) {
     return null;
+  }
 
   const txDate = new Date(tx.receipt_time_iso);
   const txDateShort = txDate.toLocaleString();
@@ -69,7 +81,7 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
       <TransactionIcon variant="pending" mr="base-loose" />
       <Box flex={1}>
         <Text textStyle="body.large.medium" display="block">
-          {isStackingTx ? 'Stacking initiated' : isSender ? 'Sent' : 'Received'}
+          {getMempoolTxLabel(tx, address, poxInfo?.contract_id || '')}
         </Text>
         <Stack isInline spacing="tight">
           <Text textStyle="body.small" color="ink.600">

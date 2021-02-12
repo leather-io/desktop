@@ -2,24 +2,17 @@ import React, { FC, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
-import BlockstackApp, { LedgerError, ResponseSign } from '@zondax/ledger-blockstack';
+import StacksApp from '@zondax/ledger-blockstack';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
 import BN from 'bn.js';
 
 import { RootState } from '@store/index';
-import { STX_DERIVATION_PATH } from '@constants/index';
 import routes from '@constants/routes.json';
-import { selectPublicKey } from '@store/keys';
-import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
-import {
-  makeUnsignedContractCall,
-  StacksTransaction,
-  makeContractCall,
-  TransactionSigner,
-  createStacksPrivateKey,
-} from '@stacks/transactions';
+
+import { selectPoxInfo } from '@store/stacking';
+
 import { broadcastTransaction, BroadcastTransactionArgs } from '@store/transaction';
 import { selectAddressBalance } from '@store/address';
 import { LedgerConnectStep } from '@hooks/use-ledger';
@@ -33,7 +26,6 @@ import {
 } from '@modals/components/stacking-modal-layout';
 import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
 import { StackingFailed } from '@modals/components/stacking-failed';
-import { delay } from '@utils/delay';
 
 import { useWalletType } from '@hooks/use-wallet-type';
 import { useStackingClient } from '@hooks/use-stacking-client';
@@ -42,6 +34,9 @@ import { useApi } from '@hooks/use-api';
 import { pendingTransactionSlice } from '@store/pending-transaction';
 import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
 import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
+import { useCreateLedgerTx } from '@hooks/use-create-ledger-tx';
+import { useCreateSoftwareTx } from '@hooks/use-create-software-tx';
+import { delay } from '@utils/delay';
 
 enum StackingModalStep {
   DecryptWalletAndSend,
@@ -70,18 +65,18 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
 
   const [decryptionError, setDecryptionError] = useState<string | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
-  const [blockstackApp, setBlockstackApp] = useState<null | BlockstackApp>(null);
+  const [stacksApp, setStacksApp] = useState<null | StacksApp>(null);
 
   const { walletType, whenWallet } = useWalletType();
   const { stackingClient } = useStackingClient();
   const { decryptWallet } = useDecryptWallet();
+  const { createLedgerContractCallTx } = useCreateLedgerTx();
+  const { createSoftwareTx } = useCreateSoftwareTx();
 
   const api = useApi();
 
-  const { publicKey, poxInfo, coreNodeInfo, balance } = useSelector((state: RootState) => ({
-    publicKey: selectPublicKey(state),
+  const { poxInfo, balance } = useSelector((state: RootState) => ({
     poxInfo: selectPoxInfo(state),
-    coreNodeInfo: selectCoreNodeInfo(state),
     balance: selectAddressBalance(state),
   }));
 
@@ -92,77 +87,38 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
 
   const [step, setStep] = useState(initialStep);
 
-  const createSoftwareWalletTx = useCallback(async (): Promise<StacksTransaction> => {
-    if (!password || !poxInfo || !balance) {
-      throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
-    }
-    if (coreNodeInfo === null) throw new Error('Stacking requires coreNodeInfo');
-
-    const { privateKey } = await decryptWallet(password);
-    const txOptions = stackingClient.getDelegateOptions({
+  const createDelegationTxOptions = useCallback(() => {
+    if (!poxInfo) throw new Error('poxInfo not defined');
+    return stackingClient.getDelegateOptions({
       amountMicroStx: new BN(amountToStack.toString()),
       contract: poxInfo.contract_id,
       delegateTo: delegatorStxAddress,
     });
-    const tx = await makeContractCall({ ...txOptions, senderKey: privateKey });
-    const signer = new TransactionSigner(tx);
-    signer.signOrigin(createStacksPrivateKey(privateKey));
-    return tx;
-  }, [
-    password,
-    poxInfo,
-    balance,
-    coreNodeInfo,
-    decryptWallet,
-    stackingClient,
-    amountToStack,
-    delegatorStxAddress,
-  ]);
+  }, [amountToStack, delegatorStxAddress, poxInfo, stackingClient]);
 
-  const createLedgerWalletTx = useCallback(
-    async (options: { publicKey: Buffer }): Promise<StacksTransaction> => {
-      if (coreNodeInfo === null) throw new Error('Stacking requires coreNodeInfo');
-      if (!blockstackApp || !poxInfo || !balance)
-        throw new Error('`poxInfo` or `blockstackApp` is not defined');
+  const createSoftwareWalletTx = useCallback(async () => {
+    if (!password) throw new Error('`password` missing');
+    const { privateKey } = await decryptWallet(password);
+    const txOptions = createDelegationTxOptions();
+    return createSoftwareTx({ privateKey, txOptions });
+  }, [password, decryptWallet, createDelegationTxOptions, createSoftwareTx]);
 
-      const txOptions = stackingClient.getDelegateOptions({
-        amountMicroStx: new BN(amountToStack.toString()),
-        delegateTo: delegatorStxAddress,
-        contract: poxInfo.contract_id,
-      });
-
-      const unsignedTx = await makeUnsignedContractCall({
-        ...txOptions,
-        publicKey: options.publicKey.toString('hex'),
-      });
-
-      const resp: ResponseSign = await blockstackApp.sign(
-        STX_DERIVATION_PATH,
-        unsignedTx.serialize()
-      );
-      if (resp.returnCode !== LedgerError.NoErrors) {
-        throw new Error('Ledger responded with errors');
-      }
-      return unsignedTx.createTxWithSignature(resp.signatureVRS);
-    },
-    [
-      coreNodeInfo,
-      blockstackApp,
-      poxInfo,
-      balance,
-      stackingClient,
-      amountToStack,
-      delegatorStxAddress,
-    ]
-  );
+  const createLedgerWalletTx = useCallback(async () => {
+    if (!stacksApp || !poxInfo) throw new Error('`poxInfo` or `blockstackApp` is not defined');
+    return createLedgerContractCallTx({
+      txOptions: createDelegationTxOptions(),
+      stacksApp: stacksApp,
+    });
+  }, [stacksApp, createDelegationTxOptions, createLedgerContractCallTx, poxInfo]);
 
   const broadcastTx = async () => {
     if (balance === null) return;
     setIsSendingTx(true);
+    setHasSubmitted(true);
 
     const broadcastActions: Omit<BroadcastTransactionArgs, 'transaction'> = {
       onBroadcastSuccess: async txId => {
-        const tx = await watchForNewTxToAppear({ txId, nodeUrl: api.baseUrl });
+        const [, tx] = await safeAwait(watchForNewTxToAppear({ txId, nodeUrl: api.baseUrl }));
         if (tx) {
           dispatch(pendingTransactionSlice.actions.addPendingTransaction(tx as MempoolTransaction));
         }
@@ -171,25 +127,19 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
       onBroadcastFail: () => setStep(StackingModalStep.FailedContractCall),
     };
 
-    setHasSubmitted(true);
-    await delay(200);
-
     if (walletType === 'software') {
       setIsDecrypting(true);
-
+      await delay(100);
       const [error, transaction] = await safeAwait(createSoftwareWalletTx());
 
       if (error) {
         setIsDecrypting(false);
         setIsSendingTx(false);
         setDecryptionError(
-          String(error) === 'OperationError'
-            ? 'Unable to decrypt wallet'
-            : 'Something else went wrong'
+          String(error) === 'OperationError' ? 'Unable to decrypt wallet' : 'Something went wrong'
         );
         return;
       }
-
       if (transaction) {
         setIsDecrypting(false);
         dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
@@ -197,19 +147,13 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
     }
 
     if (walletType === 'ledger') {
-      if (publicKey === null) {
-        return;
-      }
-
-      const [error, transaction] = await safeAwait(createLedgerWalletTx({ publicKey }));
-
+      const [error, transaction] = await safeAwait(createLedgerWalletTx());
       if (error) {
         setHasSubmitted(false);
         setIsSendingTx(false);
         setStep(StackingModalStep.FailedContractCall);
         return;
       }
-
       if (transaction) {
         dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
       }
@@ -218,10 +162,7 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
 
   const [ledgerConnectStep, setLedgerConnectStep] = useState(LedgerConnectStep.Disconnected);
 
-  const setBlockstackAppCallback = useCallback(
-    blockstackApp => setBlockstackApp(blockstackApp),
-    []
-  );
+  const setBlockstackAppCallback = useCallback(blockstackApp => setStacksApp(blockstackApp), []);
   const updateStep = useCallback(step => setLedgerConnectStep(step), []);
 
   const txFormStepMap: Record<StackingModalStep, StackingModalComponents> = {
@@ -280,13 +221,13 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
           </StackingModalButton>
           <StackingModalButton
             isDisabled={
-              blockstackApp === null ||
+              stacksApp === null ||
               hasSubmitted ||
               ledgerConnectStep !== LedgerConnectStep.ConnectedAppOpen
             }
             isLoading={hasSubmitted}
             onClick={() => {
-              if (blockstackApp === null) return;
+              if (stacksApp === null) return;
               void broadcastTx();
             }}
           >

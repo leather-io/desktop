@@ -56,6 +56,15 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
           return validateDecimalPrecision(0)(value);
         })
         .test({
+          name: 'test-fee-margin',
+          message: 'You must stack less than your entire balance to allow for the transaction fee',
+          test: value => {
+            if (value === null || value === undefined) return false;
+            const uStxInput = stxToMicroStx(value);
+            return !uStxInput.isGreaterThan(availableBalance.minus(CONTRACT_CALL_FEE));
+          },
+        })
+        .test({
           name: 'test-min-utx',
           message: `You must stack with at least ${toHumanReadableStx(minimumAmountToStack)} `,
           test: value => {

@@ -8,12 +8,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { RootState } from '@store/index';
 import { STX_DERIVATION_PATH } from '@constants/index';
 import routes from '@constants/routes.json';
-import {
-  selectPublicKey,
-  selectEncryptedMnemonic,
-  selectSalt,
-  decryptSoftwareWallet,
-} from '@store/keys';
+import { selectPublicKey } from '@store/keys';
 import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
 import {
   makeUnsignedContractCall,
@@ -44,6 +39,7 @@ import { DecryptWalletForm } from '../components/decrypt-wallet-form';
 import { pendingTransactionSlice } from '@store/pending-transaction';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
+import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
 
 enum RevokeDelegationModalStep {
   DecryptWalletAndSend,
@@ -70,17 +66,14 @@ export const RevokeDelegationModal: FC = () => {
 
   const { walletType, whenWallet } = useWalletType();
   const { stackingClient } = useStackingClient();
+  const { decryptWallet } = useDecryptWallet();
 
-  const { encryptedMnemonic, salt, publicKey, poxInfo, coreNodeInfo, balance } = useSelector(
-    (state: RootState) => ({
-      salt: selectSalt(state),
-      encryptedMnemonic: selectEncryptedMnemonic(state),
-      publicKey: selectPublicKey(state),
-      poxInfo: selectPoxInfo(state),
-      coreNodeInfo: selectCoreNodeInfo(state),
-      balance: selectAddressBalance(state),
-    })
-  );
+  const { publicKey, poxInfo, coreNodeInfo, balance } = useSelector((state: RootState) => ({
+    publicKey: selectPublicKey(state),
+    poxInfo: selectPoxInfo(state),
+    coreNodeInfo: selectCoreNodeInfo(state),
+    balance: selectAddressBalance(state),
+  }));
 
   const initialStep = whenWallet({
     software: RevokeDelegationModalStep.DecryptWalletAndSend,
@@ -90,23 +83,18 @@ export const RevokeDelegationModal: FC = () => {
   const [step, setStep] = useState(initialStep);
 
   const createSoftwareWalletTx = useCallback(async (): Promise<StacksTransaction> => {
-    if (!password || !encryptedMnemonic || !salt || !poxInfo || !balance) {
-      throw new Error('One of `password`, `encryptedMnemonic` or `salt` is missing');
+    if (!password || !poxInfo || !balance) {
+      throw new Error('Details not available');
     }
     if (coreNodeInfo === null) throw new Error('Stacking requires coreNodeInfo');
 
-    const { privateKey } = await decryptSoftwareWallet({
-      ciphertextMnemonic: encryptedMnemonic,
-      salt,
-      password,
-    });
-
+    const { privateKey } = await decryptWallet(password);
     const txOptions = stackingClient.getRevokeDelegateStxOptions(poxInfo.contract_id);
     const tx = await makeContractCall({ ...txOptions, senderKey: privateKey });
     const signer = new TransactionSigner(tx);
     signer.signOrigin(createStacksPrivateKey(privateKey));
     return tx;
-  }, [password, encryptedMnemonic, salt, poxInfo, balance, coreNodeInfo, stackingClient]);
+  }, [password, decryptWallet, poxInfo, balance, coreNodeInfo, stackingClient]);
 
   const createLedgerWalletTx = useCallback(
     async (options: { publicKey: Buffer }): Promise<StacksTransaction> => {

@@ -42,7 +42,12 @@ export const ChooseStackingMethod: FC = () => {
         Lock your STX to support the network. As a reward, you’ll earn Bitcoin that miners transfer
         as part of Proof of Transfer.
       </Text>
-      <ExternalLink href="" fontWeight="normal" mt="base-tight">
+      <ExternalLink
+        href="https://www.stacks.co/stacking-and-stx"
+        fontWeight="normal"
+        mt="base-tight"
+        color="blue"
+      >
         Learn more about stacking
       </ExternalLink>
 

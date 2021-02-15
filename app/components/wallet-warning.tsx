@@ -8,6 +8,7 @@ export const WalletWarning: FC<FlexProps> = props => {
       <Text textStyle="caption" color="ink.600">
         ⚠️ Please check our status page for known issues if you’re experiencing any difficulties.
         <ExternalLink
+          color="blue"
           fontSize="12px"
           mt="extra-tight"
           href="https://www.hiro.so/questions/what-known-issues-are-currently-affecting-the-stacks-wallet"

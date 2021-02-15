@@ -38,6 +38,9 @@ export const GITHUB_REPO = 'stacks-wallet';
 export const TREZOR_HELP_URL =
   'https://www.blockstack.org/questions/how-can-i-use-my-trezor-device-with-the-stacks-wallet';
 
+export const STACKING_ADDRESS_FORMAT_HELP_URL =
+  'https://www.hiro.so/questions/what-form-of-btc-addresses-can-i-use-for-proof-of-transfer-rewards';
+
 export const MAX_STACKING_CYCLES = 12;
 
 export const MIN_STACKING_CYCLES = 1;

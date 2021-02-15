@@ -4,6 +4,8 @@ import { useFormik } from 'formik';
 
 import { stxAddressValidator } from '@utils/validators/stx-address-validator';
 import { selectAddress } from '@store/keys';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
 
 import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
@@ -45,6 +47,11 @@ export const ChooseDelegatorStxAddressStep: FC<ChooseDelegatorStxAddressStepProp
     >
       <Description>{description}</Description>
       <CryptoAddressForm form={stxAddressForm} fieldName="stxAddress" placeholder="STX Address">
+        {stxAddressForm.touched.stxAddress && stxAddressForm.errors.stxAddress && (
+          <ErrorLabel>
+            <ErrorText>{stxAddressForm.errors.stxAddress}</ErrorText>
+          </ErrorLabel>
+        )}
         <Action type="submit">Continue</Action>
       </CryptoAddressForm>
     </Step>

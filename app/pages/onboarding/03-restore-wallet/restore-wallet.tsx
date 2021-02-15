@@ -83,6 +83,7 @@ export const RestoreWallet: React.FC = () => {
             Secret Key
           </Text>
           <ExternalLink
+            color="blue"
             href="https://www.hiro.so/questions/what-are-secret-keys-and-how-do-they-work"
             fontSize="12px"
             ml="tight"

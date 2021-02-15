@@ -12,7 +12,7 @@ export const StackingDelegationIntro: FC = () => (
       By delegating your STX, a service will stack on your behalf. Before delegating your STX, make
       sure you research which delegation service is right for you.
     </StackingDescription>
-    <ExternalLink href="https://www.stacks.co" mt="base">
+    <ExternalLink href="https://www.stacks.co" mt="base" color="blue">
       You can discover services on stacks.co
     </ExternalLink>
   </>

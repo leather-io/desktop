@@ -48,7 +48,12 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         </Text>
 
         {address !== null && (
-          <ExternalLink href={makeExplorerAddressLink(address)} textStyle="caption" ml="tight">
+          <ExternalLink
+            href={makeExplorerAddressLink(address)}
+            textStyle="caption"
+            ml="tight"
+            color="blue"
+          >
             View on Explorer
           </ExternalLink>
         )}

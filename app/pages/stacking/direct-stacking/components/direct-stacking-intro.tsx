@@ -15,7 +15,11 @@ export const DirectStackingIntro: FC<StackingIntroProps> = ({ timeUntilNextCycle
       Help secure the Stacks Blockchain and earn Bitcoin by temporarily locking your STX in your
       wallet. Your STX never leave your wallet.
     </StackingDescription>
-    <ExternalLink href="https://www.blockstack.org/questions/how-does-stacking-work" mt="base">
+    <ExternalLink
+      href="https://www.blockstack.org/questions/how-does-stacking-work"
+      mt="base"
+      color="blue"
+    >
       How it works
     </ExternalLink>
     <NextCycleInfo timeUntilNextCycle={timeUntilNextCycle} mt="loose" />

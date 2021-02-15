@@ -45,10 +45,10 @@ export const HomeLayout: FC<HomeLayoutProps> = props => {
             >
               ⚠️ Please check our status page for known issues if you’re experiencing any
               difficulties
-              <br />
-              <br />
               <ExternalLink
                 fontSize="12px"
+                mt="tight"
+                color="blue"
                 href="https://www.hiro.so/questions/what-known-issues-are-currently-affecting-the-stacks-wallet"
               >
                 Check status

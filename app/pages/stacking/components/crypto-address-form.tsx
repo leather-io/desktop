@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
 import { Input, InputProps } from '@blockstack/ui';
 
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
-
 interface CryptoAddressFormProps extends Omit<InputProps, 'form'> {
   form: any;
   fieldName: string;
@@ -23,11 +20,6 @@ export const CryptoAddressForm: FC<CryptoAddressFormProps> = props => {
         fontFamily={form.values[fieldName].length ? 'monospace' : null}
         {...rest}
       />
-      {form.touched[fieldName] && form.errors[fieldName] && (
-        <ErrorLabel>
-          <ErrorText>{form.errors[fieldName]}</ErrorText>
-        </ErrorLabel>
-      )}
       {children}
     </form>
   );

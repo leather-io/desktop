@@ -82,6 +82,22 @@ export const Terms: React.FC = () => {
             and all applicable taxes.
           </Box>
           <Box as="li" mt="base">
+            <strong>Delegation</strong>. The Software allows you to delegate Stacks held in a wallet
+            address you control to a third-party delegate for the purpose of Stacking. By delegating
+            your Stacks, although you are not transferring your Stacks, you acknowledge and agree
+            that you are allowing the delegate to lock your Stacks for Stacking at your own risk. As
+            a result, the delegate will control where the Bitcoin rewards for such Stacking are
+            distributed. Hiro has no control, responsibility, or liability with respect to the
+            distribution of such Bitcoin rewards. If your delegate does not distribute Bitcoin
+            rewards to you for Stacks you have delegated, your sole recourse will be against your
+            delegate. Furthermore, you acknowledge and agree that at your own risk the delegate will
+            control how long to lock your Stacks for Stacking, up to a maximum of 12 cycles. As a
+            result, although you may cancel your delegation at any time, your Stacks may remain
+            locked and unavailable for up to 12 cycles even after cancelation of delegation. Hiro
+            has no control, responsibility, or liability with respect unlocking Stacks that have
+            been locked for Stacking.
+          </Box>
+          <Box as="li" mt="base">
             <strong>GPLv3</strong>. The Software is provided under the GNU General Public License
             version 3.0 (“GPLv3”), a copy of which is available at
             https://opensource.org/licenses/GPL-3.0, as supplemented by Sections 5 and 9-11 of the

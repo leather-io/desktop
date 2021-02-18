@@ -4,21 +4,27 @@ import { ClockIcon } from '@components/icons/clock';
 import { DelegationIcon } from '@components/icons/delegation-icon';
 
 export const DelegatedStackingTerms: FC = () => (
-  <Box textStyle={['body.small', 'body.large']} mt="loose">
-    <Flex alignItems="center">
-      <Box mr="base-tight">
+  <Box textStyle={['body.small', 'body.large']} mt="loose" borderLeft="4px solid #FE9000" pl="base">
+    <Flex alignItems="start">
+      <Box mr="base-tight" mt="5px">
         <DelegationIcon />
       </Box>
-      <Text>Your delegator will stack on your behalf</Text>
+      <Text>
+        Your delegatee will stack on your behalf and distribute BTC rewards. Hiro can’t help you if
+        they don’t pay you your BTC rewards.
+      </Text>
     </Flex>
-    <Flex alignItems="center" mt="base-loose">
-      <Box mr="base-tight">
+    <Flex alignItems="start" mt="base-loose">
+      <Box mr="base-tight" mt="4px">
         <ClockIcon />
       </Box>
-      <Text>You’ll STX will be delegated indefinitely until you cancel</Text>
+      <Text>
+        Your delegatee can lock your STX for up to 12 cycles. You can revoke anytime, but your funds
+        will be locked until all cycles finish.
+      </Text>
     </Flex>
-    <Flex alignItems="center" mt="base-loose">
-      <Box mr="base-tight">
+    <Flex alignItems="start" mt="base-loose">
+      <Box mr="base-tight" mt="4px">
         <ExclamationMarkCircleIcon width="16px" />
       </Box>
       <Text>Make sure you’ve researched and trust the delegation service</Text>

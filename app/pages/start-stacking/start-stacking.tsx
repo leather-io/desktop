@@ -73,8 +73,8 @@ export const ChooseStackingMethod: FC = () => {
 
         <Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}>
           <Title>Delegate</Title>
-          <OptionBenefit>A service stacks on your behalf</OptionBenefit>
-          <OptionBenefit>Stack in with small sums</OptionBenefit>
+          <OptionBenefit>A service, or delegatee, stacks on your behalf</OptionBenefit>
+          <OptionBenefit>Stack with small sums</OptionBenefit>
           <OptionBenefit>Indefinite until you cancel</OptionBenefit>
           <Flex alignItems="center">
             <OptionButton

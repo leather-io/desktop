@@ -43,7 +43,7 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
         <Flex justifyContent="space-between">
           <Flex alignItems="center">
             <Text textStyle="body.large.medium" mr="tight">
-              Delegator address
+              Delegatee address
             </Text>
             <ExplainerTooltip>
               This will be provided to you by your chosen delegator

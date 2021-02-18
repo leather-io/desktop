@@ -35,8 +35,8 @@ export const StackingDelegation: FC = () => {
   const stackingForm = (
     <StackingFormContainer>
       <ChooseDelegatorStxAddressStep
-        title="Choose delegator's address"
-        description="Enter the STX address shared with you by the delegator"
+        title="Choose delegatee's address"
+        description="Enter the STX address shared with you by your chosen delegatee"
         isComplete={steps.getIsComplete(DelegateStep.ChooseDelegatorAddress)}
         value={delegatorStxAddress ?? undefined}
         state={steps.getView(DelegateStep.ChooseDelegatorAddress)}

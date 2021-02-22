@@ -252,6 +252,9 @@
     "yup": "0.32.8",
     "zxcvbn": "4.4.2"
   },
+  "resolutions": {
+    "immer": "8.0.1"
+  },
   "devEngines": {
     "node": ">=7.x",
     "npm": ">=4.x",

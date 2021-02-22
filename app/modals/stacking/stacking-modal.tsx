@@ -137,7 +137,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
     const broadcastActions: Omit<BroadcastTransactionArgs, 'transaction'> = {
       onBroadcastSuccess: async txId => {
         dispatch(activeStackingTx({ txId }));
-        const tx = await watchForNewTxToAppear({ txId, nodeUrl: api.baseUrl });
+        const [, tx] = await safeAwait(watchForNewTxToAppear({ txId, nodeUrl: api.baseUrl }));
         if (tx) {
           dispatch(pendingTransactionSlice.actions.addPendingTransaction(tx as MempoolTransaction));
         }

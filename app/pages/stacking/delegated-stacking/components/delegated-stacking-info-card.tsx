@@ -11,11 +11,11 @@ import { truncateMiddle } from '../../../../utils/tx-utils';
 
 interface StackingInfoCardProps extends FlexProps {
   balance: BigNumber | null;
-  delegatorAddress: string | null;
+  delegateeAddress: string | null;
 }
 
 export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { balance, delegatorAddress } = props;
+  const { balance, delegateeAddress } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
@@ -46,10 +46,10 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
               Delegatee address
             </Text>
             <ExplainerTooltip>
-              This will be provided to you by your chosen delegator
+              This will be provided to you by your chosen delegation service
             </ExplainerTooltip>
           </Flex>
-          <Text textAlign="right">{delegatorAddress ? truncateMiddle(delegatorAddress) : '—'}</Text>
+          <Text textAlign="right">{delegateeAddress ? truncateMiddle(delegateeAddress) : '—'}</Text>
         </Flex>
       </Flex>
     </Flex>

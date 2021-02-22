@@ -137,7 +137,8 @@ export const Home: FC = () => {
             />
           ))}
         {pendingTxs
-          // .filter(pendingTx => !txs.map(tx => tx.tx_id).includes(pendingTx.tx_id))
+          .filter(pendingTx => !txs.map(tx => tx.tx_id).includes(pendingTx.tx_id))
+          .filter(pendingTx => !mempoolTxs.map(tx => tx.tx_id).includes(pendingTx.tx_id))
           .map(pendingTx => (
             <TransactionListItemMempool
               address={address}

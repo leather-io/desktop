@@ -13,10 +13,10 @@ import { StackingDelegationIntro } from './components/stacking-delegated-intro';
 import { DelegatedStackingInfoCard } from './components/delegated-stacking-info-card';
 import { ConfirmAndDelegateStep } from './components/confirm-and-delegate';
 import { ChooseDelegatedStackingAmountStep } from './components/choose-delegated-stacking-amount';
-import { ChooseDelegatorStxAddressStep } from './components/choose-delegator-stx-address';
+import { ChooseDelegateeStxAddressStep } from './components/choose-delegatee-stx-address';
 
 enum DelegateStep {
-  ChooseDelegatorAddress = 'ChooseDelegatorAddress',
+  ChooseDelegateeAddress = 'ChooseDelegateeAddress',
   ChooseAmount = 'ChooseAmount',
 }
 
@@ -25,29 +25,29 @@ export const StackingDelegation: FC = () => {
 
   const [amount, setAmount] = useState<BigNumber | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [delegatorStxAddress, setDelegatorStxAddress] = useState<string | null>(null);
+  const [delegateeAddress, setDelegateeAddress] = useState<string | null>(null);
 
   const steps = useStackingFormStep<DelegateStep>({
-    [DelegateStep.ChooseDelegatorAddress]: delegatorStxAddress !== null,
+    [DelegateStep.ChooseDelegateeAddress]: delegateeAddress !== null,
     [DelegateStep.ChooseAmount]: amount !== null,
   });
 
   const stackingForm = (
     <StackingFormContainer>
-      <ChooseDelegatorStxAddressStep
+      <ChooseDelegateeStxAddressStep
         title="Choose delegatee's address"
         description="Enter the STX address shared with you by your chosen delegatee"
-        isComplete={steps.getIsComplete(DelegateStep.ChooseDelegatorAddress)}
-        value={delegatorStxAddress ?? undefined}
-        state={steps.getView(DelegateStep.ChooseDelegatorAddress)}
-        onEdit={() => steps.open(DelegateStep.ChooseDelegatorAddress)}
+        isComplete={steps.getIsComplete(DelegateStep.ChooseDelegateeAddress)}
+        value={delegateeAddress ?? undefined}
+        state={steps.getView(DelegateStep.ChooseDelegateeAddress)}
+        onEdit={() => steps.open(DelegateStep.ChooseDelegateeAddress)}
         onComplete={address => (
-          setDelegatorStxAddress(address), steps.close(DelegateStep.ChooseDelegatorAddress)
+          setDelegateeAddress(address), steps.close(DelegateStep.ChooseDelegateeAddress)
         )}
       />
       <ChooseDelegatedStackingAmountStep
         title="Choose an amount"
-        description="Choose how much of your STX you’d like to delegate. This can be more than your current balance. Your delegator may require you to delegate a minimum amount."
+        description="Choose how much of your STX you’d like to delegate. This can be more than your current balance. Your delegatee may require you to delegate a minimum amount."
         isComplete={steps.getIsComplete(DelegateStep.ChooseAmount)}
         state={steps.getView(DelegateStep.ChooseAmount)}
         value={amount}
@@ -64,9 +64,9 @@ export const StackingDelegation: FC = () => {
 
   return (
     <>
-      {modalOpen && amount && delegatorStxAddress && (
+      {modalOpen && amount && delegateeAddress && (
         <DelegatedStackingModal
-          delegatorStxAddress={delegatorStxAddress}
+          delegateeStxAddress={delegateeAddress}
           amountToStack={amount}
           onClose={() => setModalOpen(false)}
         />
@@ -74,7 +74,7 @@ export const StackingDelegation: FC = () => {
       <StackingLayout
         intro={<StackingDelegationIntro />}
         stackingInfoCard={
-          <DelegatedStackingInfoCard delegatorAddress={delegatorStxAddress} balance={amount} />
+          <DelegatedStackingInfoCard delegateeAddress={delegateeAddress} balance={amount} />
         }
         stackingForm={stackingForm}
       />

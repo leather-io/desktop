@@ -10,7 +10,6 @@ export function watchForNewTxToAppear({ txId, nodeUrl }: WatchForNewTxAppearArgs
   let retryCount = 0;
   return new Promise((resolve, reject) => {
     const fetchTx = async (): Promise<void> => {
-      console.log('retrying');
       if (retryCount > 5) {
         // In this instance, the API has failed to find the tx, but it could still
         // be pending this absolute delay provides a last ditch effort for it to update

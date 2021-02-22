@@ -53,7 +53,7 @@ export const StackingCard: FC<StackingCardProps> = () => {
                 </Text>
                 <ExplainerTooltip mt="1px">
                   This is the address your BTC reward will be paid to. If delegated, this is the
-                  address of your delegator.
+                  address of your delegation service
                 </ExplainerTooltip>
               </Flex>
               <Text fontSize="13px" mt="tight" color="ink">

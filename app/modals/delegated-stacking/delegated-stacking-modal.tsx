@@ -47,13 +47,13 @@ enum StackingModalStep {
 type StackingModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
 interface StackingModalProps {
-  delegatorStxAddress: string;
+  delegateeStxAddress: string;
   amountToStack: BigNumber;
   onClose(): void;
 }
 
 export const DelegatedStackingModal: FC<StackingModalProps> = props => {
-  const { onClose, delegatorStxAddress, amountToStack } = props;
+  const { onClose, delegateeStxAddress, amountToStack } = props;
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -92,9 +92,9 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
     return stackingClient.getDelegateOptions({
       amountMicroStx: new BN(amountToStack.toString()),
       contract: poxInfo.contract_id,
-      delegateTo: delegatorStxAddress,
+      delegateTo: delegateeStxAddress,
     });
-  }, [amountToStack, delegatorStxAddress, poxInfo, stackingClient]);
+  }, [amountToStack, delegateeStxAddress, poxInfo, stackingClient]);
 
   const createSoftwareWalletTx = useCallback(async () => {
     if (!password) throw new Error('`password` missing');

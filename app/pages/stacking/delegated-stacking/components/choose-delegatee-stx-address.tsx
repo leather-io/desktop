@@ -15,14 +15,14 @@ import {
 } from '../../components/stacking-form-step';
 import { CryptoAddressForm } from '../../components/crypto-address-form';
 
-interface ChooseDelegatorStxAddressStepProps extends StackingStepBaseProps {
+interface ChooseDelegateeStxAddressStepProps extends StackingStepBaseProps {
   description: string;
   value?: string;
   onEdit(): void;
   onComplete(address: string): void;
 }
 
-export const ChooseDelegatorStxAddressStep: FC<ChooseDelegatorStxAddressStepProps> = props => {
+export const ChooseDelegateeStxAddressStep: FC<ChooseDelegateeStxAddressStepProps> = props => {
   const { isComplete, description, state, step, title, value, onEdit, onComplete } = props;
 
   const address = useSelector(selectAddress);

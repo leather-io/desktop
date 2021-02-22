@@ -83,7 +83,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
       return 'Stacking initiated successfully';
     }
     if (isDelegatedStackingTx(tx, poxInfo?.contract_id)) {
-      return 'Delegator Stacked STX';
+      return 'Delegatee Stacked STX';
     }
     if (isDelegateStxTx(tx, poxInfo?.contract_id)) {
       if (tx.tx_status === 'pending') return 'Initiating delegation';

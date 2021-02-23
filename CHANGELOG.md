@@ -1,3 +1,18 @@
+# [4.1.0](https://github.com/blockstack/stacks-wallet/compare/v4.0.4...v4.1.0) (2021-02-23)
+
+
+### Bug Fixes
+
+* npm advisory/1603, prototype pollution immer ([ba5a7b8](https://github.com/blockstack/stacks-wallet/commit/ba5a7b884b09b8c5771124525092acf039a26288))
+* update btc address validation, closes [#600](https://github.com/blockstack/stacks-wallet/issues/600) ([94a2929](https://github.com/blockstack/stacks-wallet/commit/94a29297db08de669b00fd51623d648a7d69c437))
+* update delegation url, closes [#619](https://github.com/blockstack/stacks-wallet/issues/619) ([d5cc043](https://github.com/blockstack/stacks-wallet/commit/d5cc043d63a8feb9ccd0eda38bf2ca0edcb9f6f1))
+* workaround known electron advisory ([8a68396](https://github.com/blockstack/stacks-wallet/commit/8a6839604eec756ccd6d617eb8e65518acd639cc))
+
+
+### Features
+
+* add delegation ([87936f8](https://github.com/blockstack/stacks-wallet/commit/87936f8a9295e15079e474e295b79c96ce9035ee))
+
 ## [4.0.4](https://github.com/blockstack/stacks-wallet/compare/v4.0.3...v4.0.4) (2021-01-27)
 
 

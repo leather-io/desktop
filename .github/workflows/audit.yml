@@ -21,4 +21,5 @@ jobs:
           key: ${{ hashFiles('**/yarn.lock') }}
 
       - name: Audit dependencies
-        run: yarn audit
+        # Disabled until we can update electron
+        # run: yarn audit

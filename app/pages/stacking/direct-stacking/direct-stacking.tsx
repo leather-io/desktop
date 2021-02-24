@@ -47,13 +47,16 @@ export const DirectStacking: FC = () => {
     [StackingStep.ChooseBtcAddress]: btcAddress !== null,
   });
 
-  const { stackingCycleDuration, nextCycleInfo, poxInfo } = useSelector((state: RootState) => ({
-    walletType: selectWalletType(state),
-    activeNode: selectActiveNodeApi(state),
-    stackingCycleDuration: selectEstimatedStackingDuration(cyclesWithDefault(cycles))(state),
-    nextCycleInfo: selectNextCycleInfo(state),
-    poxInfo: selectPoxInfo(state),
-  }));
+  const { stackingCycleDuration, oneCycleDuration, nextCycleInfo, poxInfo } = useSelector(
+    (state: RootState) => ({
+      walletType: selectWalletType(state),
+      activeNode: selectActiveNodeApi(state),
+      oneCycleDuration: selectEstimatedStackingDuration(1)(state),
+      stackingCycleDuration: selectEstimatedStackingDuration(cyclesWithDefault(cycles))(state),
+      nextCycleInfo: selectNextCycleInfo(state),
+      poxInfo: selectPoxInfo(state),
+    })
+  );
 
   if (nextCycleInfo === null || poxInfo === null) return null;
 
@@ -86,6 +89,7 @@ export const DirectStacking: FC = () => {
       <ChooseCycleStep
         title={StackingStep.ChooseCycles}
         cycles={cyclesWithDefault(cycles)}
+        cycleDuration={oneCycleDuration}
         isComplete={steps.getIsComplete(StackingStep.ChooseCycles)}
         state={steps.getView(StackingStep.ChooseCycles)}
         onEdit={() => steps.open(StackingStep.ChooseCycles)}

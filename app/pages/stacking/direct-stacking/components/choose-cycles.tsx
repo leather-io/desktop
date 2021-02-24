@@ -13,13 +13,24 @@ import {
 
 interface ChooseCycleStepProps extends StackingStepBaseProps {
   cycles: number;
+  cycleDuration: string;
   onEdit(): void;
   onComplete(cycle: number): void;
   onUpdate(cycle: number): void;
 }
 
 export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
-  const { isComplete, state, step, cycles, title, onUpdate, onEdit, onComplete } = props;
+  const {
+    isComplete,
+    cycleDuration,
+    state,
+    step,
+    cycles,
+    title,
+    onUpdate,
+    onEdit,
+    onComplete,
+  } = props;
   const value = `${formatCycles(cycles)} selected`;
   return (
     <Step
@@ -31,9 +42,9 @@ export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
       onEdit={onEdit}
     >
       <Description>
-        Choose the amount of cycles to lock your STX. One cycle typically lasts between 6 and 8
-        days, depending on the Bitcoin block time. At the end of each cycle, you'll have the chance
-        to earn bitcoin.
+        Choose the amount of cycles to lock your STX. One cycle typically lasts {cycleDuration},
+        depending on the Bitcoin block time. At the end of each cycle, you'll have the chance to
+        earn bitcoin.
       </Description>
       <Stepper
         mt="loose"

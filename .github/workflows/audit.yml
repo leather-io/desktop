@@ -20,6 +20,6 @@ jobs:
           path: '**/node_modules'
           key: ${{ hashFiles('**/yarn.lock') }}
 
-      - name: Audit dependencies
-        # Disabled until we can update electron
-        # run: yarn audit
+      # - name: Audit dependencies
+      # Disabled until we can update electron
+      # run: yarn audit

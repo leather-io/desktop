@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Flex, Box, Text } from '@blockstack/ui';
+import BigNumber from 'bignumber.js';
 
 import { RootState } from '@store/index';
 import { formatPoxAddressToNetwork } from '@utils/stacking';
 import { selectStackerInfo } from '@store/stacking/stacking.reducer';
 import { PercentageCircle } from '@components/chart/percentage-circle';
-import BigNumber from 'bignumber.js';
 import { ExplainerTooltip } from '@components/tooltip';
 
 type StackingCardProps = any;

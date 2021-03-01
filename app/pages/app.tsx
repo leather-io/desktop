@@ -26,11 +26,11 @@ import {
   selectPoxInfo,
   selectActiveStackingTxId,
 } from '@store/stacking';
-import { mutate } from 'swr';
 import { isDelegatedStackingTx, isRevokingDelegationTx, isDelegateStxTx } from '@utils/tx-utils';
 
 import { useApi } from '@hooks/use-api';
 import { useDelegationStatus } from '@hooks/use-delegation-status';
+import { useMempool } from '@hooks/use-mempool';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
@@ -43,6 +43,7 @@ export const App: FC = ({ children }) => {
   }));
 
   const delegationStatus = useDelegationStatus();
+  const mempool = useMempool();
 
   const initAppWithStxAddressInfo = useCallback(() => {
     if (!address) return;
@@ -99,7 +100,7 @@ export const App: FC = ({ children }) => {
       client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'extended', 'v1', 'ws'));
       if (!address) return;
       await client.subscribeAddressBalanceUpdates(address, async ({ address, balance }) => {
-        await safeAwait(mutate('mempool'));
+        await safeAwait(mempool.refetch());
         dispatch(updateAddressBalance({ address, balance }));
       });
       await client.subscribeAddressTransactions(address, async ({ tx_id }) => {

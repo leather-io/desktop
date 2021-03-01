@@ -10,6 +10,7 @@ import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
 import { useBalance } from '@hooks/use-balance';
+import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
 
 import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
@@ -17,8 +18,6 @@ import {
   StackingStepAction as Action,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
-
-const CONTRACT_CALL_FEE = 260;
 
 interface ChooseAmountStepProps extends StackingStepBaseProps {
   description: string;
@@ -61,7 +60,7 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
           test: value => {
             if (value === null || value === undefined) return false;
             const uStxInput = stxToMicroStx(value);
-            return !uStxInput.isGreaterThan(availableBalance.minus(CONTRACT_CALL_FEE));
+            return !uStxInput.isGreaterThan(availableBalance.minus(STACKING_CONTRACT_CALL_FEE));
           },
         })
         .test({
@@ -79,7 +78,7 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
 
   const setMax = useCallback(() => {
     const updatedAmount = new BigNumberFloorRound(
-      microStxToStx(availableBalance.minus(CONTRACT_CALL_FEE).toString())
+      microStxToStx(availableBalance.minus(STACKING_CONTRACT_CALL_FEE).toString())
     ).decimalPlaces(0);
     void stxAmountForm.setValues({ stxAmount: updatedAmount.toString() });
   }, [availableBalance, stxAmountForm]);

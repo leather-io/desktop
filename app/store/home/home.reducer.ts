@@ -4,7 +4,6 @@ import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
   selectActiveStackingTxId,
   selectLoadingStacking,
-  selectMeetsMinStackingThreshold,
   selectStackerInfo,
   selectStackingError,
 } from '@store/stacking';
@@ -77,26 +76,16 @@ const selectShowErrorCard = createSelector(selectStackingError, state => {
 export const selectHomeCardState = createSelector(
   selectLoadingCardResources,
   selectActiveStackingTxId,
-  selectMeetsMinStackingThreshold,
   selectIsStackingCallPending,
   selectStackerInfo,
   selectShowErrorCard,
-  (
-    loadingResources,
-    activeStackingTxId,
-    meetsMinThreshold,
-    stackingCallPending,
-    stackerInfo,
-    stackingErr
-  ) => {
+  (loadingResources, activeStackingTxId, stackingCallPending, stackerInfo, stackingErr) => {
     if (stackingErr) return HomeCardState.StackingError;
     if (loadingResources) return HomeCardState.LoadingResources;
     if (stackingCallPending || typeof activeStackingTxId === 'string')
       return HomeCardState.StackingPendingContactCall;
     if (stackerInfo?.isPreStackingPeriodStart) return HomeCardState.StackingPreCycle;
     if (stackerInfo?.isCurrentlyStacking) return HomeCardState.StackingActive;
-    if (meetsMinThreshold) return HomeCardState.EligibleToParticipate;
-    if (!meetsMinThreshold) return HomeCardState.NotEnoughStx;
-    return HomeCardState.PostStacking;
+    return HomeCardState.EligibleToParticipate;
   }
 );

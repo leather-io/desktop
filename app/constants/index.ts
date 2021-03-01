@@ -51,6 +51,10 @@ export const MAX_DELEGATED_STACKING_AMOUNT_USTX = stxToMicroStx(10_000_000_000);
 
 export const STX_TRANSFER_TX_SIZE_BYTES = 180;
 
+export const REVOKE_DELEGATION_TX_SIZE_BYTES = 165;
+
+export const STACKING_CONTRACT_CALL_FEE = 260;
+
 export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
 
 export const DEFAULT_POLLING_INTERVAL = 10_000;

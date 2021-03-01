@@ -26,6 +26,7 @@ import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegati
 
 import { useDelegationStatus } from '@hooks/use-delegation-status';
 import { useTransactionList } from '@hooks/use-transaction-list';
+import { useBalance } from '@hooks/use-balance';
 
 import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
@@ -46,6 +47,7 @@ export const Home: FC = () => {
   const dispatch = useDispatch();
 
   const { delegated: isDelegated } = useDelegationStatus();
+  const { availableBalance } = useBalance();
 
   const {
     address,
@@ -114,7 +116,7 @@ export const Home: FC = () => {
     <BalanceCard
       address={address}
       lockedStx={balance?.locked}
-      balance={balance?.balance || null}
+      balance={availableBalance.toString() || null}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
       onRequestTestnetStx={async ({ stacking }) =>

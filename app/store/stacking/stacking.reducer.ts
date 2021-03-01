@@ -283,16 +283,16 @@ export const selectNextCycleInfo = createSelector(
   }
 );
 
-export const selectMeetsMinStackingThreshold = createSelector(
-  selectAddressBalance,
-  selectPoxInfo,
-  (addressDetails, poxInfo) => {
-    if (addressDetails === null || poxInfo === null) return false;
-    return new BigNumber(addressDetails.balance).isGreaterThan(
-      poxInfo.paddedMinimumStackingAmountMicroStx
-    );
-  }
-);
+// export const selectMeetsMinStackingThreshold = createSelector(
+//   selectAddressBalance,
+//   selectPoxInfo,
+//   (addressDetails, poxInfo) => {
+//     if (addressDetails === null || poxInfo === null) return false;
+//     return new BigNumber(addressDetails.balance).isGreaterThan(
+//       poxInfo.paddedMinimumStackingAmountMicroStx
+//     );
+//   }
+// );
 
 // `rejection_votes_left_required` not returned by API
 // eslint-disable-next-line @typescript-eslint/no-empty-function

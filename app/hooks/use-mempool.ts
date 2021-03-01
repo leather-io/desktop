@@ -6,8 +6,13 @@ import { Api } from '@api/api';
 import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
+import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 
-export function useMempool() {
+interface UseMempool {
+  mempoolTxs: MempoolTransaction[];
+  outboundMempoolTxs: MempoolTransaction[];
+}
+export function useMempool(): UseMempool {
   const { address, activeNode } = useSelector((state: RootState) => ({
     address: selectAddress(state),
     activeNode: selectActiveNodeApi(state),

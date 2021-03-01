@@ -3,10 +3,16 @@ import { useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 
 import { selectAddress } from '@store/keys';
-import { useApi } from './use-api';
 import { ApiResource } from '@models';
+import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { useApi } from './use-api';
 
-export function useMempool() {
+interface UseMempool {
+  mempoolTxs: MempoolTransaction[];
+  outboundMempoolTxs: MempoolTransaction[];
+  refetch(): Promise<any>;
+}
+export function useMempool(): UseMempool {
   const api = useApi();
   const address = useSelector(selectAddress);
 

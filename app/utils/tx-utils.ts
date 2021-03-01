@@ -3,6 +3,10 @@ import {
   MempoolTransaction,
   ContractCallTransaction,
 } from '@blockstack/stacks-blockchain-api-types';
+import BigNumber from 'bignumber.js';
+import { sumStxTxTotal } from './sum-stx-tx-total';
+
+type AnyTx = Transaction | MempoolTransaction;
 
 export function hasMemo(tx: Transaction): boolean {
   if (tx.tx_type !== 'token_transfer') return false;
@@ -14,13 +18,11 @@ export function getRecipientAddress(tx: Transaction) {
   return tx.token_transfer.recipient_address;
 }
 
-export function isContractCall(
-  tx: Transaction | MempoolTransaction
-): tx is ContractCallTransaction {
+export function isContractCall(tx: AnyTx): tx is ContractCallTransaction {
   return tx.tx_type === 'contract_call';
 }
 
-export function isStackingTx(tx: Transaction | MempoolTransaction, poxContractId?: string) {
+export function isStackingTx(tx: AnyTx, poxContractId?: string) {
   return (
     isContractCall(tx) &&
     tx.contract_call.contract_id === poxContractId &&
@@ -28,10 +30,7 @@ export function isStackingTx(tx: Transaction | MempoolTransaction, poxContractId
   );
 }
 
-export function isDelegatedStackingTx(
-  tx: Transaction | MempoolTransaction,
-  poxContractId?: string
-) {
+export function isDelegatedStackingTx(tx: AnyTx, poxContractId?: string) {
   return (
     isContractCall(tx) &&
     tx.contract_call.contract_id === poxContractId &&
@@ -39,7 +38,7 @@ export function isDelegatedStackingTx(
   );
 }
 
-export function isDelegateStxTx(tx: Transaction | MempoolTransaction, poxContractId?: string) {
+export function isDelegateStxTx(tx: AnyTx, poxContractId?: string) {
   return (
     isContractCall(tx) &&
     tx.contract_call.contract_id === poxContractId &&
@@ -47,10 +46,7 @@ export function isDelegateStxTx(tx: Transaction | MempoolTransaction, poxContrac
   );
 }
 
-export function isRevokingDelegationTx(
-  tx: Transaction | MempoolTransaction,
-  poxContractId?: string
-) {
+export function isRevokingDelegationTx(tx: AnyTx, poxContractId?: string) {
   return (
     isContractCall(tx) &&
     tx.contract_call.contract_id === poxContractId &&
@@ -58,8 +54,12 @@ export function isRevokingDelegationTx(
   );
 }
 
-export function isMempoolTx(tx: Transaction | MempoolTransaction): tx is MempoolTransaction {
+export function isMempoolTx(tx: AnyTx): tx is MempoolTransaction {
   return tx.tx_status === 'pending';
+}
+
+export function sumTxsTotalSpentByAddress(txs: AnyTx[], address: string) {
+  return txs.reduce((acc, tx) => acc.plus(sumStxTxTotal(address, tx)), new BigNumber(0));
 }
 
 export function shortenHex(hex: string, length = 4) {

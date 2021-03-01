@@ -8,16 +8,25 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
+
+import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
 import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
+
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
 
 CheckNodeEnv('production');
 DeleteSourceMaps();
 
+const devtoolsConfig =
+  process.env.DEBUG_PROD === 'true'
+    ? {
+        devtool: 'source-map',
+      }
+    : {};
+
 // eslint-disable-next-line import/no-default-export
 export default merge(baseConfig, {
-  devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
+  ...devtoolsConfig,
 
   mode: 'production',
 
@@ -34,13 +43,13 @@ export default merge(baseConfig, {
     path: path.join(__dirname, '..', 'app/dist'),
     publicPath: './dist/',
     filename: 'renderer.prod.js',
-    libraryTarget: 'var',
   },
 
   resolve: {
     alias: {
       'bn.js': path.join('./node_modules/bn.js'),
     },
+    fallback: defaultNodePolyfillsForRenderer,
   },
 
   module: {
@@ -127,7 +136,6 @@ export default merge(baseConfig, {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
       DEBUG_PROD: false,
-      STX_NETWORK: process.env.STX_NETWORK,
       E2E_BUILD: false,
     }),
 

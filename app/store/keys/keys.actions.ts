@@ -40,10 +40,12 @@ interface SetLedgerAddress {
   onSuccess: () => void;
 }
 export function setLedgerWallet({ address, publicKey, onSuccess }: SetLedgerAddress) {
-  return (dispatch: Dispatch) => {
-    persistStxAddress(address);
-    persistPublicKey(publicKey);
-    persistWalletType('ledger');
+  return async (dispatch: Dispatch) => {
+    await Promise.all([
+      persistStxAddress(address),
+      persistPublicKey(publicKey),
+      persistWalletType('ledger'),
+    ]);
     dispatch(persistLedgerWallet({ address, publicKey }));
     onSuccess();
   };
@@ -73,19 +75,20 @@ export function setSoftwareWallet({ password, history }: SetSoftwareWallet) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const mnemonic = selectMnemonic(getState());
     const salt = generateSalt();
-    const { derivedKeyHash } = await api.deriveKey({ pass: password, salt });
+    const { derivedKeyHash } = await main.deriveKey({ pass: password, salt });
 
     if (!mnemonic) {
-      // log.error('Cannot derive encryption key unless a mnemonic has been generated');
       return;
     }
 
     const encryptedMnemonic = await encryptMnemonic({ derivedKeyHash, mnemonic });
     const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
     const { address } = deriveStxAddressKeychain(rootNode);
-    persistStxAddress(address);
-    persistSalt(salt);
-    persistEncryptedMnemonic(encryptedMnemonic);
+    await Promise.all([
+      persistStxAddress(address),
+      persistSalt(salt),
+      persistEncryptedMnemonic(encryptedMnemonic),
+    ]);
     dispatch(setPasswordSuccess({ salt, encryptedMnemonic, stxAddress: address }));
     history.push(routes.HOME);
   };
@@ -98,7 +101,7 @@ interface DecryptSoftwareWalletArgs {
 }
 export async function decryptSoftwareWallet(args: DecryptSoftwareWalletArgs) {
   const { password, salt, ciphertextMnemonic } = args;
-  const { derivedKeyHash } = await api.deriveKey({ pass: password, salt });
+  const { derivedKeyHash } = await main.deriveKey({ pass: password, salt });
   const plaintextMnemonic = await decryptMnemonic({
     encryptedMnemonic: ciphertextMnemonic,
     derivedKeyHash,

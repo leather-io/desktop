@@ -154,7 +154,7 @@ export const TransactionModal: FC<TxModalProps> = ({ address }) => {
 
   const signLedgerTransaction = useCallback(async (unsignedTx: StacksTransaction) => {
     const serializedTx = unsignedTx.serialize().toString('hex');
-    const resp = await api.ledger.signTransaction(serializedTx);
+    const resp = await main.ledger.signTransaction(serializedTx);
     if (resp.returnCode !== LedgerError.NoErrors) {
       throw new Error('Ledger responded with errors');
     }

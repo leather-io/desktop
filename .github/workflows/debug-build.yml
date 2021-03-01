@@ -52,6 +52,10 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
+        if: matrix.os == 'ubuntu-latest'
+
       - uses: actions/cache@v2
         id: cache-node-modules
         with:

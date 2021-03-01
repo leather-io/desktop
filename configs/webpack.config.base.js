@@ -9,10 +9,20 @@ import ExtendedDefinePlugin from 'extended-define-webpack-plugin';
 
 import { dependencies as externals } from '../app/package.json';
 
+export const defaultNodePolyfillsForRenderer = {
+  path: require.resolve('path-browserify'),
+  stream: require.resolve('stream-browserify'),
+  crypto: require.resolve('crypto-browserify'),
+  os: require.resolve('os-browserify/browser'),
+  http: require.resolve('stream-http'),
+  zlib: require.resolve('browserify-zlib'),
+  assert: require.resolve('assert'),
+  fs: false,
+  perf_hooks: false,
+};
+
 // eslint-disable-next-line import/no-default-export
 export default {
-  target: 'web',
-
   module: {
     noParse: [/\.wasm$/],
     rules: [
@@ -31,7 +41,7 @@ export default {
         test: /\.wasm$/,
         // Tells WebPack that this module should be included as
         // base64-encoded binary file and not as code
-        loaders: ['base64-loader'],
+        loader: 'base64-loader',
         // Disables WebPack's opinion where WebAssembly should be,
         // makes it think that it's not WebAssembly
         //
@@ -41,18 +51,10 @@ export default {
     ],
   },
 
-  node: {
-    __dirname: false,
-    fs: 'empty',
-    Buffer: false,
-    process: false,
-    child_process: 'empty',
-  },
-
   output: {
     path: path.join(__dirname, '..', 'app'),
     // https://github.com/webpack/webpack/issues/1114
-    // libraryTarget: 'commonjs2',
+    libraryTarget: 'commonjs2',
   },
 
   /**
@@ -64,9 +66,7 @@ export default {
     plugins: [new TsconfigPathsPlugin()],
   },
 
-  optimization: {
-    namedModules: true,
-  },
+  stats: { errorDetails: true },
 
   plugins: [
     new ExtendedDefinePlugin({

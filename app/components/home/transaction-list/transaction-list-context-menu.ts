@@ -74,5 +74,5 @@ export function createTxListContextMenu(event: Event, { tx, copy }: TxListContex
       },
     },
   ];
-  api.contextMenu(menuItems);
+  main.contextMenu(menuItems);
 }

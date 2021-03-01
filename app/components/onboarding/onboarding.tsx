@@ -18,7 +18,9 @@ export const Onboarding: React.FC<FlexProps> = ({ children, ...props }) => {
         flexDirection="row"
         alignItems="center"
       >
-        <Box width="100%">{children}</Box>
+        <Box width="100%" maxHeight="100%">
+          {children}
+        </Box>
       </Flex>
     </Flex>
   );

@@ -1,0 +1,10 @@
+name: 'Add linux deps'
+description: 'Without these Electron build fails'
+runs:
+  using: 'composite'
+  steps:
+    - run: sudo apt-get update
+      shell: bash
+
+    - run: sudo apt-get install libusb-1.0-0-dev libudev-dev
+      shell: bash

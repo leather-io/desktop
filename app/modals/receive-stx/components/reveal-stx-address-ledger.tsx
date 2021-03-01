@@ -30,12 +30,12 @@ export const RevealStxAddressLedger: FC = () => {
   const verifyAddress = useCallback(async () => {
     setPendingLedgerAction('pending');
     try {
-      const fromDeviceAddr = await api.ledger.showStxAddress();
+      const fromDeviceAddr = await main.ledger.showStxAddress();
       if (fromDeviceAddr && fromDeviceAddr.address) {
         setSuccess(fromDeviceAddr.address === persistedAddress);
         setAddress(fromDeviceAddr.address);
       }
-      await api.ledger.requestAndConfirmStxAddress();
+      await main.ledger.requestAndConfirmStxAddress();
       setPendingLedgerAction('complete');
     } catch (e) {}
   }, [persistedAddress]);

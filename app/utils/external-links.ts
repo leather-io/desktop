@@ -4,7 +4,7 @@ import { EXPLORER_URL, NETWORK } from '@constants/index';
 
 export async function openExternalLink(url: string) {
   if (!isWebUri(url)) return;
-  return api.openExternalLink(url);
+  return main.openExternalLink(url);
 }
 
 export function makeExplorerLink(path: string) {

@@ -62,5 +62,5 @@ export const DEFAULT_POLLING_INTERVAL = 10_000;
 export const features = {
   stacking: true,
   lifetimeRewards: false,
-  txContentMenus: false,
+  txContentMenus: true,
 };

@@ -12,8 +12,11 @@ import chalk from 'chalk';
 import CopyPlugin from 'copy-webpack-plugin';
 import { merge } from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+
+import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
+
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment
@@ -50,9 +53,6 @@ export default merge(baseConfig, {
   entry: [
     'core-js',
     'regenerator-runtime/runtime',
-    ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-    `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
     require.resolve('../app/polyfill.ts'),
     require.resolve('../app/index.tsx'),
   ],
@@ -64,6 +64,18 @@ export default merge(baseConfig, {
 
   module: {
     rules: [
+      {
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: require.resolve('babel-loader'),
+            options: {
+              plugins: [require.resolve('react-refresh/babel')],
+            },
+          },
+        ],
+      },
       // WOFF Font
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
@@ -109,6 +121,7 @@ export default merge(baseConfig, {
       'react-dom': '@hot-loader/react-dom',
       'bn.js': path.join('./node_modules/bn.js'),
     },
+    fallback: defaultNodePolyfillsForRenderer,
   },
   plugins: [
     requiredByDLLConfig
@@ -119,15 +132,13 @@ export default merge(baseConfig, {
           sourceType: 'var',
         }),
 
-    new webpack.HotModuleReplacementPlugin({
-      multiStep: true,
-    }),
-
     new webpack.NoEmitOnErrorsPlugin(),
 
     new webpack.LoaderOptionsPlugin({
       debug: true,
     }),
+
+    new ReactRefreshWebpackPlugin(),
 
     new CopyPlugin({
       patterns: [{ from: 'node_modules/argon2-browser/dist/argon2.wasm', to: '.' }],

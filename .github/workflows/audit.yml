@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
+
       - uses: actions/setup-node@v2
 
       - name: Cache node_modules

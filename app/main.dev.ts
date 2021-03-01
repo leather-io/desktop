@@ -16,16 +16,20 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, clipboard, ipcMain, Menu, session } from 'electron';
-import Store from 'electron-store';
+import { app, BrowserWindow, ipcMain, session } from 'electron';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
+import installExtension, { ExtensionReference } from 'electron-devtools-installer';
 
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
+
 import { validateConfig } from './main/validate-config';
 import { getUserDataPath } from './main/get-user-data-path';
 import { registerLedgerListeners } from './main/register-ledger-listeners';
+import { registerIpcStoreHandlers } from './main/register-store-handlers';
+import { registerIpcContextMenuHandlers } from './main/register-context-menus';
+import { addMacOsTouchBarMenu } from './main/macos-touchbar-menu';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -40,31 +44,25 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  require('electron-debug')();
-}
-
 app.setPath('userData', getUserDataPath(app));
 app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
 
-const installExtensions = () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
-
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
-};
+// https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/2788
+const extensions: ExtensionReference[] = []; // [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS];
 
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
+    await app.whenReady();
+    await installExtension(extensions, {
+      loadExtensionOptions: { allowFileAccess: true },
+    } as any)
+      .then(name => console.log(`Added Extension:  ${name}`))
+      .catch(err => console.log('An error occurred: ', err))
+      .finally(() => require('electron-debug')());
   }
 
   // https://github.com/electron/electron/issues/22995
   session.defaultSession.setSpellCheckerDictionaryDownloadURL('https://00.00/');
-  session.fromPartition('some-partition').setSpellCheckerDictionaryDownloadURL('https://00.00/');
 
   const mainWindowState = windowState({
     defaultWidth: 1024,
@@ -93,8 +91,9 @@ const createWindow = async () => {
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       nodeIntegrationInSubFrames: false,
-      contextIsolation: true,
       enableRemoteModule: false,
+      worldSafeExecuteJavaScript: true,
+      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
@@ -143,21 +142,32 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
-  session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => {
-    callback(false);
+  // Disable all wallet permissions
+  // eslint-disable-next-line no-warning-comments
+  // https://electronjs.org/docs/tutorial/security#4-handle-session-permission-requests-from-remote-content
+  session.defaultSession.setPermissionRequestHandler((_webContents, _permission, permCallback) => {
+    permCallback(false);
   });
 
   registerLedgerListeners(mainWindow.webContents);
+
+  registerIpcStoreHandlers(getUserDataPath(app));
+
+  registerIpcContextMenuHandlers(mainWindow);
+
+  if (process.platform === 'darwin') addMacOsTouchBarMenu(mainWindow);
 };
 
 app.on('web-contents-created', (_event, contents) => {
+  // eslint-disable-next-line no-warning-comments
+  // https://www.electronjs.org/docs/tutorial/security#12-disable-or-limit-navigation
   contents.on('will-navigate', event => event.preventDefault());
-  contents.on('new-window', event => event.preventDefault());
+
+  // Prohibit any `window.open` calls
+  // https://electronjs.org/docs/api/window-open#browserwindowproxy-example
+  contents.setWindowOpenHandler(() => ({ action: 'deny' }));
 });
 
-/**
- * Add event listeners...
- */
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -177,55 +187,10 @@ app.on('activate', () => {
 
 validateConfig(app);
 
-const store = new Store({
-  clearInvalidConfig: true,
-});
-
-ipcMain.handle('store-set', (_e, { key, value }: any) => store.set(key, value));
-ipcMain.handle('store-get', (_e, { key }: any) => store.get(key));
-ipcMain.handle('store-delete', (_e, { key }: any) => store.delete(key));
-// ipcMain.handle('store-getEntireStore', () => store.store);
-ipcMain.handle('store-clear', () => store.clear());
-ipcMain.on('store-getEntireStore', event => {
-  event.returnValue = store.store;
-});
-
 ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);
 });
 
-ipcMain.handle('reload-app', () => {
-  mainWindow?.reload();
-});
+ipcMain.handle('reload-app', () => mainWindow?.reload());
 
 ipcMain.on('closeWallet', () => app.exit(0));
-
-//
-// TODO: refactor to be more generic
-// There's a bug where click handler doesn't fire for the top-level menu
-ipcMain.on(
-  'context-menu-open',
-  (
-    _e,
-    args: { menuItems: { menu: Electron.MenuItemConstructorOptions; textToCopy?: string }[] }
-  ) => {
-    const copyMenu = args.menuItems.map(item => {
-      const newItem = { ...item };
-      if (newItem.textToCopy) {
-        newItem.menu.click = () => clipboard.writeText(newItem.textToCopy as any);
-      }
-      return newItem.menu;
-    });
-    const contextMenu = Menu.buildFromTemplate([
-      {
-        label: 'Copy',
-        submenu: copyMenu,
-      },
-    ]);
-    contextMenu.popup({ window: mainWindow?.getParentWindow() });
-    contextMenu.once('menu-will-close', () => {
-      // `destroy` call untyped
-      (contextMenu as any).destroy();
-    });
-  }
-);

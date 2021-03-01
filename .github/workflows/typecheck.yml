@@ -5,18 +5,28 @@ on:
     branches:
       - '**'
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  typecheck:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
+      - name: Add required Linux dependencies
+        uses: .github/actions/linux-deps
+
       - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
       - name: Install dependencies
-        run: yarn
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 240
+          max_attempts: 3
+          retry_on: error
+          command: yarn
         env:
           STX_NETWORK: testnet
 
-      - name: Build
+      - name: Check types
         run: yarn tsc --noEmit

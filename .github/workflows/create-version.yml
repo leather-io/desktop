@@ -25,6 +25,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
+
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
@@ -56,6 +59,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
 
       - name: Set up node
         uses: actions/setup-node@v2

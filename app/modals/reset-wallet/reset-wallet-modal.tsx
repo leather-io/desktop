@@ -21,6 +21,11 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
     onClose();
   };
 
+  const clearStorage = async () => {
+    await clearDiskStorage();
+    void main.reloadApp();
+  };
+
   useHotkeys('esc', closeModal);
 
   const resetWallet = () => {
@@ -29,10 +34,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
     // Focusing cancel btn ensures any key press of: enter, space, esc
     // will cancel the pending operation
     cancelBtnRef.current?.focus();
-    timer.current = window.setTimeout(() => {
-      void clearDiskStorage();
-      void api.reloadApp();
-    }, PANIC_CANCEL_TIME);
+    timer.current = window.setTimeout(() => void clearStorage(), PANIC_CANCEL_TIME);
   };
 
   const header = <TxModalHeader onSelectClose={closeModal}>Reset wallet</TxModalHeader>;

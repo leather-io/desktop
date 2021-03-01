@@ -57,6 +57,7 @@ import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
 import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';
 import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
+import { useBalance } from '@hooks/use-balance';
 
 interface TxModalProps {
   balance: string;
@@ -73,8 +74,10 @@ enum TxModalStep {
 
 type ModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
-export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
+export const TransactionModal: FC<TxModalProps> = ({ address }) => {
   const dispatch = useDispatch();
+
+  const { availableBalance: balance } = useBalance();
   const history = useHistory();
   useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
   const [step, setStep] = useState(TxModalStep.DescribeTx);
@@ -355,7 +358,7 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
       header: <TxModalHeader onSelectClose={closeModal}>Send STX</TxModalHeader>,
       body: (
         <TxModalForm
-          balance={balance}
+          balance={balance.toString()}
           form={form && form}
           isCalculatingMaxSpend={calculatingMaxSpend}
           onSendEntireBalance={updateAmountFieldToMaxBalance}

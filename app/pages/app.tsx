@@ -28,7 +28,7 @@ import {
   removeStackingTx,
   selectActiveStackingTxId,
 } from '@store/stacking';
-import { SWRConfig } from 'swr';
+import { SWRConfig, mutate } from 'swr';
 import { isDelegatedStackingTx, isRevokingDelegationTx, isDelegateStxTx } from '../utils/tx-utils';
 import { selectPoxInfo } from '../store/stacking/stacking.reducer';
 
@@ -98,7 +98,8 @@ export const App: FC = ({ children }) => {
     async function run() {
       client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'extended', 'v1', 'ws'));
       if (!address) return;
-      await client.subscribeAddressBalanceUpdates(address, ({ address, balance }) => {
+      await client.subscribeAddressBalanceUpdates(address, async ({ address, balance }) => {
+        await safeAwait(mutate('mempool'));
         dispatch(updateAddressBalance({ address, balance }));
       });
       await client.subscribeAddressTransactions(address, async ({ tx_id }) => {

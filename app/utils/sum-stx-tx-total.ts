@@ -2,8 +2,13 @@ import type { Transaction, TransactionEvent } from '@blockstack/stacks-blockchai
 import BigNumber from 'bignumber.js';
 import { getStxTxDirection } from './get-stx-transfer-direction';
 import { isStackingTx } from './tx-utils';
+import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 
-export function sumStxTxTotal(address: string, tx: Transaction, poxContractId?: string) {
+export function sumStxTxTotal(
+  address: string,
+  tx: Transaction | MempoolTransaction,
+  poxContractId?: string
+) {
   const dir = getStxTxDirection(address, tx);
   if (tx.tx_type === 'token_transfer') {
     return new BigNumber(tx.token_transfer.amount).plus(dir === 'sent' ? tx.fee_rate : 0);
@@ -11,7 +16,8 @@ export function sumStxTxTotal(address: string, tx: Transaction, poxContractId?: 
   if (
     tx.tx_type === 'coinbase' ||
     tx.tx_type === 'poison_microblock' ||
-    (tx.tx_type === 'contract_call' && tx.tx_status === 'pending')
+    (tx.tx_type === 'contract_call' && tx.tx_status === 'pending') ||
+    (tx.tx_type === 'smart_contract' && tx.tx_status === 'pending')
   ) {
     return new BigNumber(tx.fee_rate);
   }

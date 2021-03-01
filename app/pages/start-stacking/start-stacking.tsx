@@ -6,10 +6,10 @@ import { useHistory } from 'react-router-dom';
 import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
 import { useSelector } from 'react-redux';
-import { selectMeetsMinStackingThreshold, selectPoxInfo } from '@store/stacking';
-import { RootState } from '@store/index';
+import { selectPoxInfo } from '@store/stacking';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { useBalance } from '@hooks/use-balance';
+import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
 import {
   StartStackingLayout as Layout,
   StackingOptionsCardContainer as CardContainer,
@@ -27,12 +27,14 @@ export const ChooseStackingMethod: FC = () => {
 
   const { availableBalance } = useBalance();
 
-  const { meetsMinThreshold, poxInfo } = useSelector((state: RootState) => ({
-    meetsMinThreshold: selectMeetsMinStackingThreshold(state),
-    poxInfo: selectPoxInfo(state),
-  }));
+  const poxInfo = useSelector(selectPoxInfo);
 
-  const sufficientBalanceToCoverFee = availableBalance.isGreaterThan(260);
+  if (!poxInfo) return null;
+
+  const meetsMinThreshold = availableBalance
+    .plus(STACKING_CONTRACT_CALL_FEE)
+    .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
+  const sufficientBalanceToCoverFee = availableBalance.isGreaterThan(STACKING_CONTRACT_CALL_FEE);
 
   return (
     <Layout>
@@ -44,7 +46,7 @@ export const ChooseStackingMethod: FC = () => {
         miners transfer as part of Proof-of-Transfer (PoX).
       </Text>
       <ExternalLink
-        href="https://www.stacks.co/stacking-and-stx"
+        href="https://stacks.co/stacking-and-stx"
         fontWeight="normal"
         mt="base-tight"
         color="blue"

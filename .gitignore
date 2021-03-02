@@ -14,6 +14,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+!docs/coverage
 
 app/.yalc
 app/yalc.lock

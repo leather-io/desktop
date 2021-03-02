@@ -16,6 +16,8 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
   moduleDirectories: ['node_modules', 'app/node_modules'],
   setupFiles: ['./internals/scripts/CheckBuildsExist.js'],
+  coverageReporters: ['html'],
+  coverageDirectory: 'docs/coverage',
   globals: {
     api: true,
     CONFIG: true,

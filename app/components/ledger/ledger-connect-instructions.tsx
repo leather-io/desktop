@@ -7,7 +7,7 @@ import { LedgerConnectStep } from '@hooks/use-prepare-ledger';
 interface LedgerConnectInstructions {
   step: LedgerConnectStep;
   action: string;
-  isLocked?: boolean;
+  isLocked: boolean;
 }
 
 export const LedgerConnectInstructions: FC<LedgerConnectInstructions> = props => {

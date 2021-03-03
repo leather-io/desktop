@@ -95,6 +95,9 @@ const walletApi = {
     async requestAndConfirmStxAddress() {
       return ipcRenderer.invoke('ledger-request-stx-address') as LedgerRequestStxAddress;
     },
+    async showStxAddress() {
+      return ipcRenderer.invoke('ledger-show-stx-address');
+    },
   },
 };
 

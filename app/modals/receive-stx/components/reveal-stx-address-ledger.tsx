@@ -1,9 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Button, Flex, Stack } from '@blockstack/ui';
-
-import { delay } from '@utils/delay';
+import { Box, Button, Flex, Stack, Spinner, Text } from '@blockstack/ui';
 
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import { selectAddress } from '@store/keys';
@@ -14,10 +12,12 @@ import { SevereWarning } from '@components/severe-warning';
 import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
 
 export const RevealStxAddressLedger: FC = () => {
-  const { step } = usePrepareLedger();
-  const [isWaitingLedger, setIsWaitingLedger] = useState(false);
+  const { step, isLocked } = usePrepareLedger();
   const [address, setAddress] = useState<null | string>(null);
   const [success, setSuccess] = useState(false);
+  const [pendingLedgerAction, setPendingLedgerAction] = useState<'idle' | 'pending' | 'complete'>(
+    'idle'
+  );
 
   const { address: persistedAddress } = useSelector((state: RootState) => ({
     address: selectAddress(state),
@@ -28,17 +28,16 @@ export const RevealStxAddressLedger: FC = () => {
   const showAddress = persistedAddress === address && address !== null;
 
   const verifyAddress = useCallback(async () => {
+    setPendingLedgerAction('pending');
     try {
-      const resp = await api.ledger.requestAndConfirmStxAddress();
-      if (resp && resp.address) {
-        setSuccess(resp.address === persistedAddress);
-        await delay(1500);
-        setAddress(resp.address);
+      const fromDeviceAddr = await api.ledger.showStxAddress();
+      if (fromDeviceAddr && fromDeviceAddr.address) {
+        setSuccess(fromDeviceAddr.address === persistedAddress);
+        setAddress(fromDeviceAddr.address);
       }
-      setIsWaitingLedger(false);
-    } catch (e) {
-      setIsWaitingLedger(false);
-    }
+      await api.ledger.requestAndConfirmStxAddress();
+      setPendingLedgerAction('complete');
+    } catch (e) {}
   }, [persistedAddress]);
 
   return (
@@ -48,17 +47,27 @@ export const RevealStxAddressLedger: FC = () => {
       mb="base-tight"
       mx="extra-loose"
     >
-      {!showAddress || address === null ? (
+      {address ? (
+        <AddressDisplayer address={address} />
+      ) : (
         <Flex flexDirection="column" mx="extra-loose" width="320px">
           <Stack spacing="base-loose">
             <Box>
-              <LedgerConnectInstructions action="Verify address" step={stepToShow} />
+              <LedgerConnectInstructions
+                action="Verify address"
+                step={stepToShow}
+                isLocked={isLocked}
+              />
             </Box>
             <Button
               mode="secondary"
               mx="extra-loose"
-              isDisabled={step < LedgerConnectStep.ConnectedAppOpen}
-              isLoading={isWaitingLedger}
+              isDisabled={
+                step < LedgerConnectStep.ConnectedAppOpen ||
+                pendingLedgerAction === 'pending' ||
+                isLocked
+              }
+              isLoading={pendingLedgerAction === 'pending'}
               onClick={verifyAddress}
             >
               Request Ledger address
@@ -73,9 +82,20 @@ export const RevealStxAddressLedger: FC = () => {
             </Box>
           </Stack>
         </Flex>
-      ) : (
-        <AddressDisplayer address={address} />
       )}
+      <Box>
+        {pendingLedgerAction === 'pending' && address && (
+          <Flex mb="base">
+            <Box>
+              <Spinner color="ink.600" size="xs" />
+            </Box>
+            <Text textStyle="caption" color="ink.600" ml="tight" mt="extra-tight">
+              Compare the address above to the one on the screen of your Ledger device, then select
+              Approve.
+            </Text>
+          </Flex>
+        )}
+      </Box>
     </Flex>
   );
 };

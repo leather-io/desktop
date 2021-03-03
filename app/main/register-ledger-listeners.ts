@@ -13,6 +13,7 @@ import StacksApp, {
 
 const POLL_LEDGER_INTERVAL = 1_250;
 const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 2_000;
+const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
 
 type LedgerEvents =
   | 'create-listener'
@@ -81,8 +82,7 @@ const ledgerRequestStxAddress = async () => {
   if (!transport) throw new Error('No device transport');
   ledgerDeviceBusy$.next(true);
   const stacksApp = new StacksApp(transport);
-  const resp = await stacksApp.showAddressAndPubKey(`m/44'/5757'/0'/0/0`);
-  await transport.close();
+  const resp = await stacksApp.showAddressAndPubKey(STX_DERIVATION_PATH);
   ledgerDeviceBusy$.next(false);
   if (resp.publicKey) {
     return { ...resp, publicKey: resp.publicKey.toString('hex') };
@@ -98,7 +98,7 @@ const ledgerRequestSignTx = async (_: any, unsignedTransaction: string) => {
   ledgerDeviceBusy$.next(true);
   const stacksApp = new StacksApp(transport);
   const txBuffer = Buffer.from(unsignedTransaction, 'hex');
-  const signatures: ResponseSign = await stacksApp.sign(`m/44'/5757'/0'/0/0`, txBuffer);
+  const signatures: ResponseSign = await stacksApp.sign(STX_DERIVATION_PATH, txBuffer);
   await transport.close();
   ledgerDeviceBusy$.next(false);
   return {
@@ -109,6 +109,17 @@ const ledgerRequestSignTx = async (_: any, unsignedTransaction: string) => {
     signatureDER: signatures.signatureDER.toString('hex'),
   };
 };
+
+ipcMain.handle('ledger-show-stx-address', async () => {
+  const transport = transport$.getValue();
+  if (!transport) throw new Error('No device transport');
+  ledgerDeviceBusy$.next(true);
+  const stacksApp = new StacksApp(transport);
+  const resp = await stacksApp.getAddressAndPubKey(STX_DERIVATION_PATH);
+  ledgerDeviceBusy$.next(false);
+  return resp;
+});
+
 export type LedgerRequestSignTx = ReturnType<typeof ledgerRequestSignTx>;
 ipcMain.handle('ledger-request-sign-tx', ledgerRequestSignTx);
 

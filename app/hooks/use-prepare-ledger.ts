@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import type { LedgerMessageEvents } from '../main/register-ledger-listeners';
-import { useListenLedger } from './use-listen-ledger';
+import { useListenLedgerEffect } from './use-listen-ledger-effect';
 import { messages$ } from './use-message-events';
 
 export enum LedgerConnectStep {
@@ -22,7 +22,7 @@ export function usePrepareLedger() {
   const [step, setStep] = useState<LedgerConnectStep>(LedgerConnectStep.Disconnected);
   const [isLocked, setIsLocked] = useState(false);
 
-  useListenLedger();
+  useListenLedgerEffect();
 
   useEffect(() => {
     const sub = ledgerEvents$

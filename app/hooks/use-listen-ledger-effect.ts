@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export function useListenLedger() {
+export function useListenLedgerEffect() {
   useEffect(() => {
     api.ledger.createListener();
     return () => api.ledger.removeListener();

@@ -4,16 +4,12 @@ import { delay, filter, map, switchMap, take } from 'rxjs/operators';
 import type Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import { safeAwait } from '@blockstack/ui';
-import StacksApp, {
-  LedgerError,
-  ResponseAddress,
-  ResponseSign,
-  ResponseVersion,
-} from '@zondax/ledger-blockstack';
-
-const POLL_LEDGER_INTERVAL = 1_250;
-const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 2_000;
-const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
+import StacksApp, { LedgerError, ResponseVersion } from '@zondax/ledger-blockstack';
+import {
+  ledgerRequestSignTx,
+  ledgerRequestStxAddress,
+  ledgerShowStxAddress,
+} from './ledger-actions';
 
 type LedgerEvents =
   | 'create-listener'
@@ -32,15 +28,21 @@ interface LedgerMessageType {
 
 export type LedgerMessageEvents = LedgerStateEvents & LedgerMessageType;
 
+const POLL_LEDGER_INTERVAL = 1_250;
+const SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME = 2_000;
+
 const ledgerState$ = new Subject<LedgerStateEvents>();
-
-const listeningForDevice$ = new BehaviorSubject(false);
-ipcMain.on('create-ledger-listener', () => listeningForDevice$.next(true));
-ipcMain.on('remove-ledger-listener', () => listeningForDevice$.next(false));
-
 const ledgerDeviceBusy$ = new BehaviorSubject(false);
+const listeningForDevice$ = new BehaviorSubject(false);
+const checkDisconnect$ = new Subject<void>();
 
 const transport$ = new BehaviorSubject<Transport | null>(null);
+
+export function registerLedgerListeners(webContent: Electron.WebContents) {
+  ledgerState$
+    .pipe(map(ledgerEvent => ({ type: 'ledger-event', ...ledgerEvent })))
+    .subscribe(event => webContent.send('message-event', event));
+}
 
 let subscription: null | ReturnType<typeof TransportNodeHid.listen> = null;
 function createDeviceListener() {
@@ -61,12 +63,6 @@ function createDeviceListener() {
   });
 }
 
-export function registerLedgerListeners(webContent: Electron.WebContents) {
-  ledgerState$
-    .pipe(map(ledgerEvent => ({ type: 'ledger-event', ...ledgerEvent })))
-    .subscribe(event => webContent.send('message-event', event));
-}
-
 listeningForDevice$.subscribe(listening => {
   if (listening) {
     createDeviceListener();
@@ -76,52 +72,6 @@ listeningForDevice$.subscribe(listening => {
   const transport = transport$.getValue();
   if (transport) void transport.close();
 });
-
-const ledgerRequestStxAddress = async () => {
-  const transport = transport$.getValue();
-  if (!transport) throw new Error('No device transport');
-  ledgerDeviceBusy$.next(true);
-  const stacksApp = new StacksApp(transport);
-  const resp = await stacksApp.showAddressAndPubKey(STX_DERIVATION_PATH);
-  ledgerDeviceBusy$.next(false);
-  if (resp.publicKey) {
-    return { ...resp, publicKey: resp.publicKey.toString('hex') };
-  }
-  return resp as Omit<ResponseAddress, 'publicKey'>;
-};
-export type LedgerRequestStxAddress = ReturnType<typeof ledgerRequestStxAddress>;
-ipcMain.handle('ledger-request-stx-address', ledgerRequestStxAddress);
-
-const ledgerRequestSignTx = async (_: any, unsignedTransaction: string) => {
-  const transport = transport$.getValue();
-  if (!transport) throw new Error('No device transport');
-  ledgerDeviceBusy$.next(true);
-  const stacksApp = new StacksApp(transport);
-  const txBuffer = Buffer.from(unsignedTransaction, 'hex');
-  const signatures: ResponseSign = await stacksApp.sign(STX_DERIVATION_PATH, txBuffer);
-  await transport.close();
-  ledgerDeviceBusy$.next(false);
-  return {
-    ...signatures,
-    postSignHash: signatures.postSignHash.toString('hex'),
-    signatureCompact: signatures.signatureCompact.toString('hex'),
-    signatureVRS: signatures.signatureVRS.toString('hex'),
-    signatureDER: signatures.signatureDER.toString('hex'),
-  };
-};
-
-ipcMain.handle('ledger-show-stx-address', async () => {
-  const transport = transport$.getValue();
-  if (!transport) throw new Error('No device transport');
-  ledgerDeviceBusy$.next(true);
-  const stacksApp = new StacksApp(transport);
-  const resp = await stacksApp.getAddressAndPubKey(STX_DERIVATION_PATH);
-  ledgerDeviceBusy$.next(false);
-  return resp;
-});
-
-export type LedgerRequestSignTx = ReturnType<typeof ledgerRequestSignTx>;
-ipcMain.handle('ledger-request-sign-tx', ledgerRequestSignTx);
 
 const shouldPoll$ = combineLatest([listeningForDevice$, ledgerDeviceBusy$]).pipe(
   map(([listeningForDevice, deviceBusy]) => Boolean(listeningForDevice && !deviceBusy))
@@ -159,11 +109,43 @@ const devicePoll$ = timer(0, POLL_LEDGER_INTERVAL).pipe(
 
 devicePoll$.subscribe();
 
-const checkDisconnect$ = new Subject<void>();
-
 checkDisconnect$
   .pipe(
     delay(SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME),
     switchMap(() => transport$.pipe(take(1)))
   )
   .subscribe(transport => transport === null && ledgerState$.next({ name: 'disconnected' }));
+
+async function wrapAsBusy<T>(ledgerOperation: Promise<T>) {
+  ledgerDeviceBusy$.next(true);
+  const resp = await ledgerOperation;
+  ledgerDeviceBusy$.next(false);
+  return resp;
+}
+
+//
+// Request ledger stx address
+const wrappedLedgerRequestStxAddress = () =>
+  wrapAsBusy(ledgerRequestStxAddress(transport$.getValue()));
+
+export type LedgerRequestStxAddress = ReturnType<typeof ledgerRequestStxAddress>;
+ipcMain.handle('ledger-request-stx-address', async () => wrappedLedgerRequestStxAddress());
+
+//
+// Show ledger stx address
+const wrappedShowLedgerStxAddress = () => wrapAsBusy(ledgerShowStxAddress(transport$.getValue()));
+ipcMain.handle('ledger-show-stx-address', async () => wrappedShowLedgerStxAddress());
+
+//
+// Sign ledger transaction
+export type LedgerRequestSignTx = ReturnType<ReturnType<typeof ledgerRequestSignTx>>;
+
+const wrappedLedgerRequestSignTx = (unsignedTx: string) =>
+  wrapAsBusy(ledgerRequestSignTx(transport$.getValue())(unsignedTx));
+
+ipcMain.handle('ledger-request-sign-tx', async (_, unsignedTx: string) =>
+  wrappedLedgerRequestSignTx(unsignedTx)
+);
+
+ipcMain.on('create-ledger-listener', () => listeningForDevice$.next(true));
+ipcMain.on('remove-ledger-listener', () => listeningForDevice$.next(false));

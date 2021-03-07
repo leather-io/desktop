@@ -1,4 +1,4 @@
-import { WalletType } from '../types/wallet-type';
+import { WalletType } from '../models/wallet-type';
 
 export function isLedgerWallet(walletType: WalletType) {
   return walletType === 'ledger';

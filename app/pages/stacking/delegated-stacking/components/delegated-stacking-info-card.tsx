@@ -3,19 +3,23 @@ import { BigNumber } from 'bignumber.js';
 
 import { Flex, FlexProps, Text } from '@blockstack/ui';
 
+import { DelegationType } from '@models/index';
 import { Hr } from '@components/hr';
 
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { ExplainerTooltip } from '@components/tooltip';
-import { truncateMiddle } from '../../../../utils/tx-utils';
+import { truncateMiddle } from '@utils/tx-utils';
 
 interface StackingInfoCardProps extends FlexProps {
   balance: BigNumber | null;
   delegateeAddress: string | null;
+  durationInCycles: number | null;
+  delegationType: DelegationType | null;
+  burnHeight?: number;
 }
 
 export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { balance, delegateeAddress } = props;
+  const { balance, delegationType, delegateeAddress, durationInCycles, burnHeight } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
@@ -43,13 +47,40 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
         <Flex justifyContent="space-between">
           <Flex alignItems="center">
             <Text textStyle="body.large.medium" mr="tight">
-              Delegatee address
+              Pool address
             </Text>
             <ExplainerTooltip>
               This will be provided to you by your chosen delegation service
             </ExplainerTooltip>
           </Flex>
           <Text textAlign="right">{delegateeAddress ? truncateMiddle(delegateeAddress) : '—'}</Text>
+        </Flex>
+      </Flex>
+      <Hr />
+      <Flex flexDirection="column" px={['loose', 'extra-loose']} py="loose" width="100%">
+        <Flex justifyContent="space-between" alignItems="flex-start">
+          <Flex alignItems="center">
+            <Text textStyle="body.large.medium" mr="tight">
+              Delegation duration
+            </Text>
+            <ExplainerTooltip>
+              How long you want to use your delegation service. This is not the locking period. The
+              locking period cannot be longer than the delegation duration.
+            </ExplainerTooltip>
+          </Flex>
+          <Flex flexDirection="column" justifyContent="flex-start">
+            <Text textAlign="right">
+              {delegationType === null && '—'}
+              {delegationType === 'limited' &&
+                `${String(durationInCycles)} cycle${durationInCycles === 1 ? '' : 's'}`}
+              {delegationType === 'indefinite' && 'Indefinite'}
+            </Text>
+            {burnHeight && (
+              <Text textStyle="caption" color="ink.600" mt="extra-tight">
+                Until burn block: {burnHeight}
+              </Text>
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

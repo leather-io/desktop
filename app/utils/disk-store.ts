@@ -1,4 +1,4 @@
-import { WalletType } from '../types/wallet-type';
+import { WalletType } from '../models/wallet-type';
 
 enum StoreIndex {
   Salt = 'salt',

@@ -12,7 +12,6 @@ import { useHover, useFocus } from 'use-events';
 import { Box, Stack, Text } from '@blockstack/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
-import { getContractName, getTxTypeName } from '@stacks/ui-utils';
 import { RootState } from '@store/index';
 import { selectPoxInfo } from '@store/stacking';
 import { capitalize } from '@utils/capitalize';
@@ -35,6 +34,7 @@ import {
   deregisterHandler,
 } from './transaction-list-context-menu';
 import { TransactionListItemContainer } from './transaction-list-item-container';
+import { getContractName, getTxTypeName } from '@stacks/ui-utils';
 
 interface TransactionListItemProps {
   tx: Transaction;

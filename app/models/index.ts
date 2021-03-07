@@ -1,5 +1,7 @@
 export type WindowActiveState = 'focused' | 'blurred';
 
+export type DelegationType = 'indefinite' | 'limited';
+
 declare global {
   const CONFIG: {
     NODE_ENV: 'development' | 'production';

@@ -18,7 +18,7 @@ import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
 
 import { selectMnemonic } from './keys.reducer';
-import { BIP32Interface } from '../../types/bip32';
+import { BIP32Interface } from '../../models/bip32';
 
 type History = ReturnType<typeof useHistory>;
 

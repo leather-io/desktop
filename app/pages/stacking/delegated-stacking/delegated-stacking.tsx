@@ -1,8 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useMemo, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
 
-import { useBackButton } from '@hooks/use-back-url';
+import { DelegationType } from '@models';
+import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url';
 import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';
 
 import { StackingLayout } from '../components/stacking-layout';
@@ -14,10 +17,14 @@ import { DelegatedStackingInfoCard } from './components/delegated-stacking-info-
 import { ConfirmAndDelegateStep } from './components/confirm-and-delegate';
 import { ChooseDelegatedStackingAmountStep } from './components/choose-delegated-stacking-amount';
 import { ChooseDelegateeStxAddressStep } from './components/choose-delegatee-stx-address';
+import { ChooseMembershipDurationStep } from './components/choose-membership-duration';
+import { selectPoxInfo } from '@store/stacking';
+import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
 
 enum DelegateStep {
   ChooseDelegateeAddress = 'ChooseDelegateeAddress',
   ChooseAmount = 'ChooseAmount',
+  ChooseDuration = 'ChooseDuration',
 }
 
 export const StackingDelegation: FC = () => {
@@ -26,11 +33,39 @@ export const StackingDelegation: FC = () => {
   const [amount, setAmount] = useState<BigNumber | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [delegateeAddress, setDelegateeAddress] = useState<string | null>(null);
+  const [durationInCycles, setDurationInCycles] = useState<number | null>(null);
+  const [delegationType, setDelegationType] = useState<DelegationType | null>(null);
+
+  const { poxInfo } = useSelector((state: RootState) => ({
+    poxInfo: selectPoxInfo(state),
+  }));
 
   const steps = useStackingFormStep<DelegateStep>({
     [DelegateStep.ChooseDelegateeAddress]: delegateeAddress !== null,
     [DelegateStep.ChooseAmount]: amount !== null,
+    [DelegateStep.ChooseDuration]: durationInCycles !== null,
   });
+
+  const cyclesToUntilBurnBlockHeight = useCallback(
+    (cycles: number | null) => {
+      if (!poxInfo) throw new Error('`poxInfo` not defined');
+      if (!cycles) return;
+      return calculateUntilBurnHeightBlockFromCycles({
+        cycles,
+        rewardCycleLength: poxInfo.reward_cycle_length,
+        currentCycleId: poxInfo.reward_cycle_id,
+        genesisBurnBlockHeight: poxInfo.first_burnchain_block_height,
+      });
+    },
+    [poxInfo]
+  );
+
+  const durationValue = useMemo(() => {
+    if (delegationType === 'indefinite') return 'Indefinite';
+    if (delegationType === 'limited')
+      return `${String(durationInCycles)} cycle${durationInCycles !== 1 ? 's' : ''}`;
+    return;
+  }, [delegationType, durationInCycles]);
 
   const stackingForm = (
     <StackingFormContainer>
@@ -54,6 +89,23 @@ export const StackingDelegation: FC = () => {
         onEdit={() => steps.open(DelegateStep.ChooseAmount)}
         onComplete={amount => (setAmount(amount), steps.close(DelegateStep.ChooseAmount))}
       />
+      <ChooseMembershipDurationStep
+        title="Choose duration"
+        description=""
+        isComplete={steps.getIsComplete(DelegateStep.ChooseDuration)}
+        value={
+          delegationType === 'indefinite'
+            ? 'Indefinite'
+            : `${String(durationInCycles)} cycle${durationInCycles !== 1 ? 's' : ''}`
+        }
+        state={steps.getView(DelegateStep.ChooseDuration)}
+        onEdit={() => steps.open(DelegateStep.ChooseDuration)}
+        onComplete={({ duration, delegationType }) => {
+          setDurationInCycles(duration);
+          setDelegationType(delegationType);
+          steps.close(DelegateStep.ChooseDuration);
+        }}
+      />
       <ConfirmAndDelegateStep
         id="Confirm and Delegate"
         formComplete={steps.allComplete}
@@ -68,13 +120,20 @@ export const StackingDelegation: FC = () => {
         <DelegatedStackingModal
           delegateeStxAddress={delegateeAddress}
           amountToStack={amount}
+          burnHeight={cyclesToUntilBurnBlockHeight(durationInCycles)}
           onClose={() => setModalOpen(false)}
         />
       )}
       <StackingLayout
         intro={<StackingDelegationIntro />}
         stackingInfoCard={
-          <DelegatedStackingInfoCard delegateeAddress={delegateeAddress} balance={amount} />
+          <DelegatedStackingInfoCard
+            delegateeAddress={delegateeAddress}
+            balance={amount}
+            durationInCycles={durationInCycles}
+            delegationType={delegationType}
+            burnHeight={cyclesToUntilBurnBlockHeight(durationInCycles)}
+          />
         }
         stackingForm={stackingForm}
       />

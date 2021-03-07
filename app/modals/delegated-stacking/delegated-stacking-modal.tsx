@@ -49,11 +49,12 @@ type StackingModalComponents = () => Record<'header' | 'body' | 'footer', JSX.El
 interface StackingModalProps {
   delegateeStxAddress: string;
   amountToStack: BigNumber;
+  burnHeight?: number;
   onClose(): void;
 }
 
 export const DelegatedStackingModal: FC<StackingModalProps> = props => {
-  const { onClose, delegateeStxAddress, amountToStack } = props;
+  const { onClose, delegateeStxAddress, amountToStack, burnHeight } = props;
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -93,8 +94,9 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
       amountMicroStx: new BN(amountToStack.toString()),
       contract: poxInfo.contract_id,
       delegateTo: delegateeStxAddress,
+      untilBurnBlockHeight: burnHeight,
     });
-  }, [amountToStack, delegateeStxAddress, poxInfo, stackingClient]);
+  }, [amountToStack, delegateeStxAddress, poxInfo, stackingClient, burnHeight]);
 
   const createSoftwareWalletTx = useCallback(async () => {
     if (!password) throw new Error('`password` missing');

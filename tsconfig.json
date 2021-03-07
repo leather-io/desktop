@@ -27,6 +27,8 @@
       "@components/*": ["app/components/*"],
       "@store/*": ["app/store/*"],
       "@modals/*": ["app/modals/*"],
+      "@models/*": ["app/models/*"],
+      "@models": ["app/models"],
       "@crypto/*": ["app/crypto/*"],
       "@hooks/*": ["app/hooks/*"],
       "@api/*": ["app/api/*"],

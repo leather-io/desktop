@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { Flex, Text, BoxProps } from '@blockstack/ui';
 import { UpdateArrowIcon } from '@components/icons/update-arrow';
-import { WindowActiveState } from 'app/types';
+import { WindowActiveState } from '@models';
 
 interface UpdateAvailableButtonProps extends BoxProps {
   windowState: WindowActiveState;

@@ -7,7 +7,7 @@ import { StackingDescription } from '../../components/stacking-description';
 
 export const StackingDelegationIntro: FC = () => (
   <>
-    <StackingTitle>Delegate Stacking</StackingTitle>
+    <StackingTitle>Delegated Stacking</StackingTitle>
     <StackingDescription mt="base-tight">
       By delegating your STX, a service will stack on your behalf. Before delegating your STX, make
       sure you research which delegation service is right for you.

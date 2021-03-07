@@ -11,7 +11,7 @@ import BN from 'bn.js';
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
 
-import { selectPoxInfo } from '@store/stacking';
+import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';
 
 import { broadcastTransaction, BroadcastTransactionArgs } from '@store/transaction';
 import { selectAddressBalance } from '@store/address';
@@ -49,11 +49,13 @@ type StackingModalComponents = () => Record<'header' | 'body' | 'footer', JSX.El
 interface StackingModalProps {
   delegateeStxAddress: string;
   amountToStack: BigNumber;
+  durationInCycles: number | null;
+  poxAddress: string | null;
   onClose(): void;
 }
 
 export const DelegatedStackingModal: FC<StackingModalProps> = props => {
-  const { onClose, delegateeStxAddress, amountToStack } = props;
+  const { onClose, delegateeStxAddress, amountToStack, durationInCycles, poxAddress } = props;
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -75,10 +77,21 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
 
   const api = useApi();
 
-  const { poxInfo, balance } = useSelector((state: RootState) => ({
+  const { nextCycleInfo, poxInfo, balance } = useSelector((state: RootState) => ({
+    nextCycleInfo: selectNextCycleInfo(state),
     poxInfo: selectPoxInfo(state),
     balance: selectAddressBalance(state),
   }));
+
+  const cyclesToUntilBurnBlockHeight = useCallback(
+    (cycles: number | null) =>
+      (cycles &&
+        nextCycleInfo &&
+        poxInfo &&
+        nextCycleInfo.blocksToNextCycle + cycles * poxInfo.reward_cycle_length) ||
+      undefined,
+    [nextCycleInfo, poxInfo]
+  );
 
   const initialStep = whenWallet({
     software: StackingModalStep.DecryptWalletAndSend,
@@ -93,8 +106,18 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
       amountMicroStx: new BN(amountToStack.toString()),
       contract: poxInfo.contract_id,
       delegateTo: delegateeStxAddress,
+      untilBurnBlockHeight: cyclesToUntilBurnBlockHeight(durationInCycles),
+      poxAddress,
     });
-  }, [amountToStack, delegateeStxAddress, poxInfo, stackingClient]);
+  }, [
+    amountToStack,
+    delegateeStxAddress,
+    poxInfo,
+    stackingClient,
+    durationInCycles,
+    poxAddress,
+    cyclesToUntilBurnBlockHeight,
+  ]);
 
   const createSoftwareWalletTx = useCallback(async () => {
     if (!password) throw new Error('`password` missing');

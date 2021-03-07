@@ -14,9 +14,11 @@ import { DelegatedStackingInfoCard } from './components/delegated-stacking-info-
 import { ConfirmAndDelegateStep } from './components/confirm-and-delegate';
 import { ChooseDelegatedStackingAmountStep } from './components/choose-delegated-stacking-amount';
 import { ChooseDelegateeStxAddressStep } from './components/choose-delegatee-stx-address';
+import { ChooseMembershipDurationStep } from './components/choose-membership-duration';
 
 enum DelegateStep {
   ChooseDelegateeAddress = 'ChooseDelegateeAddress',
+  ChooseDuration = 'ChooseDuration',
   ChooseAmount = 'ChooseAmount',
 }
 
@@ -26,10 +28,13 @@ export const StackingDelegation: FC = () => {
   const [amount, setAmount] = useState<BigNumber | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [delegateeAddress, setDelegateeAddress] = useState<string | null>(null);
+  const [durationInCycles, setDurationInCycles] = useState<number | null>(null);
+  const [delegateePoxAddress, setDelegateePoxAddress] = useState<string | null>(null);
 
   const steps = useStackingFormStep<DelegateStep>({
     [DelegateStep.ChooseDelegateeAddress]: delegateeAddress !== null,
     [DelegateStep.ChooseAmount]: amount !== null,
+    [DelegateStep.ChooseDuration]: durationInCycles !== null,
   });
 
   const stackingForm = (
@@ -54,6 +59,16 @@ export const StackingDelegation: FC = () => {
         onEdit={() => steps.open(DelegateStep.ChooseAmount)}
         onComplete={amount => (setAmount(amount), steps.close(DelegateStep.ChooseAmount))}
       />
+      <ChooseMembershipDurationStep
+        title="Choose duration"
+        description=""
+        isComplete={steps.getIsComplete(DelegateStep.ChooseDuration)}
+        state={steps.getView(DelegateStep.ChooseDuration)}
+        onEdit={() => steps.open(DelegateStep.ChooseDuration)}
+        onComplete={cycles => (
+          setDurationInCycles(cycles), steps.close(DelegateStep.ChooseDuration)
+        )}
+      />
       <ConfirmAndDelegateStep
         id="Confirm and Delegate"
         formComplete={steps.allComplete}
@@ -68,13 +83,19 @@ export const StackingDelegation: FC = () => {
         <DelegatedStackingModal
           delegateeStxAddress={delegateeAddress}
           amountToStack={amount}
+          durationInCycles={durationInCycles}
+          poxAddress={delegateePoxAddress}
           onClose={() => setModalOpen(false)}
         />
       )}
       <StackingLayout
         intro={<StackingDelegationIntro />}
         stackingInfoCard={
-          <DelegatedStackingInfoCard delegateeAddress={delegateeAddress} balance={amount} />
+          <DelegatedStackingInfoCard
+            delegateeAddress={delegateeAddress}
+            balance={amount}
+            durationInCycles={durationInCycles}
+          />
         }
         stackingForm={stackingForm}
       />

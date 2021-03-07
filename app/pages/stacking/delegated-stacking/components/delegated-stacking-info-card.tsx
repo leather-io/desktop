@@ -12,10 +12,11 @@ import { truncateMiddle } from '../../../../utils/tx-utils';
 interface StackingInfoCardProps extends FlexProps {
   balance: BigNumber | null;
   delegateeAddress: string | null;
+  durationInCycles: number | null;
 }
 
 export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { balance, delegateeAddress } = props;
+  const { balance, delegateeAddress, durationInCycles } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
@@ -50,6 +51,27 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
             </ExplainerTooltip>
           </Flex>
           <Text textAlign="right">{delegateeAddress ? truncateMiddle(delegateeAddress) : '—'}</Text>
+        </Flex>
+      </Flex>
+      <Hr />
+      <Flex flexDirection="column" px={['loose', 'extra-loose']} py="loose" width="100%">
+        <Flex justifyContent="space-between">
+          <Flex alignItems="center">
+            <Text textStyle="body.large.medium" mr="tight">
+              Delegation duration
+            </Text>
+            <ExplainerTooltip>
+              How long you want to use your delegation service. This is not the locking period. The
+              locking period cannot be longer than the delegation duration.
+            </ExplainerTooltip>
+          </Flex>
+          <Text textAlign="right">
+            {durationInCycles
+              ? durationInCycles < 0
+                ? 'Indefinite'
+                : `${durationInCycles} cycles`
+              : '—'}
+          </Text>
         </Flex>
       </Flex>
     </Flex>

@@ -77,6 +77,12 @@ const shouldPoll$ = combineLatest([listeningForDevice$, ledgerDeviceBusy$]).pipe
   map(([listeningForDevice, deviceBusy]) => Boolean(listeningForDevice && !deviceBusy))
 );
 
+//
+// Ledger devices do not immediately fire updates, such as if
+// the device disconnects or jumps to another state. In order
+// to get the latest state, we poll the device, but only in
+// certain circumstances. This stream emits with an interval
+// and is then filtered based on the value of these conditions.
 const devicePoll$ = timer(0, POLL_LEDGER_INTERVAL).pipe(
   switchMap(() => shouldPoll$.pipe(take(1))),
   filter(shouldPoll => shouldPoll),
@@ -109,6 +115,11 @@ const devicePoll$ = timer(0, POLL_LEDGER_INTERVAL).pipe(
 
 devicePoll$.subscribe();
 
+//
+// When jumping between screens on a Ledger device,
+// it technically disconnects/reconnects very quickly.
+// To detect real device unplugs we watch to see if
+// if a transport exists after a set period
 checkDisconnect$
   .pipe(
     delay(SAFE_ASSUME_REAL_DEVICE_DISCONNECT_TIME),

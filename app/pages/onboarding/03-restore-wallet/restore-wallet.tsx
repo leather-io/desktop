@@ -66,17 +66,12 @@ export const RestoreWallet: React.FC = () => {
     <Onboarding as="form" onSubmit={handleSecretKeyRestore}>
       <OnboardingTitle>Sign in to your wallet</OnboardingTitle>
 
-      {CONFIG.STX_NETWORK === 'mainnet' && (
-        <>
-          <OnboardingText>
-            Connect your Ledger hardware wallet or enter your Secret Key
-          </OnboardingText>
-          <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
-            Continue with Ledger
-          </OnboardingButton>
-          <Hr mt="extra-loose" />
-        </>
-      )}
+      <OnboardingText>Connect your Ledger hardware wallet or enter your Secret Key</OnboardingText>
+      <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
+        Continue with Ledger
+      </OnboardingButton>
+      <Hr mt="extra-loose" />
+
       <Box>
         <Flex flexDirection="row" alignItems="baseline">
           <Text textStyle="body.small.medium" mt="extra-loose" display="block">

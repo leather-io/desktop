@@ -36,11 +36,11 @@ export const ChooseStackingMethod: FC = () => {
   return (
     <Layout>
       <Text textStyle="display.large" fontSize="32px" mt="tight" display="block" textAlign="center">
-        Start stacking
+        Start Stacking
       </Text>
       <Text mt="base" color="ink.600" maxWidth="480px">
-        Lock your STX to support the network. As a reward, you’ll earn Bitcoin that miners transfer
-        as part of Proof of Transfer.
+        Lock your STX to support the network. As a reward, you’ll have the chance to earn Bitcoin
+        that miners transfer as part of Proof of Transfer.
       </Text>
       <ExternalLink
         href="https://www.stacks.co/stacking-and-stx"
@@ -48,15 +48,15 @@ export const ChooseStackingMethod: FC = () => {
         mt="base-tight"
         color="blue"
       >
-        Learn more about stacking
+        Learn more about Stacking
       </ExternalLink>
 
       <CardContainer>
         <Card>
           <Title>Stack by yourself</Title>
-          <OptionBenefit>Interact with the contract directly</OptionBenefit>
+          <OptionBenefit>Interact with the PoX contract directly</OptionBenefit>
           <OptionBenefit>
-            Minimum required to stack{' '}
+            Minimum required to stack is{' '}
             {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
           </OptionBenefit>
           <OptionBenefit>You choose a set duration</OptionBenefit>
@@ -73,8 +73,8 @@ export const ChooseStackingMethod: FC = () => {
 
         <Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}>
           <Title>Delegate</Title>
-          <OptionBenefit>A service, or delegatee, stacks on your behalf</OptionBenefit>
-          <OptionBenefit>Stack with small sums</OptionBenefit>
+          <OptionBenefit>A delegation service (pool) stacks on your behalf</OptionBenefit>
+          <OptionBenefit>Stack with small or large sums</OptionBenefit>
           <OptionBenefit>Indefinite until you cancel</OptionBenefit>
           <Flex alignItems="center">
             <OptionButton

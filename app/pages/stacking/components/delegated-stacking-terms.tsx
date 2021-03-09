@@ -10,8 +10,8 @@ export const DelegatedStackingTerms: FC = () => (
         <DelegationIcon />
       </Box>
       <Text>
-        Your delegatee will stack on your behalf and distribute BTC rewards. Hiro can’t help you if
-        they don’t pay you your BTC rewards.
+        Your delegation service will stack on your behalf and distribute BTC rewards. Hiro can’t
+        help you if they don’t pay you your BTC rewards.
       </Text>
     </Flex>
     <Flex alignItems="start" mt="base-loose">
@@ -19,8 +19,8 @@ export const DelegatedStackingTerms: FC = () => (
         <ClockIcon />
       </Box>
       <Text>
-        Your delegatee can lock your STX for up to 12 cycles. You can revoke anytime, but your funds
-        will be locked until all cycles finish.
+        Your delegation service can lock your STX for up to 12 cycles. You can revoke anytime, but
+        your funds will be locked until all cycles finish.
       </Text>
     </Flex>
     <Flex alignItems="start" mt="base-loose">

@@ -44,7 +44,7 @@ export const StackingDelegation: FC = () => {
   const steps = useStackingFormStep<DelegateStep>({
     [DelegateStep.ChooseDelegateeAddress]: delegateeAddress !== null,
     [DelegateStep.ChooseAmount]: amount !== null,
-    [DelegateStep.ChooseDuration]: durationInCycles !== null,
+    [DelegateStep.ChooseDuration]: delegationType !== null,
   });
 
   const cyclesToUntilBurnBlockHeight = useCallback(
@@ -71,8 +71,8 @@ export const StackingDelegation: FC = () => {
   const stackingForm = (
     <StackingFormContainer>
       <ChooseDelegateeStxAddressStep
-        title="Choose delegatee's address"
-        description="Enter the STX address shared with you by your chosen delegatee"
+        title="Choose pool's address"
+        description="Enter the STX address shared with you by your chosen pool"
         isComplete={steps.getIsComplete(DelegateStep.ChooseDelegateeAddress)}
         value={delegateeAddress ?? undefined}
         state={steps.getView(DelegateStep.ChooseDelegateeAddress)}
@@ -94,11 +94,7 @@ export const StackingDelegation: FC = () => {
         title="Choose duration"
         description=""
         isComplete={steps.getIsComplete(DelegateStep.ChooseDuration)}
-        value={
-          delegationType === 'indefinite'
-            ? 'Indefinite'
-            : `${String(durationInCycles)} cycle${durationInCycles !== 1 ? 's' : ''}`
-        }
+        value={durationValue}
         state={steps.getView(DelegateStep.ChooseDuration)}
         onEdit={() => steps.open(DelegateStep.ChooseDuration)}
         onComplete={({ duration, delegationType }) => {

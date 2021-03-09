@@ -29,7 +29,7 @@ export const StackingTerms: FC<StackingTermsProps> = props => {
         <Box width={['12px', '16px']} mr="base-tight">
           <RewindArrow />
         </Box>
-        <Text>This transaction can not be reversed</Text>
+        <Text>This transaction cannot be reversed</Text>
       </Flex>
     </Box>
   );

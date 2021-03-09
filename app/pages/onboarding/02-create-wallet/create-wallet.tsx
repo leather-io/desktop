@@ -15,7 +15,6 @@ import {
 import { useBackButton } from '@hooks/use-back-url';
 import { openExternalLink } from '@utils/external-links';
 import { TREZOR_HELP_URL } from '@constants/index';
-import { isMainnet } from '@utils/network-utils';
 
 export const CreateWallet: React.FC = () => {
   const dispatch = useDispatch();
@@ -36,11 +35,10 @@ export const CreateWallet: React.FC = () => {
         Please choose whether you’d like to connect a Ledger hardware wallet or to create a software
         wallet
       </OnboardingText>
-      {isMainnet() && (
-        <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
-          Use a Ledger wallet
-        </OnboardingButton>
-      )}
+
+      <OnboardingButton mt="extra-loose" onClick={() => history.push(routes.CONNECT_LEDGER)}>
+        Use a Ledger wallet
+      </OnboardingButton>
 
       <OnboardingButton onClick={createSoftwareWallet} mode="secondary">
         Create a software wallet

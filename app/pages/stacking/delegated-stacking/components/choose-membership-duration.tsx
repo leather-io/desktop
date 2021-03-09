@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useFormik } from 'formik';
 
 import { DelegationType } from '@models';
@@ -28,7 +28,7 @@ interface ChooseMembershipDurationStepProps extends StackingStepBaseProps {
 
 export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps> = props => {
   const { isComplete, description, state, step, title, value, onEdit, onComplete } = props;
-
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const durationForm = useFormik<DelegationTypeInitialValues>({
     initialValues: {
       delegationType: null,
@@ -40,6 +40,7 @@ export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps>
     },
     onSubmit: ({ delegationType, duration }) => {
       if (delegationType === null) return;
+      setHasSubmitted(true);
       if (delegationType === 'indefinite') onComplete({ delegationType, duration: null });
       if (delegationType === 'limited') onComplete({ delegationType, duration });
     },
@@ -75,13 +76,15 @@ export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps>
           >
             Limit the duration the pool can stack your STX for. After this duration, your STX will
             unlock automatically.
-            <DurationCyclesForm
-              duration={durationForm.values.duration}
-              onUpdate={newDuration => durationForm.setFieldValue('duration', newDuration)}
-            />
+            {durationForm.values.delegationType === 'limited' && (
+              <DurationCyclesForm
+                duration={durationForm.values.duration}
+                onUpdate={newDuration => durationForm.setFieldValue('duration', newDuration)}
+              />
+            )}
           </DurationSelectItem>
         </DurationSelect>
-        {durationForm.errors.delegationType && (
+        {hasSubmitted && durationForm.errors.delegationType && (
           <ErrorLabel>
             <ErrorText>{durationForm.errors.delegationType}</ErrorText>
           </ErrorLabel>

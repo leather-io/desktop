@@ -105,10 +105,10 @@
   dependencies:
     cross-fetch "^3.0.6"
 
-"@stacks/common@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.0.1.tgz#76fea117e38a6a4b901242513bb765a485104f47"
-  integrity sha512-Rw+ezdoJ/5kc8MklAUerOusVHzn3FOibVqq8+iyTa4FGSd0CiDoByCEBQQ9+T6GsxgVVOTL/e+YCwWL/Ywu2UQ==
+"@stacks/common@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.2.2.tgz#1365ffb0f8bd9e4cd194c63c65a1bb2c83876ba1"
+  integrity sha512-knCqq88EBRCN8AhS7+Sx2PJuRv0EFNChEpqLqCAchCHCQfp5bWad/47Zw+fLP9ccBwFXh4pl1wDtbQLBfDo0+A==
   dependencies:
     cross-fetch "^3.0.6"
 
@@ -153,12 +153,12 @@
   dependencies:
     "@stacks/common" "^1.0.0"
 
-"@stacks/network@^1.1.1-alpha.0":
-  version "1.1.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.1.1-alpha.0.tgz#c37d04daf4672bd488044565e5cb722011a8cac2"
-  integrity sha512-y96qXO8Lne3PpSGJj8C6NLu6Ns27uPj7pqvjYewy8aIuFx0tfq/kwuOQNgCFqrLqThorMFGamFJhcG8in4Eh4A==
+"@stacks/network@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@stacks/network/-/network-1.2.2.tgz#30ca87ad6339f32eb04ed3a9dbcc2e39ed933604"
+  integrity sha512-xcWwuRrLJn9qqi3PEBcP2UPZHQztTZd31C0aVlzYHttNMir/sY9SrUqSnw45z2Jo4O9pIYYPIiPRtdV91Ho3fw==
   dependencies:
-    "@stacks/common" "^1.0.1"
+    "@stacks/common" "^1.2.2"
 
 "@stacks/profile@^1.0.0":
   version "1.0.0"
@@ -173,13 +173,13 @@
     schema-inspector "^1.7.0"
     zone-file "^1.0.0"
 
-"@stacks/stacking@^1.1.1-alpha.0":
-  version "1.1.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@stacks/stacking/-/stacking-1.1.1-alpha.0.tgz#0eec0a83910421848a18b9e4b581cb369217b6b5"
-  integrity sha512-QWgGtWoHDl18BLS7w9OSB1R2Zdm5AUvLXWDtZmjGj4Fayg3MdHvG9vGzkarQcJXfsZ/q3Dar4sU0sYYcuUn1Ow==
+"@stacks/stacking@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@stacks/stacking/-/stacking-1.3.0.tgz#eccfdb7fb6509f906a813c9c1fe82b7d4714e47f"
+  integrity sha512-27uUGsXlH1Gpe+s7nreDowFSPSModqjg5xo0bJT6Jktak0bnHERjpJtHZt20c6+6FUmJPQ2cQJJnux2c95PaIw==
   dependencies:
-    "@stacks/network" "^1.1.1-alpha.0"
-    "@stacks/transactions" "^1.1.1-alpha.0"
+    "@stacks/network" "^1.2.2"
+    "@stacks/transactions" "^1.3.0"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     bitcoinjs-lib "^5.2.0"
@@ -217,13 +217,13 @@
     sha.js "^2.4.11"
     smart-buffer "^4.1.0"
 
-"@stacks/transactions@^1.1.1-alpha.0":
-  version "1.1.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.1.1-alpha.0.tgz#e714e60719ddc7024a32aac301a53afdd7df30e5"
-  integrity sha512-iagBEiabTj+9U6ZcmxoaztJwSie1AK8ZbQYQdOC6V94niQ9BVwxs+/v7qgqifgeHVMKgaVzGa2/YT1I1FGkqyA==
+"@stacks/transactions@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.3.0.tgz#0651b64757a1152a6a7bf3c7841a58848895cb08"
+  integrity sha512-OnocNS8qO/qPd7vYMbBLgEdd3/XehcZeBHmZZDr6YBRsYeJlGjGLnIQyG7/3pioRZWfTujghVklwxanm0ue3RA==
   dependencies:
-    "@stacks/common" "^1.0.1"
-    "@stacks/network" "^1.1.1-alpha.0"
+    "@stacks/common" "^1.2.2"
+    "@stacks/network" "^1.2.2"
     "@types/bn.js" "^4.11.6"
     "@types/elliptic" "^6.4.12"
     "@types/randombytes" "^2.0.0"

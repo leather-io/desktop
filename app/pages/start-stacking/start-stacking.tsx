@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text } from '@blockstack/ui';
+import { Box, Flex, Text } from '@blockstack/ui';
 import { ExternalLink } from '@components/external-link';
 import { useHistory } from 'react-router-dom';
 
@@ -19,6 +19,7 @@ import {
   StackingOptionCardAdvantage as OptionBenefit,
   InsufficientStackingBalanceWarning,
 } from './components/start-stacking-layout';
+import { ExplainerTooltip } from '@components/tooltip';
 
 export const ChooseStackingMethod: FC = () => {
   const history = useHistory();
@@ -39,8 +40,8 @@ export const ChooseStackingMethod: FC = () => {
         Start Stacking
       </Text>
       <Text mt="base" color="ink.600" maxWidth="480px">
-        Lock your STX to support the network. As a reward, you’ll have the chance to earn Bitcoin
-        that miners transfer as part of Proof of Transfer.
+        Lock your STX to support the network. As a reward, you’ll have the chance to earn BTC that
+        miners transfer as part of Proof-of-Transfer (PoX).
       </Text>
       <ExternalLink
         href="https://www.stacks.co/stacking-and-stx"
@@ -53,13 +54,13 @@ export const ChooseStackingMethod: FC = () => {
 
       <CardContainer>
         <Card>
-          <Title>Stack by yourself</Title>
-          <OptionBenefit>Interact with the PoX contract directly</OptionBenefit>
+          <Title>Stack on your own</Title>
+          <OptionBenefit>Lock your STX with the PoX contract directly</OptionBenefit>
           <OptionBenefit>
             Minimum required to stack is{' '}
             {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
           </OptionBenefit>
-          <OptionBenefit>You choose a set duration</OptionBenefit>
+          <OptionBenefit>Choose a set number of cycles</OptionBenefit>
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.STACKING)}
@@ -72,10 +73,17 @@ export const ChooseStackingMethod: FC = () => {
         </Card>
 
         <Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}>
-          <Title>Delegate</Title>
-          <OptionBenefit>A delegation service (pool) stacks on your behalf</OptionBenefit>
-          <OptionBenefit>Stack with small or large sums</OptionBenefit>
-          <OptionBenefit>Indefinite until you cancel</OptionBenefit>
+          <Title>Stack with others</Title>
+          <OptionBenefit>Delegate to a pool that will lock your STX with others</OptionBenefit>
+          <Flex flexDirection="row" alignItems="center">
+            <OptionBenefit>No minimum required by the protocol</OptionBenefit>
+            <Box ml="extra-tight" mt="tight">
+              <ExplainerTooltip>
+                Your chosen pool may set their own minimum amount to participate
+              </ExplainerTooltip>
+            </Box>
+          </Flex>
+          <OptionBenefit>Choose an indefinite or limited number of cycles</OptionBenefit>
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.DELEGATED_STACKING)}

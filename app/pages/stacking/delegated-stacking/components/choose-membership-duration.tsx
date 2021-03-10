@@ -65,8 +65,8 @@ export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps>
             onChange={val => durationForm.setFieldValue('delegationType', val)}
             isFirst
           >
-            The pool can stack your STX indefinitely, up to 12 cycles at a time. Revoking will
-            unlock your STX after any in-progress cycles have completed.
+            The pool has indefinite permission to lock your STX for up to 12 cycles. Revoke manually
+            at any time to prevent further locks.
           </DurationSelectItem>
           <DurationSelectItem
             title="Limited"
@@ -74,8 +74,8 @@ export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps>
             activeDelegationType={durationForm.values.delegationType}
             onChange={val => durationForm.setFieldValue('delegationType', val)}
           >
-            Limit the duration the pool can stack your STX for. After this duration, your STX will
-            unlock automatically.
+            The pool will have permission to lock your STX for this number of cycles. It is not
+            possible to be locked longer than the specified period.
             {durationForm.values.delegationType === 'limited' && (
               <DurationCyclesForm
                 duration={durationForm.values.duration}

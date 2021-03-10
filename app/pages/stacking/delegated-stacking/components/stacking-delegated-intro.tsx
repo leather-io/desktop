@@ -7,13 +7,13 @@ import { StackingDescription } from '../../components/stacking-description';
 
 export const StackingDelegationIntro: FC = () => (
   <>
-    <StackingTitle>Delegated Stacking</StackingTitle>
+    <StackingTitle>Stack with others</StackingTitle>
     <StackingDescription mt="base-tight">
-      By delegating your STX, a service will stack on your behalf. Before delegating your STX, make
-      sure you research which delegation service is right for you.
+      Delegate to a pool that will lock your STX with others. Make sure to research which pool is
+      right for you before proceeding.
     </StackingDescription>
     <ExternalLink href="https://www.stacks.co/stacking#services" mt="base" color="blue">
-      You can discover services on stacks.co
+      Discover pools on stacks.co
     </ExternalLink>
   </>
 );

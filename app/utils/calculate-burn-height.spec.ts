@@ -14,7 +14,7 @@ describe(calculateUntilBurnHeightBlockFromCycles.name, () => {
         rewardCycleLength,
       });
       expect(result).toEqual(666200);
-      expect(result % 50).toEqual(0);
+      expect((result - genesisBurnBlockHeight) % rewardCycleLength).toEqual(0);
     });
 
     test('it calculates correctly with two cycles', () => {
@@ -25,7 +25,7 @@ describe(calculateUntilBurnHeightBlockFromCycles.name, () => {
         rewardCycleLength,
       });
       expect(result).toEqual(666250);
-      expect(result % 50).toEqual(0);
+      expect((result - genesisBurnBlockHeight) % rewardCycleLength).toEqual(0);
     });
   });
 
@@ -40,7 +40,7 @@ describe(calculateUntilBurnHeightBlockFromCycles.name, () => {
         currentCycleId: 1,
       });
       expect(result).toEqual(676550);
-      expect(result % 50).toEqual(0);
+      expect((result - genesisBurnBlockHeight) % rewardCycleLength).toEqual(0);
     });
 
     test('it calculates correctly with eight cycles', () => {
@@ -51,7 +51,7 @@ describe(calculateUntilBurnHeightBlockFromCycles.name, () => {
         currentCycleId: 1,
       });
       expect(result).toEqual(687050);
-      expect(result % 50).toEqual(0);
+      expect((result - genesisBurnBlockHeight) % rewardCycleLength).toEqual(0);
     });
 
     test('it calculates correctly with twelve cycles', () => {
@@ -62,7 +62,7 @@ describe(calculateUntilBurnHeightBlockFromCycles.name, () => {
         currentCycleId: 10,
       });
       expect(result).toEqual(714350);
-      expect(result % 50).toEqual(0);
+      expect((result - genesisBurnBlockHeight) % rewardCycleLength).toEqual(0);
     });
   });
 });

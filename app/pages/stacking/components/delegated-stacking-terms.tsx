@@ -19,8 +19,8 @@ export const DelegatedStackingTerms: FC = () => (
         <ClockIcon />
       </Box>
       <Text>
-        Your delegation service can lock your STX for up to 12 cycles. You can revoke anytime, but
-        your funds will be locked until all cycles finish.
+        Your delegation service can lock your STX for up to 12 cycles, unless you've specified a
+        cycle limit. You can revoke anytime, but your funds will be locked until all cycles finish.
       </Text>
     </Flex>
     <Flex alignItems="start" mt="base-loose">

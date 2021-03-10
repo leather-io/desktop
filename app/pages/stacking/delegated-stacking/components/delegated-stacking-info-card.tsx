@@ -50,9 +50,7 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
             <Text textStyle="body.large.medium" mr="tight">
               Pool address
             </Text>
-            <ExplainerTooltip>
-              This will be provided to you by your chosen delegation service
-            </ExplainerTooltip>
+            <ExplainerTooltip>This will be provided to you by your chosen pool</ExplainerTooltip>
           </Flex>
           <Text textAlign="right">{delegateeAddress ? truncateMiddle(delegateeAddress) : '—'}</Text>
         </Flex>
@@ -65,8 +63,8 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
               Delegation duration
             </Text>
             <ExplainerTooltip>
-              How long you want to use your delegation service. This is not the locking period.
-              However, the locking period cannot be longer than the delegation duration.
+              How long you want to delegate to the pool. This is not necessarily the locking
+              duration. However, the locking period cannot be longer than the delegation duration.
             </ExplainerTooltip>
           </Flex>
           <Flex flexDirection="column" justifyContent="flex-start">

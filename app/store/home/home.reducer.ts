@@ -91,12 +91,12 @@ export const selectHomeCardState = createSelector(
   ) => {
     if (stackingErr) return HomeCardState.StackingError;
     if (loadingResources) return HomeCardState.LoadingResources;
-    if (!meetsMinThreshold) return HomeCardState.NotEnoughStx;
     if (stackingCallPending || typeof activeStackingTxId === 'string')
       return HomeCardState.StackingPendingContactCall;
     if (stackerInfo?.isPreStackingPeriodStart) return HomeCardState.StackingPreCycle;
     if (stackerInfo?.isCurrentlyStacking) return HomeCardState.StackingActive;
     if (meetsMinThreshold) return HomeCardState.EligibleToParticipate;
+    if (!meetsMinThreshold) return HomeCardState.NotEnoughStx;
     return HomeCardState.PostStacking;
   }
 );

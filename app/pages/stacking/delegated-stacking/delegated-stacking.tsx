@@ -72,7 +72,7 @@ export const StackingDelegation: FC = () => {
     <StackingFormContainer>
       <ChooseDelegateeStxAddressStep
         title="Choose pool's address"
-        description="Enter the STX address shared with you by your chosen pool"
+        description="Enter the STX address provided by your chosen pool for Stacking delegation"
         isComplete={steps.getIsComplete(DelegateStep.ChooseDelegateeAddress)}
         value={delegateeAddress ?? undefined}
         state={steps.getView(DelegateStep.ChooseDelegateeAddress)}
@@ -83,7 +83,7 @@ export const StackingDelegation: FC = () => {
       />
       <ChooseDelegatedStackingAmountStep
         title="Choose an amount"
-        description="Choose how much of your STX you’d like to delegate. This can be more than your current balance. Your delegatee may require you to delegate a minimum amount."
+        description="Choose how much of your STX you'd like to delegate. This can be more than your current balance. Your pool may require you to delegate a minimum amount."
         isComplete={steps.getIsComplete(DelegateStep.ChooseAmount)}
         state={steps.getView(DelegateStep.ChooseAmount)}
         value={amount}
@@ -91,7 +91,7 @@ export const StackingDelegation: FC = () => {
         onComplete={amount => (setAmount(amount), steps.close(DelegateStep.ChooseAmount))}
       />
       <ChooseMembershipDurationStep
-        title="Choose duration"
+        title="Choose indefinite or limited cycles"
         description=""
         isComplete={steps.getIsComplete(DelegateStep.ChooseDuration)}
         value={durationValue}

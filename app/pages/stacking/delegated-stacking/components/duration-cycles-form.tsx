@@ -12,6 +12,7 @@ import { selectNextCycleInfo } from '@store/stacking';
 import { RootState } from '@store/index';
 import { CircleButton } from '@components/circle-button';
 import { decrement, increment } from '@utils/mutate-numbers';
+import { formatCycles } from '@utils/stacking';
 
 dayjs.extend(duration);
 dayjs.extend(updateLocale);
@@ -37,7 +38,7 @@ export const DurationCyclesForm: FC<DurationCycleFromProps> = props => {
     if (!cycleInfo) return [];
     return createCycleArray().map(cycles => {
       return `
-        ${cycles.toString()} cycle${cycles !== 1 ? 's' : ''}
+        ${formatCycles(cycles)}
         (expires around ${dayjs()
           .add(cycleInfo.estimateCycleDurationSeconds * cycles, 'seconds')
           .format('Do MMMM')})`;

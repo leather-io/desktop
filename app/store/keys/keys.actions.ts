@@ -5,6 +5,7 @@ import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '@s
 
 import { RootState } from '..';
 import routes from '@constants/routes.json';
+import { BIP32Interface } from '@models/bip32';
 import { MNEMONIC_ENTROPY } from '@constants/index';
 import {
   persistSalt,
@@ -18,7 +19,6 @@ import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
 
 import { selectMnemonic } from './keys.reducer';
-import { BIP32Interface } from '../../models/bip32';
 
 type History = ReturnType<typeof useHistory>;
 

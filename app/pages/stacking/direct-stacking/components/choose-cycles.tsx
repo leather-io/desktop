@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import { Stepper } from '@components/stepper';
 import { MAX_STACKING_CYCLES, MIN_STACKING_CYCLES } from '@constants/index';
+import { formatCycles } from '@utils/stacking';
 
 import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
@@ -19,7 +20,7 @@ interface ChooseCycleStepProps extends StackingStepBaseProps {
 
 export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
   const { isComplete, state, step, cycles, title, onUpdate, onEdit, onComplete } = props;
-  const value = `${cycles} cycle${cycles !== 1 ? 's' : ''} selected`;
+  const value = `${formatCycles(cycles)} selected`;
   return (
     <Step
       step={step}

@@ -1,7 +1,7 @@
 import { createReducer, createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '..';
-import { WalletType } from '../../models/wallet-type';
+import { WalletType } from '@models/wallet-type';
 import {
   setPasswordSuccess,
   persistLedgerWallet,

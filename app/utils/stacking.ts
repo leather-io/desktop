@@ -29,3 +29,7 @@ export function convertPoxAddressToBtc(network: 'mainnet' | 'testnet') {
 }
 
 export const formatPoxAddressToNetwork = convertPoxAddressToBtc(NETWORK);
+
+export function formatCycles(cycles: number) {
+  return `${cycles} cycle${cycles !== 1 ? 's' : ''}`;
+}

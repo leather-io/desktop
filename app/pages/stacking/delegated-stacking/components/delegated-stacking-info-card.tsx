@@ -9,6 +9,7 @@ import { Hr } from '@components/hr';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { ExplainerTooltip } from '@components/tooltip';
 import { truncateMiddle } from '@utils/tx-utils';
+import { formatCycles } from '@utils/stacking';
 
 interface StackingInfoCardProps extends FlexProps {
   balance: BigNumber | null;
@@ -64,15 +65,14 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
               Delegation duration
             </Text>
             <ExplainerTooltip>
-              How long you want to use your delegation service. This is not the locking period. The
-              locking period cannot be longer than the delegation duration.
+              How long you want to use your delegation service. This is not the locking period.
+              However, the locking period cannot be longer than the delegation duration.
             </ExplainerTooltip>
           </Flex>
           <Flex flexDirection="column" justifyContent="flex-start">
             <Text textAlign="right">
               {delegationType === null && '—'}
-              {delegationType === 'limited' &&
-                `${String(durationInCycles)} cycle${durationInCycles === 1 ? '' : 's'}`}
+              {delegationType === 'limited' && formatCycles(durationInCycles ?? 0)}
               {delegationType === 'indefinite' && 'Indefinite'}
             </Text>
             {burnHeight && (

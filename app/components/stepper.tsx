@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Flex, Text, BoxProps, FlexProps } from '@blockstack/ui';
 
+import { formatCycles } from '@utils/stacking';
 import { increment, decrement } from '@utils/mutate-numbers';
 import { DecrementIcon } from './icons/decrement';
 import { IncrementIcon } from './icons/increment';
@@ -50,7 +51,7 @@ export const Stepper: FC<StepperProps> = props => {
           minWidth="100px"
         >
           <Text textStyle="body.small" mb="3px" mx="base">
-            {amount} cycle{amount !== 1 && 's'}
+            {formatCycles(amount)}
           </Text>
         </Flex>
         <ChangeStepButton onClick={() => onIncrement(increment(amount))} borderRadius="0 6px 6px 0">

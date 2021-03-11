@@ -3,10 +3,13 @@ import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
 
 import { DelegationType } from '@models';
+import { formatCycles } from '@utils/stacking';
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
 import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';
+import { selectPoxInfo } from '@store/stacking';
+import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
 
 import { StackingLayout } from '../components/stacking-layout';
 import { StackingFormContainer } from '../components/stacking-form-container';
@@ -18,8 +21,6 @@ import { ConfirmAndDelegateStep } from './components/confirm-and-delegate';
 import { ChooseDelegatedStackingAmountStep } from './components/choose-delegated-stacking-amount';
 import { ChooseDelegateeStxAddressStep } from './components/choose-delegatee-stx-address';
 import { ChooseMembershipDurationStep } from './components/choose-membership-duration';
-import { selectPoxInfo } from '@store/stacking';
-import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
 
 enum DelegateStep {
   ChooseDelegateeAddress = 'ChooseDelegateeAddress',
@@ -62,8 +63,8 @@ export const StackingDelegation: FC = () => {
 
   const durationValue = useMemo(() => {
     if (delegationType === 'indefinite') return 'Indefinite';
-    if (delegationType === 'limited')
-      return `${String(durationInCycles)} cycle${durationInCycles !== 1 ? 's' : ''}`;
+    if (delegationType === 'limited' && durationInCycles !== null)
+      return formatCycles(durationInCycles);
     return;
   }, [delegationType, durationInCycles]);
 

@@ -49,7 +49,7 @@ export const TitleBar: FC = () => {
           {isNewerReleaseAvailable && latestRelease && (
             <UpdateAvailableButton
               windowState={winState}
-              onClick={() => openExternalLink(latestRelease.html_url)}
+              onClick={() => openExternalLink('https://www.hiro.so/wallet/install-desktop')}
             />
           )}
           <Flex alignItems="center" ml="base">

@@ -11,7 +11,13 @@ export const Onboarding: React.FC<FlexProps> = ({ children, ...props }) => {
       m="0 auto"
       {...props}
     >
-      <Flex py="extra-loose" minHeight="min-content" flexDirection="row" alignItems="center">
+      <Flex
+        py="extra-loose"
+        height="calc(100% - 44px)"
+        minHeight="min-content"
+        flexDirection="row"
+        alignItems="center"
+      >
         <Box width="100%">{children}</Box>
       </Flex>
     </Flex>

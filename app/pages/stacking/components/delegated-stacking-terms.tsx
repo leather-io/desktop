@@ -19,15 +19,15 @@ export const DelegatedStackingTerms: FC = () => (
         <ClockIcon />
       </Box>
       <Text>
-        Your delegation service can lock your STX for up to 12 cycles, unless you've specified a
-        cycle limit. You can revoke anytime, but your funds will be locked until all cycles finish.
+        Your pool can lock your STX for up to 12 cycles, unless you've specified a cycle limit. You
+        can revoke anytime, but your funds will be locked until all cycles finish.
       </Text>
     </Flex>
     <Flex alignItems="start" mt="base-loose">
       <Box mr="base-tight" mt="4px">
         <ExclamationMarkCircleIcon width="16px" />
       </Box>
-      <Text>Make sure you’ve researched and trust the delegation service</Text>
+      <Text>Make sure you’ve researched and trust the pool</Text>
     </Flex>
   </Box>
 );

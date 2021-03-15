@@ -54,7 +54,7 @@ export const RestoreWallet: React.FC = () => {
     }
 
     if (!validateMnemonic(parsedMnemonic)) {
-      setError('Not a valid bip39 mnemonic');
+      setError('bip39error');
       return;
     }
 
@@ -95,16 +95,29 @@ export const RestoreWallet: React.FC = () => {
         onChange={handleMnemonicInput}
         as="textarea"
         mt="base-tight"
-        minHeight="90px"
+        minHeight="110px"
         placeholder="apple bounce ladder..."
         style={{
           resize: 'none',
           border: error ? '2px solid #D4001A' : '',
         }}
       />
-      {error && (
+      {error && error !== 'bip39error' && (
         <ErrorLabel>
           <ErrorText>{error}</ErrorText>
+        </ErrorLabel>
+      )}
+      {error && error === 'bip39error' && (
+        <ErrorLabel>
+          <ErrorText>
+            Your Secret Key is not BIP-39 compliant.{' '}
+            <ExternalLink
+              display="inline-block"
+              href="https://www.hiro.so/questions/what-are-secret-keys-and-how-do-they-work#Secret%20Keys%20must%20be%20BIP39%20compatible"
+            >
+              Learn more
+            </ExternalLink>
+          </ErrorText>
         </ErrorLabel>
       )}
       <OnboardingButton mt="loose" type="submit" mode="secondary">

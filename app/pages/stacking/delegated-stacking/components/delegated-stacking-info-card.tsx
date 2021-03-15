@@ -50,7 +50,10 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
             <Text textStyle="body.large.medium" mr="tight">
               Pool address
             </Text>
-            <ExplainerTooltip>This will be provided to you by your chosen pool</ExplainerTooltip>
+            <ExplainerTooltip>
+              This address is provided to you by your chosen pool for Stacking delegation
+              specifically.
+            </ExplainerTooltip>
           </Flex>
           <Text textAlign="right">{delegateeAddress ? truncateMiddle(delegateeAddress) : '—'}</Text>
         </Flex>

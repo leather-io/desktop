@@ -75,7 +75,7 @@ export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps>
             onChange={val => durationForm.setFieldValue('delegationType', val)}
           >
             The pool will have permission to lock your STX for this number of cycles. It is not
-            possible to be locked longer than the specified period.
+            possible to lock your STX longer than the specified period.
             {durationForm.values.delegationType === 'limited' && (
               <DurationCyclesForm
                 duration={durationForm.values.duration}

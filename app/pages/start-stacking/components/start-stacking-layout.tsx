@@ -41,7 +41,7 @@ export const StackingOptionCardTitle: FC<BoxProps> = props => (
 );
 
 export const StackingOptionCardAdvantage: FC<BoxProps> = props => (
-  <Text display="inline-bloc" fontSize="14px" color="ink.600" mt="tight" {...props} />
+  <Text display="inline-block" fontSize="14px" color="ink.600" mt="tight" {...props} />
 );
 
 export const StackingOptionCardButton: FC<ButtonProps> = props => (

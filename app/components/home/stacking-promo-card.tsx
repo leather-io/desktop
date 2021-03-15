@@ -36,7 +36,7 @@ export const StackingPromoCard: FC = memo(() => {
           Stacking
         </Text>
         <Text textStyle="display.large" mt="tight">
-          Have a chance to earn BTC when you lock your STX temporarily
+          Have a chance to earn BTC by locking your STX temporarily
         </Text>
         <Button
           mt="base"

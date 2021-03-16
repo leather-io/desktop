@@ -1,3 +1,13 @@
+## [4.1.1](https://github.com/blockstack/stacks-wallet/compare/v4.1.0...v4.1.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* add until-burn-ht arg to delegation form, closes [#651](https://github.com/blockstack/stacks-wallet/issues/651) ([1bc104d](https://github.com/blockstack/stacks-wallet/commit/1bc104d59f82e9726c8b46816c1ed43c9450253b))
+* address not displayed at same time as ledger, closes [#548](https://github.com/blockstack/stacks-wallet/issues/548) ([e651890](https://github.com/blockstack/stacks-wallet/commit/e651890cad62d11dc8dc32d31e4454c6f8002c32))
+* bip39 error, closes [#641](https://github.com/blockstack/stacks-wallet/issues/641) ([24231bc](https://github.com/blockstack/stacks-wallet/commit/24231bc195b649bc70a0a587609f22ff82e119c0))
+* stacking card handling of stacking & no funds, closes [#664](https://github.com/blockstack/stacks-wallet/issues/664) ([391239f](https://github.com/blockstack/stacks-wallet/commit/391239fb480e5447cededbaf0800b02d2dcf1c91))
+
 # [4.1.0](https://github.com/blockstack/stacks-wallet/compare/v4.0.4...v4.1.0) (2021-02-23)
 
 

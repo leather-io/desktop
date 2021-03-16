@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -92,7 +92,20 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -103,12 +116,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -128,38 +154,51 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, Flex, CheckmarkCircleIcon } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, Flex, Text, EncryptionIcon } from '@blockstack/ui';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { LedgerConnectStep } from '../../pages/onboarding';</span>
-<span class="cstat-no" title="statement not covered" >import { LedgerStepText } from './ledger-step-text';</span>
+<span class="cstat-no" title="statement not covered" >import { LedgerConnectStepRow, LedgerStepText } from './ledger-connect-layout';</span>
+<span class="cstat-no" title="statement not covered" >import { LedgerConnectStep } from '@hooks/use-prepare-ledger';</span>
 &nbsp;
 interface LedgerConnectInstructions {
   step: LedgerConnectStep;
   action: string;
+  isLocked: boolean;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >LedgerConnectInstructions: FC&lt;LedgerConnectInstructions&gt; = <span class="fstat-no" title="function not covered" >({</span> step, action }) =&gt; {</span>
-  const hasConnected = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tep: LedgerConnectStep) =&gt; <span class="cstat-no" title="statement not covered" >step &gt; LedgerConnectStep.Disconnected;</span></span>
-  const hasOpenedApp = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tep: LedgerConnectStep) =&gt; <span class="cstat-no" title="statement not covered" >step &gt; LedgerConnectStep.ConnectedAppClosed;</span></span>
-  const hasAddress = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tep: LedgerConnectStep) =&gt; <span class="cstat-no" title="statement not covered" >step === LedgerConnectStep.HasAddress;</span></span>
+const hasConnected = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tep: LedgerConnectStep) =&gt; <span class="cstat-no" title="statement not covered" >step &gt; LedgerConnectStep.Disconnected;</span></span>
+const hasOpenedApp = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tep: LedgerConnectStep) =&gt; <span class="cstat-no" title="statement not covered" >step &gt; LedgerConnectStep.ConnectedAppClosed;</span></span>
+const hasAddress = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tep: LedgerConnectStep) =&gt; <span class="cstat-no" title="statement not covered" >step === LedgerConnectStep.ActionComplete;</span></span>
 &nbsp;
+export const <span class="cstat-no" title="statement not covered" >LedgerConnectInstructions: FC&lt;LedgerConnectInstructions&gt; = <span class="fstat-no" title="function not covered" >props </span>=&gt; {</span>
+  const { step, action, isLocked } = <span class="cstat-no" title="statement not covered" >props;</span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Box border="1px solid #F0F0F5" mt="extra-loose" borderRadius="8px"&gt;
-      &lt;Flex height="56px" alignItems="center" px="extra-loose" borderBottom="1px solid #F0F0F5"&gt;
-        &lt;LedgerStepText step={LedgerConnectStep.Disconnected}&gt;Connect your Ledger&lt;/LedgerStepText&gt;
-        {hasConnected(step) &amp;&amp; &lt;CheckmarkCircleIcon color="blue" size="16px" ml="tight" /&gt;}
-      &lt;/Flex&gt;
-      &lt;Flex height="56px" alignItems="center" px="extra-loose" borderBottom="1px solid #F0F0F5"&gt;
-        &lt;LedgerStepText step={LedgerConnectStep.ConnectedAppClosed}&gt;
-          Open the Stacks app
-        &lt;/LedgerStepText&gt;
-        {hasOpenedApp(step) &amp;&amp; &lt;CheckmarkCircleIcon color="blue" size="16px" ml="tight" /&gt;}
-      &lt;/Flex&gt;
-      &lt;Flex height="56px" alignItems="center" px="extra-loose"&gt;
-        &lt;LedgerStepText step={LedgerConnectStep.ConnectedAppOpen}&gt;{action}&lt;/LedgerStepText&gt;
-        {hasAddress(step) &amp;&amp; &lt;CheckmarkCircleIcon color="blue" size="16px" ml="tight" /&gt;}
-      &lt;/Flex&gt;
-    &lt;/Box&gt;
+    &lt;&gt;
+      &lt;Box border="1px solid #F0F0F5" mt="extra-loose" borderRadius="8px"&gt;
+        &lt;LedgerConnectStepRow isComplete={hasConnected(step)}&gt;
+          &lt;LedgerStepText step={LedgerConnectStep.Disconnected}&gt;Connect your Ledger&lt;/LedgerStepText&gt;
+        &lt;/LedgerConnectStepRow&gt;
+&nbsp;
+        &lt;LedgerConnectStepRow isComplete={hasOpenedApp(step)}&gt;
+          &lt;LedgerStepText step={LedgerConnectStep.ConnectedAppClosed}&gt;
+            Open the Stacks app
+          &lt;/LedgerStepText&gt;
+        &lt;/LedgerConnectStepRow&gt;
+&nbsp;
+        &lt;LedgerConnectStepRow isComplete={hasAddress(step)} isLast&gt;
+          &lt;LedgerStepText step={LedgerConnectStep.ConnectedAppOpen}&gt;{action}&lt;/LedgerStepText&gt;
+        &lt;/LedgerConnectStepRow&gt;
+      &lt;/Box&gt;
+&nbsp;
+      {isLocked &amp;&amp; (
+        &lt;Flex mt="base"&gt;
+          &lt;EncryptionIcon size="12px" mt="2px" color="ink.600" /&gt;
+          &lt;Text textStyle="caption" ml="extra-tight" color="ink.600"&gt;
+            Your Ledger device is locked. To continue, press a button your and device and enter your
+            PIN code.
+          &lt;/Text&gt;
+        &lt;/Flex&gt;
+      )}
+    &lt;/&gt;
   );
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -169,7 +208,7 @@ export const <span class="cstat-no" title="statement not covered" >LedgerConnect
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Mar 08 2021 12:30:57 GMT+0000 (Coordinated Universal Time)
+                at Tue Mar 16 2021 09:33:32 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

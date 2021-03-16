@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/utils/load-fonts.ts</title>
+    <title>Code coverage report for app/hooks/use-message-events.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">app/utils</a> load-fonts.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">app/hooks</a> use-message-events.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -76,30 +76,8 @@
 <a name='L17'></a><a href='#L17'>17</a>
 <a name='L18'></a><a href='#L18'>18</a>
 <a name='L19'></a><a href='#L19'>19</a>
-<a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L20'></a><a href='#L20'>20</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -107,30 +85,34 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import InterUiMedium from '../assets/fonts/Inter-Medium.woff2';</span>
-<span class="cstat-no" title="statement not covered" >import InterUiRegular from '../assets/fonts/Inter-Regular.woff2';</span>
-<span class="cstat-no" title="statement not covered" >import InterUiSemiBold from '../assets/fonts/Inter-SemiBold.woff2';</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useEffect, useState } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { Subject } from 'rxjs';</span>
 &nbsp;
-function <span class="fstat-no" title="function not covered" >getFontAssetPath(</span>name: string) {
-<span class="cstat-no" title="statement not covered" >  return `url(${name})`;</span>
-}
+export const <span class="cstat-no" title="statement not covered" >messages$ = new Subject&lt;any&gt;();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export a</span>sync function <span class="fstat-no" title="function not covered" >loadFonts(</span>): Promise&lt;void&gt; {
-  const interRegular = <span class="cstat-no" title="statement not covered" >new FontFace('Inter', getFontAssetPath(InterUiRegular), {</span>
-    weight: '400',
-  });
-  const interMedium = <span class="cstat-no" title="statement not covered" >new FontFace('Inter', getFontAssetPath(InterUiMedium), {</span>
-    weight: '500',
-  });
-  const interSemiBold = <span class="cstat-no" title="statement not covered" >new FontFace('Inter', getFontAssetPath(InterUiSemiBold), {</span>
-    weight: '600',
-  });
+const handler = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>: MessageEvent) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  if (e.origin !== 'file://' &amp;&amp; e.source !== window) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >  messages$.next(e.data);</span>
+};
+<span class="cstat-no" title="statement not covered" >window.addEventListener('message', handler);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  await Promise.all([interRegular.load(), interMedium.load(), interSemiBold.load()]);</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  document.fonts.add(interRegular);</span>
-<span class="cstat-no" title="statement not covered" >  document.fonts.add(interMedium);</span>
-<span class="cstat-no" title="statement not covered" >  document.fonts.add(interSemiBold);</span>
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seMessageEvents(</span>) {
+  const [message, setMessage] = <span class="cstat-no" title="statement not covered" >useState&lt;unknown&gt;();</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+    const sub = <span class="cstat-no" title="statement not covered" >messages$.subscribe(<span class="fstat-no" title="function not covered" >message </span>=&gt; <span class="cstat-no" title="statement not covered" >setMessage(message))</span>;</span>
+<span class="cstat-no" title="statement not covered" >    return sub.unsubscribe;</span>
+  }, []);
+<span class="cstat-no" title="statement not covered" >  return { message };</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -139,7 +121,7 @@ function <span class="fstat-no" title="function not covered" >getFontAssetPath(<
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Mar 08 2021 12:30:57 GMT+0000 (Coordinated Universal Time)
+                at Tue Mar 16 2021 09:33:32 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

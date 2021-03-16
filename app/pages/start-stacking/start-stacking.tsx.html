@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
@@ -149,7 +149,15 @@
 <a name='L90'></a><a href='#L90'>90</a>
 <a name='L91'></a><a href='#L91'>91</a>
 <a name='L92'></a><a href='#L92'>92</a>
-<a name='L93'></a><a href='#L93'>93</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -170,17 +178,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,6 +191,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,6 +223,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -242,7 +258,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, Text } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, Flex, Text } from '@blockstack/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { ExternalLink } from '@components/external-link';</span>
 <span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router-dom';</span>
 &nbsp;
@@ -262,6 +278,7 @@ import { RootState } from '@store/index';
   StackingOptionCardAdvantage as OptionBenefit,
   InsufficientStackingBalanceWarning,
 } from './components/start-stacking-layout';
+<span class="cstat-no" title="statement not covered" >import { ExplainerTooltip } from '@components/tooltip';</span>
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >ChooseStackingMethod: FC = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
   const history = <span class="cstat-no" title="statement not covered" >useHistory();</span>
@@ -279,11 +296,11 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Layout&gt;
       &lt;Text textStyle="display.large" fontSize="32px" mt="tight" display="block" textAlign="center"&gt;
-        Start stacking
+        Start Stacking
       &lt;/Text&gt;
       &lt;Text mt="base" color="ink.600" maxWidth="480px"&gt;
-        Lock your STX to support the network. As a reward, you’ll earn Bitcoin that miners transfer
-        as part of Proof of Transfer.
+        Lock your STX to support the network. As a reward, you’ll have the chance to earn BTC that
+        miners transfer as part of Proof-of-Transfer (PoX).
       &lt;/Text&gt;
       &lt;ExternalLink
         href="https://www.stacks.co/stacking-and-stx"
@@ -291,18 +308,18 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
         mt="base-tight"
         color="blue"
       &gt;
-        Learn more about stacking
+        Learn more about Stacking
       &lt;/ExternalLink&gt;
 &nbsp;
       &lt;CardContainer&gt;
         &lt;Card&gt;
-          &lt;Title&gt;Stack by yourself&lt;/Title&gt;
-          &lt;OptionBenefit&gt;Interact with the contract directly&lt;/OptionBenefit&gt;
+          &lt;Title&gt;Stack on your own&lt;/Title&gt;
+          &lt;OptionBenefit&gt;Lock your STX with the PoX contract directly&lt;/OptionBenefit&gt;
           &lt;OptionBenefit&gt;
-            Minimum required to stack{' '}
+            Minimum required to stack is{' '}
             {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
           &lt;/OptionBenefit&gt;
-          &lt;OptionBenefit&gt;You choose a set duration&lt;/OptionBenefit&gt;
+          &lt;OptionBenefit&gt;Choose a set number of cycles&lt;/OptionBenefit&gt;
           &lt;Flex alignItems="center"&gt;
             &lt;OptionButton
               onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >history.push(routes.STACKING)}</span>
@@ -315,10 +332,17 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
         &lt;/Card&gt;
 &nbsp;
         &lt;Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}&gt;
-          &lt;Title&gt;Delegate&lt;/Title&gt;
-          &lt;OptionBenefit&gt;A service, or delegatee, stacks on your behalf&lt;/OptionBenefit&gt;
-          &lt;OptionBenefit&gt;Stack with small sums&lt;/OptionBenefit&gt;
-          &lt;OptionBenefit&gt;Indefinite until you cancel&lt;/OptionBenefit&gt;
+          &lt;Title&gt;Stack with others&lt;/Title&gt;
+          &lt;OptionBenefit&gt;Delegate to a pool that will lock your STX with others&lt;/OptionBenefit&gt;
+          &lt;Flex flexDirection="row" alignItems="center"&gt;
+            &lt;OptionBenefit&gt;No minimum required by the protocol&lt;/OptionBenefit&gt;
+            &lt;Box ml="extra-tight" mt="tight"&gt;
+              &lt;ExplainerTooltip&gt;
+                Your chosen pool may set their own minimum amount to participate
+              &lt;/ExplainerTooltip&gt;
+            &lt;/Box&gt;
+          &lt;/Flex&gt;
+          &lt;OptionBenefit&gt;Choose an indefinite or limited number of cycles&lt;/OptionBenefit&gt;
           &lt;Flex alignItems="center"&gt;
             &lt;OptionButton
               onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >history.push(routes.DELEGATED_STACKING)}</span>
@@ -340,7 +364,7 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Mar 08 2021 12:30:57 GMT+0000 (Coordinated Universal Time)
+                at Tue Mar 16 2021 09:33:32 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

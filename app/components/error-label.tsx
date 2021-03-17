@@ -12,6 +12,6 @@ export const ErrorLabel: React.FC<ErrorLabelProps> = ({ children, size = 'sm', .
     <Box mr={2} position="relative" top={{ sm: '1px', md: '4px' }[size]}>
       <ExclamationMark />
     </Box>
-    <Box mr={5}>{children}</Box>
+    <Box>{children}</Box>
   </Flex>
 );

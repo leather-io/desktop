@@ -15,19 +15,17 @@ export function useTransactionList() {
     pendingTxs: selectPendingTransactions(state),
   }));
 
-  const focusedTxIdRef = useRef<string | null>(null);
-  const txDomNodeRefMap = useRef<Record<string, HTMLButtonElement>>({});
-
   const { mempoolTxs } = useMempool();
   const txIdEquals = useMemo(() => R.eqBy<MempoolTransaction>(tx => tx.tx_id), []);
 
-  const dedupedPendingTxs = useMemo(
-    () =>
-      R.uniqWith(txIdEquals, [...pendingTxs, ...mempoolTxs]).filter(
-        mempoolTx => !txs.map(tx => tx.tx_id).includes(mempoolTx.tx_id)
-      ),
-    [txIdEquals, pendingTxs, mempoolTxs, txs]
-  );
+  const dedupedPendingTxs = useMemo(() => {
+    return R.uniqWith(txIdEquals, [...pendingTxs, ...mempoolTxs]).filter(
+      mempoolTx => !txs.map(tx => tx.tx_id).includes(mempoolTx.tx_id)
+    );
+  }, [txIdEquals, pendingTxs, mempoolTxs, txs]);
+
+  const focusedTxIdRef = useRef<string | null>(null);
+  const txDomNodeRefMap = useRef<Record<string, HTMLButtonElement>>({});
 
   const focusTxDomNode = useCallback(
     (shift: (i: number) => number) => {

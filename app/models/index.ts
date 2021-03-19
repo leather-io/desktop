@@ -2,6 +2,12 @@ export type WindowActiveState = 'focused' | 'blurred';
 
 export type DelegationType = 'indefinite' | 'limited';
 
+export enum ApiResource {
+  Mempool = 'mempool',
+  Nonce = 'nonce',
+  DelegationStatus = 'delegation-status',
+}
+
 declare global {
   const CONFIG: {
     NODE_ENV: 'development' | 'production';

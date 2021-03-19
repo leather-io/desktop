@@ -15,34 +15,34 @@ import { RootState } from '@store/index';
 import { TitleBar } from '@components/title-bar/title-bar';
 import { selectAddress } from '@store/keys';
 import { safeAwait } from '@utils/safe-await';
-import { Api } from '@api/api';
-import { selectActiveNodeApi } from '@store/stacks-node';
 import { useInterval } from '@hooks/use-interval';
 import { watchContractExecution } from '@api/watch-contract-execution';
-import { useDelegationStatus } from '@hooks/use-delegation-status';
 import {
   fetchBlockTimeInfo,
   fetchCoreDetails,
   fetchStackerInfo,
   fetchStackingInfo,
   removeStackingTx,
+  selectPoxInfo,
   selectActiveStackingTxId,
 } from '@store/stacking';
-import { SWRConfig, mutate } from 'swr';
-import { isDelegatedStackingTx, isRevokingDelegationTx, isDelegateStxTx } from '../utils/tx-utils';
-import { selectPoxInfo } from '../store/stacking/stacking.reducer';
+import { mutate } from 'swr';
+import { isDelegatedStackingTx, isRevokingDelegationTx, isDelegateStxTx } from '@utils/tx-utils';
+
+import { useApi } from '@hooks/use-api';
+import { useDelegationStatus } from '@hooks/use-delegation-status';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
+  const api = useApi();
 
-  const { address, activeNode, activeStackingTx, poxInfo } = useSelector((state: RootState) => ({
+  const { address, activeStackingTx, poxInfo } = useSelector((state: RootState) => ({
     address: selectAddress(state),
-    activeNode: selectActiveNodeApi(state),
     activeStackingTx: selectActiveStackingTxId(state),
     poxInfo: selectPoxInfo(state),
   }));
 
-  const { update: updateDelegationStatus } = useDelegationStatus();
+  const delegationStatus = useDelegationStatus();
 
   const initAppWithStxAddressInfo = useCallback(() => {
     if (!address) return;
@@ -68,7 +68,7 @@ export const App: FC = ({ children }) => {
       dispatch(fetchBlockTimeInfo());
       dispatch(fetchStackerInfo(address));
     }
-  }, [address, activeNode, initAppWithStxAddressInfo, dispatch]);
+  }, [address, api, initAppWithStxAddressInfo, dispatch]);
 
   useInterval(() => {
     if (address) {
@@ -81,7 +81,7 @@ export const App: FC = ({ children }) => {
   useEffect(() => {
     async function run() {
       if (!activeStackingTx || !address) return;
-      await safeAwait(watchContractExecution({ nodeUrl: activeNode.url, txId: activeStackingTx }));
+      await safeAwait(watchContractExecution({ nodeUrl: api.baseUrl, txId: activeStackingTx }));
       dispatch(fetchStackerInfo(address));
       setTimeout(() => dispatch(removeStackingTx()), 2000);
     }
@@ -91,7 +91,7 @@ export const App: FC = ({ children }) => {
   }, [activeStackingTx]);
 
   useEffect(() => {
-    const wsUrl = new URL(activeNode.url);
+    const wsUrl = new URL(api.baseUrl);
     wsUrl.protocol = 'ws:';
     let client: null | StacksApiWebSocketClient;
 
@@ -103,31 +103,31 @@ export const App: FC = ({ children }) => {
         dispatch(updateAddressBalance({ address, balance }));
       });
       await client.subscribeAddressTransactions(address, async ({ tx_id }) => {
-        const newTx = await new Api(activeNode.url).getTxDetails(tx_id);
+        const newTx = await api.getTxDetails(tx_id);
         if (
           isDelegatedStackingTx(newTx.data, poxInfo?.contract_id) ||
           isRevokingDelegationTx(newTx.data, poxInfo?.contract_id) ||
           isDelegateStxTx(newTx.data, poxInfo?.contract_id)
         ) {
-          void updateDelegationStatus();
+          await safeAwait(delegationStatus.refetch());
         }
         if (newTx.data.tx_status !== 'success') return;
         dispatch(addNewTransaction(newTx.data));
         dispatch(pendingTransactionSuccessful(newTx.data));
       });
     }
-
     void run();
     return () => {
       if (client) client.webSocket.close();
     };
-  }, [address, dispatch, activeNode.url, updateDelegationStatus, poxInfo?.contract_id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, dispatch, api, poxInfo?.contract_id]);
 
   return (
-    <SWRConfig value={{ refreshInterval: DEFAULT_POLLING_INTERVAL }}>
+    <>
       <TitleBar />
       {children}
       <VersionInfo />
-    </SWRConfig>
+    </>
   );
 };

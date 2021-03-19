@@ -1,33 +1,26 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 
-import { Api } from '@api/api';
-import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
-import { selectActiveNodeApi } from '@store/stacks-node';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { useApi } from './use-api';
+import { ApiResource } from '@models';
 
-interface UseMempool {
-  mempoolTxs: MempoolTransaction[];
-  outboundMempoolTxs: MempoolTransaction[];
-}
-export function useMempool(): UseMempool {
-  const { address, activeNode } = useSelector((state: RootState) => ({
-    address: selectAddress(state),
-    activeNode: selectActiveNodeApi(state),
-  }));
+export function useMempool() {
+  const api = useApi();
+  const address = useSelector(selectAddress);
 
-  const mempoolFetcher = useCallback(
-    () => new Api(activeNode.url).getMempoolTransactions(address || ''),
-    [activeNode.url, address]
-  );
-  const { data: mempoolTxs } = useSWR('mempool', mempoolFetcher);
+  const mempoolFetcher = useCallback(() => api.getMempoolTransactions(address || ''), [
+    api,
+    address,
+  ]);
+  const { data: mempoolTxs, refetch } = useQuery(ApiResource.Mempool, mempoolFetcher);
 
   const outboundMempoolTxs = mempoolTxs?.filter(tx => tx.sender_address === address);
 
   return {
     mempoolTxs: mempoolTxs ?? [],
     outboundMempoolTxs: outboundMempoolTxs ?? [],
+    refetch,
   };
 }

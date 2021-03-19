@@ -1,19 +1,21 @@
-import { useCallback } from 'react';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 import { cvToHex, standardPrincipalCV, tupleCV } from '@stacks/transactions';
 
 import { useApi } from './use-api';
+import { ApiResource } from '@models';
 
 export function useFetchDelegationStatus(contractId?: string, address?: string) {
   const api = useApi();
 
-  const delegationFetcher = useCallback(
-    (_, contractId, address) => {
-      if (!contractId || !address) throw new Error('values not defined');
-      const [contractAddress, contractName] = contractId.split('.');
+  const { data, refetch } = useQuery(
+    [ApiResource.DelegationStatus, contractId, address],
+    async ({ queryKey }) => {
+      const [, innerContractId, innerAddress] = queryKey;
+      if (!contractId || !address) return;
+      const [contractAddress, contractName] = innerContractId.split('.');
       const key = cvToHex(
         tupleCV({
-          stacker: standardPrincipalCV(address),
+          stacker: standardPrincipalCV(innerAddress),
         })
       );
       return api.getContractDataMapEntry({
@@ -21,13 +23,11 @@ export function useFetchDelegationStatus(contractId?: string, address?: string) 
         contractName,
         key,
         mapName: 'delegation-state',
-      });
+      }) as Promise<{ data: string }>;
     },
-    [api]
+    {
+      refetchInterval: 60_000,
+    }
   );
-  const { data: delegationStatus, mutate } = useSWR(
-    ['delegation-status', contractId, address],
-    delegationFetcher
-  );
-  return { delegationStatus, mutate };
+  return { refetch, delegationStatus: data };
 }

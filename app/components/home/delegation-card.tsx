@@ -3,11 +3,14 @@ import { Flex, Box, Text, Button } from '@blockstack/ui';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useDelegationStatus } from '@hooks/use-delegation-status';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useBalance } from '@hooks/use-balance';
 import { selectHasPendingRevokingDelegationCall } from '@store/stacking';
 import { truncateMiddle } from '@utils/tx-utils';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { DelegatedIcon } from '@components/icons/delegated-icon';
 import { homeActions } from '@store/home/home.reducer';
+import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 
@@ -15,6 +18,13 @@ export const DelegationCard: FC = () => {
   const dispatch = useDispatch();
   const delegationStatus = useDelegationStatus();
   const hasPendingRevokeCall = useSelector(selectHasPendingRevokingDelegationCall);
+
+  const balance = useBalance();
+  const calculateFee = useCalculateFee();
+
+  const hasSufficientBalanceToCoverFee = balance.availableBalance.isGreaterThanOrEqualTo(
+    calculateFee(REVOKE_DELEGATION_TX_SIZE_BYTES)
+  );
 
   if (!delegationStatus.delegated) return null;
 
@@ -48,6 +58,36 @@ export const DelegationCard: FC = () => {
               {truncateMiddle(delegationStatus.delegatedTo, 6)}
             </Text>
           </Flex>
+          <Box mr="2px">
+            <Flex flexDirection="column" alignItems="center" mt="base-tight" mb="base-loose">
+              <Text textStyle="caption" color="ink.600">
+                Delegated to
+              </Text>
+              <Text fontSize="13px" mt="tight" color="ink">
+                {truncateMiddle(delegationStatus.delegatedTo, 6)}
+              </Text>
+            </Flex>
+          </Box>
+        </Box>
+        <Box borderTop="1px solid #F0F0F2" py="extra-tight" px="extra-tight">
+          {hasSufficientBalanceToCoverFee ? (
+            <Button
+              variant="unstyled"
+              textStyle="body.small"
+              style={{ color: '#747478' }}
+              isDisabled={hasPendingRevokeCall || !hasSufficientBalanceToCoverFee}
+              onClick={() => dispatch(homeActions.openRevokeDelegationModal())}
+            >
+              {hasPendingRevokeCall ? 'Currently revoking STX' : 'Revoke delegation'}
+            </Button>
+          ) : (
+            <ErrorLabel ml="tight" mb="base-tight">
+              <ErrorText>
+                You don't have sufficient STX to cover the transaction fee needed to revoke your
+                delegation.
+              </ErrorText>
+            </ErrorLabel>
+          )}
         </Box>
       </Box>
       {delegationStatus.deadDelegation && (

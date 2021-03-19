@@ -6,6 +6,7 @@ export enum ApiResource {
   Mempool = 'mempool',
   Nonce = 'nonce',
   DelegationStatus = 'delegation-status',
+  FeeRate = 'fee-rate',
 }
 
 declare global {

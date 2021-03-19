@@ -1,7 +1,5 @@
-import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import BigNumber from 'bignumber.js';
-import { mutate } from 'swr';
 import BN from 'bn.js';
 import { cvToString, hexToCV, ClarityType, cvToJSON } from '@stacks/transactions';
 
@@ -17,13 +15,13 @@ interface DelegatedTrueStatus {
   amountMicroStx: BigNumber;
   untilBurnHeight: BigNumber;
   deadDelegation: boolean;
-  update(): Promise<void>;
   delegatedTo: string;
+  refetch(): Promise<any>;
 }
 
 interface DelegatedFalseStatus {
   delegated: false;
-  update(): Promise<void>;
+  refetch(): Promise<any>;
 }
 
 type DelegatedStatus = DelegatedTrueStatus | DelegatedFalseStatus;
@@ -35,14 +33,9 @@ export function useDelegationStatus(): DelegatedStatus {
     address: selectAddress(state),
   }));
 
-  const { delegationStatus } = useFetchDelegationStatus(poxInfo?.contract_id, address);
+  const { delegationStatus, refetch } = useFetchDelegationStatus(poxInfo?.contract_id, address);
 
-  const update = useCallback(() => mutate(['delegation-status', poxInfo?.contract_id, address]), [
-    poxInfo?.contract_id,
-    address,
-  ]);
-
-  if (!delegationStatus || !delegationStatus?.data) return { delegated: false, update };
+  if (!delegationStatus || !delegationStatus?.data) return { delegated: false, refetch };
   const resp = hexToCV(delegationStatus.data);
   if (resp.type === ClarityType.OptionalSome && resp.value.type === ClarityType.Tuple) {
     const data = resp.value.data;
@@ -65,8 +58,8 @@ export function useDelegationStatus(): DelegatedStatus {
       untilBurnHeight,
       deadDelegation,
       delegatedTo: cvToString(data['delegated-to']),
-      update,
+      refetch,
     };
   }
-  return { delegated: false, update };
+  return { delegated: false, refetch };
 }

@@ -6,17 +6,18 @@ import { useSelector } from 'react-redux';
 import routes from '@constants/routes.json';
 import abstractBtcChart from '../../assets/images/abstract-btc-chart.svg';
 import { selectHasPendingDelegateStxCall } from '@store/stacking';
-import { useDelegationStatus } from '@hooks/use-delegation-status';
+import { useFetchDelegationStatus } from '@hooks/use-fetch-delegation-status';
 
 export const StackingPromoCard: FC = memo(() => {
   const history = useHistory();
   const hasPendingDelegateStxCall = useSelector(selectHasPendingDelegateStxCall);
 
-  const { update } = useDelegationStatus();
+  const delegationStatus = useFetchDelegationStatus();
 
   useEffect(() => {
-    void update();
-  }, [hasPendingDelegateStxCall, update]);
+    void delegationStatus.refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasPendingDelegateStxCall]);
 
   return (
     <Box

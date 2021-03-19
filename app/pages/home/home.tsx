@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@blockstack/ui';
 
-import { Api } from '@api/api';
 import { openTxInExplorer } from '@utils/external-links';
 
 import { RootState } from '@store/index';
@@ -27,6 +26,7 @@ import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegati
 import { useDelegationStatus } from '@hooks/use-delegation-status';
 import { useTransactionList } from '@hooks/use-transaction-list';
 import { useBalance } from '@hooks/use-balance';
+import { useApi } from '@hooks/use-api';
 
 import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
@@ -45,6 +45,7 @@ import { HomeLayout } from './home-layout';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
+  const api = useApi();
 
   const { delegated: isDelegated } = useDelegationStatus();
   const { availableBalance } = useBalance();
@@ -119,9 +120,7 @@ export const Home: FC = () => {
       balance={availableBalance.toString() || null}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
-      onRequestTestnetStx={async ({ stacking }) =>
-        new Api(activeNode.url).getFaucetStx(address, stacking)
-      }
+      onRequestTestnetStx={async ({ stacking }) => api.getFaucetStx(address, stacking)}
     />
   );
 

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import BigNumber from 'bignumber.js';
 
@@ -8,6 +8,7 @@ import { selectAddress } from '@store/keys';
 
 import { useMempool } from '@hooks/use-mempool';
 import { useApi } from '@hooks/use-api';
+import { ApiResource } from '@models';
 
 export function useLatestNonce() {
   const { address } = useSelector((state: RootState) => ({
@@ -17,7 +18,7 @@ export function useLatestNonce() {
   const { outboundMempoolTxs } = useMempool();
 
   const nonceFetcher = useCallback(() => api.getNonce(address || ''), [api, address]);
-  const { data } = useSWR('nonce', nonceFetcher);
+  const { data } = useQuery(ApiResource.Nonce, nonceFetcher);
 
   if (!data) return { nonce: 0 };
 

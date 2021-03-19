@@ -7,7 +7,6 @@ import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api
 import { BigNumber } from 'bignumber.js';
 import { Modal } from '@blockstack/ui';
 import { useHistory } from 'react-router-dom';
-import { mutate } from 'swr';
 import {
   makeSTXTokenTransfer,
   MEMO_MAX_LENGTH_BYTES,
@@ -57,6 +56,9 @@ import { FailedBroadcastError } from './steps/failed-broadcast-error';
 import { PreviewTransaction } from './steps/preview-transaction';
 import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';
 import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
+import { useQueryClient } from 'react-query';
+import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
+import { useApi } from '@hooks/use-api';
 
 interface TxModalProps {
   balance: string;
@@ -75,7 +77,10 @@ type ModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
 export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
   const history = useHistory();
+  const stacksApi = useApi();
   useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
   const [step, setStep] = useState(TxModalStep.DescribeTx);
   const [fee, setFee] = useState(new BigNumber(0));
@@ -173,10 +178,11 @@ export const TransactionModal: FC<TxModalProps> = ({ balance, address }) => {
 
     const broadcastActions = {
       amount,
-      onBroadcastSuccess() {
+      async onBroadcastSuccess(txId: string) {
+        await watchForNewTxToAppear({ txId, nodeUrl: stacksApi.baseUrl });
+        await safeAwait(queryClient.refetchQueries(['mempool']));
         setIsDecrypting(false);
         closeModal();
-        void mutate('mempool');
       },
       onBroadcastFail: (error?: PostCoreNodeTransactionsError) => {
         setIsDecrypting(false);

@@ -36,7 +36,7 @@ export const GITHUB_ORG = 'blockstack';
 export const GITHUB_REPO = 'stacks-wallet';
 
 export const TREZOR_HELP_URL =
-  'https://www.blockstack.org/questions/how-can-i-use-my-trezor-device-with-the-stacks-wallet';
+  'https://www.hiro.so/questions/how-can-i-use-my-trezor-device-with-the-stacks-wallet';
 
 export const STACKING_ADDRESS_FORMAT_HELP_URL =
   'https://www.hiro.so/questions/what-form-of-btc-addresses-can-i-use-for-proof-of-transfer-rewards';
@@ -50,6 +50,8 @@ export const MIN_DELEGATED_STACKING_AMOUNT_USTX = 50_000_000;
 export const MAX_DELEGATED_STACKING_AMOUNT_USTX = stxToMicroStx(10_000_000_000);
 
 export const STX_TRANSFER_TX_SIZE_BYTES = 180;
+
+export const REVOKE_DELEGATION_TX_SIZE_BYTES = 165;
 
 export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
 

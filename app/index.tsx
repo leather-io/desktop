@@ -2,8 +2,21 @@ import React, { Fragment } from 'react';
 import { ThemeProvider, theme } from '@blockstack/ui';
 import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
+import { DefaultOptions, QueryClient, QueryClientProvider } from 'react-query';
 
 import { configureStore, history } from './store/configureStore';
+import { DEFAULT_POLLING_INTERVAL } from './constants';
+
+const config: DefaultOptions['queries'] = {
+  refetchInterval: DEFAULT_POLLING_INTERVAL,
+  keepPreviousData: true,
+  refetchOnWindowFocus: true,
+  staleTime: 30_000,
+};
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: config },
+});
 
 const { store, persistor } = configureStore();
 
@@ -14,9 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const Root = require('./pages/root').default;
   render(
     <ThemeProvider theme={theme}>
-      <AppContainer>
-        <Root store={store} persistor={persistor} history={history} />
-      </AppContainer>
+      <QueryClientProvider client={queryClient}>
+        <AppContainer>
+          <Root store={store} persistor={persistor} history={history} />
+        </AppContainer>
+      </QueryClientProvider>
     </ThemeProvider>,
     document.getElementById('root')
   );

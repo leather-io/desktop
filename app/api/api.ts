@@ -16,10 +16,22 @@ import {
   CoreNodeInfoResponse,
   NetworkBlockTimesResponse,
 } from '@blockstack/stacks-blockchain-api-types';
+import packageJson from '../../package.json';
+
+const defaultHeaders = [
+  { name: 'x-hiro-product', value: 'stacks-wallet-desktop' },
+  { name: 'x-hiro-version', value: packageJson.version },
+];
+
+defaultHeaders.forEach(({ name, value }) => (axios.defaults.headers.common[name] = value));
 
 export class Api {
   stacksApiConfig = new Configuration({
     basePath: this.baseUrl,
+    headers: defaultHeaders.reduce((acc: Record<string, string>, hdr) => {
+      acc[hdr.name] = hdr.value;
+      return acc;
+    }, {}),
   });
 
   accountsApi = new AccountsApi(this.stacksApiConfig);

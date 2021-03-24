@@ -65,8 +65,8 @@ export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps>
             onChange={val => durationForm.setFieldValue('delegationType', val)}
             isFirst
           >
-            The pool has indefinite permission to lock your STX for up to 12 cycles. Revoke manually
-            at any time to prevent further locks.
+            The pool has indefinite permission to lock your STX for up to 12 cycles at a time.
+            Revoke manually at any time to prevent further locks.
           </DurationSelectItem>
           <DurationSelectItem
             title="Limited"

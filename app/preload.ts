@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { contextBridge, ipcRenderer, shell } from 'electron';
 

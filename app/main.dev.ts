@@ -36,12 +36,12 @@ contextMenu({ showCopyImage: false, showSearchWithGoogle: false });
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
-  sourceMapSupport.install();
+  // const sourceMapSupport = require('source-map-support');
+  // sourceMapSupport.install();
 }
 
 if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-  require('electron-debug')();
+  // require('electron-debug')();
 }
 
 app.setPath('userData', getUserDataPath(app));
@@ -58,9 +58,9 @@ const installExtensions = () => {
 };
 
 const createWindow = async () => {
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
-  }
+  // if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+  //   await installExtensions();
+  // }
 
   // https://github.com/electron/electron/issues/22995
   session.defaultSession.setSpellCheckerDictionaryDownloadURL('https://00.00/');

@@ -44,9 +44,6 @@ if (process.env.NODE_ENV === 'production') {
   // sourceMapSupport.install();
 }
 
-if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-}
-
 app.setPath('userData', getUserDataPath(app));
 app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
 

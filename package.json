@@ -168,7 +168,7 @@
     "csstype": "3.0.5",
     "detect-port": "1.3.0",
     "electron": "12.0.2",
-    "electron-builder": "22.9.1",
+    "electron-builder": "22.10.5",
     "electron-devtools-installer": "3.0.0",
     "electron-notarize": "1.0.0",
     "electron-rebuild": "1.11.0",

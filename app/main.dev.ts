@@ -214,16 +214,7 @@ ipcMain.on(
       }
       return newItem.menu;
     });
-    const contextMenu = Menu.buildFromTemplate([
-      {
-        label: 'Copy',
-        submenu: copyMenu,
-      },
-    ]);
+    const contextMenu = Menu.buildFromTemplate(copyMenu);
     contextMenu.popup({ window: mainWindow?.getParentWindow() });
-    contextMenu.once('menu-will-close', () => {
-      // `destroy` call untyped
-      (contextMenu as any).destroy();
-    });
   }
 );

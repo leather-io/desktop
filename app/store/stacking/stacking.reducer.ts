@@ -22,7 +22,6 @@ import {
 import { stxToMicroStx } from '@utils/unit-convert';
 import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
 import { selectAddressBalance } from '@store/address';
-import BigNumber from 'bignumber.js';
 import { isRevokingDelegationTx, isDelegateStxTx } from '@utils/tx-utils';
 
 dayjs.extend(duration);
@@ -282,17 +281,6 @@ export const selectNextCycleInfo = createSelector(
     };
   }
 );
-
-// export const selectMeetsMinStackingThreshold = createSelector(
-//   selectAddressBalance,
-//   selectPoxInfo,
-//   (addressDetails, poxInfo) => {
-//     if (addressDetails === null || poxInfo === null) return false;
-//     return new BigNumber(addressDetails.balance).isGreaterThan(
-//       poxInfo.paddedMinimumStackingAmountMicroStx
-//     );
-//   }
-// );
 
 // `rejection_votes_left_required` not returned by API
 // eslint-disable-next-line @typescript-eslint/no-empty-function

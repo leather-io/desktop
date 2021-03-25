@@ -10,11 +10,15 @@ export function useMempool() {
   const api = useApi();
   const address = useSelector(selectAddress);
 
-  const mempoolFetcher = useCallback(() => api.getMempoolTransactions(address || ''), [
-    api,
-    address,
-  ]);
-  const { data: mempoolTxs, refetch } = useQuery(ApiResource.Mempool, mempoolFetcher);
+  const mempoolFetcher = useCallback(
+    ({ queryKey }) => {
+      const [, walletAddress] = queryKey;
+      if (!walletAddress) return;
+      return api.getMempoolTransactions(walletAddress);
+    },
+    [api]
+  );
+  const { data: mempoolTxs, refetch } = useQuery([ApiResource.Mempool, address], mempoolFetcher);
 
   const outboundMempoolTxs = mempoolTxs?.filter(tx => tx.sender_address === address);
 

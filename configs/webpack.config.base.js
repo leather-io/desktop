@@ -31,7 +31,7 @@ export default {
         test: /\.wasm$/,
         // Tells WebPack that this module should be included as
         // base64-encoded binary file and not as code
-        loaders: ['base64-loader'],
+        loader: 'base64-loader',
         // Disables WebPack's opinion where WebAssembly should be,
         // makes it think that it's not WebAssembly
         //
@@ -41,18 +41,18 @@ export default {
     ],
   },
 
-  node: {
-    __dirname: false,
-    fs: 'empty',
-    Buffer: false,
-    process: false,
-    child_process: 'empty',
-  },
+  // node: {
+  //   __dirname: false,
+  //   // fs: false,
+  //   Buffer: false,
+  //   process: false,
+  //   // child_process: false,
+  // },
 
   output: {
     path: path.join(__dirname, '..', 'app'),
     // https://github.com/webpack/webpack/issues/1114
-    // libraryTarget: 'commonjs2',
+    libraryTarget: 'commonjs2',
   },
 
   /**
@@ -65,7 +65,7 @@ export default {
   },
 
   optimization: {
-    namedModules: true,
+    // namedModules: true,
   },
 
   plugins: [

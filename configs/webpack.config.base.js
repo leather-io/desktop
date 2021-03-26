@@ -64,10 +64,6 @@ export default {
     plugins: [new TsconfigPathsPlugin()],
   },
 
-  optimization: {
-    // namedModules: true,
-  },
-
   plugins: [
     new ExtendedDefinePlugin({
       CONFIG: {

@@ -50,6 +50,7 @@ export default merge(baseConfig, {
       zlib: require.resolve('browserify-zlib'),
       assert: require.resolve('assert'),
       fs: false,
+      perf_hooks: false,
     },
   },
 

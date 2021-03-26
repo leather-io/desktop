@@ -17,7 +17,7 @@ const dist = path.join(__dirname, '..', 'dll');
 export default merge(baseConfig, {
   context: path.join(__dirname, '..'),
 
-  // devtool: 'eval',
+  devtool: 'eval',
 
   mode: 'development',
 
@@ -52,6 +52,7 @@ export default merge(baseConfig, {
       http: require.resolve('stream-http'),
       zlib: require.resolve('browserify-zlib'),
       fs: false,
+      perf_hooks: false,
     },
   },
 

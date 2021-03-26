@@ -15,6 +15,12 @@ if (process.env.NODE_ENV === 'development') {
   // Dynamically insert the DLL script in development env in the
   // renderer process
   scriptsToLoad.push('../dll/renderer.dev.dll.js');
+
+  //
+  // Electron 12 removed all commonjs access in renderer process
+  // Webpack-dev-server uses module, this stops an error from
+  // being thrown
+  contextBridge.exposeInMainWorld('module', {});
 }
 
 if (process.env.START_HOT) {

@@ -17,7 +17,7 @@ DeleteSourceMaps();
 
 // eslint-disable-next-line import/no-default-export
 export default merge(baseConfig, {
-  devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
+  // devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
 
   mode: 'production',
 
@@ -34,12 +34,22 @@ export default merge(baseConfig, {
     path: path.join(__dirname, '..', 'app/dist'),
     publicPath: './dist/',
     filename: 'renderer.prod.js',
-    libraryTarget: 'var',
+    // libraryTarget: 'var',
   },
 
   resolve: {
     alias: {
       'bn.js': path.join('./node_modules/bn.js'),
+    },
+    fallback: {
+      path: require.resolve('path-browserify'),
+      stream: require.resolve('stream-browserify'),
+      crypto: require.resolve('crypto-browserify'),
+      os: require.resolve('os-browserify/browser'),
+      http: require.resolve('stream-http'),
+      zlib: require.resolve('browserify-zlib'),
+      assert: require.resolve('assert'),
+      fs: false,
     },
   },
 

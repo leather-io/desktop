@@ -17,7 +17,7 @@ const dist = path.join(__dirname, '..', 'dll');
 export default merge(baseConfig, {
   context: path.join(__dirname, '..'),
 
-  devtool: 'eval',
+  // devtool: 'eval',
 
   mode: 'development',
 
@@ -40,6 +40,19 @@ export default merge(baseConfig, {
     path: dist,
     filename: '[name].dev.dll.js',
     libraryTarget: 'var',
+  },
+
+  resolve: {
+    fallback: {
+      path: require.resolve('path-browserify'),
+      stream: require.resolve('stream-browserify'),
+      crypto: require.resolve('crypto-browserify'),
+      os: require.resolve('os-browserify/browser'),
+      assert: require.resolve('assert'),
+      http: require.resolve('stream-http'),
+      zlib: require.resolve('browserify-zlib'),
+      fs: false,
+    },
   },
 
   plugins: [

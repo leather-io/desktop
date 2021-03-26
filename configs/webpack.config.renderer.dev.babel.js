@@ -109,6 +109,16 @@ export default merge(baseConfig, {
       'react-dom': '@hot-loader/react-dom',
       'bn.js': path.join('./node_modules/bn.js'),
     },
+    fallback: {
+      path: require.resolve('path-browserify'),
+      stream: require.resolve('stream-browserify'),
+      crypto: require.resolve('crypto-browserify'),
+      assert: require.resolve('assert'),
+      os: require.resolve('os-browserify/browser'),
+      http: require.resolve('stream-http'),
+      zlib: require.resolve('browserify-zlib'),
+      fs: false,
+    },
   },
   plugins: [
     requiredByDLLConfig

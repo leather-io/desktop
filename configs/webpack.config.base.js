@@ -9,9 +9,21 @@ import ExtendedDefinePlugin from 'extended-define-webpack-plugin';
 
 import { dependencies as externals } from '../app/package.json';
 
+export const defaultNodePolyfillsForRenderer = {
+  path: require.resolve('path-browserify'),
+  stream: require.resolve('stream-browserify'),
+  crypto: require.resolve('crypto-browserify'),
+  os: require.resolve('os-browserify/browser'),
+  http: require.resolve('stream-http'),
+  zlib: require.resolve('browserify-zlib'),
+  assert: require.resolve('assert'),
+  fs: false,
+  perf_hooks: false,
+};
+
 // eslint-disable-next-line import/no-default-export
 export default {
-  target: 'web',
+  // target: 'web',
 
   module: {
     noParse: [/\.wasm$/],

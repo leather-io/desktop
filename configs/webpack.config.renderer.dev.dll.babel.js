@@ -5,7 +5,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import { merge } from 'webpack-merge';
-import baseConfig from './webpack.config.base';
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
 import { dependencies } from '../package.json';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 
@@ -43,17 +43,7 @@ export default merge(baseConfig, {
   },
 
   resolve: {
-    fallback: {
-      path: require.resolve('path-browserify'),
-      stream: require.resolve('stream-browserify'),
-      crypto: require.resolve('crypto-browserify'),
-      os: require.resolve('os-browserify/browser'),
-      assert: require.resolve('assert'),
-      http: require.resolve('stream-http'),
-      zlib: require.resolve('browserify-zlib'),
-      fs: false,
-      perf_hooks: false,
-    },
+    fallback: defaultNodePolyfillsForRenderer,
   },
 
   plugins: [

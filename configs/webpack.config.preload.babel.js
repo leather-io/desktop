@@ -9,16 +9,15 @@ import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
+
+import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
 import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
 
-// CheckNodeEnv('production');
-// DeleteSourceMaps();
+import baseConfig from './webpack.config.base';
 
 // eslint-disable-next-line import/no-default-export
 export default merge(baseConfig, {
-  mode: 'production',
+  mode: process.env.NODE_ENV,
 
   externals: ['@ledgerhq/hw-transport-node-hid', 'argon2-browser'],
 
@@ -33,15 +32,6 @@ export default merge(baseConfig, {
   },
 
   plugins: [
-    /**
-     * Create global constants which can be configured at compile time.
-     *
-     * Useful for allowing different behaviour between development builds and
-     * release builds
-     *
-     * NODE_ENV should be production so that modules do not perform certain
-     * development checks
-     */
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
       DEBUG_PROD: false,

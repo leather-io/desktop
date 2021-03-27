@@ -14,8 +14,9 @@ import { merge } from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 
+import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
+
 import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment

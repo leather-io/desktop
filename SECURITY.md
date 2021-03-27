@@ -9,6 +9,4 @@
 
 ## Reporting a Vulnerability
 
-Hiro Systems operates a bug bounty programme on [HackerOne](https://hackerone.com/blockstack?type=team)
-
-[Read more about the programme on our blog.](https://forum.stacks.org/t/stacks-2-0-testnet-bounty-program-find-bugs-build-tools/10888)
+Hiro Systems operates a bug bounty programme on [HackerOne](https://hackerone.com/hiro)

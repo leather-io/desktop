@@ -12,9 +12,10 @@ import chalk from 'chalk';
 import CopyPlugin from 'copy-webpack-plugin';
 import { merge } from 'webpack-merge';
 import { spawn, execSync } from 'child_process';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
+import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment
@@ -129,17 +130,7 @@ export default merge(baseConfig, {
       'react-dom': '@hot-loader/react-dom',
       'bn.js': path.join('./node_modules/bn.js'),
     },
-    fallback: {
-      path: require.resolve('path-browserify'),
-      stream: require.resolve('stream-browserify'),
-      crypto: require.resolve('crypto-browserify'),
-      assert: require.resolve('assert'),
-      os: require.resolve('os-browserify/browser'),
-      http: require.resolve('stream-http'),
-      zlib: require.resolve('browserify-zlib'),
-      fs: false,
-      perf_hooks: false,
-    },
+    fallback: defaultNodePolyfillsForRenderer,
   },
   plugins: [
     requiredByDLLConfig

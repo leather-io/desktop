@@ -8,7 +8,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import baseConfig from './webpack.config.base';
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
 
@@ -41,17 +41,7 @@ export default merge(baseConfig, {
     alias: {
       'bn.js': path.join('./node_modules/bn.js'),
     },
-    fallback: {
-      path: require.resolve('path-browserify'),
-      stream: require.resolve('stream-browserify'),
-      crypto: require.resolve('crypto-browserify'),
-      os: require.resolve('os-browserify/browser'),
-      http: require.resolve('stream-http'),
-      zlib: require.resolve('browserify-zlib'),
-      assert: require.resolve('assert'),
-      fs: false,
-      perf_hooks: false,
-    },
+    fallback: defaultNodePolyfillsForRenderer,
   },
 
   module: {

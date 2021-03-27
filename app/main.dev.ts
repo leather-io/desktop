@@ -140,8 +140,11 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
-  session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => {
-    callback(false);
+  // Disable all wallet permissions
+  // eslint-disable-next-line no-warning-comments
+  // https://electronjs.org/docs/tutorial/security#4-handle-session-permission-requests-from-remote-content
+  session.defaultSession.setPermissionRequestHandler((_webContents, _permission, permCallback) => {
+    permCallback(false);
   });
 
   registerLedgerListeners(mainWindow.webContents);
@@ -152,13 +155,15 @@ const createWindow = async () => {
 };
 
 app.on('web-contents-created', (_event, contents) => {
+  // eslint-disable-next-line no-warning-comments
+  // https://www.electronjs.org/docs/tutorial/security#12-disable-or-limit-navigation
   contents.on('will-navigate', event => event.preventDefault());
-  contents.on('new-window', event => event.preventDefault());
+
+  // Prohibit any `window.open` calls
+  // https://electronjs.org/docs/api/window-open#browserwindowproxy-example
+  contents.setWindowOpenHandler(() => ({ action: 'deny' }));
 });
 
-/**
- * Add event listeners...
- */
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -182,8 +187,6 @@ ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);
 });
 
-ipcMain.handle('reload-app', () => {
-  mainWindow?.reload();
-});
+ipcMain.handle('reload-app', () => mainWindow?.reload());
 
 ipcMain.on('closeWallet', () => app.exit(0));

@@ -16,8 +16,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, clipboard, ipcMain, Menu, session } from 'electron';
-import Store from 'electron-store';
+import { app, BrowserWindow, ipcMain, session } from 'electron';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
 import installExtension, {
@@ -30,6 +29,8 @@ import { deriveKey } from './crypto/key-generation';
 import { validateConfig } from './main/validate-config';
 import { getUserDataPath } from './main/get-user-data-path';
 import { registerLedgerListeners } from './main/register-ledger-listeners';
+import { registerIpcStoreHandlers } from './main/register-store-handlers';
+import { registerIpcContextMenuHandlers } from './main/register-context-menus';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -144,6 +145,10 @@ const createWindow = async () => {
   });
 
   registerLedgerListeners(mainWindow.webContents);
+
+  registerIpcStoreHandlers();
+
+  registerIpcContextMenuHandlers(mainWindow);
 };
 
 app.on('web-contents-created', (_event, contents) => {
@@ -173,19 +178,6 @@ app.on('activate', () => {
 
 validateConfig(app);
 
-const store = new Store({
-  clearInvalidConfig: true,
-});
-
-ipcMain.handle('store-set', (_e, { key, value }: any) => store.set(key, value));
-ipcMain.handle('store-get', (_e, { key }: any) => store.get(key));
-ipcMain.handle('store-delete', (_e, { key }: any) => store.delete(key));
-// ipcMain.handle('store-getEntireStore', () => store.store);
-ipcMain.handle('store-clear', () => store.clear());
-ipcMain.on('store-getEntireStore', event => {
-  event.returnValue = store.store;
-});
-
 ipcMain.handle('derive-key', async (_e, args) => {
   return deriveKey(args);
 });
@@ -195,24 +187,3 @@ ipcMain.handle('reload-app', () => {
 });
 
 ipcMain.on('closeWallet', () => app.exit(0));
-
-//
-// TODO: refactor to be more generic
-// There's a bug where click handler doesn't fire for the top-level menu
-ipcMain.on(
-  'context-menu-open',
-  (
-    _e,
-    args: { menuItems: { menu: Electron.MenuItemConstructorOptions; textToCopy?: string }[] }
-  ) => {
-    const copyMenu = args.menuItems.map(item => {
-      const newItem = { ...item };
-      if (newItem.textToCopy) {
-        newItem.menu.click = () => clipboard.writeText(newItem.textToCopy as any);
-      }
-      return newItem.menu;
-    });
-    const contextMenu = Menu.buildFromTemplate(copyMenu);
-    contextMenu.popup({ window: mainWindow?.getParentWindow() });
-  }
-);

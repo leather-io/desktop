@@ -128,7 +128,6 @@ export default merge(baseConfig, {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
       DEBUG_PROD: false,
-      STX_NETWORK: process.env.STX_NETWORK,
       E2E_BUILD: false,
     }),
 

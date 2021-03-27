@@ -76,6 +76,8 @@ export default {
     plugins: [new TsconfigPathsPlugin()],
   },
 
+  stats: { errorDetails: true },
+
   plugins: [
     new ExtendedDefinePlugin({
       CONFIG: {

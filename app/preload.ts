@@ -109,9 +109,10 @@ const walletApi = {
   },
 };
 
-contextBridge.exposeInMainWorld('api', walletApi);
+contextBridge.exposeInMainWorld('main', walletApi);
+
 declare global {
-  const api: typeof walletApi;
+  const main: typeof walletApi;
 }
 
 function postMessageToApp(data: unknown) {

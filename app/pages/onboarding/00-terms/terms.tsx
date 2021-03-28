@@ -229,7 +229,7 @@ export const Terms: React.FC = () => {
       </Box>
       <Flex justifyContent="center" alignItems="center" mt="extra-loose" pb="120px">
         <Flex>
-          <OnboardingButton onClick={() => api.closeWallet()} mode="secondary">
+          <OnboardingButton onClick={() => main.closeWallet()} mode="secondary">
             Close
           </OnboardingButton>
           <OnboardingButton onClick={() => history.push(routes.WELCOME)} ml="base">

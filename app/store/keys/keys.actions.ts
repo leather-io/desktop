@@ -73,7 +73,7 @@ export function setSoftwareWallet({ password, history }: SetSoftwareWallet) {
   return async (dispatch: Dispatch, getState: () => RootState) => {
     const mnemonic = selectMnemonic(getState());
     const salt = generateSalt();
-    const { derivedKeyHash } = await api.deriveKey({ pass: password, salt });
+    const { derivedKeyHash } = await main.deriveKey({ pass: password, salt });
 
     if (!mnemonic) {
       // log.error('Cannot derive encryption key unless a mnemonic has been generated');
@@ -98,7 +98,7 @@ interface DecryptSoftwareWalletArgs {
 }
 export async function decryptSoftwareWallet(args: DecryptSoftwareWalletArgs) {
   const { password, salt, ciphertextMnemonic } = args;
-  const { derivedKeyHash } = await api.deriveKey({ pass: password, salt });
+  const { derivedKeyHash } = await main.deriveKey({ pass: password, salt });
   const plaintextMnemonic = await decryptMnemonic({
     encryptedMnemonic: ciphertextMnemonic,
     derivedKeyHash,

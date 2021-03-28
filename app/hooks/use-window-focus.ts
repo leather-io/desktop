@@ -7,8 +7,8 @@ export function useWindowFocus() {
   const focusHandler = useCallback(() => setWindowState('focused'), []);
   const blurHandler = useCallback(() => setWindowState('blurred'), []);
   useEffect(() => {
-    const removeBlurListener = api.windowEvents.blur(blurHandler);
-    const removeFocusListener = api.windowEvents.focus(focusHandler);
+    const removeBlurListener = main.windowEvents.blur(blurHandler);
+    const removeFocusListener = main.windowEvents.focus(focusHandler);
     return () => {
       removeBlurListener();
       removeFocusListener();

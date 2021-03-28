@@ -31,7 +31,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
     cancelBtnRef.current?.focus();
     timer.current = window.setTimeout(() => {
       void clearDiskStorage();
-      void api.reloadApp();
+      void main.reloadApp();
     }, PANIC_CANCEL_TIME);
   };
 

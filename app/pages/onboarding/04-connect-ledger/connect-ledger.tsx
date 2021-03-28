@@ -42,7 +42,7 @@ export const ConnectLedger: React.FC = () => {
     setLoading(true);
 
     try {
-      const deviceResponse = await api.ledger.requestAndConfirmStxAddress();
+      const deviceResponse = await main.ledger.requestAndConfirmStxAddress();
       if (deviceResponse.returnCode === LedgerError.TransactionRejected) {
         setDidRejectTx(true);
         setLoading(false);

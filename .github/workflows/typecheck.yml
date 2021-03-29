@@ -11,8 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: sudo apt-get install libusb-1.0-0-dev
-      - run: sudo apt-get install libudev-dev
+      - run: sudo apt-get install libusb-1.0-0-dev libudev-dev
+
+      - run: python --version
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+
+      - run: python --version
 
       - uses: actions/setup-node@v2
         with:

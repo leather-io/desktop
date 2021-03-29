@@ -5,13 +5,14 @@ on:
     branches:
       - '**'
 jobs:
-  build:
+  typecheck:
     runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
 
       - run: sudo apt-get install libusb-1.0-0-dev
+      - run: sudo apt-get install libudev-dev
 
       - uses: actions/setup-node@v2
         with:

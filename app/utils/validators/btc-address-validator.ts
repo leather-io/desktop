@@ -1,9 +1,9 @@
-import validate from 'bitcoin-address-validation';
+import { getAddressInfo } from 'bitcoin-address-validation';
 import { isMainnet, isTestnet } from '@utils/network-utils';
 import { SUPPORTED_BTC_ADDRESS_FORMATS } from '@constants/index';
 
 export function btcAddressValidator(btcAddress: string) {
-  const address = validate(btcAddress);
+  const address = getAddressInfo(btcAddress);
   if (!address) return { btcAddress: 'Invalid BTC address' };
   if (isMainnet() && address.network === 'testnet') {
     return { btcAddress: 'Testnet addresses not supported on Mainnet' };

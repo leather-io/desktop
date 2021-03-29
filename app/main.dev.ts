@@ -19,10 +19,10 @@ import path from 'path';
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
-import installExtension, {
-  REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS,
-} from 'electron-devtools-installer';
+// import installExtension, {
+//   REACT_DEVELOPER_TOOLS,
+//   REDUX_DEVTOOLS,
+// } from 'electron-devtools-installer';
 
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
@@ -53,12 +53,13 @@ app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await app.whenReady();
-    await installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS], {
-      loadExtensionOptions: { allowFileAccess: true },
-    } as any)
-      .then(name => console.log(`Added Extension:  ${name}`))
-      .catch(err => console.log('An error occurred: ', err))
-      .finally(() => require('electron-debug')());
+    // await installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS], {
+    //   loadExtensionOptions: { allowFileAccess: true },
+    //   forceDownload: true,
+    // } as any)
+    //   .then(name => console.log(`Added Extension:  ${name}`))
+    //   // .catch(err => console.log('An error occurred: ', err))
+    //   .finally(() => require('electron-debug')());
   }
 
   // https://github.com/electron/electron/issues/22995

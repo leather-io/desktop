@@ -8,9 +8,11 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
+
+import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
 import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
+
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
 
 CheckNodeEnv('production');
 DeleteSourceMaps();

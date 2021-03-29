@@ -12,7 +12,13 @@ jobs:
 
       - uses: actions/setup-node@v2
 
-      - run: yarn add @actions/core -E
+      - name: Add @actions/core
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 120
+          max_attempts: 3
+          retry_on: error
+          command: yarn add @actions/core --ignore-scripts -E
 
       - name: Check exact versions
         uses: ./.github/actions/check-version-lock

@@ -104,8 +104,4 @@ const networkConfigs = {
 
 const mergedConfig = deepMerge(baseConfig, networkConfigs[network]);
 
-console.log(process.env.CI, process.platform);
-
-console.log(JSON.stringify(mergedConfig, null, 2));
-
 module.exports = mergedConfig;

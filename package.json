@@ -172,7 +172,7 @@
     "electron-builder": "22.10.5",
     "electron-devtools-installer": "git+https://github.com/MarshallOfSound/electron-devtools-installer.git",
     "electron-notarize": "1.0.0",
-    "electron-rebuild": "1.11.0",
+    "electron-rebuild": "2.0.2",
     "enzyme": "3.11.0",
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.23.1",

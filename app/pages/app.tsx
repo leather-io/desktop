@@ -97,25 +97,27 @@ export const App: FC = ({ children }) => {
     let client: null | StacksApiWebSocketClient;
 
     async function run() {
-      client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'extended', 'v1', 'ws'));
-      if (!address) return;
-      await client.subscribeAddressBalanceUpdates(address, async ({ address, balance }) => {
-        await safeAwait(mempool.refetch());
-        dispatch(updateAddressBalance({ address, balance }));
-      });
-      await client.subscribeAddressTransactions(address, async ({ tx_id }) => {
-        const newTx = await api.getTxDetails(tx_id);
-        if (
-          isDelegatedStackingTx(newTx.data, poxInfo?.contract_id) ||
-          isRevokingDelegationTx(newTx.data, poxInfo?.contract_id) ||
-          isDelegateStxTx(newTx.data, poxInfo?.contract_id)
-        ) {
-          await safeAwait(delegationStatus.refetch());
-        }
-        if (newTx.data.tx_status !== 'success') return;
-        dispatch(addNewTransaction(newTx.data));
-        dispatch(pendingTransactionSuccessful(newTx.data));
-      });
+      try {
+        if (!address) return;
+        client = await connectWebSocketClient(urljoin(wsUrl.toString(), 'extended', 'v1', 'ws'));
+        await client.subscribeAddressBalanceUpdates(address, async ({ address, balance }) => {
+          await safeAwait(mempool.refetch());
+          dispatch(updateAddressBalance({ address, balance }));
+        });
+        await client.subscribeAddressTransactions(address, async ({ tx_id }) => {
+          const newTx = await api.getTxDetails(tx_id);
+          if (
+            isDelegatedStackingTx(newTx.data, poxInfo?.contract_id) ||
+            isRevokingDelegationTx(newTx.data, poxInfo?.contract_id) ||
+            isDelegateStxTx(newTx.data, poxInfo?.contract_id)
+          ) {
+            await safeAwait(delegationStatus.refetch());
+          }
+          if (newTx.data.tx_status !== 'success') return;
+          dispatch(addNewTransaction(newTx.data));
+          dispatch(pendingTransactionSuccessful(newTx.data));
+        });
+      } catch {}
     }
     void run();
     return () => {

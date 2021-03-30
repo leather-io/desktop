@@ -20,8 +20,5 @@
     "argon2-browser": "1.15.3",
     "bitcoinjs-lib": "5.2.0",
     "blockstack": "21.1.1"
-  },
-  "resolutions": {
-    "node-abi": "2.21.0"
   }
 }

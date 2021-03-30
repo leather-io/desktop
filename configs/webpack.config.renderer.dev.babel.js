@@ -50,16 +50,6 @@ export default merge(baseConfig, {
 
   target: 'web',
 
-  // entry: [
-  //   'core-js',
-  //   'regenerator-runtime/runtime',
-  //   ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-  //   `webpack-dev-server/client?http://localhost:${port}/`,
-  //   'webpack/hot/only-dev-server',
-  //   require.resolve('../app/polyfill.ts'),
-  //   require.resolve('../app/index.tsx'),
-  // ],
-
   entry: [
     'core-js',
     'regenerator-runtime/runtime',
@@ -81,7 +71,7 @@ export default merge(baseConfig, {
           {
             loader: require.resolve('babel-loader'),
             options: {
-              plugins: [require.resolve('react-refresh/babel')].filter(Boolean),
+              plugins: [require.resolve('react-refresh/babel')],
             },
           },
         ],

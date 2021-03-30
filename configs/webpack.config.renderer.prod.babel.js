@@ -17,9 +17,16 @@ import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.ba
 CheckNodeEnv('production');
 DeleteSourceMaps();
 
+const devtoolsConfig =
+  process.env.DEBUG_PROD === 'true'
+    ? {
+        devtool: 'source-map',
+      }
+    : {};
+
 // eslint-disable-next-line import/no-default-export
 export default merge(baseConfig, {
-  // devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
+  ...devtoolsConfig,
 
   mode: 'production',
 
@@ -36,7 +43,6 @@ export default merge(baseConfig, {
     path: path.join(__dirname, '..', 'app/dist'),
     publicPath: './dist/',
     filename: 'renderer.prod.js',
-    // libraryTarget: 'var',
   },
 
   resolve: {

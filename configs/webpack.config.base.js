@@ -23,8 +23,6 @@ export const defaultNodePolyfillsForRenderer = {
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  // target: 'web',
-
   module: {
     noParse: [/\.wasm$/],
     rules: [
@@ -52,14 +50,6 @@ export default {
       },
     ],
   },
-
-  // node: {
-  //   __dirname: false,
-  //   // fs: false,
-  //   Buffer: false,
-  //   process: false,
-  //   // child_process: false,
-  // },
 
   output: {
     path: path.join(__dirname, '..', 'app'),

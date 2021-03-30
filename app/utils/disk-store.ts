@@ -23,28 +23,28 @@ interface LedgerWallet {
 
 export type DiskStore = LedgerWallet | SoftwareWallet;
 
-export const persistEncryptedMnemonic = (encryptedMnemonic: string) => {
-  void main.store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
+export const persistEncryptedMnemonic = async (encryptedMnemonic: string) => {
+  return main.store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
 };
 
-export const persistStxAddress = (stxAddress: string) => {
-  void main.store.set(StoreIndex.StxAddress, stxAddress);
+export const persistStxAddress = async (stxAddress: string) => {
+  return main.store.set(StoreIndex.StxAddress, stxAddress);
 };
 
-export const persistPublicKey = (publicKey: string) => {
-  void main.store.set(StoreIndex.PublicKey, publicKey);
+export const persistPublicKey = async (publicKey: string) => {
+  return main.store.set(StoreIndex.PublicKey, publicKey);
 };
 
-export const persistSalt = (salt: string) => {
-  void main.store.set(StoreIndex.Salt, salt);
+export const persistSalt = async (salt: string) => {
+  return main.store.set(StoreIndex.Salt, salt);
 };
 
-export const persistWalletType = (walletType: WalletType) => {
-  void main.store.set(StoreIndex.WalletType, walletType);
+export const persistWalletType = async (walletType: WalletType) => {
+  return main.store.set(StoreIndex.WalletType, walletType);
 };
 
 export const getInitialStateFromDisk = () => {
   return (main.store.initialValue() as unknown) as DiskStore;
 };
 
-export const clearDiskStorage = () => main.store.clear();
+export const clearDiskStorage = async () => main.store.clear();

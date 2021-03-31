@@ -3,7 +3,7 @@
   "version": "4.1.1",
   "description": "Stacks Wallet 2.0 — Stacking",
   "prettier": "@stacks/prettier-config",
-  "homepage": "https://www.blockstack.org/testnet-wallet",
+  "homepage": "https://hiro.so/wallet",
   "author": {
     "email": "info@blockstack.com",
     "name": "Hiro Systems PBC"

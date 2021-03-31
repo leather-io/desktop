@@ -203,10 +203,10 @@ export const Terms: React.FC = () => {
           </Box>
           <Box as="li" mt="base">
             <strong>Privacy Policy.</strong> Please read the {ENTITY_NAME} Privacy Policy, a copy of
-            which is available at https://www.blockstack.org/p/terms-privacy, carefully for
-            information relating to our collection, use, storage, disclosure of your personal
-            information. The {ENTITY_NAME} Privacy Policy is incorporated by this reference into,
-            and made a part of, these Terms.
+            which is available at https://www.hiro.so/p/terms-privacy, carefully for information
+            relating to our collection, use, storage, disclosure of your personal information. The{' '}
+            {ENTITY_NAME} Privacy Policy is incorporated by this reference into, and made a part of,
+            these Terms.
           </Box>
           <Box as="li" mt="base">
             <strong>Miscellaneous.</strong> You may not assign or transfer these Terms or your

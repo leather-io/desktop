@@ -15,13 +15,13 @@ export default class MenuBuilder {
       {
         label: 'Learn More',
         click() {
-          void shell.openExternal('https://blockstack.org');
+          void shell.openExternal('https://hiro.so');
         },
       },
       {
         label: 'Documentation',
         click() {
-          void shell.openExternal('https://docs.blockstack.org/');
+          void shell.openExternal('https://docs.stacks.co/');
         },
       },
       {

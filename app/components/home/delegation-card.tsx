@@ -57,17 +57,17 @@ export const DelegationCard: FC = () => {
             <Text fontSize="13px" mt="tight" color="ink">
               {truncateMiddle(delegationStatus.delegatedTo, 6)}
             </Text>
+            {delegationStatus.deadDelegation && (
+              <Flex flexDirection="column" alignItems="center" mt="base">
+                <ErrorLabel mt="1px" px="loose">
+                  <ErrorText>
+                    Your delegation has expired. Your pool is no longer able to stack on your
+                    behalf. Revoke your delegation and reinitiate if you wish to continue Stacking.
+                  </ErrorText>
+                </ErrorLabel>
+              </Flex>
+            )}
           </Flex>
-          <Box mr="2px">
-            <Flex flexDirection="column" alignItems="center" mt="base-tight" mb="base-loose">
-              <Text textStyle="caption" color="ink.600">
-                Delegated to
-              </Text>
-              <Text fontSize="13px" mt="tight" color="ink">
-                {truncateMiddle(delegationStatus.delegatedTo, 6)}
-              </Text>
-            </Flex>
-          </Box>
         </Box>
         <Box borderTop="1px solid #F0F0F2" py="extra-tight" px="extra-tight">
           {hasSufficientBalanceToCoverFee ? (
@@ -81,35 +81,20 @@ export const DelegationCard: FC = () => {
               {hasPendingRevokeCall ? 'Currently revoking STX' : 'Revoke delegation'}
             </Button>
           ) : (
-            <ErrorLabel ml="tight" mb="base-tight">
-              <ErrorText>
-                You don't have sufficient STX to cover the transaction fee needed to revoke your
-                delegation.
-              </ErrorText>
-            </ErrorLabel>
+            <Text
+              mx="base-loose"
+              my="tight"
+              textStyle="caption"
+              color="ink.600"
+              lineHeight="18px"
+              display="block"
+            >
+              You don't have enough unlocked STX to cover the transaction fee needed to revoke your
+              delegation. Please deposit a small amount of STX or wait for any locked STX to unlock
+              if you wish to revoke delegation.
+            </Text>
           )}
         </Box>
-      </Box>
-      {delegationStatus.deadDelegation && (
-        <Flex flexDirection="column" alignItems="center" mb="base-loose">
-          <ErrorLabel mt="1px" maxWidth="300px">
-            <ErrorText>
-              Your delegation has expired. Your pool is no longer able to stack on your behalf.
-              Revoke your delegation and reinitiate if you wish to continue Stacking.
-            </ErrorText>
-          </ErrorLabel>
-        </Flex>
-      )}
-      <Box borderTop="1px solid #F0F0F2" py="extra-tight" px="extra-tight">
-        <Button
-          variant="unstyled"
-          textStyle="body.small"
-          style={{ color: '#747478' }}
-          isDisabled={hasPendingRevokeCall}
-          onClick={() => dispatch(homeActions.openRevokeDelegationModal())}
-        >
-          {hasPendingRevokeCall ? 'Currently revoking STX' : 'Revoke delegation'}
-        </Button>
       </Box>
     </Flex>
   );

@@ -29,12 +29,13 @@ interface PreviewTransactionProps {
   amount: string;
   total: string;
   fee: string;
+  nonce: number;
   memo?: string;
   totalExceedsBalance: boolean;
 }
 
 export const PreviewTransaction: FC<PreviewTransactionProps> = props => {
-  const { recipient, amount, total, fee, memo, totalExceedsBalance } = props;
+  const { recipient, amount, total, fee, memo, nonce, totalExceedsBalance } = props;
 
   return (
     <TxModalPreview>
@@ -44,6 +45,7 @@ export const PreviewTransaction: FC<PreviewTransactionProps> = props => {
       <TxModalPreviewItem label="Amount">{toHumanReadableStx(amount)}</TxModalPreviewItem>
       <TxModalPreviewItem label="Fee">{toHumanReadableStx(fee)}</TxModalPreviewItem>
       <TxModalPreviewItem label="Total">{toHumanReadableStx(total)}</TxModalPreviewItem>
+      <TxModalPreviewItem label="Nonce">{nonce}</TxModalPreviewItem>
       {memo && <TxModalPreviewItem label="Memo">{memo}</TxModalPreviewItem>}
       <Box minHeight="24px">
         {totalExceedsBalance && (

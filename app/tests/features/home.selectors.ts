@@ -1,0 +1,15 @@
+export enum HomeSelectors {
+  TextStxAddress = 'text-stx-address',
+  BtnSend = 'btn-send',
+  InputSendStxFormAddress = 'input-send-stx-form-address',
+  InputSendStxFormAmount = 'input-send-stx-form-amount',
+  InputSendStxFormMemo = 'input-send-stx-form-memo',
+  BtnSendStxFormPreview = 'btn-send-stx-form-preview',
+  BtnSendStxFormSend = 'btn-send-stx-form-send',
+  BtnSendStxFormBroadcastTx = 'btn-send-stx-form-broadcast-tx',
+  InputDecryptWallet = 'input-decrypt-wallet',
+  BtnReceive = 'btn-receive',
+  InputReceiveStxAddressPassword = 'input-receive-stx-address-password',
+  BtnRevealStxAddress = 'btn-reveal-stx-address',
+  BtnReceiveStxModalClose = 'btn-receive-stx-modal-close',
+}

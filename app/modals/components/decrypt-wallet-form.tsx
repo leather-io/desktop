@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import { Box, color, Input, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 
 interface DecryptWalletFormProps {
   hasSubmitted: boolean;
@@ -23,7 +24,13 @@ export const DecryptWalletForm = forwardRef((props: DecryptWalletFormProps, ref)
   return (
     <Box mx="extra-loose" mt="extra-loose">
       <Text textStyle="body.large">{description}</Text>
-      <Input onChange={handlePasswordInput} type="password" mt="base-loose" ref={ref as any} />
+      <Input
+        onChange={handlePasswordInput}
+        type="password"
+        mt="base-loose"
+        data-test={HomeSelectors.InputDecryptWallet}
+        ref={ref as any}
+      />
       {hasSubmitted && decryptionError && (
         <ErrorLabel>
           <ErrorText>{decryptionError}</ErrorText>

@@ -5,5 +5,5 @@
     "noUnusedParameters": false
   },
   "exclude": [],
-  "include": ["app/**/*.spec.ts"]
+  "include": ["app/**/*.spec.ts", "app/tests/**/*.ts"]
 }

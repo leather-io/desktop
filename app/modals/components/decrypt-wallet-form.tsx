@@ -23,7 +23,13 @@ export const DecryptWalletForm = forwardRef((props: DecryptWalletFormProps, ref)
   return (
     <Box mx="extra-loose" mt="extra-loose">
       <Text textStyle="body.large">{description}</Text>
-      <Input onChange={handlePasswordInput} type="password" mt="base-loose" ref={ref as any} />
+      <Input
+        onChange={handlePasswordInput}
+        type="password"
+        mt="base-loose"
+        data-test="input-decrypt-wallet"
+        ref={ref as any}
+      />
       {hasSubmitted && decryptionError && (
         <ErrorLabel>
           <ErrorText>{decryptionError}</ErrorText>

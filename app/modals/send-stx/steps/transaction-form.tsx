@@ -30,6 +30,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
         </Text>
         <Input
           id="stxAddress"
+          data-test="input-send-stx-form-address"
           name="recipient"
           mt="base-tight"
           placeholder="STX address"
@@ -52,6 +53,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
         <Box position="relative">
           <Input
             id="stxAmount"
+            data-test="input-send-stx-form-amount"
             name="amount"
             inputMode="numeric"
             pattern="[0-9]*"
@@ -89,6 +91,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
         </Text>
         <Input
           id="memo"
+          data-test="input-send-stx-form-memo"
           name="memo"
           inputMode="numeric"
           mt="base-tight"

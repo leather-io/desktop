@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { compilerOptions } = require('./tsconfig');
 
 module.exports = {
@@ -16,6 +18,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
   moduleDirectories: ['node_modules', 'app/node_modules'],
   setupFiles: ['./internals/scripts/CheckBuildsExist.js'],
+  setupFilesAfterEnv: ['<rootDir>/app/tests/_setup-tests.ts'],
   coverageReporters: ['html'],
   globals: {
     api: true,
@@ -23,7 +26,12 @@ module.exports = {
     'ts-jest': {
       tsconfig: 'tsconfig.tests.json',
       diagnostics: {
-        ignoreCodes: [6133, 2304],
+        ignoreCodes: [
+          6133,
+          2304,
+          // Object is possibly `null`
+          2531,
+        ],
       },
     },
   },

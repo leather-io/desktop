@@ -109,6 +109,7 @@ export const SetPassword: React.FC = () => {
         type="password"
         mt="base-tight"
         onChange={handlePasswordInput}
+        data-test="input-password"
         ref={passwordInputRef}
       />
       {!successfullyChosenStrongPass && (
@@ -130,7 +131,13 @@ export const SetPassword: React.FC = () => {
             {weakPasswordWarningMessage(strengthResult)}
           </Text>
         )}
-      <OnboardingButton type="submit" mt="loose" isLoading={btnDisabled} isDisabled={btnDisabled}>
+      <OnboardingButton
+        type="submit"
+        mt="loose"
+        isLoading={btnDisabled}
+        isDisabled={btnDisabled}
+        data-test="btn-continue-from-password"
+      >
         Continue
       </OnboardingButton>
     </Onboarding>

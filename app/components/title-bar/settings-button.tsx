@@ -10,6 +10,7 @@ export const SettingsButton: FC<BoxProps> = props => {
       p="tight"
       cursor="default"
       _focus={{ textDecoration: 'underline', outline: 0 }}
+      data-test="btn-settings"
       {...props}
     >
       Settings

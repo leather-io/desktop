@@ -40,6 +40,7 @@ import { SignTransaction } from '@components/tx-signing/sign-transaction';
 import { useBroadcastTx } from '@hooks/use-broadcast-tx';
 import { TransactionError } from '@modals/components/transaction-error';
 import { ModalHeader } from '@modals/components/modal-header';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 
 interface TxModalProps {
   balance: string;
@@ -232,7 +233,11 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
           <TxModalButton mode="tertiary" onClick={closeModal}>
             Cancel
           </TxModalButton>
-          <TxModalButton onClick={() => form.submitForm()} isLoading={loading}>
+          <TxModalButton
+            onClick={() => form.submitForm()}
+            isLoading={loading}
+            data-test={HomeSelectors.BtnSendStxFormPreview}
+          >
             Preview
           </TxModalButton>
         </TxModalFooter>
@@ -247,6 +252,7 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
           fee={fee.toString()}
           total={total.toString()}
           memo={form.values.memo}
+          nonce={nonce}
           totalExceedsBalance={totalIsMoreThanBalance}
         />
 
@@ -257,6 +263,7 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
           <TxModalButton
             isLoading={loading}
             isDisabled={totalIsMoreThanBalance}
+            data-test={HomeSelectors.BtnSendStxFormSend}
             onClick={() => setStep(TxModalStep.SignTransaction)}
           >
             Send

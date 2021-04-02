@@ -15,6 +15,7 @@ import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
 import { createSoftwareWalletTokenTransferTx } from '@hooks/use-create-token-transfer-tx';
 import { capitalize } from '@utils/capitalize';
 import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 
 type SignTransactionSoftwareProps = SignTransactionProps;
 
@@ -59,6 +60,7 @@ export const SignTransactionSoftware: React.FC<SignTransactionSoftwareProps> = p
         <Button
           isLoading={isDecrypting || isBroadcasting || isBusy}
           isDisabled={isDecrypting || isBroadcasting || isBusy}
+          data-test={HomeSelectors.BtnSendStxFormBroadcastTx}
           onClick={async () => {
             setHasSubmitted(true);
             setIsBusy(true);

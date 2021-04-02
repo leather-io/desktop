@@ -26,7 +26,12 @@ export const ReceiveStxModal: FC<{ isOpen: boolean }> = memo(({ isOpen }) => {
         software: <RevealStxAddressSoftware />,
       })}
       <TxModalFooter>
-        <Button size="md" mode="tertiary" onClick={closeModal}>
+        <Button
+          size="md"
+          mode="tertiary"
+          onClick={closeModal}
+          data-test="btn-receive-stx-modal-close"
+        >
           Close
         </Button>
       </TxModalFooter>

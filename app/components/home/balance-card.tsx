@@ -74,11 +74,16 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         </Flex>
       )}
       <Box mt="loose">
-        <Button size="md" onClick={onSelectSend} isDisabled={availableBalance.isEqualTo(0)}>
+        <Button
+          size="md"
+          onClick={onSelectSend}
+          isDisabled={availableBalance.isEqualTo(0)}
+          data-test="btn-send"
+        >
           <ArrowIcon size="12px" {...({ direction: 'up' } as any)} mr="base-tight" />
           Send
         </Button>
-        <Button size="md" ml="tight" onClick={onSelectReceive}>
+        <Button size="md" ml="tight" onClick={onSelectReceive} data-test="btn-receive">
           <ArrowIcon size="12px" {...({ direction: 'down' } as any)} mr="base-tight" />
           Receive
         </Button>

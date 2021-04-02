@@ -52,6 +52,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
             style={{ background: color('feedback-error') }}
             onClick={resetWallet}
             isLoading={wipingWallet}
+            data-test="btn-reset-wallet"
           >
             Reset wallet
           </Button>

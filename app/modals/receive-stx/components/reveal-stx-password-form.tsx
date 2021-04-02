@@ -57,6 +57,7 @@ export const RevealStxPasswordForm: FC<RevealStxPasswordFormProps> = props => {
           mt="base-tight"
           maxWidth="380px"
           ref={passwordRef}
+          data-test="input-receive-stx-address-password"
           onChange={passwordForm.handleChange}
         />
         {passwordForm.errors.password && (
@@ -69,6 +70,7 @@ export const RevealStxPasswordForm: FC<RevealStxPasswordFormProps> = props => {
           mt="base-loose"
           isDisabled={passwordForm.isSubmitting}
           isLoading={passwordForm.isSubmitting}
+          data-test="btn-reveal-stx-address"
         >
           Reveal STX address
         </Button>

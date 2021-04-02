@@ -9,6 +9,10 @@ export function getUserDataPath(app: App) {
     const devName = `${appId}${network}Dev`;
     return path.join(appData, devName);
   }
+  if (process.env.NODE_ENV === 'test') {
+    const devName = `${appId}${network}Test`;
+    return path.join(appData, devName);
+  }
   const prodName = `${appId}${network}`;
   return path.join(appData, prodName);
 }

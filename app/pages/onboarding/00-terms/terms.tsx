@@ -232,7 +232,11 @@ export const Terms: React.FC = () => {
           <OnboardingButton onClick={() => main.closeWallet()} mode="secondary">
             Close
           </OnboardingButton>
-          <OnboardingButton onClick={() => history.push(routes.WELCOME)} ml="base">
+          <OnboardingButton
+            onClick={() => history.push(routes.WELCOME)}
+            ml="base"
+            data-test="btn-accept-terms"
+          >
             I accept
           </OnboardingButton>
         </Flex>

@@ -101,6 +101,7 @@ export const RestoreWallet: React.FC = () => {
           resize: 'none',
           border: error ? `2px solid ${color('feedback-error')}` : '',
         }}
+        data-test="input-secret-key"
       />
       {error && error !== 'bip39error' && (
         <ErrorLabel>
@@ -120,7 +121,7 @@ export const RestoreWallet: React.FC = () => {
           </ErrorText>
         </ErrorLabel>
       )}
-      <OnboardingButton mt="loose" type="submit" mode="secondary">
+      <OnboardingButton mt="loose" type="submit" mode="secondary" data-test="btn-continue-with-key">
         Continue with Secret Key
       </OnboardingButton>
     </Onboarding>

@@ -1,3 +1,14 @@
+## [4.1.2](https://github.com/blockstack/stacks-wallet/compare/v4.1.1...v4.1.2) (2021-04-05)
+
+
+### Bug Fixes
+
+* available balance calculation ([ef1acf6](https://github.com/blockstack/stacks-wallet/commit/ef1acf605328de2763ae2e098bd14e4e24295e80))
+* prohibit revocation when 0 STX balance, closes [#649](https://github.com/blockstack/stacks-wallet/issues/649) ([ed2984f](https://github.com/blockstack/stacks-wallet/commit/ed2984f587568a2b33c75db6b94d402abaa2636c))
+* remove pending tx balance, closes [#591](https://github.com/blockstack/stacks-wallet/issues/591), [#657](https://github.com/blockstack/stacks-wallet/issues/657) ([723f7cd](https://github.com/blockstack/stacks-wallet/commit/723f7cd37aa9265425a404354606ae6c7cd85d67))
+* **stacking:** show dead delegation error, closes [#691](https://github.com/blockstack/stacks-wallet/issues/691) ([4374119](https://github.com/blockstack/stacks-wallet/commit/4374119bc4ba7741008ecf4d7adedf7cb72a1bd5))
+* remove pending tx balance, closes [#591](https://github.com/blockstack/stacks-wallet/issues/591), [#657](https://github.com/blockstack/stacks-wallet/issues/657) ([fd72c0b](https://github.com/blockstack/stacks-wallet/commit/fd72c0ba734a8e9cd001e4cab09d31cb2556f7cf))
+
 ## [4.1.1](https://github.com/blockstack/stacks-wallet/compare/v4.1.0...v4.1.1) (2021-03-16)
 
 

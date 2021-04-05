@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/46</span>
+                <span class='fraction'>0/45</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/44</span>
+                <span class='fraction'>0/43</span>
             </div>
         
             
@@ -207,21 +207,13 @@
 <a name='L148'></a><a href='#L148'>148</a>
 <a name='L149'></a><a href='#L149'>149</a>
 <a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -276,11 +268,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -331,8 +319,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -380,7 +366,6 @@
 import { RootState } from '@store/index';
 <span class="cstat-no" title="statement not covered" >import { selectAddress } from '@store/keys';</span>
 <span class="cstat-no" title="statement not covered" >import { selectActiveNodeApi } from '@store/stacks-node';</span>
-<span class="cstat-no" title="statement not covered" >import { selectAddressBalance, selectAvailableBalance } from '@store/address';</span>
 <span class="cstat-no" title="statement not covered" >import { selectRevokeDelegationModalOpen } from '@store/home/home.reducer';</span>
 <span class="cstat-no" title="statement not covered" >import { selectTransactionsLoading, selectTransactionListFetchError } from '@store/transaction';</span>
 <span class="cstat-no" title="statement not covered" >import { selectLoadingStacking, selectNextCycleInfo, selectStackerInfo } from '@store/stacking';</span>
@@ -425,8 +410,6 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
 &nbsp;
   const {
     address,
-    balance,
-    spendableBalance,
     loadingTxs,
     txModalOpen,
     txListFetchError,
@@ -437,8 +420,6 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
     stackingCardState,
   } = <span class="cstat-no" title="statement not covered" >useSelector(<span class="fstat-no" title="function not covered" >(s</span>tate: RootState) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
     address: selectAddress(state),
-    spendableBalance: selectAvailableBalance(state),
-    balance: selectAddressBalance(state),
     txModalOpen: selectTxModalOpen(state),
     revokeDelegationModalOpen: selectRevokeDelegationModalOpen(state),
     receiveModalOpen: selectReceiveModalOpen(state),
@@ -489,8 +470,6 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
   const balanceCard = (
 <span class="cstat-no" title="statement not covered" >    &lt;BalanceCard</span>
       address={address}
-      lockedStx={balance?.locked}
-      balance={availableBalance.toString() || null}
       onSelectSend={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >dispatch(homeActions.openTxModal())}</span>
       onSelectReceive={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >dispatch(homeActions.openReceiveModal())}</span>
       onRequestTestnetStx={<span class="fstat-no" title="function not covered" >async </span>({ stacking }) =&gt; <span class="cstat-no" title="statement not covered" >api.getFaucetStx(address, stacking)}</span>
@@ -517,7 +496,7 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
       {receiveModalOpen &amp;&amp; &lt;ReceiveStxModal /&gt;}
-      {txModalOpen &amp;&amp; &lt;TransactionModal balance={spendableBalance || '0'} address={address} /&gt;}
+      {txModalOpen &amp;&amp; &lt;TransactionModal balance={availableBalance.toString()} address={address} /&gt;}
       {revokeDelegationModalOpen &amp;&amp; &lt;RevokeDelegationModal /&gt;}
       &lt;HomeLayout
         transactionList={transactionList}
@@ -535,7 +514,7 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 14:48:25 GMT+0000 (Coordinated Universal Time)
+                at Mon Apr 05 2021 15:03:50 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

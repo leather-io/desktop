@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/27</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
@@ -159,23 +159,18 @@
 <a name='L100'></a><a href='#L100'>100</a>
 <a name='L101'></a><a href='#L101'>101</a>
 <a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L103'></a><a href='#L103'>103</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,6 +182,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -200,10 +196,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -276,24 +268,24 @@
 <span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
 <span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
 <span class="cstat-no" title="statement not covered" >import { delay } from '@utils/delay';</span>
-<span class="cstat-no" title="statement not covered" >import BN from 'bn.js';</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >import { ExternalLink } from '@components/external-link';</span>
 <span class="cstat-no" title="statement not covered" >import { makeExplorerAddressLink } from '@utils/external-links';</span>
 <span class="cstat-no" title="statement not covered" >import { isTestnet } from '@utils/network-utils';</span>
+<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
 &nbsp;
 interface BalanceCardProps {
-  balance: string | null;
   address: string | null;
-  lockedStx?: string;
   onSelectSend(): void;
   onSelectReceive(): void;
   onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise&lt;any&gt;;
 }
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >BalanceCard: FC&lt;BalanceCardProps&gt; = <span class="fstat-no" title="function not covered" >props </span>=&gt; {</span>
-  const { balance, address, onSelectReceive, onSelectSend, onRequestTestnetStx, lockedStx } = <span class="cstat-no" title="statement not covered" >props;</span>
+  const { address, onSelectReceive, onSelectSend, onRequestTestnetStx } = <span class="cstat-no" title="statement not covered" >props;</span>
 &nbsp;
   const [requestingTestnetStx, setRequestingTestnetStx] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+  const { totalBalance, availableBalance, lockedBalance } = <span class="cstat-no" title="statement not covered" >useBalance();</span>
 &nbsp;
   const requestTestnetStacks = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(e: React.MouseEvent) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (NETWORK !== 'testnet') <span class="cstat-no" title="statement not covered" >return;</span></span>
@@ -306,10 +298,6 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
     }
 <span class="cstat-no" title="statement not covered" >    setRequestingTestnetStx(false);</span>
   };
-&nbsp;
-  const balanceBN = <span class="cstat-no" title="statement not covered" >new BN(balance || 0, 10);</span>
-  const lockedBN = <span class="cstat-no" title="statement not covered" >new BN(lockedStx || 0, 10);</span>
-  const available = <span class="cstat-no" title="statement not covered" >balanceBN.sub(lockedBN);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Box&gt;
@@ -330,19 +318,19 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
         )}
       &lt;/Flex&gt;
       &lt;Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em"&gt;
-        {balance === null ? '–' : toHumanReadableStx(balance)}
+        {totalBalance === null ? '–' : toHumanReadableStx(totalBalance.toString())}
       &lt;/Text&gt;
 &nbsp;
-      {features.stacking &amp;&amp; lockedBN.toNumber() !== 0 &amp;&amp; (
+      {features.stacking &amp;&amp; lockedBalance !== null &amp;&amp; lockedBalance.isGreaterThan(0) &amp;&amp; (
         &lt;Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}&gt;
           &lt;EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" /&gt;
-          &lt;Text&gt;{toHumanReadableStx(lockedStx || '0')} locked&lt;/Text&gt;
+          &lt;Text&gt;{toHumanReadableStx(lockedBalance.toString())} locked&lt;/Text&gt;
           &lt;Text children="·" mx="base-tight" /&gt;
-          &lt;Text&gt;{toHumanReadableStx(available)} available&lt;/Text&gt;
+          &lt;Text&gt;{toHumanReadableStx(availableBalance.toString())} available&lt;/Text&gt;
         &lt;/Flex&gt;
       )}
       &lt;Box mt="loose"&gt;
-        &lt;Button size="md" onClick={onSelectSend} isDisabled={balance === '0' || balance === null}&gt;
+        &lt;Button size="md" onClick={onSelectSend} isDisabled={availableBalance.isEqualTo(0)}&gt;
           &lt;ArrowIcon direction="up" mr="base-tight" /&gt;
           Send
         &lt;/Button&gt;
@@ -382,7 +370,7 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 14:48:25 GMT+0000 (Coordinated Universal Time)
+                at Mon Apr 05 2021 15:03:50 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

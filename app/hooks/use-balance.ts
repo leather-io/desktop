@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import { selectAddress } from '@store/keys';
 import { sumTxsTotalSpentByAddress } from '@utils/tx-utils';
-import { selectAvailableBalance } from '@store/address';
+import { selectAvailableBalance, selectLockedBalance, selectTotalBalance } from '@store/address';
 import { stxBalanceValidator } from '@utils/validators/stx-balance-validator';
 import { useMempool } from './use-mempool';
 
@@ -12,6 +12,8 @@ export function useBalance() {
   const { outboundMempoolTxs } = useMempool();
   const address = useSelector(selectAddress);
   const availableBalanceValue = useSelector(selectAvailableBalance);
+  const totalBalanceValue = useSelector(selectTotalBalance);
+  const lockedBalanceValue = useSelector(selectLockedBalance);
 
   const sumTotal = useMemo(() => sumTxsTotalSpentByAddress(outboundMempoolTxs, address || ''), [
     outboundMempoolTxs,
@@ -27,8 +29,11 @@ export function useBalance() {
   const availableBalanceValidator = useCallback(() => stxBalanceValidator(availableBalance), [
     availableBalance,
   ]);
+
   return {
     availableBalance,
     availableBalanceValidator,
+    totalBalance: totalBalanceValue,
+    lockedBalance: lockedBalanceValue,
   };
 }

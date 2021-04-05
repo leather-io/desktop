@@ -7,7 +7,6 @@ import { openTxInExplorer } from '@utils/external-links';
 import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
-import { selectAddressBalance, selectAvailableBalance } from '@store/address';
 import { selectRevokeDelegationModalOpen } from '@store/home/home.reducer';
 import { selectTransactionsLoading, selectTransactionListFetchError } from '@store/transaction';
 import { selectLoadingStacking, selectNextCycleInfo, selectStackerInfo } from '@store/stacking';
@@ -52,8 +51,6 @@ export const Home: FC = () => {
 
   const {
     address,
-    balance,
-    spendableBalance,
     loadingTxs,
     txModalOpen,
     txListFetchError,
@@ -64,8 +61,6 @@ export const Home: FC = () => {
     stackingCardState,
   } = useSelector((state: RootState) => ({
     address: selectAddress(state),
-    spendableBalance: selectAvailableBalance(state),
-    balance: selectAddressBalance(state),
     txModalOpen: selectTxModalOpen(state),
     revokeDelegationModalOpen: selectRevokeDelegationModalOpen(state),
     receiveModalOpen: selectReceiveModalOpen(state),
@@ -116,8 +111,6 @@ export const Home: FC = () => {
   const balanceCard = (
     <BalanceCard
       address={address}
-      lockedStx={balance?.locked}
-      balance={availableBalance.toString() || null}
       onSelectSend={() => dispatch(homeActions.openTxModal())}
       onSelectReceive={() => dispatch(homeActions.openReceiveModal())}
       onRequestTestnetStx={async ({ stacking }) => api.getFaucetStx(address, stacking)}
@@ -144,7 +137,7 @@ export const Home: FC = () => {
   return (
     <>
       {receiveModalOpen && <ReceiveStxModal />}
-      {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
+      {txModalOpen && <TransactionModal balance={availableBalance.toString()} address={address} />}
       {revokeDelegationModalOpen && <RevokeDelegationModal />}
       <HomeLayout
         transactionList={transactionList}

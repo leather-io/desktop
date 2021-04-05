@@ -35,3 +35,13 @@ export const selectAvailableBalance = createSelector(selectAddressState, address
   if (address.details === null) return null;
   return new BigNumber(address.details.balance).minus(address.details.locked).toString();
 });
+
+export const selectTotalBalance = createSelector(selectAddressState, address => {
+  if (address.details === null) return null;
+  return new BigNumber(address.details.balance);
+});
+
+export const selectLockedBalance = createSelector(selectAddressState, address => {
+  if (address.details === null) return null;
+  return new BigNumber(address.details.locked);
+});

@@ -5,24 +5,24 @@ import { features, NETWORK } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { safeAwait } from '@utils/safe-await';
 import { delay } from '@utils/delay';
-import BN from 'bn.js';
+
 import { ExternalLink } from '@components/external-link';
 import { makeExplorerAddressLink } from '@utils/external-links';
 import { isTestnet } from '@utils/network-utils';
+import { useBalance } from '@hooks/use-balance';
 
 interface BalanceCardProps {
-  balance: string | null;
   address: string | null;
-  lockedStx?: string;
   onSelectSend(): void;
   onSelectReceive(): void;
   onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise<any>;
 }
 
 export const BalanceCard: FC<BalanceCardProps> = props => {
-  const { balance, address, onSelectReceive, onSelectSend, onRequestTestnetStx, lockedStx } = props;
+  const { address, onSelectReceive, onSelectSend, onRequestTestnetStx } = props;
 
   const [requestingTestnetStx, setRequestingTestnetStx] = useState(false);
+  const { totalBalance, availableBalance, lockedBalance } = useBalance();
 
   const requestTestnetStacks = async (e: React.MouseEvent) => {
     if (NETWORK !== 'testnet') return;
@@ -35,10 +35,6 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
     }
     setRequestingTestnetStx(false);
   };
-
-  const balanceBN = new BN(balance || 0, 10);
-  const lockedBN = new BN(lockedStx || 0, 10);
-  const available = balanceBN.sub(lockedBN);
 
   return (
     <Box>
@@ -59,19 +55,19 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         )}
       </Flex>
       <Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em">
-        {balance === null ? '–' : toHumanReadableStx(balance)}
+        {totalBalance === null ? '–' : toHumanReadableStx(totalBalance.toString())}
       </Text>
 
-      {features.stacking && lockedBN.toNumber() !== 0 && (
+      {features.stacking && lockedBalance !== null && lockedBalance.isGreaterThan(0) && (
         <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
           <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
-          <Text>{toHumanReadableStx(lockedStx || '0')} locked</Text>
+          <Text>{toHumanReadableStx(lockedBalance.toString())} locked</Text>
           <Text children="·" mx="base-tight" />
-          <Text>{toHumanReadableStx(available)} available</Text>
+          <Text>{toHumanReadableStx(availableBalance.toString())} available</Text>
         </Flex>
       )}
       <Box mt="loose">
-        <Button size="md" onClick={onSelectSend} isDisabled={balance === '0' || balance === null}>
+        <Button size="md" onClick={onSelectSend} isDisabled={availableBalance.isEqualTo(0)}>
           <ArrowIcon direction="up" mr="base-tight" />
           Send
         </Button>

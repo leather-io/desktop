@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/44</span>
+                <span class='fraction'>0/45</span>
             </div>
         
             
@@ -188,7 +188,11 @@
 <a name='L129'></a><a href='#L129'>129</a>
 <a name='L130'></a><a href='#L130'>130</a>
 <a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,20 +242,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -265,6 +255,23 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -272,6 +279,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -368,13 +376,16 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
     [StackingStep.ChooseBtcAddress]: btcAddress !== null,
   });
 &nbsp;
-  const { stackingCycleDuration, nextCycleInfo, poxInfo } = <span class="cstat-no" title="statement not covered" >useSelector(<span class="fstat-no" title="function not covered" >(s</span>tate: RootState) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-    walletType: selectWalletType(state),
-    activeNode: selectActiveNodeApi(state),
-    stackingCycleDuration: selectEstimatedStackingDuration(cyclesWithDefault(cycles))(state),
-    nextCycleInfo: selectNextCycleInfo(state),
-    poxInfo: selectPoxInfo(state),
-  }));
+  const { stackingCycleDuration, oneCycleDuration, nextCycleInfo, poxInfo } = <span class="cstat-no" title="statement not covered" >useSelector(</span>
+<span class="fstat-no" title="function not covered" >    (s</span>tate: RootState) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+      walletType: selectWalletType(state),
+      activeNode: selectActiveNodeApi(state),
+      oneCycleDuration: selectEstimatedStackingDuration(1)(state),
+      stackingCycleDuration: selectEstimatedStackingDuration(cyclesWithDefault(cycles))(state),
+      nextCycleInfo: selectNextCycleInfo(state),
+      poxInfo: selectPoxInfo(state),
+    })
+  );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (nextCycleInfo === null || poxInfo === null) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
@@ -407,6 +418,7 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
       &lt;ChooseCycleStep
         title={StackingStep.ChooseCycles}
         cycles={cyclesWithDefault(cycles)}
+        cycleDuration={oneCycleDuration}
         isComplete={steps.getIsComplete(StackingStep.ChooseCycles)}
         state={steps.getView(StackingStep.ChooseCycles)}
         onEdit={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >steps.open(StackingStep.ChooseCycles)}</span>
@@ -457,7 +469,7 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 16 2021 09:36:49 GMT+0000 (Coordinated Universal Time)
+                at Mon Apr 05 2021 13:18:16 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

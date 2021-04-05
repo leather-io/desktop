@@ -92,27 +92,20 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,24 +114,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useCallback } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import useSWR from 'swr';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useQuery } from 'react-query';</span>
 <span class="cstat-no" title="statement not covered" >import { cvToHex, standardPrincipalCV, tupleCV } from '@stacks/transactions';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { useApi } from './use-api';</span>
+<span class="cstat-no" title="statement not covered" >import { ApiResource } from '@models';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seFetchDelegationStatus(</span>contractId?: string, address?: string) {
   const api = <span class="cstat-no" title="statement not covered" >useApi();</span>
 &nbsp;
-  const delegationFetcher = <span class="cstat-no" title="statement not covered" >useCallback(</span>
-<span class="fstat-no" title="function not covered" >    (_</span>, contractId, address) =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (!contractId || !address) <span class="cstat-no" title="statement not covered" >throw new Error('values not defined');</span></span>
-      const [contractAddress, contractName] = <span class="cstat-no" title="statement not covered" >contractId.split('.');</span>
+  const { data, refetch } = <span class="cstat-no" title="statement not covered" >useQuery(</span>
+    [ApiResource.DelegationStatus, contractId, address],
+<span class="fstat-no" title="function not covered" >    async </span>({ queryKey }) =&gt; {
+      const [, innerContractId, innerAddress] = <span class="cstat-no" title="statement not covered" >queryKey;</span>
+<span class="cstat-no" title="statement not covered" >      if (!contractId || !address) <span class="cstat-no" title="statement not covered" >return;</span></span>
+      const [contractAddress, contractName] = <span class="cstat-no" title="statement not covered" >innerContractId.split('.');</span>
       const key = <span class="cstat-no" title="statement not covered" >cvToHex(</span>
         tupleCV({
-          stacker: standardPrincipalCV(address),
+          stacker: standardPrincipalCV(innerAddress),
         })
       );
 <span class="cstat-no" title="statement not covered" >      return api.getContractDataMapEntry({</span>
@@ -146,15 +148,13 @@
         contractName,
         key,
         mapName: 'delegation-state',
-      });
+      }) as Promise&lt;{ data: string }&gt;;
     },
-    [api]
+    {
+      refetchInterval: 60_000,
+    }
   );
-  const { data: delegationStatus, mutate } = <span class="cstat-no" title="statement not covered" >useSWR(</span>
-    ['delegation-status', contractId, address],
-    delegationFetcher
-  );
-<span class="cstat-no" title="statement not covered" >  return { delegationStatus, mutate };</span>
+<span class="cstat-no" title="statement not covered" >  return { refetch, delegationStatus: data };</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -163,7 +163,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 16 2021 09:36:49 GMT+0000 (Coordinated Universal Time)
+                at Mon Apr 05 2021 13:18:16 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

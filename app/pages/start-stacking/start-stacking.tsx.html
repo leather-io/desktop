@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/24</span>
             </div>
         
             
@@ -157,7 +157,9 @@
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
 <a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -166,29 +168,31 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -265,10 +269,10 @@
 <span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
 <span class="cstat-no" title="statement not covered" >import { useBackButton } from '@hooks/use-back-url';</span>
 <span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { selectMeetsMinStackingThreshold, selectPoxInfo } from '@store/stacking';</span>
-import { RootState } from '@store/index';
+<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
 <span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
 <span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
+<span class="cstat-no" title="statement not covered" >import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   StartStackingLayout as Layout,
   StackingOptionsCardContainer as CardContainer,
@@ -286,12 +290,14 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
 &nbsp;
   const { availableBalance } = <span class="cstat-no" title="statement not covered" >useBalance();</span>
 &nbsp;
-  const { meetsMinThreshold, poxInfo } = <span class="cstat-no" title="statement not covered" >useSelector(<span class="fstat-no" title="function not covered" >(s</span>tate: RootState) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-    meetsMinThreshold: selectMeetsMinStackingThreshold(state),
-    poxInfo: selectPoxInfo(state),
-  }));
+  const poxInfo = <span class="cstat-no" title="statement not covered" >useSelector(selectPoxInfo);</span>
 &nbsp;
-  const sufficientBalanceToCoverFee = <span class="cstat-no" title="statement not covered" >availableBalance.isGreaterThan(260);</span>
+<span class="cstat-no" title="statement not covered" >  if (!poxInfo) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+&nbsp;
+  const meetsMinThreshold = <span class="cstat-no" title="statement not covered" >availableBalance</span>
+    .plus(STACKING_CONTRACT_CALL_FEE)
+    .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
+  const sufficientBalanceToCoverFee = <span class="cstat-no" title="statement not covered" >availableBalance.isGreaterThan(STACKING_CONTRACT_CALL_FEE);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Layout&gt;
@@ -303,7 +309,7 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
         miners transfer as part of Proof-of-Transfer (PoX).
       &lt;/Text&gt;
       &lt;ExternalLink
-        href="https://www.stacks.co/stacking-and-stx"
+        href="https://stacks.co/stacking-and-stx"
         fontWeight="normal"
         mt="base-tight"
         color="blue"
@@ -364,7 +370,7 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 16 2021 09:36:49 GMT+0000 (Coordinated Universal Time)
+                at Mon Apr 05 2021 13:18:16 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

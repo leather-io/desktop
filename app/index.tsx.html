@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -80,10 +80,40 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -92,9 +122,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -107,8 +137,21 @@
 <span class="cstat-no" title="statement not covered" >import { ThemeProvider, theme } from '@blockstack/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { render } from 'react-dom';</span>
 <span class="cstat-no" title="statement not covered" >import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';</span>
+<span class="cstat-no" title="statement not covered" >import { DefaultOptions, QueryClient, QueryClientProvider } from 'react-query';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { configureStore, history } from './store/configureStore';</span>
+<span class="cstat-no" title="statement not covered" >import { DEFAULT_POLLING_INTERVAL } from './constants';</span>
+&nbsp;
+const config: DefaultOptions['queries'] = <span class="cstat-no" title="statement not covered" >{</span>
+  refetchInterval: DEFAULT_POLLING_INTERVAL,
+  keepPreviousData: true,
+  refetchOnWindowFocus: true,
+  staleTime: 30_000,
+};
+&nbsp;
+const queryClient = <span class="cstat-no" title="statement not covered" >new QueryClient({</span>
+  defaultOptions: { queries: config },
+});
 &nbsp;
 const { store, persistor } = <span class="cstat-no" title="statement not covered" >configureStore();</span>
 &nbsp;
@@ -119,9 +162,11 @@ const AppContainer = <span class="cstat-no" title="statement not covered" >CONFI
   const Root = <span class="cstat-no" title="statement not covered" >require('./pages/root').default;</span>
 <span class="cstat-no" title="statement not covered" >  render(</span>
     &lt;ThemeProvider theme={theme}&gt;
-      &lt;AppContainer&gt;
-        &lt;Root store={store} persistor={persistor} history={history} /&gt;
-      &lt;/AppContainer&gt;
+      &lt;QueryClientProvider client={queryClient}&gt;
+        &lt;AppContainer&gt;
+          &lt;Root store={store} persistor={persistor} history={history} /&gt;
+        &lt;/AppContainer&gt;
+      &lt;/QueryClientProvider&gt;
     &lt;/ThemeProvider&gt;,
     document.getElementById('root')
   );
@@ -133,7 +178,7 @@ const AppContainer = <span class="cstat-no" title="statement not covered" >CONFI
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 16 2021 09:36:49 GMT+0000 (Coordinated Universal Time)
+                at Mon Apr 05 2021 13:18:16 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

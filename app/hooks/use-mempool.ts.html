@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -85,7 +85,17 @@
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -93,15 +103,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -109,36 +112,39 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useCallback } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import useSWR from 'swr';</span>
+<span class="cstat-no" title="statement not covered" >import { useQuery } from 'react-query';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { Api } from '@api/api';</span>
-import { RootState } from '@store/index';
 <span class="cstat-no" title="statement not covered" >import { selectAddress } from '@store/keys';</span>
-<span class="cstat-no" title="statement not covered" >import { selectActiveNodeApi } from '@store/stacks-node';</span>
+<span class="cstat-no" title="statement not covered" >import { useApi } from './use-api';</span>
+<span class="cstat-no" title="statement not covered" >import { ApiResource } from '@models';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seMempool(</span>) {
-  const { address, activeNode } = <span class="cstat-no" title="statement not covered" >useSelector(<span class="fstat-no" title="function not covered" >(s</span>tate: RootState) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-    address: selectAddress(state),
-    activeNode: selectActiveNodeApi(state),
-  }));
+  const api = <span class="cstat-no" title="statement not covered" >useApi();</span>
+  const address = <span class="cstat-no" title="statement not covered" >useSelector(selectAddress);</span>
 &nbsp;
   const mempoolFetcher = <span class="cstat-no" title="statement not covered" >useCallback(</span>
-<span class="fstat-no" title="function not covered" >    () =</span>&gt; <span class="cstat-no" title="statement not covered" >new Api(activeNode.url).getMempoolTransactions(address || ''),</span>
-    [activeNode.url, address]
+<span class="fstat-no" title="function not covered" >    ({</span> queryKey }) =&gt; {
+      const [, walletAddress] = <span class="cstat-no" title="statement not covered" >queryKey;</span>
+<span class="cstat-no" title="statement not covered" >      if (!walletAddress) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >      return api.getMempoolTransactions(walletAddress);</span>
+    },
+    [api]
   );
-  const { data: mempoolTxs } = <span class="cstat-no" title="statement not covered" >useSWR('mempool', mempoolFetcher);</span>
+  const { data: mempoolTxs, refetch } = <span class="cstat-no" title="statement not covered" >useQuery([ApiResource.Mempool, address], mempoolFetcher);</span>
 &nbsp;
   const outboundMempoolTxs = <span class="cstat-no" title="statement not covered" >mempoolTxs?.filter(<span class="fstat-no" title="function not covered" >tx </span>=&gt; <span class="cstat-no" title="statement not covered" >tx.sender_address === address)</span>;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return {</span>
     mempoolTxs: mempoolTxs ?? [],
     outboundMempoolTxs: outboundMempoolTxs ?? [],
+    refetch,
   };
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -148,7 +154,7 @@ import { RootState } from '@store/index';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 16 2021 09:36:49 GMT+0000 (Coordinated Universal Time)
+                at Mon Apr 05 2021 13:18:16 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

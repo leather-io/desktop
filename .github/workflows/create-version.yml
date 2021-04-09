@@ -25,7 +25,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: sudo apt-get install libusb-1.0-0-dev libudev-dev
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
 
       - name: Use Node.js
         uses: actions/setup-node@v2
@@ -59,7 +60,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - run: sudo apt-get install libusb-1.0-0-dev libudev-dev
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
 
       - name: Set up node
         uses: actions/setup-node@v2

@@ -1,11 +1,14 @@
 import Store from 'electron-store';
 import { ipcMain } from 'electron';
+import path from 'path';
 
 export function registerIpcStoreHandlers(userDataPath: string) {
   const store = new Store({
     clearInvalidConfig: true,
     cwd: userDataPath,
   });
+
+  ipcMain.on('get-user-data-path', e => (e.returnValue = path.join(userDataPath, 'config.json')));
 
   ipcMain.handle('store-set', (_e, { key, value }: any) => store.set(key, value));
 

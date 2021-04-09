@@ -52,7 +52,8 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - run: sudo apt-get install libusb-1.0-0-dev libudev-dev
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
         if: matrix.os == 'ubuntu-latest'
 
       - uses: actions/cache@v2

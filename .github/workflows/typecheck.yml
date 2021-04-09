@@ -6,12 +6,13 @@ on:
       - '**'
 jobs:
   typecheck:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - run: sudo apt-get install libusb-1.0-0-dev libudev-dev
+      - name: Add required Linux dependencies
+        uses: .github/actions/linux-deps
 
       - uses: actions/setup-node@v2
         with:

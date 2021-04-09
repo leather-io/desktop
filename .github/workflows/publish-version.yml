@@ -51,6 +51,10 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
+        if: matrix.os == 'ubuntu-latest'
+
       - name: Variables
         id: vars
         run: |

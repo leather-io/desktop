@@ -90,9 +90,9 @@ const walletApi = {
 
   contextMenu: (menuItems: any) => ipcRenderer.send('context-menu-open', { menuItems }),
 
-  installPath: () => ipcRenderer.sendSync('installPath'),
-
   closeWallet: () => ipcRenderer.send('closeWallet'),
+
+  getUserDataPath: () => ipcRenderer.sendSync('get-user-data-path'),
 
   ledger: {
     createListener: () => ipcRenderer.send('create-ledger-listener'),

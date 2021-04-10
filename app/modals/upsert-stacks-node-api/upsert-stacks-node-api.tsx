@@ -12,7 +12,8 @@ import { capitalize } from '@utils/capitalize';
 import { Api } from '@api/api';
 import { safeAwait } from '@utils/safe-await';
 import { generateRandomHexString } from '@crypto/key-generation';
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
+import { ModalHeader } from '@modals/components/modal-header';
 
 interface AddNodeSettingsProps {
   isOpen: boolean;
@@ -70,7 +71,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
 
   const changeVerb = selectedNode ? 'Edit' : 'Add';
 
-  const header = <TxModalHeader onSelectClose={onClose}>{changeVerb} a node</TxModalHeader>;
+  const header = <ModalHeader onSelectClose={onClose}>{changeVerb} a node</ModalHeader>;
   const footer = (
     <TxModalFooter>
       <ButtonGroup size="md">

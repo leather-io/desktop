@@ -5,19 +5,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDelegationStatus } from '@hooks/use-delegation-status';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
 import { useBalance } from '@hooks/use-balance';
-import { selectHasPendingRevokingDelegationCall } from '@store/stacking';
-import { truncateMiddle } from '@utils/tx-utils';
+import { isRevokingDelegationTx, truncateMiddle } from '@utils/tx-utils';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { DelegatedIcon } from '@components/icons/delegated-icon';
+import { selectPoxInfo } from '@store/stacking';
 import { homeActions } from '@store/home/home.reducer';
 import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
+import { useMempool } from '@hooks/use-mempool';
 
 export const DelegationCard: FC = () => {
   const dispatch = useDispatch();
+  const { outboundMempoolTxs } = useMempool();
   const delegationStatus = useDelegationStatus();
-  const hasPendingRevokeCall = useSelector(selectHasPendingRevokingDelegationCall);
+  const poxInfo = useSelector(selectPoxInfo);
+
+  const hasPendingRevokeCall = outboundMempoolTxs.some(tx =>
+    isRevokingDelegationTx(tx, poxInfo?.contract_id)
+  );
 
   const balance = useBalance();
   const calculateFee = useCalculateFee();

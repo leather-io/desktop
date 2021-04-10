@@ -3,32 +3,34 @@ import { useSelector } from 'react-redux';
 import { LedgerError } from '@zondax/ledger-blockstack';
 
 import { RootState } from '@store/index';
-import { ContractCallOptions, makeUnsignedContractCall } from '@stacks/transactions';
+import {
+  ContractCallOptions,
+  makeUnsignedContractCall,
+  makeUnsignedSTXTokenTransfer,
+  TokenTransferOptions,
+} from '@stacks/transactions';
 import { selectPublicKey } from '@store/keys';
 import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
 
-interface UseCreateLedgerTxArgs {
-  txOptions: ContractCallOptions;
-}
-
-export function useCreateLedgerTx() {
+function useCreateLedgerTxFactory(
+  method: typeof makeUnsignedContractCall | typeof makeUnsignedSTXTokenTransfer
+) {
   const { publicKey, poxInfo, coreNodeInfo } = useSelector((state: RootState) => ({
     publicKey: selectPublicKey(state),
     poxInfo: selectPoxInfo(state),
     coreNodeInfo: selectCoreNodeInfo(state),
   }));
 
-  const createLedgerContractCallTx = useCallback(
-    async (args: UseCreateLedgerTxArgs) => {
-      const { txOptions } = args;
+  return useCallback(
+    async (options: TokenTransferOptions | ContractCallOptions) => {
       if (coreNodeInfo === null || !publicKey) throw new Error('Stacking requires coreNodeInfo');
 
       if (!poxInfo) throw new Error('`poxInfo` or `stacksApp` is not defined');
 
-      const unsignedTx = await makeUnsignedContractCall({
-        ...txOptions,
+      const unsignedTx = await method({
+        ...options,
         publicKey: publicKey.toString('hex'),
-      });
+      } as any);
 
       const resp = await main.ledger.signTransaction(unsignedTx.serialize().toString('hex'));
 
@@ -37,8 +39,20 @@ export function useCreateLedgerTx() {
       }
       return unsignedTx.createTxWithSignature(resp.signatureVRS);
     },
-    [coreNodeInfo, poxInfo, publicKey]
+    [coreNodeInfo, method, poxInfo, publicKey]
   );
+}
+
+export function useCreateLedgerContractCallTx() {
+  const method = useCreateLedgerTxFactory(makeUnsignedContractCall);
+  const createLedgerContractCallTx = useCallback(method, [method]);
 
   return { createLedgerContractCallTx };
+}
+
+export function useCreateLedgerTokenTransferTx() {
+  const method = useCreateLedgerTxFactory(makeUnsignedSTXTokenTransfer);
+  const createLedgerTokenTransferTx = useCallback(method, [method]);
+
+  return { createLedgerTokenTransferTx };
 }

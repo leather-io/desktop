@@ -4,13 +4,19 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import routes from '@constants/routes.json';
-import { selectHasPendingDelegateStxCall } from '@store/stacking';
 import { useFetchDelegationStatus } from '@hooks/use-fetch-delegation-status';
 import { AbstractBtcChartSvg } from '@components/svg/abstract-btc-chart';
+import { useMempool } from '@hooks/use-mempool';
+import { isDelegateStxTx } from '@utils/tx-utils';
+import { selectPoxInfo } from '@store/stacking';
 
 export const StackingPromoCard: FC = memo(() => {
   const history = useHistory();
-  const hasPendingDelegateStxCall = useSelector(selectHasPendingDelegateStxCall);
+  const { outboundMempoolTxs } = useMempool();
+  const poxInfo = useSelector(selectPoxInfo);
+  const hasPendingDelegateStxCall = outboundMempoolTxs.some(tx =>
+    isDelegateStxTx(tx, poxInfo?.contract_id)
+  );
 
   const delegationStatus = useFetchDelegationStatus();
 

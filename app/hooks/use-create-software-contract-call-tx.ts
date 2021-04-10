@@ -15,13 +15,13 @@ interface UseCreateSoftwareTxArgs {
   privateKey: string;
 }
 
-export function useCreateSoftwareTx() {
+export function useCreateSoftwareContractCallTx() {
   const { poxInfo, coreNodeInfo } = useSelector((state: RootState) => ({
     poxInfo: selectPoxInfo(state),
     coreNodeInfo: selectCoreNodeInfo(state),
   }));
 
-  const createSoftwareTx = useCallback(
+  const createSoftwareContractCallTx = useCallback(
     async (args: UseCreateSoftwareTxArgs) => {
       const { txOptions, privateKey } = args;
       if (!coreNodeInfo) throw new Error('Stacking requires coreNodeInfo');
@@ -34,5 +34,5 @@ export function useCreateSoftwareTx() {
     [coreNodeInfo, poxInfo]
   );
 
-  return { createSoftwareTx };
+  return { createSoftwareContractCallTx };
 }

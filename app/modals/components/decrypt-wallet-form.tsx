@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { forwardRef } from 'react';
 import { Box, color, Input, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
@@ -11,9 +11,7 @@ interface DecryptWalletFormProps {
   onSetPassword(password: string): void;
 }
 
-type Props = FC<DecryptWalletFormProps>;
-
-export const DecryptWalletForm: Props = props => {
+export const DecryptWalletForm = forwardRef((props: DecryptWalletFormProps, ref) => {
   const { description, onSetPassword, decryptionError, hasSubmitted, onForgottenPassword } = props;
 
   const handlePasswordInput = (e: React.FormEvent<HTMLInputElement>) => {
@@ -21,10 +19,11 @@ export const DecryptWalletForm: Props = props => {
     const pass = e.currentTarget.value;
     onSetPassword(pass);
   };
+
   return (
     <Box mx="extra-loose" mt="extra-loose">
       <Text textStyle="body.large">{description}</Text>
-      <Input onChange={handlePasswordInput} type="password" mt="base-loose" />
+      <Input onChange={handlePasswordInput} type="password" mt="base-loose" ref={ref as any} />
       {hasSubmitted && decryptionError && (
         <ErrorLabel>
           <ErrorText>{decryptionError}</ErrorText>
@@ -45,4 +44,4 @@ export const DecryptWalletForm: Props = props => {
       </Text>
     </Box>
   );
-};
+});

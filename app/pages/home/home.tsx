@@ -18,7 +18,7 @@ import {
   HomeCardState,
 } from '@store/home';
 
-import { TransactionModal } from '@modals/transaction/transaction-modal';
+import { TransactionModal } from '@modals/send-stx/send-stx-modal';
 import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';
 

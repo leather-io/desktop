@@ -1,8 +1,9 @@
 import React, { FC, useState, useRef, useCallback } from 'react';
 import { ButtonGroup, Button, Box, color } from '@stacks/ui';
 import { Modal } from '@modals/components/base-modal';
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
 import { clearDiskStorage } from '@utils/disk-store';
+import { ModalHeader } from '@modals/components/modal-header';
 
 interface ResetWalletModalProps {
   isOpen: boolean;
@@ -38,7 +39,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
 
   return (
     <Modal isOpen={isOpen} handleClose={onClose} minWidth={['100%', '488px']}>
-      <TxModalHeader onSelectClose={closeModal}>Reset wallet</TxModalHeader>
+      <ModalHeader onSelectClose={closeModal}>Reset wallet</ModalHeader>
       <Box mx="extra-loose" my="loose" textStyle="body.large">
         Warning: you may lose funds if you do not have backups of your 24-word Secret Key
       </Box>

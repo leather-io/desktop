@@ -11,7 +11,7 @@ export function useFetchDelegationStatus(contractId?: string, address?: string) 
     [ApiResource.DelegationStatus, contractId, address],
     async ({ queryKey }) => {
       const [, innerContractId, innerAddress] = queryKey;
-      if (!contractId || !address) return;
+      if (!innerContractId || !innerAddress) return;
       const [contractAddress, contractName] = innerContractId.split('.');
       const key = cvToHex(
         tupleCV({

@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
-import { Flex, Box, Text, Button, color } from '@stacks/ui';
+import React, { FC } from 'react';
+import { Flex, Box, Text, color } from '@stacks/ui';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 
 import failedCrossSvg from '../../../assets/images/failed-cross.svg';
+import { ExplainerTooltip } from '@components/tooltip';
 
 interface FailedBroadcastErrorProps {
   error: PostCoreNodeTransactionsError | null;
@@ -10,7 +11,6 @@ interface FailedBroadcastErrorProps {
 
 export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
   const { error } = props;
-  const [showErrorDetails, setShowErrorDetails] = useState(false);
   let errorBody: JSX.Element;
   switch (error?.reason) {
     case 'ConflictingNonceInMempool':
@@ -72,20 +72,27 @@ export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
         <img src={failedCrossSvg} alt="" />
       </Box>
       {errorBody}
-      {error !== null && (
-        <Box mt="base-tight">
-          <Button variant="link" my="base" onClick={() => setShowErrorDetails(!showErrorDetails)}>
-            {showErrorDetails ? 'Hide' : 'Show'} response details
-          </Button>
-          {showErrorDetails && (
-            <Box fontSize="12px" textAlign="left" px="base">
-              <Box as="pre" maxWidth="100%" overflowX="scroll">
+      <Box textAlign="left" ml="loose" mt="base">
+        <Text textStyle="body.small.medium">Error response</Text>
+        <Flex alignItems="center" mt="extra-tight">
+          <ExplainerTooltip>
+            This error explains why your transaction failed to broadcast. Share this information
+            when asking for help.
+          </ExplainerTooltip>
+          <Text textStyle="caption" ml="extra-tight" color="ink.600">
+            What does this code mean?
+          </Text>
+        </Flex>
+        {error !== null && (
+          <Box mt="base">
+            <Box fontSize="11px" textAlign="left">
+              <Box as="pre" maxWidth="100%" whiteSpace="break-spaces">
                 <code>{JSON.stringify(error, null, 2)}</code>
               </Box>
             </Box>
-          )}
-        </Box>
-      )}
+          </Box>
+        )}
+      </Box>
     </Flex>
   );
 };

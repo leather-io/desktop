@@ -1,23 +1,29 @@
 import React, { FC } from 'react';
-import { Flex, Box, Text, color } from '@stacks/ui';
+import { Flex, Box, Text, color, Button } from '@stacks/ui';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useDelegationStatus } from '@hooks/use-delegation-status';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
 import { useBalance } from '@hooks/use-balance';
-import { selectHasPendingRevokingDelegationCall } from '@store/stacking';
-import { truncateMiddle } from '@utils/tx-utils';
+import { isRevokingDelegationTx, truncateMiddle } from '@utils/tx-utils';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { DelegatedIcon } from '@components/icons/delegated-icon';
+import { selectPoxInfo } from '@store/stacking';
 import { homeActions } from '@store/home/home.reducer';
 import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
+import { useMempool } from '@hooks/use-mempool';
 
 export const DelegationCard: FC = () => {
   const dispatch = useDispatch();
+  const { outboundMempoolTxs } = useMempool();
   const delegationStatus = useDelegationStatus();
-  const hasPendingRevokeCall = useSelector(selectHasPendingRevokingDelegationCall);
+  const poxInfo = useSelector(selectPoxInfo);
+
+  const hasPendingRevokeCall = outboundMempoolTxs.some(tx =>
+    isRevokingDelegationTx(tx, poxInfo?.contract_id)
+  );
 
   const balance = useBalance();
   const calculateFee = useCalculateFee();
@@ -77,9 +83,11 @@ export const DelegationCard: FC = () => {
         </Box>
         <Box borderTop={`1px solid ${color('border')}`} py="extra-tight" px="extra-tight">
           {hasSufficientBalanceToCoverFee ? (
-            <Text
-              as="button"
+            <Button
+              variant="link"
               border={0}
+              py="base-tight"
+              px="base"
               textStyle="body.small"
               color={color('text-body')}
               pointerEvents={
@@ -91,7 +99,7 @@ export const DelegationCard: FC = () => {
               onClick={() => dispatch(homeActions.openRevokeDelegationModal())}
             >
               {hasPendingRevokeCall ? 'Currently revoking STX' : 'Revoke delegation'}
-            </Text>
+            </Button>
           ) : (
             <Text
               mx="base-loose"

@@ -47,3 +47,7 @@ export async function decryptMnemonic({ encryptedMnemonic, derivedKeyHash }: Dec
   const textDecoder = new TextDecoder();
   return textDecoder.decode(decrypted);
 }
+
+export function isDecryptionError(error: Error) {
+  return String(error) === 'OperationError';
+}

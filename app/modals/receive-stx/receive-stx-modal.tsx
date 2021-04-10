@@ -5,10 +5,10 @@ import { Button } from '@stacks/ui';
 import { Modal } from '@modals/components/base-modal';
 
 import { homeActions } from '@store/home';
-
+import { ModalHeader } from '@modals/components/modal-header';
 import { useWalletType } from '@hooks/use-wallet-type';
 
-import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
+import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
 import { RevealStxAddressLedger } from './components/reveal-stx-address-ledger';
 import { RevealStxAddressSoftware } from './components/reveal-stx-address-software';
 
@@ -20,7 +20,7 @@ export const ReceiveStxModal: FC<{ isOpen: boolean }> = memo(({ isOpen }) => {
 
   return (
     <Modal handleClose={closeModal} minWidth="488px" isOpen={isOpen}>
-      <TxModalHeader onSelectClose={closeModal}>Receive STX</TxModalHeader>
+      <ModalHeader onSelectClose={closeModal}>Receive STX</ModalHeader>
       {whenWallet({
         ledger: <RevealStxAddressLedger />,
         software: <RevealStxAddressSoftware />,

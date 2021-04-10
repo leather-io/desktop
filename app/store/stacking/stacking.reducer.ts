@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { NETWORK } from '@constants/index';
-import { selectIsStackingCallPending, selectPendingTransactions } from '@store/pending-transaction';
+import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
   fetchStackingInfo,
   fetchCoreDetails,
@@ -22,7 +22,6 @@ import {
 import { stxToMicroStx } from '@utils/unit-convert';
 import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
 import { selectAddressBalance } from '@store/address';
-import { isRevokingDelegationTx, isDelegateStxTx } from '@utils/tx-utils';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -296,15 +295,3 @@ export const selectEstimatedStackingDuration = (cycles: number) =>
       )
       .humanize();
   });
-
-export const selectHasPendingRevokingDelegationCall = createSelector(
-  selectPendingTransactions,
-  selectPoxInfo,
-  (pendingTxs, pox) => pendingTxs.some(tx => isRevokingDelegationTx(tx, pox?.contract_id))
-);
-
-export const selectHasPendingDelegateStxCall = createSelector(
-  selectPendingTransactions,
-  selectPoxInfo,
-  (pendingTxs, pox) => pendingTxs.some(tx => isDelegateStxTx(tx, pox?.contract_id))
-);

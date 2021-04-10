@@ -1,5 +1,5 @@
 import Transport from '@ledgerhq/hw-transport';
-import StacksApp, { ResponseAddress, ResponseSign } from '@zondax/ledger-blockstack';
+import StacksApp, { LedgerError, ResponseAddress, ResponseSign } from '@zondax/ledger-blockstack';
 
 const STX_DERIVATION_PATH = `m/44'/5757'/0'/0/0`;
 
@@ -26,14 +26,17 @@ export function ledgerRequestSignTx(transport: Transport | null) {
 
     const stacksApp = new StacksApp(transport);
     const txBuffer = Buffer.from(unsignedTransaction, 'hex');
-    const signatures: ResponseSign = await stacksApp.sign(STX_DERIVATION_PATH, txBuffer);
+    const response: ResponseSign = await stacksApp.sign(STX_DERIVATION_PATH, txBuffer);
     await transport.close();
+    if (response.returnCode !== LedgerError.NoErrors) {
+      return response;
+    }
     return {
-      ...signatures,
-      postSignHash: signatures.postSignHash.toString('hex'),
-      signatureCompact: signatures.signatureCompact.toString('hex'),
-      signatureVRS: signatures.signatureVRS.toString('hex'),
-      signatureDER: signatures.signatureDER.toString('hex'),
+      ...response,
+      postSignHash: response.postSignHash.toString('hex'),
+      signatureCompact: response.signatureCompact.toString('hex'),
+      signatureVRS: response.signatureVRS.toString('hex'),
+      signatureDER: response.signatureDER.toString('hex'),
     };
   };
 }

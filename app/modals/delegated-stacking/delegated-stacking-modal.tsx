@@ -1,49 +1,39 @@
 import React, { FC, useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Modal } from '@stacks/ui';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
+import { Modal } from '@stacks/ui';
 import BN from 'bn.js';
 
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
 
 import { selectPoxInfo } from '@store/stacking';
-
-import { broadcastTransaction, BroadcastTransactionArgs } from '@store/transaction';
-import { selectAddressBalance } from '@store/address';
 import { safeAwait } from '@utils/safe-await';
 
 import {
-  StackingModalHeader,
-  StackingModalFooter,
-  StackingModalButton,
+  StackingModalHeader as Header,
   modalStyle,
 } from '@modals/components/stacking-modal-layout';
-import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
-import { StackingFailed } from '@modals/components/stacking-failed';
 
-import { useWalletType } from '@hooks/use-wallet-type';
 import { useStackingClient } from '@hooks/use-stacking-client';
-import { SignTxWithLedger } from '@modals/components/sign-tx-with-ledger';
+
 import { useApi } from '@hooks/use-api';
-import { pendingTransactionSlice } from '@store/pending-transaction';
 import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
-import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
-import { useCreateLedgerTx } from '@hooks/use-create-ledger-tx';
-import { useCreateSoftwareTx } from '@hooks/use-create-software-tx';
-import { delay } from '@utils/delay';
-import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
+import { useBroadcastTx } from '@hooks/use-broadcast-tx';
+import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
+import { useMempool } from '@hooks/use-mempool';
+
+import { SignTransaction } from '@components/tx-signing/sign-transaction';
+import { useLatestNonce } from '@hooks/use-latest-nonce';
+import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { TransactionError } from '@modals/components/transaction-error';
 
 enum StackingModalStep {
-  DecryptWalletAndSend,
-  SignWithLedgerAndSend,
+  SignTransaction,
   FailedContractCall,
 }
-
-type StackingModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
 interface StackingModalProps {
   delegateeStxAddress: string;
@@ -55,189 +45,81 @@ interface StackingModalProps {
 export const DelegatedStackingModal: FC<StackingModalProps> = props => {
   const { onClose, delegateeStxAddress, amountToStack, burnHeight } = props;
 
-  const dispatch = useDispatch();
   const history = useHistory();
   useHotkeys('esc', () => onClose());
 
-  const [password, setPassword] = useState('');
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [isSendingTx, setIsSendingTx] = useState(false);
-
-  const [decryptionError, setDecryptionError] = useState<string | null>(null);
-  const [isDecrypting, setIsDecrypting] = useState(false);
-
-  const { walletType, whenWallet } = useWalletType();
+  const { nonce } = useLatestNonce();
   const { stackingClient } = useStackingClient();
-  const { decryptWallet } = useDecryptWallet();
-  const { createLedgerContractCallTx } = useCreateLedgerTx();
-  const { createSoftwareTx } = useCreateSoftwareTx();
-  const { step: ledgerStep, isLocked } = usePrepareLedger();
+  const { broadcastTx, isBroadcasting } = useBroadcastTx();
+
+  const { refetch } = useMempool();
 
   const api = useApi();
 
-  const { poxInfo, balance } = useSelector((state: RootState) => ({
+  const { poxInfo } = useSelector((state: RootState) => ({
     poxInfo: selectPoxInfo(state),
-    balance: selectAddressBalance(state),
   }));
 
-  const initialStep = whenWallet({
-    software: StackingModalStep.DecryptWalletAndSend,
-    ledger: StackingModalStep.SignWithLedgerAndSend,
-  });
+  const initialStep = StackingModalStep.SignTransaction;
 
   const [step, setStep] = useState(initialStep);
+  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
+    null
+  );
+  const createDelegationTxOptions = useCallback((): ContractCallOptions => {
+    if (!poxInfo) throw new Error('`poxInfo` undefined');
+    return {
+      ...stackingClient.getDelegateOptions({
+        amountMicroStx: new BN(amountToStack.toString()),
+        contract: poxInfo.contract_id,
+        delegateTo: delegateeStxAddress,
+        untilBurnBlockHeight: burnHeight,
+      }),
+      nonce: new BN(nonce),
+    };
+  }, [poxInfo, stackingClient, amountToStack, delegateeStxAddress, burnHeight, nonce]);
 
-  const createDelegationTxOptions = useCallback(() => {
-    if (!poxInfo) throw new Error('poxInfo not defined');
-    return stackingClient.getDelegateOptions({
-      amountMicroStx: new BN(amountToStack.toString()),
-      contract: poxInfo.contract_id,
-      delegateTo: delegateeStxAddress,
-      untilBurnBlockHeight: burnHeight,
-    });
-  }, [amountToStack, delegateeStxAddress, poxInfo, stackingClient, burnHeight]);
-
-  const createSoftwareWalletTx = useCallback(async () => {
-    if (!password) throw new Error('`password` missing');
-    const { privateKey } = await decryptWallet(password);
-    const txOptions = createDelegationTxOptions();
-    return createSoftwareTx({ privateKey, txOptions });
-  }, [password, decryptWallet, createDelegationTxOptions, createSoftwareTx]);
-
-  const createLedgerWalletTx = useCallback(async () => {
-    return createLedgerContractCallTx({ txOptions: createDelegationTxOptions() });
-  }, [createDelegationTxOptions, createLedgerContractCallTx]);
-
-  const broadcastTx = async () => {
-    if (balance === null) return;
-    setIsSendingTx(true);
-    setHasSubmitted(true);
-
-    const broadcastActions: Omit<BroadcastTransactionArgs, 'transaction'> = {
-      onBroadcastSuccess: async txId => {
-        const [, tx] = await safeAwait(watchForNewTxToAppear({ txId, nodeUrl: api.baseUrl }));
-        if (tx) {
-          dispatch(pendingTransactionSlice.actions.addPendingTransaction(tx as MempoolTransaction));
-        }
+  const delegateStx = (signedTx: StacksTransaction) =>
+    broadcastTx({
+      onSuccess: async txId => {
+        await safeAwait(watchForNewTxToAppear({ txId, nodeUrl: api.baseUrl }));
+        await refetch();
         history.push(routes.HOME);
       },
-      onBroadcastFail: () => setStep(StackingModalStep.FailedContractCall),
-    };
-
-    if (walletType === 'software') {
-      setIsDecrypting(true);
-      await delay(100);
-      const [error, transaction] = await safeAwait(createSoftwareWalletTx());
-
-      if (error) {
-        setIsDecrypting(false);
-        setIsSendingTx(false);
-        setDecryptionError(
-          String(error) === 'OperationError' ? 'Unable to decrypt wallet' : 'Something went wrong'
-        );
-        return;
-      }
-      if (transaction) {
-        setIsDecrypting(false);
-        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
-      }
-    }
-
-    if (walletType === 'ledger') {
-      const [error, transaction] = await safeAwait(createLedgerWalletTx());
-      if (error) {
-        setHasSubmitted(false);
-        setIsSendingTx(false);
+      onFail: err => {
+        if (err) setNodeResponseError(err);
         setStep(StackingModalStep.FailedContractCall);
-        return;
-      }
-      if (transaction) {
-        dispatch(broadcastTransaction({ ...broadcastActions, transaction }));
-      }
-    }
-  };
+      },
+      tx: signedTx,
+    });
 
-  const txFormStepMap: Record<StackingModalStep, StackingModalComponents> = {
-    [StackingModalStep.DecryptWalletAndSend]: () => ({
-      header: (
-        <StackingModalHeader onSelectClose={onClose}>Confirm and delegate</StackingModalHeader>
-      ),
-      body: (
-        <DecryptWalletForm
-          description="Enter your password to initiate delegation"
-          onSetPassword={password => setPassword(password)}
-          onForgottenPassword={() => {
-            onClose();
-            history.push(routes.SETTINGS);
-          }}
-          hasSubmitted={hasSubmitted}
-          decryptionError={decryptionError}
+  const txFormStepMap: Record<StackingModalStep, () => JSX.Element> = {
+    [StackingModalStep.SignTransaction]: () => (
+      <>
+        <Header onSelectClose={onClose}>Confirm and delegate</Header>
+        <SignTransaction
+          action="initate delegation"
+          txOptions={createDelegationTxOptions()}
+          isBroadcasting={isBroadcasting}
+          onClose={onClose}
+          onTransactionSigned={tx => delegateStx(tx)}
         />
-      ),
-      footer: (
-        <StackingModalFooter>
-          <StackingModalButton mode="tertiary" onClick={onClose}>
-            Close
-          </StackingModalButton>
-          <StackingModalButton
-            isLoading={isDecrypting || isSendingTx}
-            isDisabled={isDecrypting || isSendingTx}
-            onClick={() => broadcastTx()}
-          >
-            Initiate Delegation
-          </StackingModalButton>
-        </StackingModalFooter>
-      ),
-    }),
-    [StackingModalStep.SignWithLedgerAndSend]: () => ({
-      header: (
-        <StackingModalHeader onSelectClose={onClose}>Confirm on your Ledger</StackingModalHeader>
-      ),
-      body: <SignTxWithLedger step={ledgerStep} isLocked={isLocked} ledgerError={null} />,
-      footer: (
-        <StackingModalFooter>
-          <StackingModalButton
-            mode="tertiary"
-            onClick={() => {
-              setHasSubmitted(false);
-              onClose();
-            }}
-          >
-            Close
-          </StackingModalButton>
-          <StackingModalButton
-            isDisabled={
-              hasSubmitted || ledgerStep !== LedgerConnectStep.ConnectedAppOpen || isLocked
-            }
-            isLoading={hasSubmitted}
-            onClick={() => void broadcastTx()}
-          >
-            Sign transaction
-          </StackingModalButton>
-        </StackingModalFooter>
-      ),
-    }),
+      </>
+    ),
 
-    [StackingModalStep.FailedContractCall]: () => ({
-      header: <StackingModalHeader onSelectClose={onClose} />,
-      body: (
-        <StackingFailed walletType={walletType}>Failed to call stacking contract</StackingFailed>
-      ),
-      footer: (
-        <StackingModalFooter>
-          <StackingModalButton mode="tertiary" onClick={onClose}>
-            Close
-          </StackingModalButton>
-          <StackingModalButton onClick={() => setStep(initialStep)}>Try again</StackingModalButton>
-        </StackingModalFooter>
-      ),
-    }),
+    [StackingModalStep.FailedContractCall]: () => (
+      <TransactionError
+        error={nodeResponseError}
+        onClose={onClose}
+        onGoBack={() => setStep(initialStep)}
+      />
+    ),
   };
 
-  const { header, body, footer } = txFormStepMap[step]();
+  const body = txFormStepMap[step]();
 
   return (
-    <Modal isOpen headerComponent={header} footerComponent={footer} {...modalStyle}>
+    <Modal isOpen {...modalStyle}>
       {body}
     </Modal>
   );

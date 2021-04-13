@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -19,6 +19,7 @@ import {
   ValidatedPassword,
 } from '@crypto/validate-password';
 import { ExplainerTooltip } from '@components/tooltip';
+import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
   if (result.isMnemonicPhrase) {
@@ -43,10 +44,12 @@ export const SetPassword: React.FC = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
+  const passwordInputRef = useRef<HTMLInputElement>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [successfullyChosenStrongPass, setSuccessfullyChosenStrongPass] = useState(false);
 
   const handleBack = useCallback(() => {
     history.goBack();
@@ -71,6 +74,8 @@ export const SetPassword: React.FC = () => {
     setStrengthResult(result);
     if (result.meetsAllStrengthRequirements) {
       setBtnDisabled(true);
+      setSuccessfullyChosenStrongPass(true);
+      blastUndoStackToRemovePasswordFromMemory(passwordInputRef.current);
       dispatch(setSoftwareWallet({ password, history }));
     }
   };
@@ -100,22 +105,31 @@ export const SetPassword: React.FC = () => {
           Why do I need to set a password?
         </Text>
       </Flex>
-      <Input type="password" mt="base-tight" onChange={handlePasswordInput} />
-      <Text display="block" textStyle="body.small" color="ink.600" mt="base">
-        Password strength:
-        <Text
-          textStyle="body.small.medium"
-          color={password === null ? undefined : strengthColor(strengthResult)}
-          ml="tight"
-        >
-          {password === null ? '—' : strengthText(strengthResult)}
-        </Text>
-      </Text>
-      {!strengthResult.meetsAllStrengthRequirements && hasSubmitted && (
-        <Text display="block" textStyle="body.small" color="ink.600" mt="tight">
-          {weakPasswordWarningMessage(strengthResult)}
+      <Input
+        type="password"
+        mt="base-tight"
+        onChange={handlePasswordInput}
+        ref={passwordInputRef}
+      />
+      {!successfullyChosenStrongPass && (
+        <Text display="block" textStyle="body.small" color="ink.600" mt="base">
+          Password strength:
+          <Text
+            textStyle="body.small.medium"
+            color={password === null ? undefined : strengthColor(strengthResult)}
+            ml="tight"
+          >
+            {password === null ? '—' : strengthText(strengthResult)}
+          </Text>
         </Text>
       )}
+      {!strengthResult.meetsAllStrengthRequirements &&
+        hasSubmitted &&
+        !successfullyChosenStrongPass && (
+          <Text display="block" textStyle="body.small" color="ink.600" mt="tight">
+            {weakPasswordWarningMessage(strengthResult)}
+          </Text>
+        )}
       <OnboardingButton type="submit" mt="loose" isLoading={btnDisabled} isDisabled={btnDisabled}>
         Continue
       </OnboardingButton>

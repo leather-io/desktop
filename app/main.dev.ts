@@ -46,6 +46,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.setPath('userData', getUserDataPath(app));
 app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
+app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
 // https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/2788
 const extensions: ExtensionReference[] = []; // [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS];

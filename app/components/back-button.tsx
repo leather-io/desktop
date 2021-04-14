@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, ArrowIcon, ButtonProps } from '@stacks/ui';
+import { ArrowIcon, ButtonProps, IconButton } from '@stacks/ui';
 import { useWindowFocus } from '@hooks/use-window-focus';
 import { useBack } from '@hooks/use-back-url';
 
@@ -18,14 +18,9 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
   const hasBackState = !!backUrl;
 
   return (
-    <Button
-      variant="unstyled"
-      _hover={{ background: 'none' }}
-      position="absolute"
-      left={0}
-      top="5px"
-      height="34px"
-      width="34px"
+    <IconButton
+      height="32px"
+      width="32px"
       style={{
         cursor: 'default',
         minHeight: 'unset',
@@ -36,13 +31,15 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
         handleBack();
         onClick?.(e);
       }}
+      pointerEvents={!hasBackState ? 'none' : 'all'}
       isDisabled={!hasBackState}
       {...(props as any)}
-    >
-      <ArrowIcon
-        {...({ direction: 'left' } as any)}
-        color={hasDimmedColor(hasBackState, isFocused) ? dimmedColor : 'ink'}
-      />
-    </Button>
+      icon={() => (
+        <ArrowIcon
+          {...({ direction: 'left' } as any)}
+          color={hasDimmedColor(hasBackState, isFocused) ? dimmedColor : 'ink'}
+        />
+      )}
+    />
   );
 };

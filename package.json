@@ -32,7 +32,8 @@
     "start-renderer-dev": "cross-env NODE_ENV=development webpack serve --config configs/webpack.config.renderer.dev.babel.js",
     "start-preload-dev": "cross-env NODE_ENV=development webpack --watch --config configs/webpack.config.preload.babel.js",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "typecheck": "tsc --noEmit"
   },
   "release": {
     "branches": [

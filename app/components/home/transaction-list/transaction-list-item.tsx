@@ -1,7 +1,6 @@
 import React, {
   FC,
   MutableRefObject,
-  RefObject,
   useLayoutEffect,
   useRef,
   useEffect,
@@ -41,6 +40,7 @@ interface TransactionListItemProps {
   address: string;
   activeTxIdRef: MutableRefObject<any>;
   domNodeMapRef: MutableRefObject<any>;
+
   onSelectTx(txId: string): void;
 }
 
@@ -145,9 +145,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
 
   return (
     <TransactionListItemContainer
-      // UI library bug where it is only considered HTMLDivElement
-      // type casting here so type is correct elsewhere
-      ref={(containerRef as unknown) as RefObject<HTMLDivElement>}
+      ref={containerRef}
       onClick={() => onSelectTx(tx.tx_id)}
       focused={focused}
       hovered={hovered}
@@ -162,7 +160,9 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
         </Text>
         <Stack isInline spacing="tight">
           <Text textStyle="body.small" color="ink.600">
-            {getTxTypeName(tx)}
+            {getTxTypeName(
+              tx as any // TODO: fix in ui-utils
+            )}
           </Text>
           <Text textStyle="body.small" color="ink.600">
             {txDateShort}

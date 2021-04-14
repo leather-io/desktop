@@ -14,8 +14,11 @@ interface BalanceCardProps {
   balance: string | null;
   address: string | null;
   lockedStx?: string;
+
   onSelectSend(): void;
+
   onSelectReceive(): void;
+
   onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise<any>;
 }
 
@@ -72,11 +75,11 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
       )}
       <Box mt="loose">
         <Button size="md" onClick={onSelectSend} isDisabled={balance === '0' || balance === null}>
-          <ArrowIcon direction="up" mr="base-tight" />
+          <ArrowIcon {...({ direction: 'up' } as any)} mr="base-tight" />
           Send
         </Button>
         <Button size="md" ml="tight" onClick={onSelectReceive}>
-          <ArrowIcon direction="down" mr="base-tight" />
+          <ArrowIcon {...({ direction: 'down' } as any)} mr="base-tight" />
           Receive
         </Button>
         {isTestnet() && (

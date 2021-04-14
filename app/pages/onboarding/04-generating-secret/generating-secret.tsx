@@ -11,7 +11,7 @@ export const GeneratingSecret: React.FC = () => {
       <Flex>
         <Spinner size="lg" color="blue" mx="auto" />
       </Flex>
-      <OnboardingTitle textStyle="header.small" fontWeight={500} fontSize="20px" mt="loose">
+      <OnboardingTitle textStyle="display.small" fontWeight={500} fontSize="20px" mt="loose">
         Generating your Secret Key
       </OnboardingTitle>
     </Onboarding>

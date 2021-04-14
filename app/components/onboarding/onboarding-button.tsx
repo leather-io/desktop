@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, ButtonProps } from '@stacks/ui';
+import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
 
-type OnboardingButton = Omit<ButtonProps, 'ref'>;
-
-export const OnboardingButton: React.FC<OnboardingButton> = ({ children, ...props }) => (
-  <Button mt="base" width="100%" type="button" size="lg" {...props}>
+export const OnboardingButton: ForwardRefExoticComponentWithAs<
+  ButtonProps,
+  'button'
+> = forwardRefWithAs<ButtonProps, 'button'>(({ children, ...props }, ref) => (
+  <Button mt="base" width="100%" type="button" size="lg" ref={ref} {...props}>
     {children}
   </Button>
-);
+));

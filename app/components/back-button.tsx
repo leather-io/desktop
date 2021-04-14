@@ -40,7 +40,7 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
       {...(props as any)}
     >
       <ArrowIcon
-        direction="left"
+        {...({ direction: 'left' } as any)}
         color={hasDimmedColor(hasBackState, isFocused) ? dimmedColor : 'ink'}
       />
     </Button>

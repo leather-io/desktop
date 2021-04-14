@@ -14,7 +14,9 @@ import { useBalance } from '@hooks/use-balance';
 interface BalanceCardProps {
   address: string | null;
   onSelectSend(): void;
+
   onSelectReceive(): void;
+
   onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise<any>;
 }
 
@@ -72,7 +74,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
           Send
         </Button>
         <Button size="md" ml="tight" onClick={onSelectReceive}>
-          <ArrowIcon direction="down" mr="base-tight" />
+          <ArrowIcon {...({ direction: 'down' } as any)} mr="base-tight" />
           Receive
         </Button>
         {isTestnet() && (

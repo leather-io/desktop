@@ -1,7 +1,11 @@
 import React from 'react';
 import { Flex, FlexProps, Box } from '@stacks/ui';
+import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
 
-export const Onboarding: React.FC<FlexProps> = ({ children, ...props }) => {
+export const Onboarding: ForwardRefExoticComponentWithAs<FlexProps, 'div'> = forwardRefWithAs<
+  FlexProps,
+  'div'
+>(({ children, ...props }, ref) => {
   return (
     <Flex
       position="relative"
@@ -9,6 +13,7 @@ export const Onboarding: React.FC<FlexProps> = ({ children, ...props }) => {
       height="100%"
       maxWidth="424px"
       m="0 auto"
+      ref={ref}
       {...props}
     >
       <Flex
@@ -24,4 +29,4 @@ export const Onboarding: React.FC<FlexProps> = ({ children, ...props }) => {
       </Flex>
     </Flex>
   );
-};
+});

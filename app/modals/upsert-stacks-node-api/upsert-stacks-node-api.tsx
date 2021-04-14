@@ -16,7 +16,9 @@ import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-l
 interface AddNodeSettingsProps {
   isOpen: boolean;
   selectedNode?: StacksNode;
+
   onUpdateNode(node: StacksNode): void;
+
   onClose(): void;
 }
 
@@ -82,7 +84,9 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
   );
   return (
     <Modal
-      as="form"
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      as={'form' as any} // TODO: fix
       onSubmit={(e: React.FormEvent<HTMLDivElement>) => form.handleSubmit(e as any)}
       isOpen={isOpen}
       headerComponent={header}

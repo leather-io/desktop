@@ -7,14 +7,16 @@ interface DurationSelectItemProps {
   title: string;
   delegationType: DelegationTypes;
   activeDelegationType: DelegationTypes | null;
+
   onChange(duration: DelegationTypes): void;
+
   isFirst?: boolean;
 }
 
 export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
   const { title, isFirst, delegationType, activeDelegationType, onChange, children } = props;
   return (
-    <Flex minHeight="72px" p="base" as="label" borderTop={!isFirst ? '1px solid #F0F0F5' : null}>
+    <Flex minHeight="72px" p="base" as="label" borderTop={!isFirst ? '1px solid #F0F0F5' : 'unset'}>
       <Flex width="100%">
         <Box position="relative" top="-3px">
           <input

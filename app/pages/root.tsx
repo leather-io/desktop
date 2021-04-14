@@ -1,26 +1,29 @@
 import React, { useEffect, useState, createContext } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { createGlobalStyle } from 'styled-components';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CSSReset } from '@stacks/ui';
-
 import { Store } from '@store/index';
 import { Routes } from '../routes';
 import { loadFonts } from '@utils/load-fonts';
+import { css, Global } from '@emotion/react';
 
-const GlobalStyle = createGlobalStyle`
-  html, body, #root {
+const GlobalStyle = css`
+  html,
+  body,
+  #root {
     height: 100%;
     min-height: 100vh;
     max-height: 100vh;
     background: white;
   }
+
   #root {
     padding-top: 44px;
   }
+
   .draggable-bar {
     position: fixed;
     top: 0;
@@ -43,6 +46,7 @@ interface RootProps {
 
 export interface BackContext {
   backUrl: null | string | (() => void);
+
   setBackUrl(url: null | string | (() => void)): void;
 }
 
@@ -61,8 +65,8 @@ function Root({ store, history, persistor }: RootProps) {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <BackActionContext.Provider value={{ backUrl, setBackUrl }}>
-          <CSSReset />
-          <GlobalStyle />
+          <Global styles={GlobalStyle} />
+          {CSSReset}
           <ConnectedRouter history={history}>
             <Routes />
           </ConnectedRouter>

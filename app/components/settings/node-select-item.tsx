@@ -7,8 +7,11 @@ interface NodeSelectItemProps {
   node: StacksNode;
   activeNode: StacksNode;
   index: number;
+
   onChange(activeNodeId: string): void;
+
   onEdit(): void;
+
   onDelete(activeNodeId: string): void;
 }
 
@@ -20,8 +23,8 @@ export const NodeSelectItem: FC<NodeSelectItemProps> = props => {
       minHeight="72px"
       p="base"
       as="label"
-      borderTop={index > 0 ? '1px solid #F0F0F5' : null}
-      {...{ htmlFor: node.id }}
+      borderTop={index > 0 ? '1px solid #F0F0F5' : 'unset'}
+      htmlFor={node.id}
     >
       <Flex width="100%" align-items="stretch">
         <Box position="relative" top="-3px">

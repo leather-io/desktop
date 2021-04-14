@@ -6,7 +6,7 @@ export const OnboardingButton: ForwardRefExoticComponentWithAs<
   ButtonProps,
   'button'
 > = forwardRefWithAs<ButtonProps, 'button'>(({ children, ...props }, ref) => (
-  <Button mt="base" width="100%" type="button" size="lg" ref={ref} {...props}>
+  <Button mt="base" width="100%" type="button" size="md" ref={ref} {...props}>
     {children}
   </Button>
 ));

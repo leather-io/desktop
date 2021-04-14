@@ -74,7 +74,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
           Send
         </Button>
         <Button size="md" ml="tight" onClick={onSelectReceive}>
-          <ArrowIcon {...({ direction: 'down' } as any)} mr="base-tight" />
+          <ArrowIcon size="12px" {...({ direction: 'down' } as any)} mr="base-tight" />
           Receive
         </Button>
         {isTestnet() && (
@@ -87,8 +87,8 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
             title="Hold alt to request more STX. Use sparingly."
           >
             <Box
-              mr="extra-tight"
-              fontSize="18px"
+              mr="tight"
+              fontSize="14px"
               left="-4px"
               position="relative"
               display={['none', 'none', 'block']}

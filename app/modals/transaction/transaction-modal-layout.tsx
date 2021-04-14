@@ -26,6 +26,7 @@ export const TxModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose 
       icon={CloseIcon}
       cursor="pointer"
       p="tight"
+      iconSize="12px"
       _focus={{ backgroundColor: 'ink.200' }}
     />
   </Flex>
@@ -38,7 +39,7 @@ export const TxModalFooter: FC = ({ children }) => (
 );
 
 export const TxModalButton: FC<ButtonProps> = ({ children, ...props }) => (
-  <Button ml="base-tight" size="lg" minWidth="70px" {...(props as any)}>
+  <Button ml="base-tight" size="md" minWidth="70px" {...(props as any)}>
     {children}
   </Button>
 );

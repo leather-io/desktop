@@ -72,7 +72,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
   const header = <TxModalHeader onSelectClose={onClose}>{changeVerb} a node</TxModalHeader>;
   const footer = (
     <TxModalFooter>
-      <ButtonGroup size="lg">
+      <ButtonGroup size="md">
         <Button type="button" mode="tertiary" onClick={onClose}>
           Cancel
         </Button>

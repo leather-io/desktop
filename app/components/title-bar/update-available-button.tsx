@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
-import { Flex, Text, BoxProps } from '@stacks/ui';
+import { Flex, Text, FlexProps } from '@stacks/ui';
 import { UpdateArrowIcon } from '@components/icons/update-arrow';
 import { WindowActiveState } from '@models';
 
-interface UpdateAvailableButtonProps extends BoxProps {
+interface UpdateAvailableButtonProps extends FlexProps {
   windowState: WindowActiveState;
 }
 

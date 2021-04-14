@@ -1,21 +1,16 @@
 import React, { FC } from 'react';
-import {
-  Box,
-  Flex,
-  Text,
-  FlexProps,
-  CheckmarkCircleIcon,
-  Button,
-  ButtonProps,
-} from '@stacks/ui';
+import { Box, Flex, Text, FlexProps, CheckmarkCircleIcon, Button, ButtonProps } from '@stacks/ui';
 
 import { StackingStepView } from '../utils/use-stacking-form-step';
+import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
+
 interface StackingFormStepProps extends FlexProps {
   title: string;
   isComplete: boolean;
   state: StackingStepView;
   value?: string;
   step?: number;
+
   onEdit?(step: number): void;
 }
 
@@ -74,8 +69,11 @@ export const StackingStepDescription: FC = ({ children }) => (
   </Text>
 );
 
-export const StackingStepAction: FC<ButtonProps> = ({ children, ...props }) => (
-  <Button size="lg" mt="loose" {...(props as unknown)}>
+export const StackingStepAction: ForwardRefExoticComponentWithAs<
+  ButtonProps,
+  'button'
+> = forwardRefWithAs(({ children, ...props }, ref) => (
+  <Button size="lg" mt="loose" ref={ref} {...props}>
     {children}
   </Button>
-);
+));

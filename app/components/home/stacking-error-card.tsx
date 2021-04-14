@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text } from '@blockstack/ui';
+import { Flex, Text } from '@stacks/ui';
 
 export const StackingError: FC = () => (
   <Flex

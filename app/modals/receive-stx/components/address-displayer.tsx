@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Button, Flex, Text, useClipboard } from '@blockstack/ui';
+import { Box, Button, Flex, Text, useClipboard } from '@stacks/ui';
 import { ExchangeWithdrawalWarning } from '@components/testnet/exchange-withdrawal-warning';
 import { isTestnet } from '@utils/network-utils';
 

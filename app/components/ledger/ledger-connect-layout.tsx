@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { CheckmarkCircleIcon, Flex, FlexProps, Text } from '@blockstack/ui';
+import { CheckmarkCircleIcon, Flex, FlexProps, Text } from '@stacks/ui';
 import { LedgerConnectStep } from '@hooks/use-prepare-ledger';
 
 interface LedgerStepTextProps {

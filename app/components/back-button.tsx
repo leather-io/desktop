@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, ArrowIcon, ButtonProps } from '@blockstack/ui';
+import { Button, ArrowIcon, ButtonProps } from '@stacks/ui';
 import { useWindowFocus } from '@hooks/use-window-focus';
 import { useBack } from '@hooks/use-back-url';
 

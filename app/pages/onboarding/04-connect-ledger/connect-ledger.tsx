@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LedgerError } from '@zondax/ledger-blockstack';
-import { Box, Text } from '@blockstack/ui';
+import { Box, Text } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import {

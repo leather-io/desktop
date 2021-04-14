@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Text, Button } from '@blockstack/ui';
+
+import { Button, Text } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';

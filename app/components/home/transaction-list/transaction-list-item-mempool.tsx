@@ -1,6 +1,6 @@
 import React, { FC, useRef, RefObject, useEffect, MutableRefObject } from 'react';
 import { useHover, useFocus } from 'use-events';
-import { Box, Flex, Stack, Text } from '@blockstack/ui';
+import { Box, Flex, Stack, Text } from '@stacks/ui';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 import { getTxTypeName } from '@stacks/ui-utils';
 

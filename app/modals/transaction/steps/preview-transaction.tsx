@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Flex, Text, Box } from '@blockstack/ui';
+import { Flex, Text, Box } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { toHumanReadableStx } from '@utils/unit-convert';

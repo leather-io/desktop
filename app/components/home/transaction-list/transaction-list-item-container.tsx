@@ -1,5 +1,5 @@
 import React, { FC, forwardRef } from 'react';
-import { Flex, FlexProps } from '@blockstack/ui';
+import { Flex, FlexProps } from '@stacks/ui';
 
 import { EnableBefore, listHoverProps, listFocusedProps } from './transaction-list-item-pseudo';
 

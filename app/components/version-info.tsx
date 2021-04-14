@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text } from '@blockstack/ui';
+import { Flex, Text } from '@stacks/ui';
 
 import { openExternalLink } from '@utils/external-links';
 import { NETWORK } from '@constants/index';

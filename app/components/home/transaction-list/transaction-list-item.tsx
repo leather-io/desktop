@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { useHover, useFocus } from 'use-events';
-import { Box, Stack, Text } from '@blockstack/ui';
+import { Box, Stack, Text } from '@stacks/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { RootState } from '@store/index';

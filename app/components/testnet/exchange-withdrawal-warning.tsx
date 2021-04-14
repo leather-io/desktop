@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ExclamationMarkCircleIcon, Flex, Text, FlexProps } from '@blockstack/ui';
+import { ExclamationMarkCircleIcon, Flex, Text, FlexProps } from '@stacks/ui';
 
 export const ExchangeWithdrawalWarning: FC<FlexProps> = props => {
   return (

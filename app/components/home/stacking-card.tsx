@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Flex, Box, Text } from '@blockstack/ui';
+import { Flex, Box, Text } from '@stacks/ui';
 import BigNumber from 'bignumber.js';
 
 import { RootState } from '@store/index';

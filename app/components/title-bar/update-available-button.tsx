@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Flex, Text, BoxProps } from '@blockstack/ui';
+import { Flex, Text, BoxProps } from '@stacks/ui';
 import { UpdateArrowIcon } from '@components/icons/update-arrow';
 import { WindowActiveState } from '@models';
 

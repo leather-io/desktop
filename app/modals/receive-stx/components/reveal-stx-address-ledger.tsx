@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Button, Flex, Stack, Spinner, Text } from '@blockstack/ui';
+import { Box, Button, Flex, Stack, Spinner, Text } from '@stacks/ui';
 
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import { selectAddress } from '@store/keys';

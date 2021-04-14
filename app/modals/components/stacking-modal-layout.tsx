@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, CloseIcon, Button, ButtonProps } from '@blockstack/ui';
+import { Flex, Text, CloseIcon, Button, ButtonProps } from '@stacks/ui';
 
 export const modalStyle = {
   minWidth: ['100%', '488px'],

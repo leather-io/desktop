@@ -31,9 +31,11 @@ export const TitleBar: FC = () => {
   const content = (
     <Flex
       justifyContent="space-between"
-      pl={process.platform === 'darwin' ? '90px' : 'tight'}
+      pl={process.platform === 'darwin' ? '72px' : 'tight'}
       height="100%"
       backgroundColor={winState === 'focused' ? 'white' : '#fafafc'}
+      position="relative"
+      alignItems="center"
     >
       <BackButton />
       <Flex

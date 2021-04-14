@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { safeAwait } from '@blockstack/ui';
+import { safeAwait } from '@stacks/ui';
 import {
   Transaction,
   PostCoreNodeTransactionsError,

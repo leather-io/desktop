@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, FlexProps, Box } from '@blockstack/ui';
+import { Flex, FlexProps, Box } from '@stacks/ui';
 
 export const Onboarding: React.FC<FlexProps> = ({ children, ...props }) => {
   return (

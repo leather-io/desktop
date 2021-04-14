@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 
-import { Flex, FlexProps, Text } from '@blockstack/ui';
+import { Flex, FlexProps, Text } from '@stacks/ui';
 
 import { DelegationType } from '@models/index';
 import { Hr } from '@components/hr';

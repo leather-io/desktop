@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Input, InputProps } from '@blockstack/ui';
+import { Input, InputProps } from '@stacks/ui';
 
 interface CryptoAddressFormProps extends Omit<InputProps, 'form'> {
   form: any;

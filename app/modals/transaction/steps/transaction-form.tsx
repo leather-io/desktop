@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, Input, Box, Button } from '@blockstack/ui';
+import { Flex, Text, Input, Box, Button } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { FormikProps } from 'formik';

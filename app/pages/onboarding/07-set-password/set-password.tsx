@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { Text, Input, Flex } from '@blockstack/ui';
+import { Text, Input, Flex } from '@stacks/ui';
 import { setSoftwareWallet } from '@store/keys';
 import { useBackButton } from '@hooks/use-back-url';
 import { FULL_ENTITY_NAME } from '@constants/index';

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, Box } from '@stacks/ui';
 import { Screen } from '@components/screen';
 import { ExternalLink } from '@components/external-link';
 

@@ -7,7 +7,7 @@ import {
   ButtonProps,
   Button,
   ExclamationMarkCircleIcon,
-} from '@blockstack/ui';
+} from '@stacks/ui';
 
 export const StartStackingLayout: FC<FlexProps> = props => (
   <Flex

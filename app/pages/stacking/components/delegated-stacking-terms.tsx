@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, ExclamationMarkCircleIcon } from '@blockstack/ui';
+import { Box, Flex, Text, ExclamationMarkCircleIcon } from '@stacks/ui';
 import { ClockIcon } from '@components/icons/clock';
 import { DelegationIcon } from '@components/icons/delegation-icon';
 

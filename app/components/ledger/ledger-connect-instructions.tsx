@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, EncryptionIcon } from '@blockstack/ui';
+import { Box, Flex, Text, EncryptionIcon } from '@stacks/ui';
 
 import { LedgerConnectStepRow, LedgerStepText } from './ledger-connect-layout';
 import { LedgerConnectStep } from '@hooks/use-prepare-ledger';

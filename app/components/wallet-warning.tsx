@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, FlexProps } from '@blockstack/ui';
+import { Flex, Text, FlexProps } from '@stacks/ui';
 import { ExternalLink } from './external-link';
 
 export const WalletWarning: FC<FlexProps> = props => {

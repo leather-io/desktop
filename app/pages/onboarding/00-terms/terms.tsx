@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, Box } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import {

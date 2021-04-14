@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Modal } from '@blockstack/ui';
+import { Modal } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';

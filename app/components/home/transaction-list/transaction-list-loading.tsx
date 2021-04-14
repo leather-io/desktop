@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Spinner } from '@blockstack/ui';
+import { Flex, Spinner } from '@stacks/ui';
 
 import { templateTxBoxProps } from './transaction-list-item-pseudo';
 

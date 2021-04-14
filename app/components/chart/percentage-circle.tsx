@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, BoxProps } from '@blockstack/ui';
+import { Box, BoxProps } from '@stacks/ui';
 
 export const blue = (alpha = 1, darker = false) =>
   `rgba(${darker ? '70,55,255' : '85,70,255'},${alpha})`;

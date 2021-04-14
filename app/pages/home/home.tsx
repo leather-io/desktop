@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from '@blockstack/ui';
+import { Spinner } from '@stacks/ui';
 
 import { openTxInExplorer } from '@utils/external-links';
 

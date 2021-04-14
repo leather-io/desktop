@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { validateMnemonic } from 'bip39';
-import { Text, Input, Flex, Box } from '@blockstack/ui';
+import { Text, Input, Flex, Box } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { Hr } from '@components/hr';

@@ -1,4 +1,4 @@
-import { safeAwait } from '@blockstack/ui';
+import { safeAwait } from '@stacks/ui';
 import { Api } from '@api/api';
 import { delay } from '@utils/delay';
 interface WatchForNewTxAppearArgs {

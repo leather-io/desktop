@@ -1,4 +1,4 @@
-import { Text, ExclamationMarkCircleIcon, Flex, FlexProps } from '@blockstack/ui';
+import { Text, ExclamationMarkCircleIcon, Flex, FlexProps } from '@stacks/ui';
 import React, { FC } from 'react';
 
 export const SevereWarning: FC<FlexProps> = ({ children, ...props }) => (

@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { Flex, InputProps, Text, Box } from '@blockstack/ui';
+import { Flex, InputProps, Text, Box } from '@stacks/ui';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';

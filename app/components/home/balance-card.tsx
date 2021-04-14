@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex } from '@blockstack/ui';
+import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex } from '@stacks/ui';
 
 import { features, NETWORK } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Flex, Box, Text, Button } from '@blockstack/ui';
+import { Flex, Box, Text, Button } from '@stacks/ui';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 
 import failedCrossSvg from '../../../assets/images/failed-cross.svg';

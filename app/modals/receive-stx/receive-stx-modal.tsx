@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { Modal, Button } from '@blockstack/ui';
+import { Modal, Button } from '@stacks/ui';
 
 import { homeActions } from '@store/home';
 

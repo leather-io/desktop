@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Flex } from '@blockstack/ui';
+import { Flex } from '@stacks/ui';
 
 import { AddressDisplayer } from './address-displayer';
 import { RevealStxPasswordForm } from './reveal-stx-password-form';

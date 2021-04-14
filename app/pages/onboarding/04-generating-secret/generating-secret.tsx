@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Spinner } from '@blockstack/ui';
+import { Flex, Spinner } from '@stacks/ui';
 
 import { Onboarding, OnboardingTitle } from '@components/onboarding';
 import { useBackButton } from '@hooks/use-back-url';

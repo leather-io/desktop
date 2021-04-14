@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject, timer, combineLatest, from, of } from 'rxjs';
 import { delay, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import type Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { safeAwait } from '@blockstack/ui';
+import { safeAwait } from '@stacks/ui';
 import StacksApp, { LedgerError, ResponseVersion } from '@zondax/ledger-blockstack';
 import {
   ledgerRequestSignTx,

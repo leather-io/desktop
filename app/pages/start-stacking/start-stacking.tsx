@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text } from '@blockstack/ui';
+import { Box, Flex, Text } from '@stacks/ui';
 import { ExternalLink } from '@components/external-link';
 import { useHistory } from 'react-router-dom';
 

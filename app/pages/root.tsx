@@ -5,7 +5,7 @@ import { createGlobalStyle } from 'styled-components';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 import { PersistGate } from 'redux-persist/integration/react';
-import { CSSReset } from '@blockstack/ui';
+import { CSSReset } from '@stacks/ui';
 
 import { Store } from '@store/index';
 import { Routes } from '../routes';

@@ -1,5 +1,5 @@
 import React, { FC, useState, useRef } from 'react';
-import { Modal, ButtonGroup, Button, Box } from '@blockstack/ui';
+import { Modal, ButtonGroup, Button, Box } from '@stacks/ui';
 import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';
 import { clearDiskStorage } from '@utils/disk-store';
 import { useHotkeys } from 'react-hotkeys-hook';

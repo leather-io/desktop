@@ -1,5 +1,5 @@
 import React, { FC, memo, useEffect } from 'react';
-import { Box, Button, Flex, Text } from '@blockstack/ui';
+import { Box, Button, Flex, Text } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 

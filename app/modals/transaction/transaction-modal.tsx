@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import BN from 'bn.js';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 import { BigNumber } from 'bignumber.js';
-import { Modal } from '@blockstack/ui';
+import { Modal } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 import {
   makeSTXTokenTransfer,

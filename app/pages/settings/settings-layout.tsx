@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Text } from '@blockstack/ui';
+import { Box, Text } from '@stacks/ui';
 
 import { Screen } from '@components/screen';
 

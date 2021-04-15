@@ -152,10 +152,6 @@ const createWindow = async () => {
 
   registerLedgerListeners(mainWindow.webContents);
 
-  registerIpcStoreHandlers(getUserDataPath(app));
-
-  registerIpcContextMenuHandlers(mainWindow);
-
   if (process.platform === 'darwin') addMacOsTouchBarMenu(mainWindow);
 };
 
@@ -177,8 +173,14 @@ app.on('window-all-closed', () => {
   }
 });
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.on('ready', createWindow);
+app.on('ready', () => {
+  void createWindow();
+  // We only want to run these once per app lifecycle
+  void app.whenReady().then(() => {
+    registerIpcStoreHandlers(getUserDataPath(app));
+    if (mainWindow) registerIpcContextMenuHandlers(mainWindow);
+  });
+});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the

@@ -1,7 +1,8 @@
-import React, { FC, forwardRef } from 'react';
-import { Flex, FlexProps } from '@blockstack/ui';
+import React from 'react';
+import { Flex, FlexProps } from '@stacks/ui';
 
 import { EnableBefore, listHoverProps, listFocusedProps } from './transaction-list-item-pseudo';
+import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
 
 interface TransactionListItemContainerProps extends FlexProps {
   focused: boolean;
@@ -9,25 +10,26 @@ interface TransactionListItemContainerProps extends FlexProps {
   txId: string;
 }
 
-export const TransactionListItemContainer: FC<TransactionListItemContainerProps> = forwardRef(
-  (args, ref) => {
-    const { hovered, focused, txId, ...props } = args;
+export const TransactionListItemContainer: ForwardRefExoticComponentWithAs<
+  TransactionListItemContainerProps,
+  'div'
+> = forwardRefWithAs<TransactionListItemContainerProps, 'div'>((args, ref) => {
+  const { hovered, focused, txId, ...props } = args;
 
-    return (
-      <Flex
-        ref={ref}
-        as={EnableBefore}
-        mb="loose"
-        cursor="pointer"
-        textAlign="left"
-        position="relative"
-        outline={0}
-        zIndex={2}
-        data-txid={txId}
-        _before={listHoverProps(hovered)}
-        _after={listFocusedProps(focused)}
-        {...props}
-      />
-    );
-  }
-);
+  return (
+    <Flex
+      ref={ref}
+      mb="loose"
+      cursor="pointer"
+      textAlign="left"
+      position="relative"
+      outline={0}
+      zIndex={2}
+      data-txid={txId}
+      _before={listHoverProps(hovered)}
+      _after={listFocusedProps(focused)}
+      {...props}
+      as={EnableBefore}
+    />
+  );
+});

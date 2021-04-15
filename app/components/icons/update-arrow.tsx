@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, BoxProps } from '@blockstack/ui';
+import { Box, BoxProps } from '@stacks/ui';
 
 export const UpdateArrowIcon: React.FC<BoxProps> = props => (
   <Box {...props}>

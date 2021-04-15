@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, BoxProps, FlexProps } from '@blockstack/ui';
+import { Box, Flex, Text, BoxProps, FlexProps, color } from '@stacks/ui';
 
 import { formatCycles } from '@utils/stacking';
 import { increment, decrement } from '@utils/mutate-numbers';
@@ -8,11 +8,13 @@ import { IncrementIcon } from './icons/increment';
 
 interface StepperProps extends BoxProps {
   amount: number;
+
   onIncrement(amount: number): void;
+
   onDecrement(amount: number): void;
 }
 
-const border = '1px solid #E1E3E8';
+const border = `1px solid ${color('border')}`;
 
 const ChangeStepButton: FC<FlexProps> = ({ children, ...props }) => (
   <Flex
@@ -39,7 +41,12 @@ export const Stepper: FC<StepperProps> = props => {
   return (
     <Box {...rest}>
       <Flex>
-        <ChangeStepButton onClick={() => onDecrement(decrement(amount))} borderRadius="6px 0 0 6px">
+        <ChangeStepButton
+          color={color(amount === 1 ? 'text-caption' : 'brand')}
+          pointerEvents={amount === 1 ? 'none' : 'all'}
+          onClick={() => onDecrement(decrement(amount))}
+          borderRadius="6px 0 0 6px"
+        >
           <DecrementIcon />
         </ChangeStepButton>
         <Flex
@@ -54,7 +61,12 @@ export const Stepper: FC<StepperProps> = props => {
             {formatCycles(amount)}
           </Text>
         </Flex>
-        <ChangeStepButton onClick={() => onIncrement(increment(amount))} borderRadius="0 6px 6px 0">
+        <ChangeStepButton
+          color={color(amount === 12 ? 'text-caption' : 'brand')}
+          pointerEvents={amount === 12 ? 'none' : 'all'}
+          onClick={() => onIncrement(increment(amount))}
+          borderRadius="0 6px 6px 0"
+        >
           <IncrementIcon />
         </ChangeStepButton>
       </Flex>

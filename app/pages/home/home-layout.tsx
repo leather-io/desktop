@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, Box, color } from '@stacks/ui';
 import { Screen } from '@components/screen';
 import { ExternalLink } from '@components/external-link';
 
@@ -36,11 +36,11 @@ export const HomeLayout: FC<HomeLayoutProps> = props => {
               mt="loose"
               borderRadius="8px"
               boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-              border="1px solid #F0F0F5"
+              border={`1px solid ${color('border')}`}
               textStyle="caption"
               px="loose"
               py="base-loose"
-              color="ink.600"
+              color={color('text-caption')}
               lineHeight="18px"
             >
               ⚠️ Please check our status page for known issues if you’re experiencing any
@@ -48,7 +48,6 @@ export const HomeLayout: FC<HomeLayoutProps> = props => {
               <ExternalLink
                 fontSize="12px"
                 mt="tight"
-                color="blue"
                 href="https://www.hiro.so/questions/what-known-issues-are-currently-affecting-the-stacks-wallet"
               >
                 Check status

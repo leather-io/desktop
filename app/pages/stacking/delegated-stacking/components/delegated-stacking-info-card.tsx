@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 
-import { Flex, FlexProps, Text } from '@blockstack/ui';
+import { color, Flex, FlexProps, Text } from '@stacks/ui';
 
 import { DelegationType } from '@models/index';
 import { Hr } from '@components/hr';
@@ -20,7 +20,14 @@ interface StackingInfoCardProps extends FlexProps {
 }
 
 export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { balance, delegationType, delegateeAddress, durationInCycles, burnHeight } = props;
+  const {
+    balance,
+    delegationType,
+    delegateeAddress,
+    durationInCycles,
+    burnHeight,
+    ...rest
+  } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
@@ -28,14 +35,14 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
     <Flex
       flexDirection="column"
       boxShadow="low"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       borderRadius="8px"
       minHeight="84px"
       alignItems="flex-start"
       minWidth={[null, null, '320px', '420px']}
       position="sticky"
       top="124px"
-      {...props}
+      {...rest}
     >
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>
@@ -77,7 +84,7 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
               {delegationType === 'indefinite' && 'Indefinite'}
             </Text>
             {burnHeight && (
-              <Text textStyle="caption" color="ink.600" mt="extra-tight">
+              <Text textStyle="caption" color={color('text-caption')} mt="extra-tight">
                 Until burn block: {burnHeight}
               </Text>
             )}

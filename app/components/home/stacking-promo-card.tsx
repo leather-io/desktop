@@ -1,12 +1,12 @@
 import React, { FC, memo, useEffect } from 'react';
-import { Box, Button, Flex, Text } from '@blockstack/ui';
+import { Box, Button, color, Flex, Text } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import routes from '@constants/routes.json';
-import abstractBtcChart from '../../assets/images/abstract-btc-chart.svg';
 import { selectHasPendingDelegateStxCall } from '@store/stacking';
 import { useFetchDelegationStatus } from '@hooks/use-fetch-delegation-status';
+import { AbstractBtcChartSvg } from '@components/svg/abstract-btc-chart';
 
 export const StackingPromoCard: FC = memo(() => {
   const history = useHistory();
@@ -24,16 +24,13 @@ export const StackingPromoCard: FC = memo(() => {
       mt="extra-loose"
       borderRadius="8px"
       boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
     >
       <Flex flexDirection="column" mx="loose" pb="90px" position="relative">
         <Box position="absolute" right="0px" bottom="0px">
-          <img
-            src={abstractBtcChart}
-            alt="Faint bar chart balancing blue bitcoin icons on the 3rd and 5th bar"
-          />
+          <AbstractBtcChartSvg />
         </Box>
-        <Text textStyle="body.large.medium" color="ink.600" mt="loose">
+        <Text textStyle="body.large.medium" color={color('text-caption')} mt="loose">
           Stacking
         </Text>
         <Text textStyle="display.large" mt="tight">

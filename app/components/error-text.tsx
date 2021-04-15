@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, BoxProps } from '@blockstack/ui';
+import { Text, color } from '@stacks/ui';
+import type { BoxProps } from '@stacks/ui';
 
 export const ErrorText: React.FC<BoxProps> = ({ children, ...rest }) => (
   <Text
@@ -7,7 +8,7 @@ export const ErrorText: React.FC<BoxProps> = ({ children, ...rest }) => (
     lineHeight="16px"
     display="block"
     textStyle="caption"
-    color="feedback.error"
+    color={color('feedback-error')}
     {...rest}
   >
     {children}

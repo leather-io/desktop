@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
 
-import { Flex, FlexProps, Text } from '@blockstack/ui';
+import { color, Flex, FlexProps, Text } from '@stacks/ui';
 
 import { Hr } from '@components/hr';
 
@@ -18,7 +18,7 @@ interface StackingInfoCardProps extends FlexProps {
 }
 
 export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { cycles, duration, balance, blocksPerCycle, startDate } = props;
+  const { cycles, duration, balance, blocksPerCycle, startDate, ...rest } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
@@ -26,14 +26,14 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
     <Flex
       flexDirection="column"
       boxShadow="low"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       borderRadius="8px"
       minHeight="84px"
       alignItems="flex-start"
       minWidth={[null, null, '320px', '420px']}
       position="sticky"
       top="124px"
-      {...props}
+      {...rest}
     >
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>

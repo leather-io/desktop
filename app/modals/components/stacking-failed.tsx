@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Box, Text } from '@blockstack/ui';
+import { Flex, Box, Text, color } from '@stacks/ui';
 
 import failedCrossSvg from '@assets/images/failed-cross.svg';
 import { WalletType } from '@models/wallet-type';
@@ -27,7 +27,7 @@ export const StackingFailed: FC<StackingFailedProps> = ({ children, walletType }
       </Text>
     )}
     {walletType === 'ledger' && (
-      <Text textStyle="caption" color="ink.600" maxWidth="300px" mt="base">
+      <Text textStyle="caption" color={color('text-caption')} maxWidth="300px" mt="base">
         Make sure you're using the same Ledger device you used to create this wallet
       </Text>
     )}

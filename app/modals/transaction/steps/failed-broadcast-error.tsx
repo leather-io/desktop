@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Flex, Box, Text, Button } from '@blockstack/ui';
+import { Flex, Box, Text, Button, color } from '@stacks/ui';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 
 import failedCrossSvg from '../../../assets/images/failed-cross.svg';
@@ -26,7 +26,7 @@ export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
             mx="loose"
             display="block"
             textStyle="body.small"
-            color="ink.600"
+            color={color('text-caption')}
           >
             A transaction with this nonce value is already in the mempool. Try again shortly.
           </Text>
@@ -46,7 +46,7 @@ export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
             mx="extra-loose"
             display="block"
             textStyle="body.small"
-            color="ink.600"
+            color={color('text-caption')}
           >
             Transaction failed owing to a bad nonce value. Try again shortly.
           </Text>
@@ -59,7 +59,7 @@ export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
           <Text as="h1" textStyle="display.small" display="block">
             Failed to broadcast transaction
           </Text>
-          <Text textStyle="body.small" color="ink.600" mt="tight" display="block">
+          <Text textStyle="body.small" color={color('text-caption')} mt="tight" display="block">
             The Stacks Blockchain API you're connected to returned a HTTP error code, preventing
             this transaction from broadcasting.
           </Text>

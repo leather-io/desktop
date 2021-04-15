@@ -7,15 +7,19 @@ import {
   CheckmarkCircleIcon,
   Button,
   ButtonProps,
-} from '@blockstack/ui';
+  color,
+} from '@stacks/ui';
 
 import { StackingStepView } from '../utils/use-stacking-form-step';
+import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
+
 interface StackingFormStepProps extends FlexProps {
   title: string;
   isComplete: boolean;
   state: StackingStepView;
   value?: string;
   step?: number;
+
   onEdit?(step: number): void;
 }
 
@@ -27,7 +31,7 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
     <Flex flexDirection="column" mt="extra-loose" {...rest}>
       <Text
         textStyle="caption.medium"
-        color="ink.600"
+        color={color('text-caption')}
         textTransform="uppercase"
         fontSize="11px"
         fontWeight={600}
@@ -38,7 +42,7 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
         <Text textStyle="display.small" mt="extra-tight" mr="tight">
           {title}
         </Text>
-        {showCompeteCheckmark && <CheckmarkCircleIcon size="16px" color="blue" />}
+        {showCompeteCheckmark && <CheckmarkCircleIcon size="16px" color={color('brand')} />}
       </Flex>
       {state === 'closed' ? (
         <Box>
@@ -51,7 +55,7 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
             as="button"
             onClick={() => onEdit?.(step)}
             outline={0}
-            color="blue"
+            color={color('brand')}
             textStyle="body.large.medium"
             mt="tight"
             cursor="pointer"
@@ -74,8 +78,11 @@ export const StackingStepDescription: FC = ({ children }) => (
   </Text>
 );
 
-export const StackingStepAction: FC<ButtonProps> = ({ children, ...props }) => (
-  <Button size="lg" mt="loose" {...(props as unknown)}>
+export const StackingStepAction: ForwardRefExoticComponentWithAs<
+  ButtonProps,
+  'button'
+> = forwardRefWithAs(({ children, ...props }, ref) => (
+  <Button size="md" mt="loose" ref={ref} {...props}>
     {children}
   </Button>
-);
+));

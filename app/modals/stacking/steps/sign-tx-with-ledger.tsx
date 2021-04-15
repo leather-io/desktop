@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Box } from '@blockstack/ui';
+import { Box } from '@stacks/ui';
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 
 import { LedgerConnectStep } from '@hooks/use-prepare-ledger';

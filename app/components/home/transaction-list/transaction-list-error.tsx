@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Text, Flex, BoxProps } from '@blockstack/ui';
+import { Text, Flex, BoxProps, color } from '@stacks/ui';
 import { Link } from 'react-router-dom';
 
 import { templateTxBoxProps } from './transaction-list-item-pseudo';
@@ -25,7 +25,13 @@ export const TransactionListError: FC<TransactionListErrorProps> = ({ node, erro
       <Text textStyle="body.small" display="block" textAlign="center" mb="tight">
         {error}
       </Text>
-      <Text textStyle="caption" color="ink.600" textAlign="center" mx="base" lineHeight="20px">
+      <Text
+        textStyle="caption"
+        color={color('text-caption')}
+        textAlign="center"
+        mx="base"
+        lineHeight="20px"
+      >
         {usingPbcHostedNode && <>Unable to connect to the Hiro Systems PBC hosted node.</>}
         {!usingPbcHostedNode && (
           <>

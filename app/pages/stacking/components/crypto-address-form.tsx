@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Input, InputProps } from '@blockstack/ui';
+import { Input, InputProps } from '@stacks/ui';
 
 interface CryptoAddressFormProps extends Omit<InputProps, 'form'> {
   form: any;
@@ -17,7 +17,7 @@ export const CryptoAddressForm: FC<CryptoAddressFormProps> = props => {
         value={form.values[fieldName]}
         mt="loose"
         maxWidth="400px"
-        fontFamily={form.values[fieldName].length ? 'monospace' : null}
+        fontFamily={form.values[fieldName].length ? 'monospace' : 'unset'}
         {...rest}
       />
       {children}

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
-import { Box, Input } from '@blockstack/ui';
+import { Box, Input } from '@stacks/ui';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 

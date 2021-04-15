@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, BoxProps } from '@blockstack/ui';
+import { Box, BoxProps, color } from '@stacks/ui';
 
 export const Hr: React.FC<BoxProps> = props => {
-  return <Box height="1px" width="100%" backgroundColor="#F0F0F5" {...props} />;
+  return <Box height="1px" width="100%" backgroundColor={color('border')} {...props} />;
 };

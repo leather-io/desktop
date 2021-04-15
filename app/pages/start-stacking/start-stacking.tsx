@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text } from '@blockstack/ui';
+import { Box, color, Flex, Text } from '@stacks/ui';
 import { ExternalLink } from '@components/external-link';
 import { useHistory } from 'react-router-dom';
 
@@ -41,16 +41,11 @@ export const ChooseStackingMethod: FC = () => {
       <Text textStyle="display.large" fontSize="32px" mt="tight" display="block" textAlign="center">
         Start Stacking
       </Text>
-      <Text mt="base" color="ink.600" maxWidth="480px">
+      <Text mt="base" color={color('text-caption')} maxWidth="480px">
         Lock your STX to support the network. As a reward, you’ll have the chance to earn BTC that
         miners transfer as part of Proof-of-Transfer (PoX).
       </Text>
-      <ExternalLink
-        href="https://stacks.co/stacking-and-stx"
-        fontWeight="normal"
-        mt="base-tight"
-        color="blue"
-      >
+      <ExternalLink href="https://stacks.co/stacking-and-stx" fontWeight="normal" mt="base-tight">
         Learn more about Stacking
       </ExternalLink>
 
@@ -62,7 +57,7 @@ export const ChooseStackingMethod: FC = () => {
             Minimum required to stack is{' '}
             {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
           </OptionBenefit>
-          <OptionBenefit>Choose a set number of cycles</OptionBenefit>
+          <OptionBenefit>Choose a set number of cycles</OptionBenefit>
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.STACKING)}

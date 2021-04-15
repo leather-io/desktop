@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Tippy from '@tippyjs/react';
-import { Box, BoxProps } from '@blockstack/ui';
+import { Box, BoxProps } from '@stacks/ui';
 
 import { ExplainerIcon } from './icons/explainer';
 
@@ -19,7 +19,7 @@ export const Tooltip: FC<TooltipProps> = ({ children, text, ...props }) => {
           background="black"
           borderRadius="6px"
           textStyle="body.small.medium"
-          whiteSpace="wrap"
+          whiteSpace="normal"
           maxWidth="290px"
         >
           {text}
@@ -62,7 +62,7 @@ export const ExplainerTooltip: FC<BoxProps> = ({ children, ...props }) => {
           background="black"
           borderRadius="6px"
           textStyle="body.small.medium"
-          whiteSpace="wrap"
+          whiteSpace="normal"
           maxWidth="290px"
           {...props}
         >

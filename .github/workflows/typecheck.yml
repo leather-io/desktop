@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Add required Linux dependencies
-        uses: .github/actions/linux-deps
+        uses: ./.github/actions/linux-deps
 
       - uses: actions/setup-node@v2
         with:

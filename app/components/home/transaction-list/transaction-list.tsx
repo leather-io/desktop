@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex } from '@blockstack/ui';
+import { Flex } from '@stacks/ui';
 import { StacksNode } from '@store/stacks-node';
 import { TransactionListTitle } from './transaction-list-title';
 import { TransactionListEmpty } from './transaction-list-empty';

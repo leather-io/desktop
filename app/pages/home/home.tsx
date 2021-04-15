@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from '@blockstack/ui';
+import { Spinner } from '@stacks/ui';
 
 import { openTxInExplorer } from '@utils/external-links';
 
@@ -136,8 +136,12 @@ export const Home: FC = () => {
 
   return (
     <>
-      {receiveModalOpen && <ReceiveStxModal />}
-      {txModalOpen && <TransactionModal balance={availableBalance.toString()} address={address} />}
+      <ReceiveStxModal isOpen={receiveModalOpen} />
+      <TransactionModal
+        isOpen={txModalOpen}
+        balance={availableBalance.toString()}
+        address={address}
+      />
       {revokeDelegationModalOpen && <RevokeDelegationModal />}
       <HomeLayout
         transactionList={transactionList}

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory, useLocation, matchPath } from 'react-router';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, color, Stack } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { useWindowFocus } from '@hooks/use-window-focus';
@@ -12,6 +12,7 @@ import { NetworkMessage } from './network-message';
 import { BackButton } from '../back-button';
 import { SettingsButton } from './settings-button';
 import { UpdateAvailableButton } from './update-available-button';
+import { ColorModeButton } from '@components/color-mode-button';
 
 export const TitleBar: FC = () => {
   const el = document.querySelector('.draggable-bar');
@@ -23,17 +24,20 @@ export const TitleBar: FC = () => {
 
   const { isNewerReleaseAvailable, latestRelease } = useCheckForUpdates();
 
+  const isBlurred = winState === 'blurred';
   const isOnboarding = matchPath(location.pathname, { path: '/onboard' }) !== null;
-  const dulledTextColor = winState === 'blurred' ? '#a1a7b3' : undefined;
 
   if (!el) return null;
 
   const content = (
     <Flex
       justifyContent="space-between"
-      pl={process.platform === 'darwin' ? '90px' : 'tight'}
+      pl={process.platform === 'darwin' ? '72px' : 'tight'}
       height="100%"
-      backgroundColor={winState === 'focused' ? 'white' : '#fafafc'}
+      backgroundColor={color('bg')}
+      position="relative"
+      alignItems="center"
+      opacity={isBlurred ? 0.5 : 1}
     >
       <BackButton />
       <Flex
@@ -53,18 +57,19 @@ export const TitleBar: FC = () => {
             />
           )}
           <Flex alignItems="center" ml="base">
-            <NetworkMessage textColor={dulledTextColor} />
+            <NetworkMessage textColor={isBlurred ? color('text-title') : undefined} />
           </Flex>
         </Flex>
       </Flex>
-      <Box>
+      <Stack alignItems="center" pr="base-loose" isInline spacing="tight">
+        <ColorModeButton color={color('text-title')} />
         {!isOnboarding && (
           <SettingsButton
             onClick={() => routerHistory.push(routes.SETTINGS)}
-            style={{ color: dulledTextColor || '#677282' }}
+            color={color('text-title')}
           />
         )}
-      </Box>
+      </Stack>
     </Flex>
   );
   return ReactDOM.createPortal(content, el);

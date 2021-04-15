@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Box, useClipboard, Text, Button } from '@blockstack/ui';
+import { Box, useClipboard, Text, Button, color } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { Card } from '@components/card';
@@ -48,7 +48,7 @@ export const SecretKey: React.FC = () => {
       </Card>
       <Box display="block" as="label" mt="loose">
         <input type="checkbox" onChange={e => setHasSavedMnemonic(e.currentTarget.checked)} />
-        <Text textStyle="body.small" color="#42444E" ml="base-tight">
+        <Text textStyle="body.small" color={color('text-body')} ml="base-tight">
           I have saved my Secret Key
         </Text>
       </Box>

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, Box } from '@blockstack/ui';
+import { Flex, Text, Box, color } from '@stacks/ui';
 
 interface StackingBeginsSoonCardProps {
   blocksTillNextCycle?: number;
@@ -17,16 +17,16 @@ export const StackingBeginsSoonCard: FC<StackingBeginsSoonCardProps> = ({
     mt="extra-loose"
     borderRadius="8px"
     boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-    border="1px solid #F0F0F5"
+    border={`1px solid ${color('border')}`}
     px="loose"
     minHeight="180px"
   >
     <Box>
-      <Text display="block" textStyle="body.small" color="ink.600" width="100%">
+      <Text display="block" textStyle="body.small" color={color('text-caption')} width="100%">
         Stacking will begin in the next cycle
       </Text>
       {typeof blocksTillNextCycle === 'number' ? (
-        <Text textStyle="caption" color="ink.600">
+        <Text textStyle="caption" color={color('text-caption')}>
           {blocksTillNextCycle} block{blocksTillNextCycle > 1 && 's'} to go
         </Text>
       ) : null}

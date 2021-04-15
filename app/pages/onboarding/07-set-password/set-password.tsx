@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { Text, Input, Flex } from '@blockstack/ui';
+import { Text, Input, Flex, color } from '@stacks/ui';
 import { setSoftwareWallet } from '@store/keys';
 import { useBackButton } from '@hooks/use-back-url';
 import { FULL_ENTITY_NAME } from '@constants/index';
@@ -84,7 +84,7 @@ export const SetPassword: React.FC = () => {
     result.meetsAllStrengthRequirements ? 'Strong' : 'Not strong enough';
 
   const strengthColor = (result: ValidatedPassword) =>
-    result.meetsAllStrengthRequirements ? 'feedback.success' : 'feedback.error';
+    result.meetsAllStrengthRequirements ? color('feedback-success') : color('feedback-error');
 
   return (
     <Onboarding as="form" onSubmit={handleSubmit}>
@@ -101,7 +101,7 @@ export const SetPassword: React.FC = () => {
           <br />
           No one from {FULL_ENTITY_NAME} will ever ask for your password or Secret Key.
         </ExplainerTooltip>
-        <Text textStyle="caption" color="ink.600" ml="tight">
+        <Text textStyle="caption" color={color('text-caption')} ml="tight">
           Why do I need to set a password?
         </Text>
       </Flex>
@@ -112,7 +112,7 @@ export const SetPassword: React.FC = () => {
         ref={passwordInputRef}
       />
       {!successfullyChosenStrongPass && (
-        <Text display="block" textStyle="body.small" color="ink.600" mt="base">
+        <Text display="block" textStyle="body.small" color={color('text-caption')} mt="base">
           Password strength:
           <Text
             textStyle="body.small.medium"

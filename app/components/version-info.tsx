@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text } from '@blockstack/ui';
-
+import { color, Stack, Text } from '@stacks/ui';
 import { openExternalLink } from '@utils/external-links';
 import { NETWORK } from '@constants/index';
 import packageJson from '../../package.json';
@@ -20,7 +19,7 @@ const issueBody = `
   Thanks for creating an issue. Please include as much detail as possible,
   including screenshots, operating system, and steps to recreate the problem.
 
-  If you have any questions, ask @kyranjamie on Github, Discord and Twitter.
+  If you have any questions, ask @kyranjamie or @aulneau on Github, Discord and Twitter.
 
 -->
 
@@ -40,29 +39,30 @@ const openPullRequestLink = () =>
 
 export const VersionInfo: FC = () => {
   return (
-    <Flex
+    <Stack
+      isInline
       textStyle="caption.medium"
       fontSize="11px"
-      color="ink.400"
+      color={color('text-caption')}
       position="fixed"
       right="8px"
       bottom="8px"
-      border="1px solid #F0F0F0"
+      border={`1px solid ${color('border')}`}
       borderRadius="24px"
-      bg="white"
+      bg={color('bg-4')}
       py="4px"
       px="base-tight"
     >
-      <Text mr="tight" onClick={openIssueLink} textDecoration="underline" cursor="pointer">
+      <Text onClick={openIssueLink} _hover={{ textDecoration: 'underline' }} cursor="pointer">
         Found a bug? Open an issue
       </Text>
       {pullRequest && branchName && (
-        <Text mr="tight" onClick={openPullRequestLink} textDecoration="underline" cursor="pointer">
+        <Text onClick={openPullRequestLink} textDecoration="underline" cursor="pointer">
           {branchName}
         </Text>
       )}
       {shaShort && (
-        <Text mr="tight">
+        <Text>
           Commit:{' '}
           <Text
             cursor="pointer"
@@ -76,6 +76,6 @@ export const VersionInfo: FC = () => {
         </Text>
       )}
       {CONFIG.NODE_ENV === 'production' && <Text>[v{packageJson.version}]</Text>}
-    </Flex>
+    </Stack>
   );
 };

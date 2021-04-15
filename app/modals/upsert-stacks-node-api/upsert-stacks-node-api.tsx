@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useFormik } from 'formik';
-import { Modal, ButtonGroup, Button, Box, Text, Input } from '@blockstack/ui';
+import { ButtonGroup, Button, Box, Text, Input, color } from '@stacks/ui';
 import * as yup from 'yup';
 
+import { Modal } from '@modals/components/base-modal';
 import { StacksNode } from '@store/stacks-node';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
@@ -16,7 +17,9 @@ import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-l
 interface AddNodeSettingsProps {
   isOpen: boolean;
   selectedNode?: StacksNode;
+
   onUpdateNode(node: StacksNode): void;
+
   onClose(): void;
 }
 
@@ -70,7 +73,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
   const header = <TxModalHeader onSelectClose={onClose}>{changeVerb} a node</TxModalHeader>;
   const footer = (
     <TxModalFooter>
-      <ButtonGroup size="lg">
+      <ButtonGroup size="md">
         <Button type="button" mode="tertiary" onClick={onClose}>
           Cancel
         </Button>
@@ -81,47 +84,51 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
     </TxModalFooter>
   );
   return (
-    <Modal
-      as="form"
-      onSubmit={(e: React.FormEvent<HTMLDivElement>) => form.handleSubmit(e as any)}
-      isOpen={isOpen}
-      headerComponent={header}
-      footerComponent={footer}
-      minWidth={['100%', '488px']}
-    >
-      <Box m="extra-loose">
-        <Text textStyle="body.small" lineHeight="20px">
-          Enter an address from the Stacks Blockchain API that proxies a node. Before using a node,
-          make sure you review and trust the host before configuring a new API.
-        </Text>
-        <Box mt="loose">
-          <Text textStyle="body.small.medium" as="label" {...{ htmlFor: 'name' }}>
-            Name
+    <Modal isOpen={isOpen} minWidth={['100%', '488px']} handleClose={onClose}>
+      <Box as="form" onSubmit={(e: React.FormEvent<HTMLDivElement>) => form.handleSubmit(e as any)}>
+        {header}
+        <Box p="extra-loose">
+          <Text color={color('text-body')} textStyle="body.small" lineHeight="20px">
+            Enter an address from the Stacks Blockchain API that proxies a node. Before using a
+            node, make sure you review and trust the host before configuring a new API.
           </Text>
-          <Input
-            ref={nameFieldRef}
-            mt="base-tight"
-            id="name"
-            onChange={form.handleChange}
-            value={form.values.name}
-          />
-          {form.touched.name && form.errors.name && (
-            <ErrorLabel>
-              <ErrorText>{capitalize(form.errors.name)}</ErrorText>
-            </ErrorLabel>
-          )}
+          <Box mt="loose">
+            <Text textStyle="body.small.medium" as="label" {...{ htmlFor: 'name' }}>
+              Name
+            </Text>
+            <Input
+              ref={nameFieldRef}
+              mt="base-tight"
+              id="name"
+              onChange={form.handleChange}
+              value={form.values.name}
+              placeholder="Some API instance"
+            />
+            {form.touched.name && form.errors.name && (
+              <ErrorLabel>
+                <ErrorText>{capitalize(form.errors.name)}</ErrorText>
+              </ErrorLabel>
+            )}
+          </Box>
+          <Box mt="loose">
+            <Text textStyle="body.small.medium" as="label" {...{ htmlFor: 'url' }}>
+              URL
+            </Text>
+            <Input
+              placeholder="https://stacks-node-api.stacks.co"
+              mt="base-tight"
+              id="url"
+              onChange={form.handleChange}
+              value={form.values.url}
+            />
+            {form.touched.url && form.errors.url && (
+              <ErrorLabel>
+                <ErrorText>{capitalize(form.errors.url)}</ErrorText>
+              </ErrorLabel>
+            )}
+          </Box>
         </Box>
-        <Box mt="loose">
-          <Text textStyle="body.small.medium" as="label" {...{ htmlFor: 'url' }}>
-            URL
-          </Text>
-          <Input mt="base-tight" id="url" onChange={form.handleChange} value={form.values.url} />
-          {form.touched.url && form.errors.url && (
-            <ErrorLabel>
-              <ErrorText>{capitalize(form.errors.url)}</ErrorText>
-            </ErrorLabel>
-          )}
-        </Box>
+        {footer}
       </Box>
     </Modal>
   );

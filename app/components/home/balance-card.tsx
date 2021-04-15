@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex } from '@blockstack/ui';
+import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';
 
 import { features, NETWORK } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
@@ -14,7 +14,9 @@ import { useBalance } from '@hooks/use-balance';
 interface BalanceCardProps {
   address: string | null;
   onSelectSend(): void;
+
   onSelectReceive(): void;
+
   onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise<any>;
 }
 
@@ -44,12 +46,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         </Text>
 
         {address !== null && (
-          <ExternalLink
-            href={makeExplorerAddressLink(address)}
-            textStyle="caption"
-            ml="tight"
-            color="blue"
-          >
+          <ExternalLink href={makeExplorerAddressLink(address)} textStyle="caption" ml="tight">
             View on Explorer
           </ExternalLink>
         )}
@@ -59,8 +56,18 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
       </Text>
 
       {features.stacking && lockedBalance !== null && lockedBalance.isGreaterThan(0) && (
-        <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
-          <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
+        <Flex
+          alignItems="center"
+          mt="tight"
+          color={color('text-caption')}
+          fontSize={['14px', '16px']}
+        >
+          <EncryptionIcon
+            size="16px"
+            color={color('feedback-alert')}
+            display={['none', 'block']}
+            mr="tight"
+          />
           <Text>{toHumanReadableStx(lockedBalance.toString())} locked</Text>
           <Text children="·" mx="base-tight" />
           <Text>{toHumanReadableStx(availableBalance.toString())} available</Text>
@@ -72,7 +79,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
           Send
         </Button>
         <Button size="md" ml="tight" onClick={onSelectReceive}>
-          <ArrowIcon direction="down" mr="base-tight" />
+          <ArrowIcon size="12px" {...({ direction: 'down' } as any)} mr="base-tight" />
           Receive
         </Button>
         {isTestnet() && (
@@ -85,8 +92,8 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
             title="Hold alt to request more STX. Use sparingly."
           >
             <Box
-              mr="extra-tight"
-              fontSize="18px"
+              mr="tight"
+              fontSize="14px"
               left="-4px"
               position="relative"
               display={['none', 'none', 'block']}

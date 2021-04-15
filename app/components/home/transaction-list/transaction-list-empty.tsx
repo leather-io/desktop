@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Flex } from '@blockstack/ui';
+import { Text, Flex } from '@stacks/ui';
 
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
 import { templateTxBoxProps } from './transaction-list-item-pseudo';

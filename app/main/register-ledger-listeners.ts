@@ -1,9 +1,9 @@
 import { ipcMain } from 'electron';
 import { BehaviorSubject, Subject, timer, combineLatest, from, of } from 'rxjs';
-import { delay, filter, map, switchMap, take } from 'rxjs/operators';
+import { delay, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import type Transport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { safeAwait } from '@blockstack/ui';
+import { safeAwait } from '@stacks/ui';
 import StacksApp, { LedgerError, ResponseVersion } from '@zondax/ledger-blockstack';
 import {
   ledgerRequestSignTx,
@@ -39,8 +39,19 @@ const checkDisconnect$ = new Subject<void>();
 const transport$ = new BehaviorSubject<Transport | null>(null);
 
 export function registerLedgerListeners(webContent: Electron.WebContents) {
+  // `webContent` might be destroyed when closing window
+  // listenUntil$ tears down the old subscriptoin
+  const listenUntil$ = new Subject<void>();
+  webContent.on('destroyed', () => {
+    listeningForDevice$.next(false);
+    listenUntil$.next();
+    listenUntil$.complete();
+  });
   ledgerState$
-    .pipe(map(ledgerEvent => ({ type: 'ledger-event', ...ledgerEvent })))
+    .pipe(
+      takeUntil(listenUntil$),
+      map(ledgerEvent => ({ type: 'ledger-event', ...ledgerEvent }))
+    )
     .subscribe(event => webContent.send('message-event', event));
 }
 

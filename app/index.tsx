@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { ThemeProvider, theme } from '@blockstack/ui';
+import { ThemeProvider, ColorModeProvider } from '@stacks/ui';
 import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 import { DefaultOptions, QueryClient, QueryClientProvider } from 'react-query';
@@ -26,12 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const Root = require('./pages/root').default;
   render(
-    <ThemeProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <AppContainer>
-          <Root store={store} persistor={persistor} history={history} />
-        </AppContainer>
-      </QueryClientProvider>
+    <ThemeProvider>
+      <ColorModeProvider defaultMode="dark">
+        <QueryClientProvider client={queryClient}>
+          <AppContainer>
+            <Root store={store} persistor={persistor} history={history} />
+          </AppContainer>
+        </QueryClientProvider>
+      </ColorModeProvider>
     </ThemeProvider>,
     document.getElementById('root')
   );

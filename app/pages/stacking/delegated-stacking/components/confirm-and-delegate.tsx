@@ -11,6 +11,7 @@ interface ConfirmAndLockStepProps {
   id: string;
   formComplete: boolean;
   step?: number;
+
   onConfirmAndDelegate(): void;
 }
 
@@ -23,7 +24,7 @@ export const ConfirmAndDelegateStep: FC<ConfirmAndLockStepProps> = props => {
         When you confirm, your STX will be delegated to the STX address you’ve entered. Please keep
         in mind that:
       </StackingStepDescription>
-      <DelegatedStackingTerms />
+      <DelegatedStackingTerms mt="loose" />
       <StackingStepAction onClick={onConfirmAndDelegate} isDisabled={!formComplete}>
         Confirm and delegate
       </StackingStepAction>

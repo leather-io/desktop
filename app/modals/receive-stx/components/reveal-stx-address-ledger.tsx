@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Button, Flex, Stack, Spinner, Text } from '@blockstack/ui';
+import { Box, Button, Flex, Stack, Spinner, Text, color } from '@stacks/ui';
 
 import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import { selectAddress } from '@store/keys';
@@ -87,9 +87,9 @@ export const RevealStxAddressLedger: FC = () => {
         {pendingLedgerAction === 'pending' && address && (
           <Flex mb="base">
             <Box>
-              <Spinner color="ink.600" size="xs" />
+              <Spinner color={color('text-caption')} size="xs" />
             </Box>
-            <Text textStyle="caption" color="ink.600" ml="tight" mt="extra-tight">
+            <Text textStyle="caption" color={color('text-caption')} ml="tight" mt="extra-tight">
               Compare the address above to the one on the screen of your Ledger device, then select
               Approve.
             </Text>

@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Flex, Box } from '@stacks/ui';
 
+import { OnboardingSelector } from '../../../tests/features/onboarding.selectors';
 import routes from '@constants/routes.json';
 import {
   Onboarding,
@@ -232,7 +233,11 @@ export const Terms: React.FC = () => {
           <OnboardingButton onClick={() => main.closeWallet()} mode="secondary">
             Close
           </OnboardingButton>
-          <OnboardingButton onClick={() => history.push(routes.WELCOME)} ml="base">
+          <OnboardingButton
+            onClick={() => history.push(routes.WELCOME)}
+            ml="base"
+            data-test={OnboardingSelector.BtnAcceptTerms}
+          >
             I accept
           </OnboardingButton>
         </Flex>

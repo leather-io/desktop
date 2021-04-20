@@ -20,6 +20,7 @@ import {
 } from '@crypto/validate-password';
 import { ExplainerTooltip } from '@components/tooltip';
 import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
+import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
   if (result.isMnemonicPhrase) {
@@ -109,6 +110,7 @@ export const SetPassword: React.FC = () => {
         type="password"
         mt="base-tight"
         onChange={handlePasswordInput}
+        data-test={OnboardingSelector.InputPassword}
         ref={passwordInputRef}
       />
       {!successfullyChosenStrongPass && (
@@ -130,7 +132,13 @@ export const SetPassword: React.FC = () => {
             {weakPasswordWarningMessage(strengthResult)}
           </Text>
         )}
-      <OnboardingButton type="submit" mt="loose" isLoading={btnDisabled} isDisabled={btnDisabled}>
+      <OnboardingButton
+        type="submit"
+        mt="loose"
+        isLoading={btnDisabled}
+        isDisabled={btnDisabled}
+        data-test={OnboardingSelector.BtnContinueFromPassword}
+      >
         Continue
       </OnboardingButton>
     </Onboarding>

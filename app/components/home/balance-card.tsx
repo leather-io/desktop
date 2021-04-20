@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';
 
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 import { features, NETWORK } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { safeAwait } from '@utils/safe-await';
@@ -74,11 +75,16 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         </Flex>
       )}
       <Box mt="loose">
-        <Button size="md" onClick={onSelectSend} isDisabled={availableBalance.isEqualTo(0)}>
+        <Button
+          size="md"
+          onClick={onSelectSend}
+          isDisabled={availableBalance.isEqualTo(0)}
+          data-test={HomeSelectors.BtnSend}
+        >
           <ArrowIcon size="12px" {...({ direction: 'up' } as any)} mr="base-tight" />
           Send
         </Button>
-        <Button size="md" ml="tight" onClick={onSelectReceive}>
+        <Button size="md" ml="tight" onClick={onSelectReceive} data-test={HomeSelectors.BtnReceive}>
           <ArrowIcon size="12px" {...({ direction: 'down' } as any)} mr="base-tight" />
           Receive
         </Button>

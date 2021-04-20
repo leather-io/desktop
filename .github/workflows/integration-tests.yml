@@ -1,0 +1,74 @@
+name: Integration tests
+
+on: [pull_request]
+
+jobs:
+  test-integration:
+    runs-on: ${{ matrix.os }}
+
+    env:
+      STX_NETWORK: ${{ matrix.stx_network }}
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+    strategy:
+      matrix:
+        os: [macos-latest]
+        stx_network: [testnet, mainnet]
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 15
+
+      - name: Install packages
+        uses: nick-invision/retry@v2
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        with:
+          timeout_seconds: 600
+          max_attempts: 3
+          retry_on: error
+          command: yarn --frozen-lockfile
+
+      - name: Install electron-prebuilt
+        uses: nick-invision/retry@v2
+        with:
+          timeout_seconds: 300
+          max_attempts: 5
+          retry_on: error
+          command: yarn add electron-prebuilt --ignore-scripts
+
+      - run: ls -R node_modules/electron
+
+      - run: cd node_modules/electron && sudo node install.js
+
+      - run: ls -R node_modules/electron
+
+      - name: Build assets
+        run: ./node_modules/.bin/cross-env yarn build
+        env:
+          DEBUG_PROD: true
+          NODE_ENV: production
+          SHA: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: yarn test:integration
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-screenshots
+          path: screenshots

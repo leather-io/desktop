@@ -19,6 +19,7 @@ import {
 } from '@components/onboarding';
 import { ExternalLink } from '@components/external-link';
 import { parseSeedPhraseInput } from '@utils/parse-seed-phrase';
+import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
 
 export const RestoreWallet: React.FC = () => {
   useBackButton(routes.WELCOME);
@@ -101,6 +102,7 @@ export const RestoreWallet: React.FC = () => {
           resize: 'none',
           border: error ? `2px solid ${color('feedback-error')}` : '',
         }}
+        data-test={OnboardingSelector.InputSecretKey}
       />
       {error && error !== 'bip39error' && (
         <ErrorLabel>
@@ -120,7 +122,12 @@ export const RestoreWallet: React.FC = () => {
           </ErrorText>
         </ErrorLabel>
       )}
-      <OnboardingButton mt="loose" type="submit" mode="secondary">
+      <OnboardingButton
+        mt="loose"
+        type="submit"
+        mode="secondary"
+        data-test={OnboardingSelector.BtnContinueWithKey}
+      >
         Continue with Secret Key
       </OnboardingButton>
     </Onboarding>

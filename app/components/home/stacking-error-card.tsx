@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text } from '@stacks/ui';
+import { color, Flex, Text } from '@stacks/ui';
 
 export const StackingError: FC = () => (
   <Flex
@@ -11,12 +11,12 @@ export const StackingError: FC = () => (
     mt="extra-loose"
     borderRadius="8px"
     boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-    border="1px solid #F0F0F5"
+    border={`1px solid ${color('border')}`}
     px="loose"
     minHeight="180px"
   >
     <Flex>
-      <Text display="block" textStyle="body.small" color="ink.600" width="100%">
+      <Text display="block" textStyle="body.small" color={color('text-caption')} width="100%">
         Unable to fetch stacking details
       </Text>
     </Flex>

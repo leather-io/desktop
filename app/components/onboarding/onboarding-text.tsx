@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, BoxProps } from '@stacks/ui';
+import { Text, BoxProps, color } from '@stacks/ui';
 
 export const OnboardingText: React.FC<BoxProps> = ({ children, ...props }) => {
   return (
@@ -7,7 +7,7 @@ export const OnboardingText: React.FC<BoxProps> = ({ children, ...props }) => {
       display="block"
       textStyle="body.large"
       textAlign="center"
-      color="ink.900"
+      color={color('text-title')}
       mt="tight"
       {...props}
     >

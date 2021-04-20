@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text, BoxProps } from '@stacks/ui';
+import { Text, BoxProps, color } from '@stacks/ui';
 
 export const OnboardingFooterLink: React.FC<BoxProps> = ({ children, ...props }) => {
   return (
     <Text
       display="block"
       textStyle="body.small"
-      color="ink.600"
+      color={color('text-caption')}
       textDecoration="underline"
       textAlign="center"
       alignSelf="bottom"

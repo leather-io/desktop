@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Box, Text } from '@stacks/ui';
+import { Flex, Box, Text, color } from '@stacks/ui';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useDelegationStatus } from '@hooks/use-delegation-status';
@@ -34,14 +34,20 @@ export const DelegationCard: FC = () => {
       mt="extra-loose"
       borderRadius="8px"
       boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       minHeight="180px"
     >
       <Box>
         <Flex mt="loose" justifyContent="center">
           <DelegatedIcon size="44px" />
         </Flex>
-        <Text display="block" color="ink.600" textStyle="caption" mt="tight" textAlign="center">
+        <Text
+          display="block"
+          color={color('text-caption')}
+          textStyle="caption"
+          mt="tight"
+          textAlign="center"
+        >
           You've delegated up to
         </Text>
         <Flex justifyContent="center" mt="tight">
@@ -51,10 +57,10 @@ export const DelegationCard: FC = () => {
         </Flex>
         <Box mr="2px">
           <Flex flexDirection="column" alignItems="center" mt="base-tight" mb="base">
-            <Text textStyle="caption" color="ink.600">
+            <Text textStyle="caption" color={color('text-caption')}>
               Delegated to
             </Text>
-            <Text fontSize="13px" mt="tight" color="ink">
+            <Text fontSize="13px" mt="tight" color={color('text-title')}>
               {truncateMiddle(delegationStatus.delegatedTo, 6)}
             </Text>
             {delegationStatus.deadDelegation && (
@@ -69,13 +75,13 @@ export const DelegationCard: FC = () => {
             )}
           </Flex>
         </Box>
-        <Box borderTop="1px solid #F0F0F2" py="extra-tight" px="extra-tight">
+        <Box borderTop={`1px solid ${color('border')}`} py="extra-tight" px="extra-tight">
           {hasSufficientBalanceToCoverFee ? (
             <Text
               as="button"
               border={0}
               textStyle="body.small"
-              color="#747478"
+              color={color('text-body')}
               pointerEvents={
                 hasPendingRevokeCall || !hasSufficientBalanceToCoverFee ? 'none' : 'all'
               }
@@ -91,7 +97,7 @@ export const DelegationCard: FC = () => {
               mx="base-loose"
               my="tight"
               textStyle="caption"
-              color="ink.600"
+              color={color('text-caption')}
               lineHeight="18px"
               display="block"
             >

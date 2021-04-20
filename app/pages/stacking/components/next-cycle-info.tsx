@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, FlexProps } from '@stacks/ui';
+import { Flex, Text, FlexProps, color } from '@stacks/ui';
 
 import { CalendarIcon } from '@components/icons/calendar-circle';
 
@@ -10,7 +10,7 @@ interface NextCycleInfoProps extends FlexProps {
 export const NextCycleInfo: FC<NextCycleInfoProps> = ({ timeUntilNextCycle, ...props }) => (
   <Flex
     boxShadow="low"
-    border="1px solid #F0F0F5"
+    border={`1px solid ${color('border')}`}
     borderRadius="8px"
     minHeight="84px"
     alignItems="center"
@@ -23,7 +23,7 @@ export const NextCycleInfo: FC<NextCycleInfoProps> = ({ timeUntilNextCycle, ...p
       <Text display="block" textStyle="body.large.medium" lineHeight="20px">
         Next cycle starts in about {timeUntilNextCycle}
       </Text>
-      <Text display="block" textStyle="body.small" color="ink.600" mt="extra-tight">
+      <Text display="block" textStyle="body.small" color={color('text-caption')} mt="extra-tight">
         Lock your STX for a chance to earn Bitcoin when the next cycle starts
       </Text>
     </Flex>

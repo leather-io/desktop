@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Text, Box } from '@stacks/ui';
+import { Text, Box, color } from '@stacks/ui';
 
 import { isMainnet } from '@utils/network-utils';
 
@@ -16,12 +16,16 @@ export const NetworkMessage: FC<NetworkMessageProps> = ({ textColor }) => {
           width="8px"
           height="8px"
           borderRadius="50%"
-          backgroundColor={textColor ? textColor : '#F9A14D'}
+          backgroundColor={textColor ? textColor : color('feedback-alert')}
           position="absolute"
           left={0}
           top="9px"
         />
-        <Text as="h3" textStyle="body.small.medium" color={textColor ? textColor : '#F9A14D'}>
+        <Text
+          as="h3"
+          textStyle="body.small.medium"
+          color={textColor ? textColor : color('feedback-alert')}
+        >
           Testnet mode
         </Text>
       </Box>

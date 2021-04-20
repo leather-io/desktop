@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Flex, Text, Box } from '@stacks/ui';
+import { Flex, Text, Box, color } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { toHumanReadableStx } from '@utils/unit-convert';
@@ -16,7 +16,7 @@ interface TxModalPreviewItemProps {
 }
 
 export const TxModalPreviewItem: FC<TxModalPreviewItemProps> = ({ label, children }) => (
-  <Flex alignItems="center" height="64px" borderBottom="1px solid #F0F0F5">
+  <Flex alignItems="center" height="64px" borderBottom={`1px solid ${color('border')}`}>
     <Text textStyle="body.small.medium" width="70px">
       {label}
     </Text>

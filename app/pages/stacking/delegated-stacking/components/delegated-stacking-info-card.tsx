@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 
-import { Flex, FlexProps, Text } from '@stacks/ui';
+import { color, Flex, FlexProps, Text } from '@stacks/ui';
 
 import { DelegationType } from '@models/index';
 import { Hr } from '@components/hr';
@@ -28,7 +28,7 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
     <Flex
       flexDirection="column"
       boxShadow="low"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       borderRadius="8px"
       minHeight="84px"
       alignItems="flex-start"
@@ -77,7 +77,7 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
               {delegationType === 'indefinite' && 'Indefinite'}
             </Text>
             {burnHeight && (
-              <Text textStyle="caption" color="ink.600" mt="extra-tight">
+              <Text textStyle="caption" color={color('text-caption')} mt="extra-tight">
                 Until burn block: {burnHeight}
               </Text>
             )}

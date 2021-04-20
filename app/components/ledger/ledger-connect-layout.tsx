@@ -1,15 +1,16 @@
 import React, { FC } from 'react';
-import { CheckmarkCircleIcon, Flex, FlexProps, Text } from '@stacks/ui';
+import { CheckmarkCircleIcon, color, Flex, FlexProps, Text } from '@stacks/ui';
 import { LedgerConnectStep } from '@hooks/use-prepare-ledger';
 
 interface LedgerStepTextProps {
   step: LedgerConnectStep;
 }
+
 export const LedgerStepText: FC<LedgerStepTextProps> = ({ step, children }) => {
   return (
     <>
       <Text
-        color="ink"
+        color={color('invert')}
         fontWeight={500}
         mr="base-tight"
         display="inline-block"
@@ -35,11 +36,11 @@ export const LedgerConnectStepRow: React.FC<LedgerConnectStepRowProps> = props =
       height="56px"
       alignItems="center"
       px="extra-loose"
-      borderBottom={!isLast ? '1px solid #F0F0F5' : 'unset'}
+      borderBottom={!isLast ? `1px solid ${color('border')}` : 'unset'}
       {...rest}
     >
       {children}
-      {isComplete && <CheckmarkCircleIcon color="blue" size="16px" ml="tight" />}
+      {isComplete && <CheckmarkCircleIcon color={color('brand')} size="16px" ml="tight" />}
     </Flex>
   );
 };

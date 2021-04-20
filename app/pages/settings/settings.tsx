@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import { Button, Text } from '@stacks/ui';
+import { Button, Text, color } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
@@ -79,7 +78,7 @@ export const Settings = () => {
 
         <Button
           mt="loose"
-          style={{ background: '#D4001A' }}
+          style={{ background: color('feedback-error') }}
           onClick={() => setResetModalOpen(true)}
         >
           Reset wallet

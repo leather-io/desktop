@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, BoxProps } from '@stacks/ui';
+import { Box, BoxProps, color } from '@stacks/ui';
 
 type CircleButtonProps = BoxProps;
 
@@ -7,8 +7,8 @@ export const CircleButton: FC<CircleButtonProps> = props => (
   <Box
     as="button"
     {...{ type: 'button' }}
-    backgroundColor="ink.150"
-    _hover={{ backgroundColor: 'ink.200' }}
+    backgroundColor={color('bg-4')}
+    _hover={{ color: color('brand') }}
     style={{ userSelect: 'none' }}
     display="inline-block"
     width="28px"

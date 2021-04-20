@@ -1,9 +1,10 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
+import { color } from '@stacks/ui';
 
 export function listHoverProps(hovered: boolean) {
   return hovered
     ? ({
-        background: '#FAFAFC',
+        background: color('bg-3'),
         borderRadius: '8px',
         zIndex: -1,
         position: 'absolute',
@@ -35,9 +36,11 @@ export function listFocusedProps(focused: boolean) {
 // where content style isn't applied to _before prop
 export const EnableBefore = styled.button`
   width: 100%;
+
   &::before {
     content: '';
   }
+
   &::after {
     content: '';
   }
@@ -47,7 +50,7 @@ export const templateTxBoxProps = {
   flexDirection: 'column' as const,
   borderRadius: '8px',
   boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.04);',
-  border: '1px solid #F0F0F5',
+  border: `1px solid ${color('border')}`,
   minHeight: ['152px', '152px', '300px', '416px'],
   justifyContent: 'center',
   alignItems: ['center', 'center', null, null],

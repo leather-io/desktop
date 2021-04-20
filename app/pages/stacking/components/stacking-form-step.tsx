@@ -1,5 +1,14 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, FlexProps, CheckmarkCircleIcon, Button, ButtonProps } from '@stacks/ui';
+import {
+  Box,
+  Flex,
+  Text,
+  FlexProps,
+  CheckmarkCircleIcon,
+  Button,
+  ButtonProps,
+  color,
+} from '@stacks/ui';
 
 import { StackingStepView } from '../utils/use-stacking-form-step';
 import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
@@ -22,7 +31,7 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
     <Flex flexDirection="column" mt="extra-loose" {...rest}>
       <Text
         textStyle="caption.medium"
-        color="ink.600"
+        color={color('text-caption')}
         textTransform="uppercase"
         fontSize="11px"
         fontWeight={600}
@@ -33,7 +42,7 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
         <Text textStyle="display.small" mt="extra-tight" mr="tight">
           {title}
         </Text>
-        {showCompeteCheckmark && <CheckmarkCircleIcon size="16px" color="blue" />}
+        {showCompeteCheckmark && <CheckmarkCircleIcon size="16px" color={color('brand')} />}
       </Flex>
       {state === 'closed' ? (
         <Box>
@@ -46,7 +55,7 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
             as="button"
             onClick={() => onEdit?.(step)}
             outline={0}
-            color="blue"
+            color={color('brand')}
             textStyle="body.large.medium"
             mt="tight"
             cursor="pointer"

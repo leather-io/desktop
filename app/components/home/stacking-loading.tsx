@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Spinner } from '@stacks/ui';
+import { color, Flex, Spinner } from '@stacks/ui';
 
 export const StackingLoading: FC = () => (
   <Flex
@@ -8,10 +8,10 @@ export const StackingLoading: FC = () => (
     mt="extra-loose"
     borderRadius="8px"
     boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-    border="1px solid #F0F0F5"
+    border={`1px solid ${color('border')}`}
     px="loose"
     minHeight="180px"
   >
-    <Spinner size="sm" color="ink.300" />
+    <Spinner size="sm" color={color('text-caption')} />
   </Flex>
 );

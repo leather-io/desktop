@@ -8,8 +8,6 @@ export const SettingsButton: FC<BoxProps> = props => {
       fontWeight="regular"
       textStyle="body.small"
       p="tight"
-      mt="4px"
-      mr="tight"
       cursor="default"
       _focus={{ textDecoration: 'underline', outline: 0 }}
       {...props}

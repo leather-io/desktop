@@ -1,6 +1,7 @@
 import type { Page } from 'playwright';
 
 import { createTestSelector, repeatAction } from '../integration-helpers';
+import { OnboardingSelector } from './onboarding.selectors';
 
 export function createOnboardingFeature(page: Page) {
   return {
@@ -9,27 +10,27 @@ export function createOnboardingFeature(page: Page) {
     },
 
     findAcceptBtn() {
-      return page.$(createTestSelector('btn-accept-terms'));
+      return page.$(createTestSelector(OnboardingSelector.BtnAcceptTerms));
     },
 
     findResoreWalletBtn() {
-      return page.$(createTestSelector('btn-restore-wallet'));
+      return page.$(createTestSelector(OnboardingSelector.BtnRestoreWallet));
     },
 
     findSecretKeyInput() {
-      return page.$(createTestSelector('input-secret-key'));
+      return page.$(createTestSelector(OnboardingSelector.InputSecretKey));
     },
 
     findContinueWithSecretKeyBtn() {
-      return page.$(createTestSelector('btn-continue-with-key'));
+      return page.$(createTestSelector(OnboardingSelector.BtnContinueWithKey));
     },
 
     findPasswordInput() {
-      return page.$(createTestSelector('input-password'));
+      return page.$(createTestSelector(OnboardingSelector.InputPassword));
     },
 
     findContinueWithPasswordBtn() {
-      return page.$(createTestSelector('btn-continue-from-password'));
+      return page.$(createTestSelector(OnboardingSelector.BtnContinueFromPassword));
     },
   };
 }

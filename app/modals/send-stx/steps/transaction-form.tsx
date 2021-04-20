@@ -5,6 +5,7 @@ import { ErrorText } from '@components/error-text';
 import { FormikProps } from 'formik';
 import { capitalize } from '@utils/capitalize';
 import { toHumanReadableStx } from '@utils/unit-convert';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 
 interface TxModalFormProps {
   balance: string;
@@ -30,7 +31,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
         </Text>
         <Input
           id="stxAddress"
-          data-test="input-send-stx-form-address"
+          data-test={HomeSelectors.InputSendStxFormAddress}
           name="recipient"
           mt="base-tight"
           placeholder="STX address"
@@ -53,7 +54,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
         <Box position="relative">
           <Input
             id="stxAmount"
-            data-test="input-send-stx-form-amount"
+            data-test={HomeSelectors.InputSendStxFormAmount}
             name="amount"
             inputMode="numeric"
             pattern="[0-9]*"
@@ -91,7 +92,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
         </Text>
         <Input
           id="memo"
-          data-test="input-send-stx-form-memo"
+          data-test={HomeSelectors.InputSendStxFormMemo}
           name="memo"
           inputMode="numeric"
           mt="base-tight"

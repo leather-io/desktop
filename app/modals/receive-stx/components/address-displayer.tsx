@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Box, Button, color, Flex, Text, useClipboard } from '@stacks/ui';
 import { ExchangeWithdrawalWarning } from '@components/testnet/exchange-withdrawal-warning';
 import { isTestnet } from '@utils/network-utils';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 
 interface AddressDisplayerProps {
   address: string;
@@ -32,7 +33,7 @@ export const AddressDisplayer: FC<AddressDisplayerProps> = props => {
         <Text
           color={address ? color('text-title') : color('text-caption')}
           fontSize="13px"
-          data-test="text-stx-address"
+          data-test={HomeSelectors.TextStxAddress}
           {...{ textDecoration: 'italics' }}
         >
           {address ? address : `You'll see your address when you've unlocked your wallet`}

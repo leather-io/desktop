@@ -50,6 +50,7 @@ describe('Restore wallet flow', () => {
     await homeFeature.click('receiveStxModalCloseBtn');
 
     const finishPageTosTitle = await resetWallet(page);
+    await page.screenshot({ path: 'screenshots/finished-page.png' });
     expect(finishPageTosTitle).toBeTruthy();
 
     done();

@@ -32,7 +32,7 @@ jobs:
 
       - uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 15
 
       - name: Install packages
         uses: nick-invision/retry@v2
@@ -46,8 +46,8 @@ jobs:
       - name: Install electron-prebuilt
         uses: nick-invision/retry@v2
         with:
-          timeout_seconds: 240
-          max_attempts: 3
+          timeout_seconds: 300
+          max_attempts: 5
           retry_on: error
           command: yarn add electron-prebuilt --ignore-scripts
 
@@ -66,3 +66,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: yarn test:integration
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-screenshots
+          path: screenshots

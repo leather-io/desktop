@@ -4,6 +4,7 @@ import { Modal } from '@modals/components/base-modal';
 import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
 import { clearDiskStorage } from '@utils/disk-store';
 import { ModalHeader } from '@modals/components/modal-header';
+import { SettingsSelectors } from 'app/tests/features/settings.selectors';
 
 interface ResetWalletModalProps {
   isOpen: boolean;
@@ -52,7 +53,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
             style={{ background: color('feedback-error') }}
             onClick={resetWallet}
             isLoading={wipingWallet}
-            data-test="btn-reset-wallet"
+            data-test={SettingsSelectors.BtnResetWallet}
           >
             Reset wallet
           </Button>

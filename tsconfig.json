@@ -51,7 +51,8 @@
     "app/main.js.map",
     "node_modules/**",
     "app/node_modules/**",
-    "app/tests/**",
+    "app/tests/**/*.spec.ts",
+    "app/tests/**/*.feature.ts",
     "**/*.spec.ts"
   ],
   "typeRoots": ["./node_modules"]

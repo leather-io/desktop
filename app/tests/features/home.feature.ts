@@ -1,37 +1,23 @@
+import { HomeSelectors } from './home.selectors';
+
 import type { Page } from 'playwright';
 
 import { createTestSelector } from '../integration-helpers';
 
-// export enum HomeFeatureSelectors {
-//   stxAddressText = 'text-stx-address',
-//   sendStxBtn = 'btn-send',
-//   sendStxFormAddressInput = 'input-send-stx-form-address',
-//   sendStxFormAmountInput = 'input-send-stx-form-amount',
-//   sendStxFormMemoInput = 'input-send-stx-form-memo',
-//   sendStxFormPreviewBtn = 'btn-send-stx-form-preview',
-//   sendStxFormSendBtn = 'btn-send-stx-form-send',
-//   sendStxFormBroadcastBtn = 'btn-send-stx-form-broadcast-tx',
-//   decryptWalletInput = 'input-decrypt-wallet',
-//   receiveStxBtn = 'btn-receive',
-//   receiveStxPasswordInput = 'input-receive-stx-address',
-//   revealStxAddressBtn = 'btn-reveal-stx-address',
-//   receiveStxModalCloseBtn = 'btn-receive-stx-modal-close',
-// }
-
 const homeSelectors = {
-  stxAddressText: createTestSelector('text-stx-address'),
-  sendStxBtn: createTestSelector('btn-send'),
-  sendStxFormAddressInput: createTestSelector('input-send-stx-form-address'),
-  sendStxFormAmountInput: createTestSelector('input-send-stx-form-amount'),
-  sendStxFormMemoInput: createTestSelector('input-send-stx-form-memo'),
-  sendStxFormPreviewBtn: createTestSelector('btn-send-stx-form-preview'),
-  sendStxFormSendBtn: createTestSelector('btn-send-stx-form-send'),
-  sendStxFormBroadcastBtn: createTestSelector('btn-send-stx-form-broadcast-tx'),
-  decryptWalletInput: createTestSelector('input-decrypt-wallet'),
-  receiveStxBtn: createTestSelector('btn-receive'),
-  receiveStxPasswordInput: createTestSelector('input-receive-stx-address-password'),
-  revealStxAddressBtn: createTestSelector('btn-reveal-stx-address'),
-  receiveStxModalCloseBtn: createTestSelector('btn-receive-stx-modal-close'),
+  stxAddressText: createTestSelector(HomeSelectors.TextStxAddress),
+  sendStxBtn: createTestSelector(HomeSelectors.BtnSend),
+  sendStxFormAddressInput: createTestSelector(HomeSelectors.InputSendStxFormAddress),
+  sendStxFormAmountInput: createTestSelector(HomeSelectors.InputSendStxFormAmount),
+  sendStxFormMemoInput: createTestSelector(HomeSelectors.InputSendStxFormMemo),
+  sendStxFormPreviewBtn: createTestSelector(HomeSelectors.BtnSendStxFormPreview),
+  sendStxFormSendBtn: createTestSelector(HomeSelectors.BtnSendStxFormSend),
+  sendStxFormBroadcastBtn: createTestSelector(HomeSelectors.BtnSendStxFormBroadcastTx),
+  decryptWalletInput: createTestSelector(HomeSelectors.InputDecryptWallet),
+  receiveStxBtn: createTestSelector(HomeSelectors.BtnReceive),
+  receiveStxPasswordInput: createTestSelector(HomeSelectors.InputReceiveStxAddressPassword),
+  revealStxAddressBtn: createTestSelector(HomeSelectors.BtnRevealStxAddress),
+  receiveStxModalCloseBtn: createTestSelector(HomeSelectors.BtnReceiveStxModalClose),
 };
 
 export class HomeFeature {

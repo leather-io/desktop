@@ -40,11 +40,7 @@ export const CreateWallet: React.FC = () => {
         Use a Ledger wallet
       </OnboardingButton>
 
-      <OnboardingButton
-        onClick={createSoftwareWallet}
-        mode="secondary"
-        data-test="choose-software-wallet-btn"
-      >
+      <OnboardingButton onClick={createSoftwareWallet} mode="secondary">
         Create a software wallet
       </OnboardingButton>
 

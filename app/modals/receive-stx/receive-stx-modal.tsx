@@ -11,6 +11,7 @@ import { useWalletType } from '@hooks/use-wallet-type';
 import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
 import { RevealStxAddressLedger } from './components/reveal-stx-address-ledger';
 import { RevealStxAddressSoftware } from './components/reveal-stx-address-software';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 
 export const ReceiveStxModal: FC<{ isOpen: boolean }> = memo(({ isOpen }) => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export const ReceiveStxModal: FC<{ isOpen: boolean }> = memo(({ isOpen }) => {
           size="md"
           mode="tertiary"
           onClick={closeModal}
-          data-test="btn-receive-stx-modal-close"
+          data-test={HomeSelectors.BtnReceiveStxModalClose}
         >
           Close
         </Button>

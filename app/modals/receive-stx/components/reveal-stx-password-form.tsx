@@ -2,6 +2,7 @@ import React, { FC, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Input, Text, Button, Flex } from '@stacks/ui';
 
+import { HomeSelectors } from 'app/tests/features/home.selectors';
 import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
 import { ExplainerTooltip } from '@components/tooltip';
 import { ErrorLabel } from '@components/error-label';
@@ -57,7 +58,7 @@ export const RevealStxPasswordForm: FC<RevealStxPasswordFormProps> = props => {
           mt="base-tight"
           maxWidth="380px"
           ref={passwordRef}
-          data-test="input-receive-stx-address-password"
+          data-test={HomeSelectors.InputReceiveStxAddressPassword}
           onChange={passwordForm.handleChange}
         />
         {passwordForm.errors.password && (
@@ -70,7 +71,7 @@ export const RevealStxPasswordForm: FC<RevealStxPasswordFormProps> = props => {
           mt="base-loose"
           isDisabled={passwordForm.isSubmitting}
           isLoading={passwordForm.isSubmitting}
-          data-test="btn-reveal-stx-address"
+          data-test={HomeSelectors.BtnRevealStxAddress}
         >
           Reveal STX address
         </Button>

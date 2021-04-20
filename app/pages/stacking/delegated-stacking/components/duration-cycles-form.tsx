@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { Flex, InputProps, Text, Box } from '@stacks/ui';
+import { Flex, InputProps, Text, Box, color } from '@stacks/ui';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -21,6 +21,7 @@ dayjs.extend(advancedFormat);
 
 interface DurationCycleFromProps extends Omit<InputProps, 'form'> {
   duration: number | null;
+
   onUpdate(duration: number): void;
 }
 
@@ -52,11 +53,11 @@ export const DurationCyclesForm: FC<DurationCycleFromProps> = props => {
       mt="base"
       padding="8px"
       boxShadow="low"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       borderRadius="8px"
       onClick={e => (e.stopPropagation(), e.preventDefault())}
     >
-      <Text alignItems="center" ml="tight" color="ink.900">
+      <Text alignItems="center" ml="tight" color={color('text-title')}>
         {cycleLabels[durationWithDefault(duration) - 1]}
       </Text>
       <Box>

@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const Root = require('./pages/root').default;
   render(
     <ThemeProvider>
-      <ColorModeProvider defaultMode="light">
+      <ColorModeProvider defaultMode="dark">
         <QueryClientProvider client={queryClient}>
           <AppContainer>
             <Root store={store} persistor={persistor} history={history} />

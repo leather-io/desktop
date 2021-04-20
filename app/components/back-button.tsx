@@ -1,19 +1,10 @@
 import React, { FC } from 'react';
-import { ArrowIcon, ButtonProps, IconButton } from '@stacks/ui';
-import { useWindowFocus } from '@hooks/use-window-focus';
+import { ArrowIcon, ButtonProps, IconButton, color } from '@stacks/ui';
 import { useBack } from '@hooks/use-back-url';
-
-const dimmedColor = '#c1c3cc';
-
-const hasDimmedColor = (hasBackAction: boolean, isFocused: boolean) => {
-  return !hasBackAction || !isFocused;
-};
 
 // Cannot use cursor pointer in top bar area of window
 // https://github.com/electron/electron/issues/5723
 export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...props }) => {
-  const winState = useWindowFocus();
-  const isFocused = winState === 'focused';
   const [backUrl, handleBack] = useBack();
   const hasBackState = !!backUrl;
 
@@ -34,12 +25,7 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
       pointerEvents={!hasBackState ? 'none' : 'all'}
       isDisabled={!hasBackState}
       {...(props as any)}
-      icon={() => (
-        <ArrowIcon
-          {...({ direction: 'left' } as any)}
-          color={hasDimmedColor(hasBackState, isFocused) ? dimmedColor : 'ink'}
-        />
-      )}
+      icon={() => <ArrowIcon {...({ direction: 'left' } as any)} color={color('text-title')} />}
     />
   );
 };

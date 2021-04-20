@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Text, BoxProps } from '@stacks/ui';
+import { Box, Text, BoxProps, color } from '@stacks/ui';
 import { openExternalLink } from '@utils/external-links';
 
 interface ExternalLinkProps extends BoxProps {
@@ -15,6 +15,7 @@ export const ExternalLink: FC<ExternalLinkProps> = ({ href, children, ...props }
       cursor="pointer"
       display="block"
       outline={0}
+      color={color('brand')}
       _hover={{ textDecoration: 'underline' }}
       _focus={{ textDecoration: 'underline' }}
       {...{ type: 'button' }}

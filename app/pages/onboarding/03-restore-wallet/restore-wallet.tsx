@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { validateMnemonic } from 'bip39';
-import { Text, Input, Flex, Box } from '@stacks/ui';
+import { Text, Input, Flex, Box, color } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { Hr } from '@components/hr';
@@ -78,7 +78,7 @@ export const RestoreWallet: React.FC = () => {
             Secret Key
           </Text>
           <ExternalLink
-            color="blue"
+            color={color('brand')}
             href="https://www.hiro.so/questions/what-are-secret-keys-and-how-do-they-work"
             fontSize="12px"
             ml="tight"
@@ -87,7 +87,7 @@ export const RestoreWallet: React.FC = () => {
           </ExternalLink>
         </Flex>
 
-        <Text textStyle="caption" color="ink.600">
+        <Text textStyle="caption" color={color('text-caption')}>
           Your Secret Key is a series of random words also known as a seed phrase.
         </Text>
       </Box>
@@ -99,7 +99,7 @@ export const RestoreWallet: React.FC = () => {
         placeholder="apple bounce ladder..."
         style={{
           resize: 'none',
-          border: error ? '2px solid #D4001A' : '',
+          border: error ? `2px solid ${color('feedback-error')}` : '',
         }}
       />
       {error && error !== 'bip39error' && (

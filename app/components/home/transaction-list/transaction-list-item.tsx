@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import { useHover, useFocus } from 'use-events';
-import { Box, Stack, Text } from '@stacks/ui';
+import { Box, color, Stack, Text } from '@stacks/ui';
 import { Transaction } from '@blockstack/stacks-blockchain-api-types';
 
 import { RootState } from '@store/index';
@@ -159,12 +159,12 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
           {transactionTitle()}
         </Text>
         <Stack isInline spacing="tight">
-          <Text textStyle="body.small" color="ink.600">
+          <Text textStyle="body.small" color={color('text-caption')}>
             {getTxTypeName(
               tx as any // TODO: fix in ui-utils
             )}
           </Text>
-          <Text textStyle="body.small" color="ink.600">
+          <Text textStyle="body.small" color={color('text-caption')}>
             {txDateShort}
           </Text>
         </Stack>
@@ -172,19 +172,19 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
       <Box textAlign="right">
         <Text
           textStyle="body.large"
-          color="ink.900"
+          color={color('text-title')}
           title={`Fee: ${toHumanReadableStx(tx.fee_rate)}`}
           display="block"
         >
           {txFailed ? (
-            <Text mr="tight" color="feedback.error" fontSize={0} fontWeight={500}>
+            <Text mr="tight" color={color('feedback-error')} fontSize={0} fontWeight={500}>
               Failed
             </Text>
           ) : null}
           {sumPrefix +
             toHumanReadableStx(sumStxTxTotal(address, tx, poxInfo?.contract_id).toString())}
         </Text>
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color={color('text-caption')}>
           {memo}
         </Text>
       </Box>

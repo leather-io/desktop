@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, FlexProps, Box, Spinner, FailedIcon } from '@stacks/ui';
+import { Flex, FlexProps, Box, Spinner, FailedIcon, color } from '@stacks/ui';
 
 import { SentArrow } from '@components/icons/sent-arrow';
 import { ReceivedArrow } from '@components/icons/received-arrow';
@@ -24,8 +24,10 @@ const iconMap: Record<TransactionIconVariants, FC> = {
   delegated: DelegatedIcon,
   revoked: RevokedDelegationIcon,
   failed: () => <FailedIcon size="16px" />,
-  pending: () => <Spinner size="xs" color="#5548FF" />,
-  default: () => <Box width="16px" height="16px" borderRadius="50%" backgroundColor="ink.100" />,
+  pending: () => <Spinner size="xs" color={color('brand')} />,
+  default: () => (
+    <Box width="16px" height="16px" borderRadius="50%" backgroundColor={color('text-caption')} />
+  ),
 };
 
 function getTxTypeIcon(direction: TransactionIconVariants) {
@@ -44,13 +46,14 @@ export const TransactionIcon: FC<TransactionIconProps> = ({ variant, ...props })
     <Flex
       justifyContent="center"
       alignItems="center"
-      border="1px solid #F0F0F5"
-      background="white"
+      border={`1px solid ${color('border')}`}
+      background={color('bg')}
       borderRadius="8px"
       minWidth="48px"
       minHeight="48px"
       maxWidth="48px"
       maxHeight="48px"
+      color={color('brand')}
       {...props}
     >
       {contents}

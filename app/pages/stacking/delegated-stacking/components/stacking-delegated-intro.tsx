@@ -12,7 +12,7 @@ export const StackingDelegationIntro: FC = () => (
       Delegate to a pool that will lock your STX with others. Make sure to research which pool is
       right for you before proceeding.
     </StackingDescription>
-    <ExternalLink href="https://www.stacks.co/stacking#services" mt="base" color="blue">
+    <ExternalLink href="https://www.stacks.co/stacking#services" mt="base">
       Discover pools on stacks.co
     </ExternalLink>
   </>

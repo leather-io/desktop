@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Input, Text } from '@stacks/ui';
+import { Box, color, Input, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 
@@ -34,7 +34,7 @@ export const DecryptWalletForm: Props = props => {
         Forgot password?{' '}
         <Text
           as="button"
-          color="blue"
+          color={color('brand')}
           fontWeight={500}
           onClick={onForgottenPassword}
           _focus={{ textDecoration: 'underline', outline: 0 }}

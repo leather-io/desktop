@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import BN from 'bn.js';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 import { BigNumber } from 'bignumber.js';
-import { Modal } from '@stacks/ui';
+import { Modal } from '@modals/components/base-modal';
 import { useHistory } from 'react-router-dom';
 import {
   makeSTXTokenTransfer,
@@ -63,6 +63,7 @@ import { useApi } from '@hooks/use-api';
 
 interface TxModalProps {
   balance: string;
+  isOpen?: boolean;
   address: string;
 }
 
@@ -76,7 +77,7 @@ enum TxModalStep {
 
 type ModalComponents = () => Record<'header' | 'body' | 'footer', JSX.Element>;
 
-export const TransactionModal: FC<TxModalProps> = ({ address }) => {
+export const TransactionModal: FC<TxModalProps> = ({ isOpen, address }) => {
   const dispatch = useDispatch();
 
   const { availableBalance: balance } = useBalance();
@@ -481,8 +482,10 @@ export const TransactionModal: FC<TxModalProps> = ({ address }) => {
   const { header, body, footer } = txFormStepMap[step]();
 
   return (
-    <Modal isOpen headerComponent={header} footerComponent={footer} {...modalStyle}>
+    <Modal handleClose={closeModal} isOpen={!!isOpen} {...modalStyle}>
+      {header}
       {body}
+      {footer}
     </Modal>
   );
 };

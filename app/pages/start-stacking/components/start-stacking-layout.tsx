@@ -7,6 +7,7 @@ import {
   ButtonProps,
   Button,
   ExclamationMarkCircleIcon,
+  color,
 } from '@stacks/ui';
 
 export const StartStackingLayout: FC<FlexProps> = props => (
@@ -28,7 +29,7 @@ export const StackingOptionsCardContainer: FC<FlexProps> = props => (
 export const StackingOptionCard: FC<FlexProps> = props => (
   <Flex
     flexDirection="column"
-    border="1px solid #F0F0F5"
+    border={`1px solid ${color('border')}`}
     p="loose"
     borderRadius="6px"
     flex={1}
@@ -41,7 +42,13 @@ export const StackingOptionCardTitle: FC<BoxProps> = props => (
 );
 
 export const StackingOptionCardAdvantage: FC<BoxProps> = props => (
-  <Text display="inline-block" fontSize="14px" color="ink.600" mt="tight" {...props} />
+  <Text
+    display="inline-block"
+    fontSize="14px"
+    color={color('text-caption')}
+    mt="tight"
+    {...props}
+  />
 );
 
 export const StackingOptionCardButton: FC<ButtonProps> = props => (
@@ -50,7 +57,7 @@ export const StackingOptionCardButton: FC<ButtonProps> = props => (
 
 export const InsufficientStackingBalanceWarning: FC<FlexProps> = props => (
   <Flex
-    color="#FE9000"
+    color={color('feedback-alert')}
     ml="base"
     mt="base-tight"
     alignItems="center"

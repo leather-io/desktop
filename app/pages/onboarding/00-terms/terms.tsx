@@ -228,7 +228,7 @@ export const Terms: React.FC = () => {
         </Box>
       </Box>
       <Flex justifyContent="center" alignItems="center" mt="extra-loose" pb="120px">
-        <Flex>
+        <Flex width="100%">
           <OnboardingButton onClick={() => main.closeWallet()} mode="secondary">
             Close
           </OnboardingButton>

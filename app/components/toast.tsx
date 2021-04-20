@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, Text } from '@stacks/ui';
+import { Flex, Box, Text, color } from '@stacks/ui';
 import { SuccessCheckmark } from './icons/success-checkmark';
 
 interface ToastProps {
@@ -36,7 +36,7 @@ export const Toast: React.FC<ToastProps> = ({
       transform={show ? 'none' : 'translateY(20px)'}
       transition="150ms all"
     >
-      <Box mr={1} color="green">
+      <Box mr={1} color={color('feedback-success')}>
         <Icon />
       </Box>
       <Text fontSize="14px" fontWeight="medium">

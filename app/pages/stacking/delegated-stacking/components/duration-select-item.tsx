@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text } from '@stacks/ui';
+import { Box, color, Flex, Text } from '@stacks/ui';
 
 type DelegationTypes = 'limited' | 'indefinite';
 
@@ -16,7 +16,12 @@ interface DurationSelectItemProps {
 export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
   const { title, isFirst, delegationType, activeDelegationType, onChange, children } = props;
   return (
-    <Flex minHeight="72px" p="base" as="label" borderTop={!isFirst ? '1px solid #F0F0F5' : 'unset'}>
+    <Flex
+      minHeight="72px"
+      p="base"
+      as="label"
+      borderTop={!isFirst ? `1px solid ${color('border')}` : 'unset'}
+    >
       <Flex width="100%">
         <Box position="relative" top="-3px">
           <input
@@ -39,7 +44,7 @@ export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
             </Text>
             <Text
               textStyle="caption"
-              color="ink.600"
+              color={color('text-caption')}
               mt="tight"
               display="inline-block"
               lineHeight="18px"

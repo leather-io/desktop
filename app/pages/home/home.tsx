@@ -143,8 +143,8 @@ export const Home: FC = () => {
 
   return (
     <>
-      {receiveModalOpen && <ReceiveStxModal />}
-      {txModalOpen && <TransactionModal balance={spendableBalance || '0'} address={address} />}
+      <ReceiveStxModal isOpen={receiveModalOpen} />
+      <TransactionModal isOpen={txModalOpen} balance={spendableBalance || '0'} address={address} />
       {revokeDelegationModalOpen && <RevokeDelegationModal />}
       <HomeLayout
         transactionList={transactionList}

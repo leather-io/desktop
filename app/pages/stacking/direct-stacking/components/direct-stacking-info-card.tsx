@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
 
-import { Flex, FlexProps, Text } from '@stacks/ui';
+import { color, Flex, FlexProps, Text } from '@stacks/ui';
 
 import { Hr } from '@components/hr';
 
@@ -26,7 +26,7 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
     <Flex
       flexDirection="column"
       boxShadow="low"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       borderRadius="8px"
       minHeight="84px"
       alignItems="flex-start"

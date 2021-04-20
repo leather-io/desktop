@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Flex, Box, Text } from '@stacks/ui';
+import { Flex, Box, Text, color } from '@stacks/ui';
 import BigNumber from 'bignumber.js';
 
 import { RootState } from '@store/index';
@@ -22,7 +22,7 @@ export const StackingCard: FC<StackingCardProps> = () => {
       mt="extra-loose"
       borderRadius="8px"
       boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       px="loose"
       minHeight="180px"
     >
@@ -33,7 +33,7 @@ export const StackingCard: FC<StackingCardProps> = () => {
           </Flex>
           <Text
             display="block"
-            color="ink.600"
+            color={color('text-caption')}
             textStyle="caption"
             mt="base-tight"
             textAlign="center"
@@ -48,7 +48,7 @@ export const StackingCard: FC<StackingCardProps> = () => {
           <Box mr="2px">
             <Flex flexDirection="column" alignItems="center" mt="base-tight" mb="base-loose">
               <Flex alignItems="center">
-                <Text textStyle="caption" color="ink.600" mr="extra-tight">
+                <Text textStyle="caption" color={color('text-caption')} mr="extra-tight">
                   Reward to be paid to
                 </Text>
                 <ExplainerTooltip mt="1px">
@@ -56,7 +56,7 @@ export const StackingCard: FC<StackingCardProps> = () => {
                   address of your delegation service
                 </ExplainerTooltip>
               </Flex>
-              <Text fontSize="13px" mt="tight" color="ink">
+              <Text fontSize="13px" mt="tight" color={color('text-title')}>
                 {formatPoxAddressToNetwork(stackerInfo?.details.pox_address)}
               </Text>
             </Flex>

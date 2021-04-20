@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { hot } from 'react-hot-loader/root';
 import { History } from 'history';
 import { PersistGate } from 'redux-persist/integration/react';
-import { CSSReset } from '@stacks/ui';
+import { color, CSSReset } from '@stacks/ui';
 import { Store } from '@store/index';
 import { Routes } from '../routes';
 import { loadFonts } from '@utils/load-fonts';
@@ -17,7 +17,8 @@ const GlobalStyle = css`
     height: 100%;
     min-height: 100vh;
     max-height: 100vh;
-    background: white;
+    color: ${color('text-body')};
+    border-color: ${color('border')};
   }
 
   #root {

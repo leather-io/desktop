@@ -1,6 +1,6 @@
 import React, { FC, useRef, RefObject, useEffect, MutableRefObject } from 'react';
 import { useHover, useFocus } from 'use-events';
-import { Box, Flex, Stack, Text } from '@stacks/ui';
+import { Box, color, Flex, Stack, Text } from '@stacks/ui';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 import { getTxTypeName } from '@stacks/ui-utils';
 
@@ -84,13 +84,13 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
           {getMempoolTxLabel(tx, address, poxInfo?.contract_id || '')}
         </Text>
         <Stack isInline spacing="tight">
-          <Text textStyle="body.small" color="ink.600">
+          <Text textStyle="body.small" color={color('text-caption')}>
             {getTxTypeName(tx as any)}
           </Text>
-          <Text textStyle="body.small" color="ink.600">
+          <Text textStyle="body.small" color={color('text-caption')}>
             {txDateShort}
           </Text>
-          <Text textStyle="body.small" color="ink.600">
+          <Text textStyle="body.small" color={color('text-caption')}>
             {tx.tx_type === 'token_transfer'
               ? isSender
                 ? `To ${truncateMiddle(tx.token_transfer.recipient_address)}`
@@ -101,15 +101,15 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
       </Box>
       <Box textAlign="right">
         <Flex alignItems="center">
-          <Text color="feedback.warning" fontSize={0} mr="tight" fontWeight="500">
+          <Text color={color('feedback-alert')} fontSize={0} mr="tight" fontWeight="500">
             Pending
           </Text>
-          <Text textStyle="body.large" color="ink.900" display="block">
+          <Text textStyle="body.large" color={color('text-title')} display="block">
             {isSender ? '-' : ''}
             {toHumanReadableStx(sumStxTxTotal(address, tx as any).toString())}
           </Text>
         </Flex>
-        <Text textStyle="body.small" color="ink.600">
+        <Text textStyle="body.small" color={color('text-caption')}>
           {memo}
         </Text>
       </Box>

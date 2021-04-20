@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Text, CloseIcon, Button, ButtonProps, IconButton } from '@stacks/ui';
+import { Flex, Text, CloseIcon, Button, ButtonProps, IconButton, color } from '@stacks/ui';
 
 export const modalStyle = {
   minWidth: ['100%', '488px'],
@@ -14,7 +14,7 @@ export const TxModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose 
     height="84px"
     px="extra-loose"
     alignItems="center"
-    borderBottom="1px solid #F0F0F5"
+    borderBottom={`1px solid ${color('border')}`}
     justifyContent="space-between"
   >
     <Text as="h2" textStyle="display.small">
@@ -33,7 +33,12 @@ export const TxModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose 
 );
 
 export const TxModalFooter: FC = ({ children }) => (
-  <Flex justifyContent="flex-end" px="extra-loose" py="base" borderTop="1px solid #F0F0F5">
+  <Flex
+    justifyContent="flex-end"
+    px="extra-loose"
+    py="base"
+    borderTop={`1px solid ${color('border')}`}
+  >
     {children}
   </Flex>
 );

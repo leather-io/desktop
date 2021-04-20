@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text, EncryptionIcon } from '@stacks/ui';
+import { Box, Flex, Text, EncryptionIcon, color } from '@stacks/ui';
 
 import { LedgerConnectStepRow, LedgerStepText } from './ledger-connect-layout';
 import { LedgerConnectStep } from '@hooks/use-prepare-ledger';
@@ -18,7 +18,7 @@ export const LedgerConnectInstructions: FC<LedgerConnectInstructions> = props =>
   const { step, action, isLocked } = props;
   return (
     <>
-      <Box border="1px solid #F0F0F5" mt="extra-loose" borderRadius="8px">
+      <Box border={`1px solid ${color('border')}`} mt="extra-loose" borderRadius="8px">
         <LedgerConnectStepRow isComplete={hasConnected(step)}>
           <LedgerStepText step={LedgerConnectStep.Disconnected}>Connect your Ledger</LedgerStepText>
         </LedgerConnectStepRow>
@@ -36,8 +36,8 @@ export const LedgerConnectInstructions: FC<LedgerConnectInstructions> = props =>
 
       {isLocked && (
         <Flex mt="base">
-          <EncryptionIcon size="12px" mt="2px" color="ink.600" />
-          <Text textStyle="caption" ml="extra-tight" color="ink.600">
+          <EncryptionIcon size="12px" mt="2px" color={color('text-caption')} />
+          <Text textStyle="caption" ml="extra-tight" color={color('text-caption')}>
             Your Ledger device is locked. To continue, press a button your and device and enter your
             PIN code.
           </Text>

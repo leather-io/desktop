@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Flex, Text } from '@stacks/ui';
+import { Box, color, Flex, Text } from '@stacks/ui';
 
 import { StacksNode } from '@store/stacks-node';
 
@@ -23,7 +23,7 @@ export const NodeSelectItem: FC<NodeSelectItemProps> = props => {
       minHeight="72px"
       p="base"
       as="label"
-      borderTop={index > 0 ? '1px solid #F0F0F5' : 'unset'}
+      borderTop={index > 0 ? `1px solid ${color('border')}` : 'unset'}
       htmlFor={node.id}
     >
       <Flex width="100%" align-items="stretch">
@@ -50,7 +50,7 @@ export const NodeSelectItem: FC<NodeSelectItemProps> = props => {
             <Text
               textStyle="caption"
               display="block"
-              color="ink.600"
+              color={color('text-caption')}
               mt="extra-tight"
               style={{ wordBreak: 'break-all' }}
             >
@@ -65,7 +65,7 @@ export const NodeSelectItem: FC<NodeSelectItemProps> = props => {
                   textStyle="body.small.medium"
                   mr="base"
                   ml={[null, null, 'base']}
-                  color="blue"
+                  color={color('brand')}
                   outline={0}
                   mt={['tight', 'unset']}
                   _focus={{ textDecoration: 'underline' }}
@@ -76,7 +76,7 @@ export const NodeSelectItem: FC<NodeSelectItemProps> = props => {
                 <Box
                   as="button"
                   textStyle="body.small.medium"
-                  color="feedback.error"
+                  color={color('feedback-error')}
                   mt={['tight', 'unset']}
                   outline={0}
                   _focus={{ textDecoration: 'underline' }}

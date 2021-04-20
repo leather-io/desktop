@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex } from '@stacks/ui';
+import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';
 
 import { features, NETWORK } from '@constants/index';
 import { toHumanReadableStx } from '@utils/unit-convert';
@@ -51,12 +51,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         </Text>
 
         {address !== null && (
-          <ExternalLink
-            href={makeExplorerAddressLink(address)}
-            textStyle="caption"
-            ml="tight"
-            color="blue"
-          >
+          <ExternalLink href={makeExplorerAddressLink(address)} textStyle="caption" ml="tight">
             View on Explorer
           </ExternalLink>
         )}
@@ -66,8 +61,18 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
       </Text>
 
       {features.stacking && lockedBN.toNumber() !== 0 && (
-        <Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}>
-          <EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" />
+        <Flex
+          alignItems="center"
+          mt="tight"
+          color={color('text-caption')}
+          fontSize={['14px', '16px']}
+        >
+          <EncryptionIcon
+            size="16px"
+            color={color('feedback-alert')}
+            display={['none', 'block']}
+            mr="tight"
+          />
           <Text>{toHumanReadableStx(lockedStx || '0')} locked</Text>
           <Text children="·" mx="base-tight" />
           <Text>{toHumanReadableStx(available)} available</Text>

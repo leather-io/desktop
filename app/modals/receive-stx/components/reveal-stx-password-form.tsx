@@ -1,6 +1,6 @@
 import React, { FC, useRef } from 'react';
 import { useFormik } from 'formik';
-import { Input, Text, Button, Flex } from '@blockstack/ui';
+import { Input, Text, Button, Flex } from '@stacks/ui';
 
 import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
 import { ExplainerTooltip } from '@components/tooltip';

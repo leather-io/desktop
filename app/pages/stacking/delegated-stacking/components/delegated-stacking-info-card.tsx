@@ -20,7 +20,14 @@ interface StackingInfoCardProps extends FlexProps {
 }
 
 export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { balance, delegationType, delegateeAddress, durationInCycles, burnHeight } = props;
+  const {
+    balance,
+    delegationType,
+    delegateeAddress,
+    durationInCycles,
+    burnHeight,
+    ...rest
+  } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
@@ -35,7 +42,7 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
       minWidth={[null, null, '320px', '420px']}
       position="sticky"
       top="124px"
-      {...props}
+      {...rest}
     >
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>

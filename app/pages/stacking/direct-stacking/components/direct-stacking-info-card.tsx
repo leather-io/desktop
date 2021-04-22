@@ -18,7 +18,7 @@ interface StackingInfoCardProps extends FlexProps {
 }
 
 export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { cycles, duration, balance, blocksPerCycle, startDate } = props;
+  const { cycles, duration, balance, blocksPerCycle, startDate, ...rest } = props;
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
@@ -33,7 +33,7 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
       minWidth={[null, null, '320px', '420px']}
       position="sticky"
       top="124px"
-      {...props}
+      {...rest}
     >
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>

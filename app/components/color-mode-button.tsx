@@ -19,6 +19,7 @@ export const ColorModeButton = memo(
         icon={Icon}
         onClick={toggleColorMode}
         title="Toggle color mode"
+        as="button"
         {...(props as any)}
         ref={ref as any}
         iconProps={{

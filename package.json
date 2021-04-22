@@ -31,8 +31,8 @@
     "start-main-dev": "cross-env START_HOT=1 NODE_ENV=development electron -r ./internals/scripts/BabelRegister ./app/main.dev.ts",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack serve --config configs/webpack.config.renderer.dev.babel.js",
     "start-preload-dev": "cross-env NODE_ENV=development webpack --watch --config configs/webpack.config.preload.babel.js",
-    "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
-    "test:integration": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand app/tests",
+    "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest --testPathIgnorePatterns app/tests",
+    "test:integration": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --detectOpenHandles app/tests",
     "prepare": "husky install",
     "typecheck": "tsc --noEmit"
   },
@@ -138,6 +138,7 @@
     "@types/react-router-dom": "5.1.7",
     "@types/redux-logger": "3.0.8",
     "@types/regenerator-runtime": "0.13.0",
+    "@types/rimraf": "3.0.0",
     "@types/source-map-support": "0.5.3",
     "@types/terser-webpack-plugin": "5.0.3",
     "@types/url-join": "4.0.0",

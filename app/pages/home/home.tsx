@@ -26,6 +26,7 @@ import { useDelegationStatus } from '@hooks/use-delegation-status';
 import { useTransactionList } from '@hooks/use-transaction-list';
 import { useBalance } from '@hooks/use-balance';
 import { useApi } from '@hooks/use-api';
+import { useLatestNonce } from '@hooks/use-latest-nonce';
 
 import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
@@ -45,6 +46,7 @@ import { HomeLayout } from './home-layout';
 export const Home: FC = () => {
   const dispatch = useDispatch();
   const api = useApi();
+  useLatestNonce();
 
   const { delegated: isDelegated } = useDelegationStatus();
   const { availableBalance } = useBalance();

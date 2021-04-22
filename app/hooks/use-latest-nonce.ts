@@ -6,13 +6,13 @@ import { useFetchAccountNonce } from '@hooks/use-fetch-account-nonce';
 export function useLatestNonce() {
   const { outboundMempoolTxs } = useMempool();
 
-  const { nonce } = useFetchAccountNonce();
+  const resp = useFetchAccountNonce();
 
-  if (!nonce) return { nonce: 0 };
+  if (!resp) return { nonce: 0 };
 
   return {
     nonce: BigNumber.max(
-      nonce,
+      resp.nonce,
       ...outboundMempoolTxs.map(tx => new BigNumber(tx.nonce).plus(1))
     ).toNumber(),
   };

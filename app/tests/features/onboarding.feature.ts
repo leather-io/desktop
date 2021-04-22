@@ -5,8 +5,12 @@ import { OnboardingSelector } from './onboarding.selectors';
 
 export function createOnboardingFeature(page: Page) {
   return {
-    findTermsOfServiceTitle() {
-      return page.$('text=Terms of Service');
+    async findTermsOfServiceTitle() {
+      // force top of page
+      await repeatAction(100)(() => page.keyboard.press('Shift+Space'));
+      await page.screenshot({ path: 'screenshots/terms-page.png' });
+      const selector = 'text="Terms of Service"';
+      return page.$(selector);
     },
 
     findAcceptBtn() {

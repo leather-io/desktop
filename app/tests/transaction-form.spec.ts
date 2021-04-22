@@ -1,13 +1,19 @@
+import path from 'path';
+import rimraf from 'rimraf';
+
 import { _electron, ElectronApplication, Page } from 'playwright';
+
 import { deserializeTransaction, cvToValue } from '@stacks/transactions';
+import { getUserDataPath } from '../main/get-user-data-path';
 
 import { delay } from '../utils/delay';
 import { stxToMicroStx } from '../utils/unit-convert';
 
-import { createGlobalFeature, resetWallet } from './features/global.feature';
+import { createGlobalFeature } from './features/global.feature';
 import { HomeFeature } from './features/home.feature';
 import { initSoftwareWallet } from './features/onboarding.feature';
 import { setUpElectronApp } from './_setup-tests';
+import { getTestConfigPath } from './get-test-config-path';
 
 const PASSWORD = 'hello9*&^*^*dkfskjdfskljdfsj';
 const SEED_PHRASE =
@@ -35,17 +41,19 @@ describeOnlyTestnet('Transaction flow', () => {
   let page: Page;
 
   beforeAll(async () => {
+    rimraf(`${getTestConfigPath()}/config.json`, err => {
+      if (err) console.log('Issue deleting file');
+    });
     app = await setUpElectronApp();
     page = await app.firstWindow();
-    await initSoftwareWallet(page)(SEED_PHRASE, PASSWORD);
   });
 
   afterAll(async () => {
-    await resetWallet(page);
     await app.close();
   });
 
   test('Transaction form', async done => {
+    await initSoftwareWallet(page)(SEED_PHRASE, PASSWORD);
     const globalFeature = createGlobalFeature(page);
 
     //
@@ -63,6 +71,8 @@ describeOnlyTestnet('Transaction flow', () => {
 
     const memoInput = await page.$(homeFeature.select.sendStxFormMemoInput);
     await memoInput.type(TX_MEMO);
+
+    await delay(6000);
 
     const previewTxBtn = await page.$(homeFeature.select.sendStxFormPreviewBtn);
     await previewTxBtn.click();

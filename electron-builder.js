@@ -93,6 +93,7 @@ const networkConfigs = {
     artifactName: 'stacks-wallet.mainnet.${ext}',
     mac: {
       icon: 'icon.icns',
+      darkModeSupport: true,
     },
     win: {
       icon: 'icon.mainnet.ico',

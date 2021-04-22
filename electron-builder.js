@@ -52,6 +52,7 @@ const baseConfig = {
     category: 'public.app-category.finance',
     entitlements: 'resources/entitlements.mac.plist',
     entitlementsInherit: 'resources/entitlements.mac.plist',
+    darkModeSupport: true,
   },
   linux: {
     target: ['deb', 'rpm'],

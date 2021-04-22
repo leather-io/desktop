@@ -23,7 +23,7 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
         onClick?.(e);
       }}
       pointerEvents={!hasBackState ? 'none' : 'all'}
-      isDisabled={!hasBackState}
+      as="button"
       {...(props as any)}
       icon={() => <ArrowIcon {...({ direction: 'left' } as any)} color={color('text-title')} />}
     />

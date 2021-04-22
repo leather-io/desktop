@@ -1,11 +1,16 @@
+import rimraf from 'rimraf';
+import fs from 'fs-extra';
 import { _electron, ElectronApplication, Page } from 'playwright';
 
 import { whenNetwork } from '../utils/network-utils';
+import { delay } from '../utils/delay';
 
 import { setUpElectronApp } from './_setup-tests';
+import { getTestConfigPath } from './get-test-config-path';
 import { createGlobalFeature, resetWallet } from './features/global.feature';
 import { HomeFeature } from './features/home.feature';
 import { initSoftwareWallet } from './features/onboarding.feature';
+import path from 'path';
 
 const PASSWORD = 'hello9*&^*^*dkfskjdfskljdfsj';
 const SEED_PHRASE =
@@ -15,15 +20,19 @@ describe('Restore wallet flow', () => {
   let app: ElectronApplication;
   let page: Page;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
+    rimraf(`${getTestConfigPath()}/config.json`, err => {
+      if (err) console.log('Issue deleting file');
+    });
     app = await setUpElectronApp();
     page = await app.firstWindow();
-    await initSoftwareWallet(page)(SEED_PHRASE, PASSWORD);
   });
 
-  afterAll(async () => await app.close());
+  afterEach(async () => await app.close());
 
   test('Restore wallet', async done => {
+    await initSoftwareWallet(page)(SEED_PHRASE, PASSWORD);
+
     const globalFeature = createGlobalFeature(page);
 
     //
@@ -40,6 +49,8 @@ describe('Restore wallet flow', () => {
     await homeFeature.waitFor('stxAddressText');
     const stxAddressLabel = await homeFeature.$('stxAddressText');
 
+    await page.screenshot({ path: 'screenshots/restore-wallet-address.png' });
+
     expect(await stxAddressLabel.textContent()).toEqual(
       whenNetwork({
         testnet: 'ST28VRDJ3TMB268BRMZXTJJ6Q4PABH108QNY5BSK1',
@@ -49,9 +60,15 @@ describe('Restore wallet flow', () => {
 
     await homeFeature.click('receiveStxModalCloseBtn');
 
-    const finishPageTosTitle = await resetWallet(page);
+    await page.screenshot({
+      path: `screenshots/restore-wallet/${String(
+        process.env.STX_NETWORK
+      )}-after-close-stx-modal.png`,
+    });
+
+    await resetWallet(page);
+    await delay(1000);
     await page.screenshot({ path: 'screenshots/finished-page.png' });
-    expect(finishPageTosTitle).toBeTruthy();
 
     done();
   }, 120_0000);

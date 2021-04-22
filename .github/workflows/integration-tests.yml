@@ -12,15 +12,10 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [macos-latest, ubuntu-latest]
         stx_network: [testnet, mainnet]
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.6.0
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Check out Git repository
         uses: actions/checkout@v1
 
@@ -28,20 +23,26 @@ jobs:
         id: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}-1
 
       - uses: actions/setup-node@v2
         with:
           node-version: 15
+
+      - name: Add required Linux dependencies
+        uses: ./.github/actions/linux-deps
+        if: matrix.os == 'ubuntu-latest'
 
       - name: Install packages
         uses: nick-invision/retry@v2
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         with:
           timeout_seconds: 600
-          max_attempts: 3
+          max_attempts: 5
           retry_on: error
           command: yarn --frozen-lockfile
+
+      - uses: microsoft/playwright-github-action@v1
 
       - name: Install electron-prebuilt
         uses: nick-invision/retry@v2
@@ -60,12 +61,15 @@ jobs:
       - name: Build assets
         run: ./node_modules/.bin/cross-env yarn build
         env:
-          DEBUG_PROD: true
           NODE_ENV: production
           SHA: ${{ github.event.pull_request.head.sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: yarn test:integration
+        if: matrix.os == 'macos-latest'
+
+      - run: xvfb-run --auto-servernum -- yarn test:integration
+        if: matrix.os == 'ubuntu-latest'
 
       - uses: actions/upload-artifact@v2
         if: always()

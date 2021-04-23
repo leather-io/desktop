@@ -29,6 +29,7 @@ import { SignTransaction } from '@components/tx-signing/sign-transaction';
 import { useLatestNonce } from '@hooks/use-latest-nonce';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 import { TransactionError } from '@modals/components/transaction-error';
+import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
 
 enum StackingModalStep {
   SignTransaction,
@@ -48,7 +49,6 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
   const history = useHistory();
   useHotkeys('esc', () => onClose());
 
-  const { nonce } = useLatestNonce();
   const { stackingClient } = useStackingClient();
   const { broadcastTx, isBroadcasting } = useBroadcastTx();
 
@@ -60,24 +60,18 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
     poxInfo: selectPoxInfo(state),
   }));
 
-  const initialStep = StackingModalStep.SignTransaction;
-
-  const [step, setStep] = useState(initialStep);
   const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
     null
   );
   const createDelegationTxOptions = useCallback((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');
-    return {
-      ...stackingClient.getDelegateOptions({
-        amountMicroStx: new BN(amountToStack.toString()),
-        contract: poxInfo.contract_id,
-        delegateTo: delegateeStxAddress,
-        untilBurnBlockHeight: burnHeight,
-      }),
-      nonce: new BN(nonce),
-    };
-  }, [poxInfo, stackingClient, amountToStack, delegateeStxAddress, burnHeight, nonce]);
+    return stackingClient.getDelegateOptions({
+      amountMicroStx: new BN(amountToStack.toString()),
+      contract: poxInfo.contract_id,
+      delegateTo: delegateeStxAddress,
+      untilBurnBlockHeight: burnHeight,
+    });
+  }, [poxInfo, stackingClient, amountToStack, delegateeStxAddress, burnHeight]);
 
   const delegateStx = (signedTx: StacksTransaction) =>
     broadcastTx({
@@ -88,39 +82,19 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
       },
       onFail: err => {
         if (err) setNodeResponseError(err);
-        setStep(StackingModalStep.FailedContractCall);
       },
       tx: signedTx,
     });
 
-  const txFormStepMap: Record<StackingModalStep, () => JSX.Element> = {
-    [StackingModalStep.SignTransaction]: () => (
-      <>
-        <Header onSelectClose={onClose}>Confirm and delegate</Header>
-        <SignTransaction
-          action="initate delegation"
-          txOptions={createDelegationTxOptions()}
-          isBroadcasting={isBroadcasting}
-          onClose={onClose}
-          onTransactionSigned={tx => delegateStx(tx)}
-        />
-      </>
-    ),
-
-    [StackingModalStep.FailedContractCall]: () => (
-      <TransactionError
-        error={nodeResponseError}
-        onClose={onClose}
-        onGoBack={() => setStep(initialStep)}
-      />
-    ),
-  };
-
-  const body = txFormStepMap[step]();
-
   return (
-    <Modal isOpen {...modalStyle}>
-      {body}
-    </Modal>
+    <TxSigningModal
+      action="initate delegation"
+      txDetails={createDelegationTxOptions()}
+      isBroadcasting={isBroadcasting}
+      error={nodeResponseError}
+      onTryAgain={() => setNodeResponseError(null)}
+      onTransactionSigned={tx => delegateStx(tx)}
+      onClose={onClose}
+    />
   );
 };

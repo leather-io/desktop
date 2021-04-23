@@ -18,9 +18,8 @@ export function useDecryptWallet() {
 
   const decryptWallet = useCallback(
     async (password: string) => {
-      if (!encryptedMnemonic || !salt) {
-        throw new Error('`encryptedMnemonic` or `salt` undefined');
-      }
+      if (!encryptedMnemonic) throw new Error('`encryptedMnemonic` undefined');
+      if (!salt) throw new Error('`salt` undefined');
       setIsDecrypting(true);
       await shortDelayToGiveAnimationsTime();
       const [error, decryptedSoftwareWallet] = await safeAwait(

@@ -120,16 +120,16 @@
     ripemd160-min "^0.0.6"
     sha.js "^2.4.11"
 
-"@stacks/keychain@1.3.5":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@stacks/keychain/-/keychain-1.3.5.tgz#cce4aaccb6546393dfb5dce7b1b3404beb3d1e40"
-  integrity sha512-ZAT/bqXlJs04s9hz1NYkVNaN1XSP8ohJPVvSGy1nF8nrkqmO1iu+m4ZJtuzCRoOefbD8w7Iyp3uaiM8WRsBpJg==
+"@stacks/keychain@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@stacks/keychain/-/keychain-1.4.1.tgz#93c9dd7f3c901f43f86eb28788c3274303be4758"
+  integrity sha512-zzgNcHBqSL1pn+tIu9IGTwM/HNAzv5XleuQs0WyXG1ZP07PEbzPf5bLatXijD/dcwVw7lDPuvsEVT0vA1sTtOQ==
   dependencies:
     "@blockstack/rpc-client" "^0.3.0-alpha.11"
     "@stacks/common" "^1.2.2"
     "@stacks/encryption" "^1.2.3"
     "@stacks/storage" "^1.3.3"
-    "@stacks/transactions" "^1.3.5"
+    "@stacks/transactions" "^1.4.1"
     bip32 "^2.0.4"
     bip39 "^3.0.2"
     bitcoinjs-lib "^5.1.6"
@@ -159,13 +159,13 @@
     schema-inspector "^1.7.0"
     zone-file "^1.0.0"
 
-"@stacks/stacking@1.3.5":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@stacks/stacking/-/stacking-1.3.5.tgz#bcef086d3a815389bc1f8409b88cf7a46a6a4e4f"
-  integrity sha512-XpyjEoaVX+D0DY2bQqGq+1sZ0myNkFzISY3k25CT8SxVmDSjWwoUD9P+vA1RF1b4Q8E1FGJKGJptZoal9/PZfA==
+"@stacks/stacking@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@stacks/stacking/-/stacking-1.4.1.tgz#91c35cf3d3e80d15cde08ae2c6c24d08ceffa376"
+  integrity sha512-7MG5u1FsMQIYN7kOHLeet4mZ6rvJnHv16qfNZrd2UxcHfO79KjG+BNDdFk4cgyUZ7uVJRN0DFPTx/qVSLUPPYQ==
   dependencies:
     "@stacks/network" "^1.2.2"
-    "@stacks/transactions" "^1.3.5"
+    "@stacks/transactions" "^1.4.1"
     axios "^0.21.1"
     bignumber.js "^9.0.1"
     bitcoinjs-lib "^5.2.0"
@@ -182,10 +182,10 @@
     "@stacks/common" "^1.2.2"
     "@stacks/encryption" "^1.2.3"
 
-"@stacks/transactions@1.3.5", "@stacks/transactions@^1.3.5":
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.3.5.tgz#af2d6722ec4c1a365361893eb9e83b678a6604bc"
-  integrity sha512-KhZ9y48KnOB+Es3whxbpxtPm6o5CYLrhxCCG5Tfglmj9AcFtpWCBjkcFwZJ/R3eI4OYthD5aMB9nYY31xGiULA==
+"@stacks/transactions@1.4.1", "@stacks/transactions@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@stacks/transactions/-/transactions-1.4.1.tgz#7b1d046051065a28707bac58c39d021fa49575f4"
+  integrity sha512-7LFA9yQqlmN+oVJeYaj+NfZyuInJxF8ozJ8kypCmJ9rUrbbGC/es1KyseB96YBiiOh4eLUfRlD1j6boSdNR8aA==
   dependencies:
     "@stacks/common" "^1.2.2"
     "@stacks/network" "^1.2.2"

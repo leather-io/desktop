@@ -254,10 +254,7 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
           txOptions={createSendTxOptions}
           isBroadcasting={isBroadcasting}
           onClose={closeModal}
-          onTransactionSigned={tx => {
-            console.log(tx);
-            void sendStx(tx);
-          }}
+          onTransactionSigned={tx => sendStx(tx)}
         />
       </>
     ),

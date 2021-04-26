@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
-import { Modal } from '@stacks/ui';
 import BN from 'bn.js';
 
 import { RootState } from '@store/index';
@@ -11,11 +10,6 @@ import routes from '@constants/routes.json';
 
 import { selectPoxInfo } from '@store/stacking';
 import { safeAwait } from '@utils/safe-await';
-
-import {
-  StackingModalHeader as Header,
-  modalStyle,
-} from '@modals/components/stacking-modal-layout';
 
 import { useStackingClient } from '@hooks/use-stacking-client';
 
@@ -25,16 +19,9 @@ import { useBroadcastTx } from '@hooks/use-broadcast-tx';
 import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
 import { useMempool } from '@hooks/use-mempool';
 
-import { SignTransaction } from '@components/tx-signing/sign-transaction';
-import { useLatestNonce } from '@hooks/use-latest-nonce';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
-import { TransactionError } from '@modals/components/transaction-error';
-import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
 
-enum StackingModalStep {
-  SignTransaction,
-  FailedContractCall,
-}
+import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
 
 interface StackingModalProps {
   delegateeStxAddress: string;

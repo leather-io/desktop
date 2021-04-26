@@ -7,7 +7,11 @@ import BN from 'bn.js';
 import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
 import { BigNumber } from 'bignumber.js';
 import { Modal } from '@modals/components/base-modal';
-import { MEMO_MAX_LENGTH_BYTES, StacksTransaction } from '@stacks/transactions';
+import {
+  MEMO_MAX_LENGTH_BYTES,
+  StacksTransaction,
+  TokenTransferOptions,
+} from '@stacks/transactions';
 
 import { useHotkeys } from 'react-hotkeys-hook';
 
@@ -71,6 +75,8 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const [loading, setLoading] = useState(false);
   const interactedWithSendAllBtn = useRef(false);
   const { nonce } = useLatestNonce();
+
+  const [txDetails, setTxDetails] = useState<TokenTransferOptions | null>(null);
 
   const sendStx = (tx: StacksTransaction) => {
     console.log(tx);
@@ -159,17 +165,16 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
         setAmount(amount);
         setStep(TxModalStep.PreviewTx);
       }
+      setTxDetails({
+        recipient: form.values.recipient,
+        network: stacksNetwork,
+        amount: new BN(stxToMicroStx(form.values.amount || 0).toString()),
+        memo: form.values.memo,
+        nonce: new BN(nonce),
+      });
       setLoading(false);
     },
   });
-
-  const createSendTxOptions = {
-    recipient: form.values.recipient,
-    network: stacksNetwork,
-    amount: new BN(stxToMicroStx(form.values.amount || 0).toString()),
-    memo: form.values.memo,
-    nonce: new BN(nonce),
-  };
 
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
 
@@ -249,13 +254,15 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
     [TxModalStep.SignTransaction]: () => (
       <>
         <ModalHeader onSelectClose={closeModal}>Confirm and send</ModalHeader>
-        <SignTransaction
-          action="send STX"
-          txOptions={createSendTxOptions}
-          isBroadcasting={isBroadcasting}
-          onClose={closeModal}
-          onTransactionSigned={tx => sendStx(tx)}
-        />
+        {txDetails !== null && (
+          <SignTransaction
+            action="send STX"
+            txOptions={txDetails}
+            isBroadcasting={isBroadcasting}
+            onClose={closeModal}
+            onTransactionSigned={tx => sendStx(tx)}
+          />
+        )}
       </>
     ),
     [TxModalStep.NetworkError]: () => (

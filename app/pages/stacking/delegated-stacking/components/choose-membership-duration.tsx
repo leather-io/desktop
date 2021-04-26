@@ -20,14 +20,13 @@ interface DelegationTypeInitialValues {
 }
 
 interface ChooseMembershipDurationStepProps extends StackingStepBaseProps {
-  description: string;
   value?: string;
   onEdit(): void;
   onComplete(args: { duration: number | null; delegationType: DelegationType }): void;
 }
 
 export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps> = props => {
-  const { isComplete, description, state, step, title, value, onEdit, onComplete } = props;
+  const { isComplete, state, step, title, value, onEdit, onComplete } = props;
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const durationForm = useFormik<DelegationTypeInitialValues>({
     initialValues: {
@@ -55,7 +54,11 @@ export const ChooseMembershipDurationStep: FC<ChooseMembershipDurationStepProps>
       isComplete={isComplete}
       onEdit={onEdit}
     >
-      <Description>{description}</Description>
+      <Description>
+        Choose whether you want to pool with a limited duration, or give the pool indefinite
+        permission. If you set a limit, make sure you don’t set it lower than the number of cycles
+        your pool intends to stack.
+      </Description>
       <form onSubmit={durationForm.handleSubmit}>
         <DurationSelect>
           <DurationSelectItem

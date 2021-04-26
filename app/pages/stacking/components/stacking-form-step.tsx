@@ -8,6 +8,7 @@ import {
   Button,
   ButtonProps,
   color,
+  Stack,
 } from '@stacks/ui';
 
 import { StackingStepView } from '../utils/use-stacking-form-step';
@@ -73,9 +74,9 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
 };
 
 export const StackingStepDescription: FC = ({ children }) => (
-  <Text display="block" textStyle="body.large" mt="tight">
+  <Stack display="block" textStyle="body.large" mt="tight" spacing="base">
     {children}
-  </Text>
+  </Stack>
 );
 
 export const StackingStepAction: ForwardRefExoticComponentWithAs<

@@ -65,6 +65,10 @@ jobs:
           SHA: ${{ github.event.pull_request.head.sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
       - run: yarn test:integration
         if: matrix.os == 'macos-latest'
 
@@ -74,5 +78,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: test-screenshots
+          name: test-screenshots-${{ steps.date.outputs.date }}
           path: screenshots

@@ -2,29 +2,33 @@ import React, { FC, useState } from 'react';
 
 import { StackingStep, StackingStepAction } from '../../components/stacking-form-step';
 import { StackingUserConfirm } from '../../components/stacking-user-confirm';
-import { DelegatedStackingTerms } from './delegated-stacking-terms';
+import { DirectStackingTerms } from './direct-stacking-terms';
 
 interface ConfirmAndLockStepProps {
-  id: string;
+  title: string;
   formComplete: boolean;
   step?: number;
-  onConfirmAndDelegate(): void;
+  timeUntilNextCycle: string;
+  estimatedDuration: string;
+  onConfirmAndLock(): void;
 }
-export const ConfirmAndDelegateStep: FC<ConfirmAndLockStepProps> = props => {
-  const { step, id, formComplete, onConfirmAndDelegate } = props;
+
+export const ConfirmAndStackStep: FC<ConfirmAndLockStepProps> = props => {
+  const { step, title, formComplete, onConfirmAndLock } = props;
   const [hasUserConfirmed, setHasUserConfirmed] = useState(false);
+
   return (
-    <StackingStep title={id} step={step} isComplete={false} state="open" mb="300px">
-      <DelegatedStackingTerms mt="loose" />
+    <StackingStep title={title} step={step} isComplete={false} state="open" mb="300px">
+      <DirectStackingTerms mt="loose" />
       <StackingUserConfirm
         onChange={useConfirmed => setHasUserConfirmed(useConfirmed)}
         mt="extra-loose"
       />
       <StackingStepAction
-        onClick={onConfirmAndDelegate}
+        onClick={onConfirmAndLock}
         isDisabled={!formComplete || !hasUserConfirmed}
       >
-        Confirm and start pooling
+        Confirm and start stacking
       </StackingStepAction>
     </StackingStep>
   );

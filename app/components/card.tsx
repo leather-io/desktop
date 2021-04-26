@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, BoxProps, Text, Flex, color } from '@stacks/ui';
 
 interface CardProps extends BoxProps {
-  title: string;
+  title?: string;
 }
 
 export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
@@ -16,17 +16,19 @@ export const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
       width="100%"
       {...rest}
     >
-      <Flex
-        borderBottom="1px solid"
-        borderColor={color('border')}
-        height="40px"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Text textStyle="caption" color={color('text-caption')}>
-          {title}
-        </Text>
-      </Flex>
+      {title && (
+        <Flex
+          borderBottom="1px solid"
+          borderColor={color('border')}
+          height="40px"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Text textStyle="caption" color={color('text-caption')}>
+            {title}
+          </Text>
+        </Flex>
+      )}
       <Box my="base" mx="base">
         {children}
       </Box>

@@ -18,7 +18,7 @@ import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stac
 
 type SignTransactionSoftwareProps = SignTransactionProps;
 
-export const SignTransactionSoftware = (props: SignTransactionSoftwareProps) => {
+export const SignTransactionSoftware: React.FC<SignTransactionSoftwareProps> = props => {
   const { action, txOptions, isBroadcasting, onTransactionSigned, onClose } = props;
 
   const [decryptionError, setDecryptionError] = useState<string | null>(null);

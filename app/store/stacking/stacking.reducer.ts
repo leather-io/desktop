@@ -183,7 +183,6 @@ export const selectPoxInfo = createSelector(selectStackingState, state => {
 
 export const selectStackerInfo = createSelector(
   selectStackingState,
-
   selectAddressBalance,
   (state, addressBalances) => {
     if (

@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { useFormik } from 'formik';
-import { getAddressInfo } from 'bitcoin-address-validation';
+import { validate, getAddressInfo } from 'bitcoin-address-validation';
 
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
@@ -56,6 +56,12 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
   const form = useFormik({
     initialValues: { btcAddress: '' },
     validate: ({ btcAddress }) => {
+      const isValid = validate(btcAddress);
+      if (!isValid) {
+        return {
+          btcAddress: `The address you've entered is invalid`,
+        };
+      }
       const validationReport = getAddressInfo(btcAddress);
       if (!validationReport) return { btcAddress: 'Invalid BTC address' };
       if (isMainnet() && validationReport.network === 'testnet') {

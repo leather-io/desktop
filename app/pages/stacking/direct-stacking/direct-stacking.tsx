@@ -23,7 +23,9 @@ import { DirectStackingInfoCard } from './components/direct-stacking-info-card';
 import { DirectStackingIntro } from './components/direct-stacking-intro';
 import { ChooseCycleStep } from './components/choose-cycles';
 import { ChooseDirectStackingAmountStep } from './components/choose-direct-stacking-amount';
-import { ConfirmAndLockStep } from './components/confirm-and-lock';
+import { ConfirmAndStackStep } from './components/confirm-and-stack';
+import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';
+import { StackingGuideCard } from '../components/stacking-guide-card';
 
 enum StackingStep {
   ChooseAmount = 'Choose an amount',
@@ -65,20 +67,22 @@ export const DirectStacking: FC = () => {
   );
 
   const stackingInfoCard = (
-    <DirectStackingInfoCard
-      cycles={cyclesWithDefault(cycles)}
-      balance={amount}
-      startDate={nextCycleInfo.nextCycleStartingAt}
-      blocksPerCycle={poxInfo.reward_cycle_length}
-      duration={stackingCycleDuration}
-    />
+    <StackingFormInfoPanel>
+      <DirectStackingInfoCard
+        cycles={cyclesWithDefault(cycles)}
+        balance={amount}
+        startDate={nextCycleInfo.nextCycleStartingAt}
+        blocksPerCycle={poxInfo.reward_cycle_length}
+        duration={stackingCycleDuration}
+      />
+      <StackingGuideCard mt="loose" />
+    </StackingFormInfoPanel>
   );
 
   const stackingForm = (
     <StackingFormContainer>
       <ChooseDirectStackingAmountStep
         title={StackingStep.ChooseAmount}
-        description="Choose how much of your STX you’d like to lock. The BTC you earn will be proportional to the amount locked."
         isComplete={steps.getIsComplete(StackingStep.ChooseAmount)}
         state={steps.getView(StackingStep.ChooseAmount)}
         value={amount}
@@ -98,15 +102,15 @@ export const DirectStacking: FC = () => {
       />
       <ChooseBtcAddressStep
         title={StackingStep.ChooseBtcAddress}
-        description="Choose the address where you’d like to receive Bitcoin."
+        description="Choose the address where you’d like to receive bitcoin."
         value={btcAddress || undefined}
         isComplete={steps.getIsComplete(StackingStep.ChooseBtcAddress)}
         state={steps.getView(StackingStep.ChooseBtcAddress)}
         onEdit={() => steps.open(StackingStep.ChooseBtcAddress)}
         onComplete={address => (setBtcAddress(address), steps.close(StackingStep.ChooseBtcAddress))}
       />
-      <ConfirmAndLockStep
-        title="Confirm and lock"
+      <ConfirmAndStackStep
+        title="Confirm and stack"
         formComplete={steps.allComplete}
         estimatedDuration={stackingCycleDuration}
         timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle}
@@ -127,7 +131,7 @@ export const DirectStacking: FC = () => {
       )}
       <StackingLayout
         intro={stackingIntro}
-        stackingInfoCard={stackingInfoCard}
+        stackingInfoPanel={stackingInfoCard}
         stackingForm={stackingForm}
       />
     </>

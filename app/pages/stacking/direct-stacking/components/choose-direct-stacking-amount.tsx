@@ -1,16 +1,23 @@
 import React, { FC, useCallback } from 'react';
 import { BigNumber } from 'bignumber.js';
-import { Box, Button, Input } from '@stacks/ui';
+import { Box, Button, color, Input, Stack, Text } from '@stacks/ui';
 import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
+import { selectPoxInfo } from '@store/stacking';
 import * as yup from 'yup';
 
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { ExternalLink } from '@components/external-link';
 import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
 import { useBalance } from '@hooks/use-balance';
-import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
+import {
+  STACKING_CONTRACT_CALL_FEE,
+  STACKING_LEARN_MORE_URL,
+  STACKING_MINIMIUM_FOR_NEXT_CYCLE_URL,
+} from '@constants/index';
 
 import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
@@ -18,9 +25,10 @@ import {
   StackingStepAction as Action,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
+import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
+import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';
 
 interface ChooseAmountStepProps extends StackingStepBaseProps {
-  description: string;
   minimumAmountToStack: number;
   value: BigNumber | null;
   onEdit(): void;
@@ -30,19 +38,10 @@ interface ChooseAmountStepProps extends StackingStepBaseProps {
 const BigNumberFloorRound = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_FLOOR });
 
 export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props => {
-  const {
-    title,
-    description,
-    isComplete,
-    state,
-    step,
-    value,
-    minimumAmountToStack,
-    onEdit,
-    onComplete,
-  } = props;
+  const { title, isComplete, state, step, value, minimumAmountToStack, onEdit, onComplete } = props;
 
   const { availableBalance, availableBalanceValidator } = useBalance();
+  const poxInfo = useSelector(selectPoxInfo);
 
   const stxAmountForm = useFormik({
     initialValues: { stxAmount: '' },
@@ -76,6 +75,10 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
     onSubmit: ({ stxAmount }) => onComplete(stxToMicroStx(stxAmount)),
   });
 
+  const ustxAmount = stxToMicroStx(stxAmountForm.values.stxAmount || 0);
+
+  const showStackingWarningCard = ustxAmount.isGreaterThanOrEqualTo(minimumAmountToStack);
+
   const setMax = useCallback(() => {
     const updatedAmount = new BigNumberFloorRound(
       microStxToStx(availableBalance.minus(STACKING_CONTRACT_CALL_FEE).toString())
@@ -86,6 +89,18 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
   const currentValue =
     value === null ? toHumanReadableStx(0) : toHumanReadableStx(value.toString());
 
+  if (poxInfo === null) return null;
+
+  const numberOfRewardSlots = calculateRewardSlots(
+    ustxAmount,
+    new BigNumber(poxInfo.min_amount_ustx)
+  );
+
+  const floorRoundedStxBuffer = calculateStackingBuffer(
+    ustxAmount,
+    new BigNumber(poxInfo.min_amount_ustx)
+  );
+
   return (
     <Step
       title={title}
@@ -95,7 +110,23 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
       isComplete={isComplete}
       onEdit={onEdit}
     >
-      <Description>{description}</Description>
+      <Description>
+        <Stack alignItems="flex-start" spacing="base">
+          <Text>
+            You’ll be eligible for one reward slot for every multiple of the minimum you stack.
+          </Text>
+          <Text>
+            The estimated minimum per slot can change by multiples of 10,000 every cycle, so you may
+            want to add a buffer to increase your chance of keeping the same number of slots.
+          </Text>
+          <ExternalLink href={STACKING_LEARN_MORE_URL}>
+            Learn how to choose the right amount
+          </ExternalLink>
+          <ExternalLink href={STACKING_MINIMIUM_FOR_NEXT_CYCLE_URL}>
+            View the minimum for next cycle
+          </ExternalLink>
+        </Stack>
+      </Description>
       <form onSubmit={stxAmountForm.handleSubmit}>
         <Box position="relative" maxWidth="400px">
           <Input
@@ -125,6 +156,52 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
             Stack max
           </Button>
         </Box>
+        {showStackingWarningCard && (
+          <>
+            <Stack textStyle="body.small" color={color('text-caption')} spacing="base" mt="base">
+              <Text>
+                This entered amount would get you {numberOfRewardSlots.integerValue().toString()}{' '}
+                reward slots with a {toHumanReadableStx((floorRoundedStxBuffer || 0).toString())}{' '}
+                buffer at the current minimum. However, that minimum is subject to change and there
+                is no guarantee you will get any reward slots.
+              </Text>
+              <Text>
+                You <strong>will not</strong> be able to add more STX for locking from this address
+                until all locked STX unlock at the end of the duration set below.
+              </Text>
+            </Stack>
+            {floorRoundedStxBuffer.isEqualTo(0) && (
+              <Box
+                textStyle="body.small"
+                color={color('text-body')}
+                border="1px solid"
+                p="loose"
+                mt="base"
+                borderRadius="6px"
+                borderColor={color('border')}
+                {...pseudoBorderLeft('feedback-alert')}
+              >
+                Add a buffer for a higher chance (though no guarantee) of keeping the same number of
+                reward slots should the minimum increase. If you can’t add a buffer, consider
+                Stacking in a pool instead.
+                <Button
+                  variant="link"
+                  type="button"
+                  display="block"
+                  mt="tight"
+                  onClick={() =>
+                    stxAmountForm.setFieldValue(
+                      'stxAmount',
+                      new BigNumber(stxAmountForm.values.stxAmount).plus(10000).toString()
+                    )
+                  }
+                >
+                  Add 10,000 STX buffer
+                </Button>
+              </Box>
+            )}
+          </>
+        )}
         <Action type="submit">Continue</Action>
       </form>
     </Step>

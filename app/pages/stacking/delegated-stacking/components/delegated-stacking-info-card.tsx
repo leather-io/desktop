@@ -10,6 +10,7 @@ import { toHumanReadableStx } from '@utils/unit-convert';
 import { ExplainerTooltip } from '@components/tooltip';
 import { truncateMiddle } from '@utils/tx-utils';
 import { formatCycles } from '@utils/stacking';
+import { StackingFormInfoCard } from '../../components/stacking-form-info-card';
 
 interface StackingInfoCardProps extends FlexProps {
   balance: BigNumber | null;
@@ -32,18 +33,7 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
   return (
-    <Flex
-      flexDirection="column"
-      boxShadow="low"
-      border={`1px solid ${color('border')}`}
-      borderRadius="8px"
-      minHeight="84px"
-      alignItems="flex-start"
-      minWidth={[null, null, '320px', '420px']}
-      position="sticky"
-      top="124px"
-      {...rest}
-    >
+    <StackingFormInfoCard {...rest}>
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>
         <Text fontSize="24px" fontWeight={600} letterSpacing="-0.04em" mt="extra-tight">
@@ -91,6 +81,6 @@ export const DelegatedStackingInfoCard: FC<StackingInfoCardProps> = props => {
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </StackingFormInfoCard>
   );
 };

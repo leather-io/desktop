@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 
 import { selectAddress } from '@store/keys';
 import { ApiResource } from '@models';
+import { useFetchAccountNonce } from '@hooks/use-fetch-account-nonce';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 import { useApi } from './use-api';
 
@@ -15,6 +16,7 @@ interface UseMempool {
 export function useMempool(): UseMempool {
   const api = useApi();
   const address = useSelector(selectAddress);
+  const { nonce } = useFetchAccountNonce();
 
   const mempoolFetcher = useCallback(
     ({ queryKey }) => {
@@ -24,13 +26,14 @@ export function useMempool(): UseMempool {
     },
     [api]
   );
-  const { data: mempoolTxs, refetch } = useQuery([ApiResource.Mempool, address], mempoolFetcher);
+  const { data: mempoolTxs = [], refetch } = useQuery(
+    [ApiResource.Mempool, address],
+    mempoolFetcher
+  );
 
-  const outboundMempoolTxs = mempoolTxs?.filter(tx => tx.sender_address === address);
+  const outboundMempoolTxs = mempoolTxs
+    .filter(tx => tx.sender_address === address)
+    .filter(tx => tx.nonce < nonce);
 
-  return {
-    mempoolTxs: mempoolTxs ?? [],
-    outboundMempoolTxs: outboundMempoolTxs ?? [],
-    refetch,
-  };
+  return { mempoolTxs, outboundMempoolTxs, refetch };
 }

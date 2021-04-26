@@ -19,7 +19,7 @@ import path from 'path';
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
-import installExtension, { ExtensionReference } from 'electron-devtools-installer';
+import installExtension, { ExtensionReference, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
@@ -50,7 +50,7 @@ app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
 app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
 // https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/2788
-const extensions: ExtensionReference[] = []; // [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS];
+const extensions: ExtensionReference[] = [REDUX_DEVTOOLS]; // [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS];
 
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
@@ -155,6 +155,8 @@ const createWindow = async () => {
 
   registerThemeModeHandlers(mainWindow.webContents);
 
+  registerIpcContextMenuHandlers(mainWindow);
+
   if (process.platform === 'darwin') addMacOsTouchBarMenu(mainWindow);
 };
 
@@ -179,10 +181,7 @@ app.on('window-all-closed', () => {
 app.on('ready', () => {
   void createWindow();
   // We only want to run these once per app lifecycle
-  void app.whenReady().then(() => {
-    registerIpcStoreHandlers(getUserDataPath(app));
-    if (mainWindow) registerIpcContextMenuHandlers(mainWindow);
-  });
+  void app.whenReady().then(() => registerIpcStoreHandlers(getUserDataPath(app)));
 });
 
 app.on('activate', () => {

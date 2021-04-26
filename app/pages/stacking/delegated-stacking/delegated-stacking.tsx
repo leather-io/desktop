@@ -19,8 +19,10 @@ import { StackingDelegationIntro } from './components/stacking-delegated-intro';
 import { DelegatedStackingInfoCard } from './components/delegated-stacking-info-card';
 import { ConfirmAndDelegateStep } from './components/confirm-and-delegate';
 import { ChooseDelegatedStackingAmountStep } from './components/choose-delegated-stacking-amount';
-import { ChooseDelegateeStxAddressStep } from './components/choose-delegatee-stx-address';
+import { ChoosePoolStxAddressStep } from './components/choose-delegatee-stx-address';
 import { ChooseMembershipDurationStep } from './components/choose-membership-duration';
+import { StackingGuideCard } from '../components/stacking-guide-card';
+import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';
 
 enum DelegateStep {
   ChooseDelegateeAddress = 'ChooseDelegateeAddress',
@@ -70,9 +72,8 @@ export const StackingDelegation: FC = () => {
 
   const stackingForm = (
     <StackingFormContainer>
-      <ChooseDelegateeStxAddressStep
-        title="Choose pool's address"
-        description="Enter the STX address provided by your chosen pool for Stacking delegation"
+      <ChoosePoolStxAddressStep
+        title="Pool address"
         isComplete={steps.getIsComplete(DelegateStep.ChooseDelegateeAddress)}
         value={delegateeAddress ?? undefined}
         state={steps.getView(DelegateStep.ChooseDelegateeAddress)}
@@ -83,7 +84,7 @@ export const StackingDelegation: FC = () => {
       />
       <ChooseDelegatedStackingAmountStep
         title="Choose an amount"
-        description="Choose how much of your STX you'd like to delegate. This can be more than your current balance. Your pool may require you to delegate a minimum amount."
+        description="Choose how much you’ll pool. Your pool may require a minimum."
         isComplete={steps.getIsComplete(DelegateStep.ChooseAmount)}
         state={steps.getView(DelegateStep.ChooseAmount)}
         value={amount}
@@ -92,7 +93,6 @@ export const StackingDelegation: FC = () => {
       />
       <ChooseMembershipDurationStep
         title="Choose indefinite or limited cycles"
-        description=""
         isComplete={steps.getIsComplete(DelegateStep.ChooseDuration)}
         value={durationValue}
         state={steps.getView(DelegateStep.ChooseDuration)}
@@ -104,7 +104,7 @@ export const StackingDelegation: FC = () => {
         }}
       />
       <ConfirmAndDelegateStep
-        id="Confirm and Delegate"
+        id="Confirm and pool"
         formComplete={steps.allComplete}
         onConfirmAndDelegate={() => setModalOpen(true)}
       />
@@ -123,14 +123,17 @@ export const StackingDelegation: FC = () => {
       )}
       <StackingLayout
         intro={<StackingDelegationIntro />}
-        stackingInfoCard={
-          <DelegatedStackingInfoCard
-            delegateeAddress={delegateeAddress}
-            balance={amount}
-            durationInCycles={durationInCycles}
-            delegationType={delegationType}
-            burnHeight={cyclesToUntilBurnBlockHeight(durationInCycles)}
-          />
+        stackingInfoPanel={
+          <StackingFormInfoPanel>
+            <DelegatedStackingInfoCard
+              delegateeAddress={delegateeAddress}
+              balance={amount}
+              durationInCycles={durationInCycles}
+              delegationType={delegationType}
+              burnHeight={cyclesToUntilBurnBlockHeight(durationInCycles)}
+            />
+            <StackingGuideCard mt="loose" />
+          </StackingFormInfoPanel>
         }
         stackingForm={stackingForm}
       />

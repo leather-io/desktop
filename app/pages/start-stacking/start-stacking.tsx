@@ -43,7 +43,7 @@ export const ChooseStackingMethod: FC = () => {
       </Text>
       <Text mt="base" color={color('text-caption')} maxWidth="480px">
         Lock your STX to support the network. As a reward, you’ll have the chance to earn BTC that
-        miners transfer as part of Proof-of-Transfer (PoX).
+        miners distribute as part of Proof-of-Transfer (PoX).
       </Text>
       <ExternalLink href="https://stacks.co/stacking-and-stx" fontWeight="normal" mt="base-tight">
         Learn more about Stacking
@@ -51,44 +51,44 @@ export const ChooseStackingMethod: FC = () => {
 
       <CardContainer>
         <Card>
-          <Title>Stack on your own</Title>
-          <OptionBenefit>Lock your STX with the PoX contract directly</OptionBenefit>
-          <OptionBenefit>
-            Minimum required to stack is{' '}
-            {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
-          </OptionBenefit>
-          <OptionBenefit>Choose a set number of cycles</OptionBenefit>
-          <Flex alignItems="center">
-            <OptionButton
-              onClick={() => history.push(routes.STACKING)}
-              isDisabled={!meetsMinThreshold}
-            >
-              Continue
-            </OptionButton>
-            {!meetsMinThreshold && <InsufficientStackingBalanceWarning />}
-          </Flex>
-        </Card>
-
-        <Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}>
-          <Title>Stack with others</Title>
-          <OptionBenefit>Delegate to a pool that will lock your STX with others</OptionBenefit>
+          <Title>Stack in a pool</Title>
+          <OptionBenefit>A pool stacks on your behalf</OptionBenefit>
+          <OptionBenefit>More predictable returns</OptionBenefit>
           <Flex flexDirection="row" alignItems="center">
-            <OptionBenefit>No minimum required by the protocol</OptionBenefit>
+            <OptionBenefit>No minimum required</OptionBenefit>
             <Box ml="extra-tight" mt="tight">
               <ExplainerTooltip>
                 Your chosen pool may set their own minimum amount to participate
               </ExplainerTooltip>
             </Box>
           </Flex>
-          <OptionBenefit>Choose an indefinite or limited number of cycles</OptionBenefit>
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.DELEGATED_STACKING)}
               isDisabled={!sufficientBalanceToCoverFee}
             >
-              Continue
+              Stacks in a pool
             </OptionButton>
             {!sufficientBalanceToCoverFee && <InsufficientStackingBalanceWarning />}
+          </Flex>
+        </Card>
+
+        <Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}>
+          <Title>Stack by yourself</Title>
+          <OptionBenefit>Interact with the protocol directly</OptionBenefit>
+          <OptionBenefit>No intermediaries</OptionBenefit>
+          <OptionBenefit>
+            Minimum required to stack is{' '}
+            {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
+          </OptionBenefit>
+          <Flex alignItems="center">
+            <OptionButton
+              onClick={() => history.push(routes.STACKING)}
+              isDisabled={!meetsMinThreshold}
+            >
+              Stack by yourself
+            </OptionButton>
+            {!meetsMinThreshold && <InsufficientStackingBalanceWarning />}
           </Flex>
         </Card>
       </CardContainer>

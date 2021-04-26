@@ -41,6 +41,12 @@ export const TREZOR_HELP_URL =
 export const STACKING_ADDRESS_FORMAT_HELP_URL =
   'https://www.hiro.so/questions/what-form-of-btc-addresses-can-i-use-for-proof-of-transfer-rewards';
 
+export const STACKING_LEARN_MORE_URL = 'https://stacks.org/stacking-moves-us-forward';
+
+export const STACKING_GUIDE_URL = 'https://blog.stacks.co/stacking-strategy';
+
+export const STACKING_MINIMIUM_FOR_NEXT_CYCLE_URL = 'https://stacking.club/cycles/next';
+
 export const MAX_STACKING_CYCLES = 12;
 
 export const MIN_STACKING_CYCLES = 1;

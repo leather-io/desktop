@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
 
-import { color, Flex, FlexProps, Text } from '@stacks/ui';
+import { Flex, FlexProps, Text } from '@stacks/ui';
 
 import { Hr } from '@components/hr';
 
 import { ExplainerTooltip } from '@components/tooltip';
 import { toHumanReadableStx } from '@utils/unit-convert';
+import { StackingFormInfoCard } from '../../components/stacking-form-info-card';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -23,18 +24,7 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
   return (
-    <Flex
-      flexDirection="column"
-      boxShadow="low"
-      border={`1px solid ${color('border')}`}
-      borderRadius="8px"
-      minHeight="84px"
-      alignItems="flex-start"
-      minWidth={[null, null, '320px', '420px']}
-      position="sticky"
-      top="124px"
-      {...rest}
-    >
+    <StackingFormInfoCard minHeight="84px" alignItems="flex-start" {...rest}>
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
         <Text textStyle="body.large.medium">You'll lock</Text>
         <Text fontSize="24px" fontWeight={600} letterSpacing="-0.04em" mt="extra-tight">
@@ -70,6 +60,6 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
           <Text textAlign="right">{dayjs(startDate).format('MMMM DD')}</Text>
         </Flex>
       </Flex>
-    </Flex>
+    </StackingFormInfoCard>
   );
 };

@@ -20,7 +20,7 @@ export const TransactionListItemContainer: ForwardRefExoticComponentWithAs<
     <Flex
       ref={ref}
       mb="loose"
-      cursor="pointer"
+      cursor="default"
       textAlign="left"
       position="relative"
       outline={0}

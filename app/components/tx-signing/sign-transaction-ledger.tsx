@@ -21,7 +21,6 @@ export const SignTransactionLedger = (props: SignTransactionLedgerProps) => {
 
   const { step: ledgerStep, isLocked } = usePrepareLedger();
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  // const [ledgerError, setLedgerError] = useState<string | null>(null);
   const { createLedgerContractCallTx } = useCreateLedgerContractCallTx();
   const { createLedgerTokenTransferTx } = useCreateLedgerTokenTransferTx();
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Flex, Box, Text, color } from '@stacks/ui';
+import { Flex, Box, Text, color, Button } from '@stacks/ui';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useDelegationStatus } from '@hooks/use-delegation-status';
@@ -83,9 +83,11 @@ export const DelegationCard: FC = () => {
         </Box>
         <Box borderTop={`1px solid ${color('border')}`} py="extra-tight" px="extra-tight">
           {hasSufficientBalanceToCoverFee ? (
-            <Text
-              as="button"
+            <Button
+              variant="link"
               border={0}
+              py="base-tight"
+              px="base"
               textStyle="body.small"
               color={color('text-body')}
               pointerEvents={
@@ -97,7 +99,7 @@ export const DelegationCard: FC = () => {
               onClick={() => dispatch(homeActions.openRevokeDelegationModal())}
             >
               {hasPendingRevokeCall ? 'Currently revoking STX' : 'Revoke delegation'}
-            </Text>
+            </Button>
           ) : (
             <Text
               mx="base-loose"

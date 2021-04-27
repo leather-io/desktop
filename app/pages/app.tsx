@@ -17,6 +17,7 @@ import { selectAddress } from '@store/keys';
 import { safeAwait } from '@utils/safe-await';
 import { useInterval } from '@hooks/use-interval';
 import { watchContractExecution } from '@api/watch-contract-execution';
+
 import {
   fetchBlockTimeInfo,
   fetchCoreDetails,
@@ -31,6 +32,7 @@ import { isDelegatedStackingTx, isRevokingDelegationTx, isDelegateStxTx } from '
 import { useApi } from '@hooks/use-api';
 import { useDelegationStatus } from '@hooks/use-delegation-status';
 import { useMempool } from '@hooks/use-mempool';
+import { useListenSystemThemeChange } from '@hooks/use-listen-system-theme-change';
 
 export const App: FC = ({ children }) => {
   const dispatch = useDispatch();
@@ -60,6 +62,8 @@ export const App: FC = ({ children }) => {
   useNavigatorOnline({ onReconnect: initAppWithStxAddressInfo });
 
   useInterval(() => refreshWalletDetailsWithoutLoader(), DEFAULT_POLLING_INTERVAL);
+
+  useListenSystemThemeChange();
 
   useEffect(() => {
     initAppWithStxAddressInfo();

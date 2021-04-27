@@ -30,6 +30,7 @@ import { registerLedgerListeners } from './main/register-ledger-listeners';
 import { registerIpcStoreHandlers } from './main/register-store-handlers';
 import { registerIpcContextMenuHandlers } from './main/register-context-menus';
 import { addMacOsTouchBarMenu } from './main/macos-touchbar-menu';
+import { registerThemeModeHandlers } from './main/register-theme-mode-handlers';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -151,6 +152,8 @@ const createWindow = async () => {
   });
 
   registerLedgerListeners(mainWindow.webContents);
+
+  registerThemeModeHandlers(mainWindow.webContents);
 
   if (process.platform === 'darwin') addMacOsTouchBarMenu(mainWindow);
 };

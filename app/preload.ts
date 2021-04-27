@@ -94,6 +94,24 @@ const walletApi = {
 
   getUserDataPath: () => ipcRenderer.sendSync('get-user-data-path'),
 
+  theme: {
+    getCurrentTheme() {
+      return ipcRenderer.sendSync('theme:get-current');
+    },
+    toggleMode() {
+      return ipcRenderer.invoke('theme:toggle-mode');
+    },
+    setDarkMode() {
+      return ipcRenderer.invoke('theme:set-dark-mode');
+    },
+    setLightMode() {
+      return ipcRenderer.invoke('theme:set-light-mode');
+    },
+    setSystemMode() {
+      return ipcRenderer.invoke('theme:set-system-mode');
+    },
+  },
+
   ledger: {
     createListener: () => ipcRenderer.send('create-ledger-listener'),
     removeListener: () => ipcRenderer.send('remove-ledger-listener'),

@@ -67,7 +67,6 @@ export const RevealStxPasswordForm: FC<RevealStxPasswordFormProps> = props => {
         <Button
           type="submit"
           mt="base-loose"
-          width="160px"
           isDisabled={passwordForm.isSubmitting}
           isLoading={passwordForm.isSubmitting}
         >

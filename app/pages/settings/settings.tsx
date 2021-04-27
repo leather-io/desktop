@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Text, color } from '@stacks/ui';
+import { Button, Text, color, useColorMode } from '@stacks/ui';
 
 import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
@@ -25,6 +25,7 @@ import { useWalletType } from '@hooks/use-wallet-type';
 
 export const Settings = () => {
   const dispatch = useDispatch();
+  const { colorMode } = useColorMode();
   const { nodes, selectedNodeApi } = useSelector((state: RootState) => ({
     nodes: selectStacksNodeApis(state),
     selectedNodeApi: selectActiveNodeApi(state),
@@ -61,6 +62,14 @@ export const Settings = () => {
         <Button mt="loose" onClick={() => (setOperation('create'), setNodeModalOpen(true))}>
           Add a node
         </Button>
+      </SettingSection>
+      <SettingSection title="Theme">
+        <SettingDescription>
+          You're currently using the {colorMode} theme. <br />{' '}
+          <Button mt="base" onClick={() => main.theme.setSystemMode()}>
+            Use system color mode
+          </Button>
+        </SettingDescription>
       </SettingSection>
       <SettingSection title="Reset wallet">
         <SettingDescription>

@@ -10,12 +10,12 @@
     <script>
       (function () {
         try {
-          var mode = localStorage.getItem('theme');
+          var mode = main.theme.getCurrentTheme();
           if (!mode) return;
           document.documentElement.classList.add(mode);
           var bgValue = getComputedStyle(document.documentElement).getPropertyValue('--colors-bg');
           document.documentElement.style.background = bgValue;
-        } catch (e) {}
+        } finally {}
       })();
     </script>
     <script>

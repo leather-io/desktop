@@ -56,12 +56,16 @@ enum TxModalStep {
 
 export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const dispatch = useDispatch();
-  useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
-
   const queryClient = useQueryClient();
   const stacksApi = useApi();
+
+  useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
+
+  const closeModal = () => dispatch(homeActions.closeTxModal());
+
   const [step, setStep] = useState(TxModalStep.DescribeTx);
   const [fee, setFee] = useState(new BigNumber(0));
+  const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
   const [amount, setAmount] = useState(new BigNumber(0));
   const [total, setTotal] = useState(new BigNumber(0));
   const { availableBalance: balance } = useBalance();
@@ -77,22 +81,6 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const { nonce } = useLatestNonce();
 
   const [txDetails, setTxDetails] = useState<TokenTransferOptions | null>(null);
-
-  const sendStx = (tx: StacksTransaction) => {
-    console.log(tx);
-    broadcastTx({
-      async onSuccess(txId: string) {
-        await watchForNewTxToAppear({ txId, nodeUrl: stacksApi.baseUrl });
-        await safeAwait(queryClient.refetchQueries(['mempool']));
-        closeModal();
-      },
-      onFail: (error?: PostCoreNodeTransactionsError) => {
-        if (error) setNodeResponseError(error);
-        setStep(TxModalStep.NetworkError);
-      },
-      tx,
-    });
-  };
 
   const totalIsMoreThanBalance = total.isGreaterThan(balance);
 
@@ -176,9 +164,34 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
     },
   });
 
-  const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
+  const resetAll = () => {
+    setTxDetails(null);
+    setStep(TxModalStep.DescribeTx);
+    setLoading(false);
+    setFee(new BigNumber(0));
+    setAmount(new BigNumber(0));
+    setTotal(new BigNumber(0));
+    setFeeEstimateError(null);
+    setNodeResponseError(null);
+    form.resetForm();
+    interactedWithSendAllBtn.current = false;
+  };
 
-  const closeModal = () => dispatch(homeActions.closeTxModal());
+  const sendStx = (tx: StacksTransaction) => {
+    broadcastTx({
+      async onSuccess(txId: string) {
+        await watchForNewTxToAppear({ txId, nodeUrl: stacksApi.baseUrl });
+        await safeAwait(queryClient.refetchQueries(['mempool']));
+        closeModal();
+        resetAll();
+      },
+      onFail: (error?: PostCoreNodeTransactionsError) => {
+        if (error) setNodeResponseError(error);
+        setStep(TxModalStep.NetworkError);
+      },
+      tx,
+    });
+  };
 
   const updateAmountFieldToMaxBalance = async () => {
     interactedWithSendAllBtn.current = true;

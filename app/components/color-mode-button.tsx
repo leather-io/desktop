@@ -4,7 +4,7 @@ import { IconSun, IconSunOff } from '@tabler/icons';
 
 export const ColorModeButton = memo(
   forwardRef((props: Omit<IconButtonProps, 'icon'>, ref: Ref<HTMLDivElement>) => {
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     const Icon = colorMode === 'light' ? IconSun : IconSunOff;
     return (
       <IconButton
@@ -17,7 +17,7 @@ export const ColorModeButton = memo(
           padding: 0,
         }}
         icon={Icon}
-        onClick={toggleColorMode}
+        onClick={() => main.theme.toggleMode()}
         title="Toggle color mode"
         as="button"
         {...(props as any)}

@@ -94,7 +94,7 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
   const numberOfRewardSlots = calculateRewardSlots(
     ustxAmount,
     new BigNumber(poxInfo.min_amount_ustx)
-  );
+  ).integerValue();
 
   const floorRoundedStxBuffer = calculateStackingBuffer(
     ustxAmount,
@@ -160,10 +160,11 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
           <>
             <Stack textStyle="body.small" color={color('text-caption')} spacing="base" mt="base">
               <Text>
-                This entered amount would get you {numberOfRewardSlots.integerValue().toString()}{' '}
-                reward slots with a {toHumanReadableStx((floorRoundedStxBuffer || 0).toString())}{' '}
-                buffer at the current minimum. However, that minimum is subject to change and there
-                is no guarantee you will get any reward slots.
+                This entered amount would get you {numberOfRewardSlots.toString()} reward slot
+                {numberOfRewardSlots.toNumber() === 1 ? '' : 's'} with a{' '}
+                {toHumanReadableStx((floorRoundedStxBuffer || 0).toString())} buffer at the current
+                minimum. However, that minimum is subject to change and there is no guarantee you
+                will get any reward slots.
               </Text>
               <Text>
                 You <strong>will not</strong> be able to add more STX for locking from this address

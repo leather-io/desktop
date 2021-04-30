@@ -9,6 +9,9 @@ import { Hr } from '@components/hr';
 import { ExplainerTooltip } from '@components/tooltip';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { StackingFormInfoCard } from '../../components/stacking-form-info-card';
+import { calculateStackingBuffer } from '../../utils/calc-stacking-buffer';
+import { useSelector } from 'react-redux';
+import { selectPoxInfo } from '@store/stacking';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -23,6 +26,13 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
 
   const amountToBeStacked = balance === null ? new BigNumber(0) : balance;
 
+  const poxInfo = useSelector(selectPoxInfo);
+
+  const buffer = calculateStackingBuffer(
+    amountToBeStacked,
+    new BigNumber(poxInfo?.min_amount_ustx || 0)
+  );
+
   return (
     <StackingFormInfoCard minHeight="84px" alignItems="flex-start" {...rest}>
       <Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose">
@@ -34,6 +44,10 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
       <Hr />
       <Flex flexDirection="column" px={['loose', 'extra-loose']} py="loose" width="100%">
         <Flex justifyContent="space-between">
+          <Text textStyle="body.large.medium">Buffer</Text>
+          <Text textAlign="right">{toHumanReadableStx(buffer.toString())}</Text>
+        </Flex>
+        <Flex justifyContent="space-between" mt="tight">
           <Flex alignItems="center">
             <Text textStyle="body.large.medium" mr="tight">
               Cycles

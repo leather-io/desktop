@@ -74,7 +74,7 @@ export const StackingStep: FC<StackingFormStepProps> = props => {
 };
 
 export const StackingStepDescription: FC = ({ children }) => (
-  <Stack display="block" textStyle="body.large" mt="tight" spacing="base">
+  <Stack display="block" textStyle="body.large" spacing="base">
     {children}
   </Stack>
 );

@@ -7,16 +7,15 @@ import { openExternalLink } from '@utils/external-links';
 import { STACKING_GUIDE_URL } from '@constants/index';
 
 import { StackingFormInfoCard } from './stacking-form-info-card';
-
-type StackingGuideCardProps = FlexProps;
+import { LegalDisclaimerTooltip } from '@components/legal-disclaimer-tooltip';
 
 const openStackingGuide = () => openExternalLink(STACKING_GUIDE_URL);
 
-export const StackingGuideCard: FC<StackingGuideCardProps> = props => {
+export const StackingGuideCard: FC<FlexProps> = props => {
   const [isHovered, bindHover] = useHover();
   const [isFocused, bindFocus] = useFocus();
   return (
-    <Box {...props}>
+    <LegalDisclaimerTooltip {...props}>
       <Box
         as="a"
         onClick={openStackingGuide}
@@ -31,9 +30,13 @@ export const StackingGuideCard: FC<StackingGuideCardProps> = props => {
           textStyle="body.large"
           cursor="pointer"
         >
-          <Box mr="base">
-            <img src={btcIllustration} alt="Abstract Bitcoin icon on chart-like tower" />
-          </Box>
+          <Box
+            as="img"
+            mr="base"
+            display="block"
+            src={btcIllustration}
+            alt="Abstract Bitcoin icon on chart-like tower"
+          />
           <Text maxWidth={[null, null, '292px']}>
             <Text as="strong" textDecoration={isHovered || isFocused ? 'underline' : 'unset'}>
               Read the Stacking Guide
@@ -44,6 +47,6 @@ export const StackingGuideCard: FC<StackingGuideCardProps> = props => {
           </Text>
         </StackingFormInfoCard>
       </Box>
-    </Box>
+    </LegalDisclaimerTooltip>
   );
 };

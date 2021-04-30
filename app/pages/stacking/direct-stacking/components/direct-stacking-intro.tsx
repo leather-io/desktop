@@ -14,10 +14,10 @@ export const DirectStackingIntro: FC<StackingIntroProps> = ({ timeUntilNextCycle
     <StackingDescription mt="base-tight">
       When you stack by yourself, you’ll get the chance to earn Bitcoin each cycle for every reward
       slot that you hold.
-      <br />
-      <br /> The STX required per reward slot can fluctuate from cycle to cycle. If you’re close to
-      the current minimum, consider pooling instead to help make sure you don’t end up without
-      rewards.
+    </StackingDescription>
+    <StackingDescription mt="base-tight">
+      The STX required per reward slot can fluctuate from cycle to cycle. If you’re close to the
+      current minimum, consider pooling instead to help make sure you don’t end up without rewards.
     </StackingDescription>
     <ExternalLink href="https://stacks.co/stacking" mt="base">
       How it works

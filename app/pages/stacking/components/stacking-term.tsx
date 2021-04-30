@@ -12,14 +12,14 @@ export const StackingTermItem: FC<StackingTermItem> = props => {
       <Box width={['12px', '16px']} mr="base-tight">
         <Icon width={['12px', '16px']} />
       </Box>
-      <Box>
+      <Stack spacing="extra-tight">
         <Text as="h3" textStyle="body.large.medium">
           {title}
         </Text>
-        <Stack mt="extra-tight" spacing="base" textStyle="body.large" color={color('text-caption')}>
+        <Stack spacing="base" textStyle="body.large" color={color('text-caption')}>
           {children}
         </Stack>
-      </Box>
+      </Stack>
     </Flex>
   );
 };

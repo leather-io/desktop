@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 import { color, Flex, FlexProps } from '@stacks/ui';
 
-type StackingFormInfoCardProps = FlexProps;
-
-export const StackingFormInfoCard: FC<StackingFormInfoCardProps> = props => (
+export const StackingFormInfoCard: FC<FlexProps> = props => (
   <Flex
     flexDirection="column"
     boxShadow="low"

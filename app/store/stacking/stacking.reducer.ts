@@ -280,10 +280,6 @@ export const selectNextCycleInfo = createSelector(
   }
 );
 
-// `rejection_votes_left_required` not returned by API
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export const stackingWillBeExecuted = createSelector(selectStackingState, () => {});
-
 export const selectEstimatedStackingDuration = (cycles: number) =>
   createSelector(selectStackingState, ({ poxInfo, blockTimeInfo }) => {
     if (poxInfo === null || blockTimeInfo === null) return '—';

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/45</span>
+                <span class='fraction'>0/46</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -207,7 +207,11 @@
 <a name='L148'></a><a href='#L148'>148</a>
 <a name='L149'></a><a href='#L149'>149</a>
 <a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -344,6 +348,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -359,7 +367,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { useSelector, useDispatch } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { Spinner } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Spinner } from '@stacks/ui';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { openTxInExplorer } from '@utils/external-links';</span>
 &nbsp;
@@ -377,7 +385,7 @@ import { RootState } from '@store/index';
   HomeCardState,
 } from '@store/home';
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { TransactionModal } from '@modals/transaction/transaction-modal';</span>
+<span class="cstat-no" title="statement not covered" >import { TransactionModal } from '@modals/send-stx/send-stx-modal';</span>
 <span class="cstat-no" title="statement not covered" >import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';</span>
 <span class="cstat-no" title="statement not covered" >import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';</span>
 &nbsp;
@@ -401,7 +409,7 @@ import { RootState } from '@store/index';
 } from '@components/home';
 <span class="cstat-no" title="statement not covered" >import { HomeLayout } from './home-layout';</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >Home: FC = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >Home: FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
   const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
   const api = <span class="cstat-no" title="statement not covered" >useApi();</span>
 &nbsp;
@@ -495,8 +503,12 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
-      {receiveModalOpen &amp;&amp; &lt;ReceiveStxModal /&gt;}
-      {txModalOpen &amp;&amp; &lt;TransactionModal balance={availableBalance.toString()} address={address} /&gt;}
+      &lt;ReceiveStxModal isOpen={receiveModalOpen} /&gt;
+      &lt;TransactionModal
+        isOpen={txModalOpen}
+        balance={availableBalance.toString()}
+        address={address}
+      /&gt;
       {revokeDelegationModalOpen &amp;&amp; &lt;RevokeDelegationModal /&gt;}
       &lt;HomeLayout
         transactionList={transactionList}
@@ -514,7 +526,7 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

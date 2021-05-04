@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
@@ -128,7 +128,12 @@
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -142,18 +147,19 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -179,7 +185,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,7 +212,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import ReactDOM from 'react-dom';</span>
 <span class="cstat-no" title="statement not covered" >import { useHistory, useLocation, matchPath } from 'react-router';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, Box } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Flex, color, Stack } from '@stacks/ui';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
 <span class="cstat-no" title="statement not covered" >import { useWindowFocus } from '@hooks/use-window-focus';</span>
@@ -213,8 +223,9 @@
 <span class="cstat-no" title="statement not covered" >import { BackButton } from '../back-button';</span>
 <span class="cstat-no" title="statement not covered" >import { SettingsButton } from './settings-button';</span>
 <span class="cstat-no" title="statement not covered" >import { UpdateAvailableButton } from './update-available-button';</span>
+<span class="cstat-no" title="statement not covered" >import { ColorModeButton } from '@components/color-mode-button';</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >TitleBar: FC = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >TitleBar: FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
   const el = <span class="cstat-no" title="statement not covered" >document.querySelector('.draggable-bar');</span>
   const location = <span class="cstat-no" title="statement not covered" >useLocation();</span>
 &nbsp;
@@ -224,17 +235,20 @@ export const <span class="cstat-no" title="statement not covered" >TitleBar: FC 
 &nbsp;
   const { isNewerReleaseAvailable, latestRelease } = <span class="cstat-no" title="statement not covered" >useCheckForUpdates();</span>
 &nbsp;
+  const isBlurred = <span class="cstat-no" title="statement not covered" >winState === 'blurred';</span>
   const isOnboarding = <span class="cstat-no" title="statement not covered" >matchPath(location.pathname, { path: '/onboard' }) !== null;</span>
-  const dulledTextColor = <span class="cstat-no" title="statement not covered" >winState === 'blurred' ? '#a1a7b3' : undefined;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (!el) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
   const content = (
 <span class="cstat-no" title="statement not covered" >    &lt;Flex</span>
       justifyContent="space-between"
-      pl={process.platform === 'darwin' ? '90px' : 'tight'}
+      pl={process.platform === 'darwin' ? '72px' : 'tight'}
       height="100%"
-      backgroundColor={winState === 'focused' ? 'white' : '#fafafc'}
+      backgroundColor={color('bg')}
+      position="relative"
+      alignItems="center"
+      opacity={isBlurred ? 0.5 : 1}
     &gt;
       &lt;BackButton /&gt;
       &lt;Flex
@@ -254,18 +268,19 @@ export const <span class="cstat-no" title="statement not covered" >TitleBar: FC 
             /&gt;
           )}
           &lt;Flex alignItems="center" ml="base"&gt;
-            &lt;NetworkMessage textColor={dulledTextColor} /&gt;
+            &lt;NetworkMessage textColor={isBlurred ? color('text-title') : undefined} /&gt;
           &lt;/Flex&gt;
         &lt;/Flex&gt;
       &lt;/Flex&gt;
-      &lt;Box&gt;
+      &lt;Stack alignItems="center" pr="base-loose" isInline spacing="tight"&gt;
+        &lt;ColorModeButton color={color('text-title')} /&gt;
         {!isOnboarding &amp;&amp; (
           &lt;SettingsButton
             onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >routerHistory.push(routes.SETTINGS)}</span>
-            style={{ color: dulledTextColor || '#677282' }}
+            color={color('text-title')}
           /&gt;
         )}
-      &lt;/Box&gt;
+      &lt;/Stack&gt;
     &lt;/Flex&gt;
   );
 <span class="cstat-no" title="statement not covered" >  return ReactDOM.createPortal(content, el);</span>
@@ -277,7 +292,7 @@ export const <span class="cstat-no" title="statement not covered" >TitleBar: FC 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -90,7 +90,24 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -101,11 +118,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -115,18 +127,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, forwardRef } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, FlexProps } from '@blockstack/ui';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { Flex, FlexProps } from '@stacks/ui';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { EnableBefore, listHoverProps, listFocusedProps } from './transaction-list-item-pseudo';</span>
+<span class="cstat-no" title="statement not covered" >import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';</span>
 &nbsp;
 interface TransactionListItemContainerProps extends FlexProps {
   focused: boolean;
@@ -134,28 +139,29 @@ interface TransactionListItemContainerProps extends FlexProps {
   txId: string;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >TransactionListItemContainer: FC&lt;TransactionListItemContainerProps&gt; = forwardRef(</span>
-<span class="fstat-no" title="function not covered" >  (a</span>rgs, ref) =&gt; {
-    const { hovered, focused, txId, ...props } = <span class="cstat-no" title="statement not covered" >args;</span>
+export const <span class="cstat-no" title="statement not covered" >TransactionListItemContainer: ForwardRefExoticComponentWithAs&lt;</span>
+  TransactionListItemContainerProps,
+  'div'
+&gt; = forwardRefWithAs&lt;TransactionListItemContainerProps, 'div'&gt;(<span class="fstat-no" title="function not covered" >(a</span>rgs, ref) =&gt; {
+  const { hovered, focused, txId, ...props } = <span class="cstat-no" title="statement not covered" >args;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return (</span>
-      &lt;Flex
-        ref={ref}
-        as={EnableBefore}
-        mb="loose"
-        cursor="pointer"
-        textAlign="left"
-        position="relative"
-        outline={0}
-        zIndex={2}
-        data-txid={txId}
-        _before={listHoverProps(hovered)}
-        _after={listFocusedProps(focused)}
-        {...props}
-      /&gt;
-    );
-  }
-);
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;Flex
+      ref={ref}
+      mb="loose"
+      cursor="pointer"
+      textAlign="left"
+      position="relative"
+      outline={0}
+      zIndex={2}
+      data-txid={txId}
+      _before={listHoverProps(hovered)}
+      _after={listFocusedProps(focused)}
+      {...props}
+      as={EnableBefore}
+    /&gt;
+  );
+});
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -163,7 +169,7 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/19</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
@@ -92,17 +92,14 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -130,50 +127,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, memo } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { useDispatch } from 'react-redux';</span>
 <span class="cstat-no" title="statement not covered" >import { useHotkeys } from 'react-hotkeys-hook';</span>
-<span class="cstat-no" title="statement not covered" >import { Modal, Button } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Button } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Modal } from '@modals/components/base-modal';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { homeActions } from '@store/home';</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" >import { ModalHeader } from '@modals/components/modal-header';</span>
 <span class="cstat-no" title="statement not covered" >import { useWalletType } from '@hooks/use-wallet-type';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { TxModalHeader, TxModalFooter } from '../transaction/transaction-modal-layout';</span>
+<span class="cstat-no" title="statement not covered" >import { TxModalFooter } from '../send-stx/send-stx-modal-layout';</span>
 <span class="cstat-no" title="statement not covered" >import { RevealStxAddressLedger } from './components/reveal-stx-address-ledger';</span>
 <span class="cstat-no" title="statement not covered" >import { RevealStxAddressSoftware } from './components/reveal-stx-address-software';</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >ReceiveStxModal: FC = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >ReceiveStxModal: FC&lt;{ isOpen: boolean }&gt; = memo(<span class="fstat-no" title="function not covered" >({</span> isOpen }) =&gt; {</span>
   const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
 <span class="cstat-no" title="statement not covered" >  useHotkeys('esc', <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >void dispatch(homeActions.closeReceiveModal()))</span>;</span>
   const closeModal = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >dispatch(homeActions.closeReceiveModal());</span></span>
   const { whenWallet } = <span class="cstat-no" title="statement not covered" >useWalletType();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Modal
-      minWidth="488px"
-      isOpen
-      headerComponent={&lt;TxModalHeader onSelectClose={closeModal}&gt;Receive STX&lt;/TxModalHeader&gt;}
-      footerComponent={
-        &lt;TxModalFooter&gt;
-          &lt;Button size="md" mode="tertiary" onClick={closeModal}&gt;
-            Close
-          &lt;/Button&gt;
-        &lt;/TxModalFooter&gt;
-      }
-    &gt;
+    &lt;Modal handleClose={closeModal} minWidth="488px" isOpen={isOpen}&gt;
+      &lt;ModalHeader onSelectClose={closeModal}&gt;Receive STX&lt;/ModalHeader&gt;
       {whenWallet({
         ledger: &lt;RevealStxAddressLedger /&gt;,
         software: &lt;RevealStxAddressSoftware /&gt;,
       })}
+      &lt;TxModalFooter&gt;
+        &lt;Button size="md" mode="tertiary" onClick={closeModal}&gt;
+          Close
+        &lt;/Button&gt;
+      &lt;/TxModalFooter&gt;
     &lt;/Modal&gt;
   );
-};
+});
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -181,7 +169,7 @@ export const <span class="cstat-no" title="statement not covered" >ReceiveStxMod
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

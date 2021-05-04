@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -146,7 +146,14 @@
 <a name='L87'></a><a href='#L87'>87</a>
 <a name='L88'></a><a href='#L88'>88</a>
 <a name='L89'></a><a href='#L89'>89</a>
-<a name='L90'></a><a href='#L90'>90</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -168,6 +175,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -238,7 +252,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { Flex, FlexProps, Text } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { color, Flex, FlexProps, Text } from '@stacks/ui';</span>
 &nbsp;
 import { DelegationType } from '@models/index';
 <span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
@@ -256,8 +270,15 @@ interface StackingInfoCardProps extends FlexProps {
   burnHeight?: number;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >DelegatedStackingInfoCard: FC&lt;StackingInfoCardProps&gt; = <span class="fstat-no" title="function not covered" >props </span>=&gt; {</span>
-  const { balance, delegationType, delegateeAddress, durationInCycles, burnHeight } = <span class="cstat-no" title="statement not covered" >props;</span>
+export const <span class="cstat-no" title="statement not covered" >DelegatedStackingInfoCard: FC&lt;StackingInfoCardProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; {</span>
+  const {
+    balance,
+    delegationType,
+    delegateeAddress,
+    durationInCycles,
+    burnHeight,
+    ...rest
+  } = <span class="cstat-no" title="statement not covered" >props;</span>
 &nbsp;
   const amountToBeStacked = <span class="cstat-no" title="statement not covered" >balance === null ? new BigNumber(0) : balance;</span>
 &nbsp;
@@ -265,14 +286,14 @@ export const <span class="cstat-no" title="statement not covered" >DelegatedStac
     &lt;Flex
       flexDirection="column"
       boxShadow="low"
-      border="1px solid #F0F0F5"
+      border={`1px solid ${color('border')}`}
       borderRadius="8px"
       minHeight="84px"
       alignItems="flex-start"
       minWidth={[null, null, '320px', '420px']}
       position="sticky"
       top="124px"
-      {...props}
+      {...rest}
     &gt;
       &lt;Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose"&gt;
         &lt;Text textStyle="body.large.medium"&gt;You'll lock&lt;/Text&gt;
@@ -314,7 +335,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegatedStac
               {delegationType === 'indefinite' &amp;&amp; 'Indefinite'}
             &lt;/Text&gt;
             {burnHeight &amp;&amp; (
-              &lt;Text textStyle="caption" color="ink.600" mt="extra-tight"&gt;
+              &lt;Text textStyle="caption" color={color('text-caption')} mt="extra-tight"&gt;
                 Until burn block: {burnHeight}
               &lt;/Text&gt;
             )}
@@ -331,7 +352,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegatedStac
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../../prettify.js"></script>

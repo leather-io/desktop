@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">40.91% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/48</span>
+                <span class='fraction'>18/44</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.3% </span>
+                <span class="strong">41.86% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/47</span>
+                <span class='fraction'>18/43</span>
             </div>
         
             
@@ -169,7 +169,10 @@
 <a name='L110'></a><a href='#L110'>110</a>
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -213,8 +216,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -247,7 +252,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,8 +259,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -323,10 +329,12 @@ interface SetLedgerAddress {
   onSuccess: () =&gt; void;
 }
 export function <span class="fstat-no" title="function not covered" >setLedgerWallet(</span>{ address, publicKey, onSuccess }: SetLedgerAddress) {
-<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >(d</span>ispatch: Dispatch) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    persistStxAddress(address);</span>
-<span class="cstat-no" title="statement not covered" >    persistPublicKey(publicKey);</span>
-<span class="cstat-no" title="statement not covered" >    persistWalletType('ledger');</span>
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >async </span>(dispatch: Dispatch) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    await Promise.all([</span>
+      persistStxAddress(address),
+      persistPublicKey(publicKey),
+      persistWalletType('ledger'),
+    ]);
 <span class="cstat-no" title="statement not covered" >    dispatch(persistLedgerWallet({ address, publicKey }));</span>
 <span class="cstat-no" title="statement not covered" >    onSuccess();</span>
   };
@@ -356,19 +364,20 @@ export function <span class="fstat-no" title="function not covered" >setSoftware
 <span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >async </span>(dispatch: Dispatch, getState: () =&gt; RootState) =&gt; {</span>
     const mnemonic = <span class="cstat-no" title="statement not covered" >selectMnemonic(getState());</span>
     const salt = <span class="cstat-no" title="statement not covered" >generateSalt();</span>
-    const { derivedKeyHash } = <span class="cstat-no" title="statement not covered" >await api.deriveKey({ pass: password, salt });</span>
+    const { derivedKeyHash } = <span class="cstat-no" title="statement not covered" >await main.deriveKey({ pass: password, salt });</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (!mnemonic) {</span>
-      // log.error('Cannot derive encryption key unless a mnemonic has been generated');
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
     const encryptedMnemonic = <span class="cstat-no" title="statement not covered" >await encryptMnemonic({ derivedKeyHash, mnemonic });</span>
     const rootNode = <span class="cstat-no" title="statement not covered" >await deriveRootKeychainFromMnemonic(mnemonic);</span>
     const { address } = <span class="cstat-no" title="statement not covered" >deriveStxAddressKeychain(rootNode);</span>
-<span class="cstat-no" title="statement not covered" >    persistStxAddress(address);</span>
-<span class="cstat-no" title="statement not covered" >    persistSalt(salt);</span>
-<span class="cstat-no" title="statement not covered" >    persistEncryptedMnemonic(encryptedMnemonic);</span>
+<span class="cstat-no" title="statement not covered" >    await Promise.all([</span>
+      persistStxAddress(address),
+      persistSalt(salt),
+      persistEncryptedMnemonic(encryptedMnemonic),
+    ]);
 <span class="cstat-no" title="statement not covered" >    dispatch(setPasswordSuccess({ salt, encryptedMnemonic, stxAddress: address }));</span>
 <span class="cstat-no" title="statement not covered" >    history.push(routes.HOME);</span>
   };
@@ -381,7 +390,7 @@ interface DecryptSoftwareWalletArgs {
 }
 export async function <span class="fstat-no" title="function not covered" >decryptSoftwareWallet(</span>args: DecryptSoftwareWalletArgs) {
   const { password, salt, ciphertextMnemonic } = <span class="cstat-no" title="statement not covered" >args;</span>
-  const { derivedKeyHash } = <span class="cstat-no" title="statement not covered" >await api.deriveKey({ pass: password, salt });</span>
+  const { derivedKeyHash } = <span class="cstat-no" title="statement not covered" >await main.deriveKey({ pass: password, salt });</span>
   const plaintextMnemonic = <span class="cstat-no" title="statement not covered" >await decryptMnemonic({</span>
     encryptedMnemonic: ciphertextMnemonic,
     derivedKeyHash,
@@ -400,7 +409,7 @@ export async function <span class="fstat-no" title="function not covered" >decry
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
@@ -140,7 +140,6 @@
 <a name='L81'></a><a href='#L81'>81</a>
 <a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -180,6 +179,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -220,8 +220,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, Text } from '@blockstack/ui';</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" >import { color, Stack, Text } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { openExternalLink } from '@utils/external-links';</span>
 <span class="cstat-no" title="statement not covered" >import { NETWORK } from '@constants/index';</span>
 <span class="cstat-no" title="statement not covered" >import packageJson from '../../package.json';</span>
@@ -241,7 +240,7 @@ const issueBody = <span class="cstat-no" title="statement not covered" >`</span>
   Thanks for creating an issue. Please include as much detail as possible,
   including screenshots, operating system, and steps to recreate the problem.
 &nbsp;
-  If you have any questions, ask @kyranjamie on Github, Discord and Twitter.
+  If you have any questions, ask @kyranjamie or @aulneau on Github, Discord and Twitter.
 &nbsp;
 --&gt;
 &nbsp;
@@ -259,31 +258,32 @@ const openIssueLink = <span class="cstat-no" title="statement not covered" ><spa
 const openPullRequestLink = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt;</span>
 <span class="cstat-no" title="statement not covered" >  openExternalLink(`https://github.com/blockstack/stacks-wallet/pull/${String(pullRequest)}`);</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >VersionInfo: FC = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >VersionInfo: FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Flex
+    &lt;Stack
+      isInline
       textStyle="caption.medium"
       fontSize="11px"
-      color="ink.400"
+      color={color('text-caption')}
       position="fixed"
       right="8px"
       bottom="8px"
-      border="1px solid #F0F0F0"
+      border={`1px solid ${color('border')}`}
       borderRadius="24px"
-      bg="white"
+      bg={color('bg-4')}
       py="4px"
       px="base-tight"
     &gt;
-      &lt;Text mr="tight" onClick={openIssueLink} textDecoration="underline" cursor="pointer"&gt;
+      &lt;Text onClick={openIssueLink} _hover={{ textDecoration: 'underline' }} cursor="pointer"&gt;
         Found a bug? Open an issue
       &lt;/Text&gt;
       {pullRequest &amp;&amp; branchName &amp;&amp; (
-        &lt;Text mr="tight" onClick={openPullRequestLink} textDecoration="underline" cursor="pointer"&gt;
+        &lt;Text onClick={openPullRequestLink} textDecoration="underline" cursor="pointer"&gt;
           {branchName}
         &lt;/Text&gt;
       )}
       {shaShort &amp;&amp; (
-        &lt;Text mr="tight"&gt;
+        &lt;Text&gt;
           Commit:{' '}
           &lt;Text
             cursor="pointer"
@@ -297,7 +297,7 @@ export const <span class="cstat-no" title="statement not covered" >VersionInfo: 
         &lt;/Text&gt;
       )}
       {CONFIG.NODE_ENV === 'production' &amp;&amp; &lt;Text&gt;[v{packageJson.version}]&lt;/Text&gt;}
-    &lt;/Flex&gt;
+    &lt;/Stack&gt;
   );
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -307,7 +307,7 @@ export const <span class="cstat-no" title="statement not covered" >VersionInfo: 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

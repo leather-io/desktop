@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
@@ -159,7 +159,14 @@
 <a name='L100'></a><a href='#L100'>100</a>
 <a name='L101'></a><a href='#L101'>101</a>
 <a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -179,25 +186,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -262,7 +276,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { features, NETWORK } from '@constants/index';</span>
 <span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
@@ -277,15 +291,17 @@
 interface BalanceCardProps {
   address: string | null;
   onSelectSend(): void;
+&nbsp;
   onSelectReceive(): void;
+&nbsp;
   onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise&lt;any&gt;;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >BalanceCard: FC&lt;BalanceCardProps&gt; = <span class="fstat-no" title="function not covered" >props </span>=&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >BalanceCard: FC&lt;BalanceCardProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; {</span>
   const { address, onSelectReceive, onSelectSend, onRequestTestnetStx } = <span class="cstat-no" title="statement not covered" >props;</span>
 &nbsp;
   const [requestingTestnetStx, setRequestingTestnetStx] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
-  const { totalBalance, availableBalance, lockedBalance } = <span class="cstat-no" title="statement not covered" >useBalance();</span>
+  const { availableBalance, lockedBalance } = <span class="cstat-no" title="statement not covered" >useBalance();</span>
 &nbsp;
   const requestTestnetStacks = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(e: React.MouseEvent) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (NETWORK !== 'testnet') <span class="cstat-no" title="statement not covered" >return;</span></span>
@@ -307,23 +323,28 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
         &lt;/Text&gt;
 &nbsp;
         {address !== null &amp;&amp; (
-          &lt;ExternalLink
-            href={makeExplorerAddressLink(address)}
-            textStyle="caption"
-            ml="tight"
-            color="blue"
-          &gt;
+          &lt;ExternalLink href={makeExplorerAddressLink(address)} textStyle="caption" ml="tight"&gt;
             View on Explorer
           &lt;/ExternalLink&gt;
         )}
       &lt;/Flex&gt;
       &lt;Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em"&gt;
-        {totalBalance === null ? '–' : toHumanReadableStx(totalBalance.toString())}
+        {availableBalance === null ? '–' : toHumanReadableStx(availableBalance.toString())}
       &lt;/Text&gt;
 &nbsp;
       {features.stacking &amp;&amp; lockedBalance !== null &amp;&amp; lockedBalance.isGreaterThan(0) &amp;&amp; (
-        &lt;Flex alignItems="center" mt="tight" color="ink.600" fontSize={['14px', '16px']}&gt;
-          &lt;EncryptionIcon size="16px" color="#409EF3" display={['none', 'block']} mr="tight" /&gt;
+        &lt;Flex
+          alignItems="center"
+          mt="tight"
+          color={color('text-caption')}
+          fontSize={['14px', '16px']}
+        &gt;
+          &lt;EncryptionIcon
+            size="16px"
+            color={color('feedback-alert')}
+            display={['none', 'block']}
+            mr="tight"
+          /&gt;
           &lt;Text&gt;{toHumanReadableStx(lockedBalance.toString())} locked&lt;/Text&gt;
           &lt;Text children="·" mx="base-tight" /&gt;
           &lt;Text&gt;{toHumanReadableStx(availableBalance.toString())} available&lt;/Text&gt;
@@ -331,11 +352,11 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
       )}
       &lt;Box mt="loose"&gt;
         &lt;Button size="md" onClick={onSelectSend} isDisabled={availableBalance.isEqualTo(0)}&gt;
-          &lt;ArrowIcon direction="up" mr="base-tight" /&gt;
+          &lt;ArrowIcon size="12px" {...({ direction: 'up' } as any)} mr="base-tight" /&gt;
           Send
         &lt;/Button&gt;
         &lt;Button size="md" ml="tight" onClick={onSelectReceive}&gt;
-          &lt;ArrowIcon direction="down" mr="base-tight" /&gt;
+          &lt;ArrowIcon size="12px" {...({ direction: 'down' } as any)} mr="base-tight" /&gt;
           Receive
         &lt;/Button&gt;
         {isTestnet() &amp;&amp; (
@@ -348,8 +369,8 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
             title="Hold alt to request more STX. Use sparingly."
           &gt;
             &lt;Box
-              mr="extra-tight"
-              fontSize="18px"
+              mr="tight"
+              fontSize="14px"
               left="-4px"
               position="relative"
               display={['none', 'none', 'block']}
@@ -370,7 +391,7 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

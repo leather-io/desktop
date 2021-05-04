@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/82</span>
+                <span class='fraction'>0/87</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/72</span>
+                <span class='fraction'>0/77</span>
             </div>
         
             
@@ -219,7 +219,18 @@
 <a name='L160'></a><a href='#L160'>160</a>
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -260,8 +271,19 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -383,10 +405,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { ipcMain } from 'electron';</span>
 <span class="cstat-no" title="statement not covered" >import { BehaviorSubject, Subject, timer, combineLatest, from, of } from 'rxjs';</span>
-<span class="cstat-no" title="statement not covered" >import { delay, filter, map, switchMap, take } from 'rxjs/operators';</span>
+<span class="cstat-no" title="statement not covered" >import { delay, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';</span>
 import type Transport from '@ledgerhq/hw-transport';
 <span class="cstat-no" title="statement not covered" >import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';</span>
-<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import StacksApp, { LedgerError, ResponseVersion } from '@zondax/ledger-blockstack';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   ledgerRequestSignTx,
@@ -422,8 +444,19 @@ const checkDisconnect$ = <span class="cstat-no" title="statement not covered" >n
 const transport$ = <span class="cstat-no" title="statement not covered" >new BehaviorSubject&lt;Transport | null&gt;(null);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >r</span>egisterLedgerListeners(</span>webContent: Electron.WebContents) {
+  // `webContent` might be destroyed when closing window
+  // listenUntil$ tears down the old subscriptoin
+  const listenUntil$ = <span class="cstat-no" title="statement not covered" >new Subject&lt;void&gt;();</span>
+<span class="cstat-no" title="statement not covered" >  webContent.on('destroyed', <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    listeningForDevice$.next(false);</span>
+<span class="cstat-no" title="statement not covered" >    listenUntil$.next();</span>
+<span class="cstat-no" title="statement not covered" >    listenUntil$.complete();</span>
+  });
 <span class="cstat-no" title="statement not covered" >  ledgerState$</span>
-    .pipe(map(<span class="fstat-no" title="function not covered" >ledgerEvent </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ type: 'ledger-event', ...ledgerEvent })</span>))
+    .pipe(
+      takeUntil(listenUntil$),
+      map(<span class="fstat-no" title="function not covered" >ledgerEvent </span>=&gt; (<span class="cstat-no" title="statement not covered" >{ type: 'ledger-event', ...ledgerEvent })</span>)
+    )
     .subscribe(<span class="fstat-no" title="function not covered" >event </span>=&gt; <span class="cstat-no" title="statement not covered" >webContent.send('message-event', event))</span>;
 }
 &nbsp;
@@ -550,7 +583,7 @@ const wrappedLedgerRequestSignTx = <span class="cstat-no" title="statement not c
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

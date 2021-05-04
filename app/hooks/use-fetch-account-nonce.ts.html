@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/components/ledger-x-warning.tsx</title>
+    <title>Code coverage report for app/hooks/use-fetch-account-nonce.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">app/components</a> ledger-x-warning.tsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">app/hooks</a> use-fetch-account-nonce.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -74,55 +74,40 @@
 <a name='L15'></a><a href='#L15'>15</a>
 <a name='L16'></a><a href='#L16'>16</a>
 <a name='L17'></a><a href='#L17'>17</a>
-<a name='L18'></a><a href='#L18'>18</a>
-<a name='L19'></a><a href='#L19'>19</a>
-<a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L18'></a><a href='#L18'>18</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, Text, FlexProps } from '@blockstack/ui';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useQuery } from 'react-query';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >LedgerXWarning: FC&lt;FlexProps&gt; = <span class="fstat-no" title="function not covered" >props </span>=&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Flex
-      width="100%"
-      borderRadius="6px"
-      padding="base"
-      mt="tight"
-      pr="base-loose"
-      textStyle="caption"
-      {...props}
-    &gt;
-      &lt;Text textStyle="body.small"&gt;
-        Some users are reporting difficulty connecting or signing transactions with their Ledger
-        devices. We're working on a fix, and we'll update this message when an update is available
-        in the Ledger Live store.
-      &lt;/Text&gt;
-    &lt;/Flex&gt;
-  );
-};
+<span class="cstat-no" title="statement not covered" >import { ApiResource } from '@models';</span>
+<span class="cstat-no" title="statement not covered" >import { selectAddress } from '@store/keys';</span>
+<span class="cstat-no" title="statement not covered" >import { useApi } from '@hooks/use-api';</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seFetchAccountNonce(</span>) {
+  const api = <span class="cstat-no" title="statement not covered" >useApi();</span>
+  const address = <span class="cstat-no" title="statement not covered" >useSelector(selectAddress);</span>
+&nbsp;
+  const nonceFetcher = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >api.getNonce(address || ''),</span> [api, address]);</span>
+  const { data } = <span class="cstat-no" title="statement not covered" >useQuery(ApiResource.Nonce, nonceFetcher);</span>
+<span class="cstat-no" title="statement not covered" >  if (!data) <span class="cstat-no" title="statement not covered" >return { nonce: 0 };</span></span>
+<span class="cstat-no" title="statement not covered" >  return { nonce: data.nonce };</span>
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -130,7 +115,7 @@ export const <span class="cstat-no" title="statement not covered" >LedgerXWarnin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

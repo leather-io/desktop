@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
@@ -116,7 +116,10 @@
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
 <a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -143,14 +146,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -158,7 +155,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,7 +182,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, FlexProps, Box, Spinner, FailedIcon } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Flex, FlexProps, Box, Spinner, FailedIcon, color } from '@stacks/ui';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { SentArrow } from '@components/icons/sent-arrow';</span>
 <span class="cstat-no" title="statement not covered" >import { ReceivedArrow } from '@components/icons/received-arrow';</span>
@@ -201,8 +207,10 @@ const iconMap: Record&lt;TransactionIconVariants, FC&gt; = <span class="cstat-no
   delegated: DelegatedIcon,
   revoked: RevokedDelegationIcon,
   failed: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >&lt;FailedIcon size="16px" /&gt;,</span>
-  pending: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >&lt;Spinner size="xs" color="#5548FF" /&gt;,</span>
-  default: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >&lt;Box width="16px" height="16px" borderRadius="50%" backgroundColor="ink.100" /&gt;,</span>
+  pending: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >&lt;Spinner size="xs" color={color('brand')} /&gt;,</span>
+  default: <span class="fstat-no" title="function not covered" >() =</span>&gt; (
+<span class="cstat-no" title="statement not covered" >    &lt;Box width="16px" height="16px" borderRadius="50%" backgroundColor={color('text-caption')} /&gt;</span>
+  ),
 };
 &nbsp;
 function <span class="fstat-no" title="function not covered" >getTxTypeIcon(</span>direction: TransactionIconVariants) {
@@ -214,20 +222,21 @@ interface TransactionIconProps extends FlexProps {
   variant: TransactionIconVariants;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >TransactionIcon: FC&lt;TransactionIconProps&gt; = <span class="fstat-no" title="function not covered" >({</span> variant, ...props }) =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >TransactionIcon: FC&lt;TransactionIconProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> variant, ...props }) =&gt; {</span>
   const contents = <span class="cstat-no" title="statement not covered" >getTxTypeIcon(variant);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Flex
       justifyContent="center"
       alignItems="center"
-      border="1px solid #F0F0F5"
-      background="white"
+      border={`1px solid ${color('border')}`}
+      background={color('bg')}
       borderRadius="8px"
       minWidth="48px"
       minHeight="48px"
       maxWidth="48px"
       maxHeight="48px"
+      color={color('brand')}
       {...props}
     &gt;
       {contents}
@@ -241,7 +250,7 @@ export const <span class="cstat-no" title="statement not covered" >TransactionIc
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

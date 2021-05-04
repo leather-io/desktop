@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -104,7 +104,10 @@
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -138,10 +141,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,7 +158,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, Text, CloseIcon, Button, ButtonProps } from '@blockstack/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Flex, Text, CloseIcon, Button, ButtonProps, IconButton, color } from '@stacks/ui';</span>
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >modalStyle = {</span>
   minWidth: ['100%', '488px'],
@@ -162,39 +168,42 @@ interface StackingModalHeaderProps {
   onSelectClose: () =&gt; void;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >StackingModalHeader: FC&lt;StackingModalHeaderProps&gt; = <span class="fstat-no" title="function not covered" >({</span> children, onSelectClose }) =&gt; (</span>
+export const <span class="cstat-no" title="statement not covered" >StackingModalHeader: FC&lt;StackingModalHeaderProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> children, onSelectClose }) =&gt; (</span>
 <span class="cstat-no" title="statement not covered" >  &lt;Flex</span>
     height="84px"
     px="extra-loose"
     alignItems="center"
-    borderBottom="1px solid #F0F0F5"
+    borderBottom={`1px solid ${color('border')}`}
     justifyContent="space-between"
   &gt;
     &lt;Text as="h2" textStyle="display.small"&gt;
       {children}
     &lt;/Text&gt;
-    &lt;Button
-      type="button"
+    &lt;IconButton
       right="-16px"
       onClick={onSelectClose}
-      variant="unstyled"
+      icon={CloseIcon}
       cursor="pointer"
       p="tight"
+      iconSize="12px"
       _focus={{ backgroundColor: 'ink.200' }}
-    &gt;
-      &lt;CloseIcon size="12px" color="ink.400" /&gt;
-    &lt;/Button&gt;
+    /&gt;
   &lt;/Flex&gt;
 );
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >StackingModalFooter: FC = <span class="fstat-no" title="function not covered" >({</span> children }) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >  &lt;Flex justifyContent="flex-end" px="extra-loose" py="base" borderTop="1px solid #F0F0F5"&gt;</span>
+export const <span class="cstat-no" title="statement not covered" >StackingModalFooter: FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> children }) =&gt; (</span>
+<span class="cstat-no" title="statement not covered" >  &lt;Flex</span>
+    justifyContent="flex-end"
+    px="extra-loose"
+    py="base"
+    borderTop={`1px solid ${color('border')}`}
+  &gt;
     {children}
   &lt;/Flex&gt;
 );
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >StackingModalButton: FC&lt;ButtonProps&gt; = <span class="fstat-no" title="function not covered" >({</span> children, ...props }) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >  &lt;Button ml="base-tight" size="lg" minWidth="70px" {...(props as any)}&gt;</span>
+export const <span class="cstat-no" title="statement not covered" >StackingModalButton: FC&lt;ButtonProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> children, ...props }) =&gt; (</span>
+<span class="cstat-no" title="statement not covered" >  &lt;Button ml="base-tight" size="md" minWidth="70px" {...(props as any)}&gt;</span>
     {children}
   &lt;/Button&gt;
 );
@@ -205,7 +214,7 @@ export const <span class="cstat-no" title="statement not covered" >StackingModal
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

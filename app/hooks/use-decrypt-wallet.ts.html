@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/19</span>
             </div>
         
             
@@ -85,23 +85,42 @@
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -109,17 +128,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useCallback } from 'react';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useCallback, useState } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { decryptSoftwareWallet, selectEncryptedMnemonic, selectSalt } from '@store/keys';</span>
 import { RootState } from '@store/index';
+<span class="cstat-no" title="statement not covered" >import { delay } from '@utils/delay';</span>
+<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
+&nbsp;
+const shortDelayToGiveAnimationsTime = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; <span class="cstat-no" title="statement not covered" >delay(100);</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seDecryptWallet(</span>) {
+  const [isDecrypting, setIsDecrypting] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+&nbsp;
   const { encryptedMnemonic, salt } = <span class="cstat-no" title="statement not covered" >useSelector(<span class="fstat-no" title="function not covered" >(s</span>tate: RootState) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
     salt: selectSalt(state),
     encryptedMnemonic: selectEncryptedMnemonic(state),
@@ -127,19 +157,25 @@ import { RootState } from '@store/index';
 &nbsp;
   const decryptWallet = <span class="cstat-no" title="statement not covered" >useCallback(</span>
 <span class="fstat-no" title="function not covered" >    async </span>(password: string) =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (!encryptedMnemonic || !salt) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error('`encryptedMnemonic` or `salt` undefined');</span>
-      }
-<span class="cstat-no" title="statement not covered" >      return decryptSoftwareWallet({</span>
-        ciphertextMnemonic: encryptedMnemonic,
-        salt,
-        password,
-      });
+<span class="cstat-no" title="statement not covered" >      if (!encryptedMnemonic) <span class="cstat-no" title="statement not covered" >throw new Error('`encryptedMnemonic` undefined');</span></span>
+<span class="cstat-no" title="statement not covered" >      if (!salt) <span class="cstat-no" title="statement not covered" >throw new Error('`salt` undefined');</span></span>
+<span class="cstat-no" title="statement not covered" >      setIsDecrypting(true);</span>
+<span class="cstat-no" title="statement not covered" >      await shortDelayToGiveAnimationsTime();</span>
+      const [error, decryptedSoftwareWallet] = <span class="cstat-no" title="statement not covered" >await safeAwait(</span>
+        decryptSoftwareWallet({
+          ciphertextMnemonic: encryptedMnemonic,
+          salt,
+          password,
+        })
+      );
+<span class="cstat-no" title="statement not covered" >      setIsDecrypting(false);</span>
+<span class="cstat-no" title="statement not covered" >      if (error) <span class="cstat-no" title="statement not covered" >throw error;</span></span>
+<span class="cstat-no" title="statement not covered" >      return decryptedSoftwareWallet as NonNullable&lt;typeof decryptedSoftwareWallet&gt;;</span>
     },
     [encryptedMnemonic, salt]
   );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return { decryptWallet };</span>
+<span class="cstat-no" title="statement not covered" >  return { decryptWallet, isDecrypting };</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -148,7 +184,7 @@ import { RootState } from '@store/index';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Apr 05 2021 15:06:22 GMT+0000 (Coordinated Universal Time)
+                at Tue May 04 2021 11:57:07 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

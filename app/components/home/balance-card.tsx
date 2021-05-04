@@ -24,7 +24,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
   const { address, onSelectReceive, onSelectSend, onRequestTestnetStx } = props;
 
   const [requestingTestnetStx, setRequestingTestnetStx] = useState(false);
-  const { totalBalance, availableBalance, lockedBalance } = useBalance();
+  const { availableBalance, lockedBalance } = useBalance();
 
   const requestTestnetStacks = async (e: React.MouseEvent) => {
     if (NETWORK !== 'testnet') return;
@@ -52,7 +52,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         )}
       </Flex>
       <Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em">
-        {totalBalance === null ? '–' : toHumanReadableStx(totalBalance.toString())}
+        {availableBalance === null ? '–' : toHumanReadableStx(availableBalance.toString())}
       </Text>
 
       {features.stacking && lockedBalance !== null && lockedBalance.isGreaterThan(0) && (

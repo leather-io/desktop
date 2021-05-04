@@ -33,7 +33,7 @@ export function useMempool(): UseMempool {
 
   const outboundMempoolTxs = mempoolTxs
     .filter(tx => tx.sender_address === address)
-    .filter(tx => tx.nonce < nonce);
+    .filter(tx => tx.nonce >= nonce);
 
   return { mempoolTxs, outboundMempoolTxs, refetch };
 }

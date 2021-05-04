@@ -1,3 +1,16 @@
+## [4.1.3](https://github.com/blockstack/stacks-wallet/compare/v4.1.2...v4.1.3) (2021-05-04)
+
+
+### Bug Fixes
+
+* nonce logic ([c09b09d](https://github.com/blockstack/stacks-wallet/commit/c09b09d3ae359d072ec4cf03a9ee2b4f05122075))
+* send disabled when null tx ([7e5b450](https://github.com/blockstack/stacks-wallet/commit/7e5b450297bee66e3dc63444dffedd8ad62de6df))
+* **ledger:** prevent error when closing macOS window, closes [#723](https://github.com/blockstack/stacks-wallet/issues/723) ([83c7ca2](https://github.com/blockstack/stacks-wallet/commit/83c7ca2f4f1ee29b84516fbf410dcda9e7a1f43a))
+* display where wallet's data is ([acf305d](https://github.com/blockstack/stacks-wallet/commit/acf305dd1fa30c4cbfa64d5d2df393631c9681cf))
+* duration pw is in memory ([bb71f4f](https://github.com/blockstack/stacks-wallet/commit/bb71f4f051002b92f5f4509f573d8d59a3a868a0))
+* remove pending tx balance, closes [#591](https://github.com/blockstack/stacks-wallet/issues/591), [#657](https://github.com/blockstack/stacks-wallet/issues/657) ([22127eb](https://github.com/blockstack/stacks-wallet/commit/22127eb6db215e6f52300285416d2a4dc24ddc68))
+* support windows 7 ([54cfc33](https://github.com/blockstack/stacks-wallet/commit/54cfc3306fab4c8f8ab436ad0a7e4dc01028d981))
+
 ## [4.1.2](https://github.com/blockstack/stacks-wallet/compare/v4.1.1...v4.1.2) (2021-04-05)
 
 

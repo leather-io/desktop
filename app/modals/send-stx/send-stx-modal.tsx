@@ -180,7 +180,7 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const sendStx = (tx: StacksTransaction) => {
     broadcastTx({
       async onSuccess(txId: string) {
-        await watchForNewTxToAppear({ txId, nodeUrl: stacksApi.baseUrl });
+        await safeAwait(watchForNewTxToAppear({ txId, nodeUrl: stacksApi.baseUrl }));
         await safeAwait(queryClient.refetchQueries(['mempool']));
         closeModal();
         resetAll();

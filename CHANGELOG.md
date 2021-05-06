@@ -1,3 +1,15 @@
+# [4.2.0](https://github.com/blockstack/stacks-wallet/compare/v4.1.3...v4.2.0) (2021-05-06)
+
+
+### Bug Fixes
+
+* send stx modal not closing ([8b0dc8d](https://github.com/blockstack/stacks-wallet/commit/8b0dc8de525ce8aad9b8bf254ff939b2a787d15c))
+
+
+### Features
+
+* add modified stacking copy, part 1 ([696e215](https://github.com/blockstack/stacks-wallet/commit/696e215d2c81c74ead301892d4d0f21e6b4854ba))
+
 ## [4.1.3](https://github.com/blockstack/stacks-wallet/compare/v4.1.2...v4.1.3) (2021-05-04)
 
 

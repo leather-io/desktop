@@ -100,12 +100,6 @@ const walletApi = {
     toggleMode() {
       return ipcRenderer.invoke('theme:toggle-mode');
     },
-    setDarkMode() {
-      return ipcRenderer.invoke('theme:set-dark-mode');
-    },
-    setLightMode() {
-      return ipcRenderer.invoke('theme:set-light-mode');
-    },
     setSystemMode() {
       return ipcRenderer.invoke('theme:set-system-mode');
     },

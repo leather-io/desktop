@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/pages/stacking/components/stacking-terms.tsx</title>
+    <title>Code coverage report for app/pages/stacking/direct-stacking/components/direct-stacking-terms.tsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../../prettify.css" />
-    <link rel="stylesheet" href="../../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
+    <link rel="stylesheet" href="../../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../../sort-arrow-sprite.png);
+            background-image: url(../../../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/pages/stacking/components</a> stacking-terms.tsx</h1>
+        <h1><a href="../../../../../index.html">All files</a> / <a href="index.html">app/pages/stacking/direct-stacking/components</a> direct-stacking-terms.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -93,8 +93,20 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -102,9 +114,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,41 +142,47 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, Flex, Text, EncryptionIcon } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Text, EncryptionIcon, Stack, StackProps } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { ClockIcon } from '@components/icons/clock';</span>
 <span class="cstat-no" title="statement not covered" >import { RewindArrow } from '@components/icons/rewind-arrow';</span>
 &nbsp;
-interface StackingTermsProps {
-  timeUntilNextCycle: string;
-  estimatedDuration: string;
-}
-export const <span class="cstat-no" title="statement not covered" >StackingTerms: FC&lt;StackingTermsProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; {</span>
-  const { timeUntilNextCycle, estimatedDuration } = <span class="cstat-no" title="statement not covered" >props;</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Box textStyle={['body.small', 'body.large']} mt="loose"&gt;
-      &lt;Flex alignItems="center"&gt;
-        &lt;Box width={['12px', '16px']} mr="base-tight"&gt;
-          &lt;EncryptionIcon width={['12px', '16px']} /&gt;
-        &lt;/Box&gt;
-        &lt;Text&gt;
-          Your STX will be locked for ~{estimatedDuration}, starting in about {timeUntilNextCycle}
-        &lt;/Text&gt;
-      &lt;/Flex&gt;
-      &lt;Flex alignItems="center" mt="base-loose"&gt;
-        &lt;Box width={['12px', '16px']} mr="base-tight"&gt;
-          &lt;ClockIcon /&gt;
-        &lt;/Box&gt;
-        &lt;Text&gt;The duration can vary depending on the Bitcoin block time&lt;/Text&gt;
-      &lt;/Flex&gt;
-      &lt;Flex alignItems="center" mt="base-loose"&gt;
-        &lt;Box width={['12px', '16px']} mr="base-tight"&gt;
-          &lt;RewindArrow /&gt;
-        &lt;/Box&gt;
-        &lt;Text&gt;This transaction cannot be reversed&lt;/Text&gt;
-      &lt;/Flex&gt;
-    &lt;/Box&gt;
-  );
-};
+<span class="cstat-no" title="statement not covered" >import { StackingTermItem } from '../../components/stacking-term';</span>
+<span class="cstat-no" title="statement not covered" >import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';</span>
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >DirectStackingTerms: FC&lt;StackProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; (</span>
+<span class="cstat-no" title="statement not covered" >  &lt;Stack</span>
+    textStyle={['body.small', 'body.large']}
+    spacing="base-loose"
+    pl="base"
+    {...pseudoBorderLeft('feedback-alert')}
+    {...props}
+  &gt;
+    &lt;StackingTermItem title="This transaction can’t be reversed" icon={EncryptionIcon}&gt;
+      &lt;Text&gt;
+        STX will be locked in your wallet for your chosen duration, even if an increase in the
+        minimum causes you to end up with fewer or no reward slots.
+      &lt;/Text&gt;
+      &lt;Text&gt;There will be no way to unlock your STX before the chosen duration is finished.&lt;/Text&gt;
+      &lt;Text&gt;
+        Nor will you be able to change the entered BTC address. Ensure it's entered correctly and
+        you have control over it.
+      &lt;/Text&gt;
+    &lt;/StackingTermItem&gt;
+    &lt;StackingTermItem title="Consider the following cooldown cycle" icon={ClockIcon}&gt;
+      &lt;Text&gt;
+        After your chosen duration is finished, you have to wait one cycle before you can stack from
+        this address again
+      &lt;/Text&gt;
+    &lt;/StackingTermItem&gt;
+    &lt;StackingTermItem title="Dynamic minimum" icon={RewindArrow}&gt;
+      &lt;Text&gt;
+        If the minimum increases, you could end up with fewer or no reward slots, even if you’ve
+        added a buffer. There will be no way to lock more STX for Stacking with this address until
+        the selected duration is finished.
+      &lt;/Text&gt;
+    &lt;/StackingTermItem&gt;
+  &lt;/Stack&gt;
+);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -172,17 +190,17 @@ export const <span class="cstat-no" title="statement not covered" >StackingTerms
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:07:47 GMT+0000 (Coordinated Universal Time)
+                at Thu May 06 2021 10:10:49 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
-        <script src="../../../../prettify.js"></script>
+        <script src="../../../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../../sorter.js"></script>
-        <script src="../../../../block-navigation.js"></script>
+        <script src="../../../../../sorter.js"></script>
+        <script src="../../../../../block-navigation.js"></script>
     </body>
 </html>
     

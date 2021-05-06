@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -90,22 +90,18 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,6 +126,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { Box, Text, BoxProps, color } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { openExternalLink } from '@utils/external-links';</span>
+<span class="cstat-no" title="statement not covered" >import { LegalDisclaimerTooltip } from './legal-disclaimer-tooltip';</span>
 &nbsp;
 interface ExternalLinkProps extends BoxProps {
   href: string;
@@ -138,28 +135,25 @@ interface ExternalLinkProps extends BoxProps {
 export const <span class="cstat-no" title="statement not covered" >ExternalLink: FC&lt;ExternalLinkProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> href, children, ...props }) =&gt; {</span>
   const openUrl = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >openExternalLink(href);</span></span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Text
-      onClick={openUrl}
-      as="button"
-      cursor="pointer"
-      display="block"
-      outline={0}
-      color={color('brand')}
-      _hover={{ textDecoration: 'underline' }}
-      _focus={{ textDecoration: 'underline' }}
-      {...{ type: 'button' }}
-      {...props}
-    &gt;
-      {children}
-      &lt;Box display="inline-block" ml="extra-tight" mb="1px"&gt;
-        &lt;svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;
-          &lt;path
-            d="M8 5.90118V0.745999C8 0.300626 7.71031 0 7.25348 0L2.08914 0.0111343C1.66017 0.0111343 1.35933 0.334029 1.35933 0.707029C1.35933 1.09116 1.68802 1.38622 2.07799 1.38622H3.7883L5.7883 1.30828L4.8468 2.14335L0.233983 6.75296C0.0779944 6.90884 0 7.09812 0 7.27627C0 7.64927 0.339833 8 0.718663 8C0.902507 8 1.08635 7.92206 1.24234 7.76618L5.86072 3.15101L6.69638 2.21016L6.61838 4.13083V5.91788C6.61838 6.31315 6.91922 6.63605 7.29805 6.63605C7.68245 6.63605 8 6.31872 8 5.90118Z"
-            fill="currentColor"
-          /&gt;
-        &lt;/svg&gt;
-      &lt;/Box&gt;
-    &lt;/Text&gt;
+    &lt;LegalDisclaimerTooltip&gt;
+      &lt;Text
+        onClick={openUrl}
+        as="button"
+        type="button"
+        cursor="pointer"
+        display="block"
+        outline={0}
+        color={color('brand')}
+        _hover={{ textDecoration: 'underline' }}
+        _focus={{ textDecoration: 'underline' }}
+        {...props}
+      &gt;
+        {children}
+        &lt;Box display="inline-block" ml="extra-tight" mb="1px"&gt;
+          ↗
+        &lt;/Box&gt;
+      &lt;/Text&gt;
+    &lt;/LegalDisclaimerTooltip&gt;
   );
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -169,7 +163,7 @@ export const <span class="cstat-no" title="statement not covered" >ExternalLink:
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:07:47 GMT+0000 (Coordinated Universal Time)
+                at Thu May 06 2021 10:10:49 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

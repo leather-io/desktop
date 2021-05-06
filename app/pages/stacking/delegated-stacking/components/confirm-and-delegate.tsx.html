@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -88,18 +88,11 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -109,6 +102,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,36 +119,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState } from 'react';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import {</span>
-  StackingStep,
-  StackingStepAction,
-  StackingStepDescription,
-} from '../../components/stacking-form-step';
-<span class="cstat-no" title="statement not covered" >import { DelegatedStackingTerms } from '../../components/delegated-stacking-terms';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingStep, StackingStepAction } from '../../components/stacking-form-step';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingUserConfirm } from '../../components/stacking-user-confirm';</span>
+<span class="cstat-no" title="statement not covered" >import { DelegatedStackingTerms } from './delegated-stacking-terms';</span>
 &nbsp;
 interface ConfirmAndLockStepProps {
   id: string;
   formComplete: boolean;
   step?: number;
-&nbsp;
   onConfirmAndDelegate(): void;
 }
-&nbsp;
 export const <span class="cstat-no" title="statement not covered" >ConfirmAndDelegateStep: FC&lt;ConfirmAndLockStepProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; {</span>
   const { step, id, formComplete, onConfirmAndDelegate } = <span class="cstat-no" title="statement not covered" >props;</span>
-&nbsp;
+  const [hasUserConfirmed, setHasUserConfirmed] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;StackingStep title={id} step={step} isComplete={false} state="open" mb="300px"&gt;
-      &lt;StackingStepDescription&gt;
-        When you confirm, your STX will be delegated to the STX address you’ve entered. Please keep
-        in mind that:
-      &lt;/StackingStepDescription&gt;
       &lt;DelegatedStackingTerms mt="loose" /&gt;
-      &lt;StackingStepAction onClick={onConfirmAndDelegate} isDisabled={!formComplete}&gt;
-        Confirm and delegate
+      &lt;StackingUserConfirm
+        onChange={<span class="fstat-no" title="function not covered" >useConfirmed </span>=&gt; <span class="cstat-no" title="statement not covered" >setHasUserConfirmed(useConfirmed)}</span>
+        mt="extra-loose"
+      /&gt;
+      &lt;StackingStepAction
+        onClick={onConfirmAndDelegate}
+        isDisabled={!formComplete || !hasUserConfirmed}
+      &gt;
+        Confirm and start pooling
       &lt;/StackingStepAction&gt;
     &lt;/StackingStep&gt;
   );
@@ -163,7 +157,7 @@ export const <span class="cstat-no" title="statement not covered" >ConfirmAndDel
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:07:47 GMT+0000 (Coordinated Universal Time)
+                at Thu May 06 2021 10:10:49 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../../prettify.js"></script>

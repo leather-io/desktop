@@ -216,11 +216,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -296,7 +296,7 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
       &lt;/Text&gt;
       &lt;Text mt="base" color={color('text-caption')} maxWidth="480px"&gt;
         Lock your STX to support the network. As a reward, you’ll have the chance to earn BTC that
-        miners transfer as part of Proof-of-Transfer (PoX).
+        miners distribute as part of Proof-of-Transfer (PoX).
       &lt;/Text&gt;
       &lt;ExternalLink href="https://stacks.co/stacking-and-stx" fontWeight="normal" mt="base-tight"&gt;
         Learn more about Stacking
@@ -304,44 +304,44 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
 &nbsp;
       &lt;CardContainer&gt;
         &lt;Card&gt;
-          &lt;Title&gt;Stack on your own&lt;/Title&gt;
-          &lt;OptionBenefit&gt;Lock your STX with the PoX contract directly&lt;/OptionBenefit&gt;
-          &lt;OptionBenefit&gt;
-            Minimum required to stack is{' '}
-            {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
-          &lt;/OptionBenefit&gt;
-          &lt;OptionBenefit&gt;Choose a set number of cycles&lt;/OptionBenefit&gt;
-          &lt;Flex alignItems="center"&gt;
-            &lt;OptionButton
-              onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >history.push(routes.STACKING)}</span>
-              isDisabled={!meetsMinThreshold}
-            &gt;
-              Continue
-            &lt;/OptionButton&gt;
-            {!meetsMinThreshold &amp;&amp; &lt;InsufficientStackingBalanceWarning /&gt;}
-          &lt;/Flex&gt;
-        &lt;/Card&gt;
-&nbsp;
-        &lt;Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}&gt;
-          &lt;Title&gt;Stack with others&lt;/Title&gt;
-          &lt;OptionBenefit&gt;Delegate to a pool that will lock your STX with others&lt;/OptionBenefit&gt;
+          &lt;Title&gt;Stack in a pool&lt;/Title&gt;
+          &lt;OptionBenefit&gt;A pool stacks on your behalf&lt;/OptionBenefit&gt;
+          &lt;OptionBenefit&gt;More predictable returns&lt;/OptionBenefit&gt;
           &lt;Flex flexDirection="row" alignItems="center"&gt;
-            &lt;OptionBenefit&gt;No minimum required by the protocol&lt;/OptionBenefit&gt;
+            &lt;OptionBenefit&gt;No minimum required&lt;/OptionBenefit&gt;
             &lt;Box ml="extra-tight" mt="tight"&gt;
               &lt;ExplainerTooltip&gt;
                 Your chosen pool may set their own minimum amount to participate
               &lt;/ExplainerTooltip&gt;
             &lt;/Box&gt;
           &lt;/Flex&gt;
-          &lt;OptionBenefit&gt;Choose an indefinite or limited number of cycles&lt;/OptionBenefit&gt;
           &lt;Flex alignItems="center"&gt;
             &lt;OptionButton
               onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >history.push(routes.DELEGATED_STACKING)}</span>
               isDisabled={!sufficientBalanceToCoverFee}
             &gt;
-              Continue
+              Stacks in a pool
             &lt;/OptionButton&gt;
             {!sufficientBalanceToCoverFee &amp;&amp; &lt;InsufficientStackingBalanceWarning /&gt;}
+          &lt;/Flex&gt;
+        &lt;/Card&gt;
+&nbsp;
+        &lt;Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}&gt;
+          &lt;Title&gt;Stack by yourself&lt;/Title&gt;
+          &lt;OptionBenefit&gt;Interact with the protocol directly&lt;/OptionBenefit&gt;
+          &lt;OptionBenefit&gt;No intermediaries&lt;/OptionBenefit&gt;
+          &lt;OptionBenefit&gt;
+            Minimum required to stack is{' '}
+            {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
+          &lt;/OptionBenefit&gt;
+          &lt;Flex alignItems="center"&gt;
+            &lt;OptionButton
+              onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >history.push(routes.STACKING)}</span>
+              isDisabled={!meetsMinThreshold}
+            &gt;
+              Stack by yourself
+            &lt;/OptionButton&gt;
+            {!meetsMinThreshold &amp;&amp; &lt;InsufficientStackingBalanceWarning /&gt;}
           &lt;/Flex&gt;
         &lt;/Card&gt;
       &lt;/CardContainer&gt;
@@ -355,7 +355,7 @@ export const <span class="cstat-no" title="statement not covered" >ChooseStackin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:07:47 GMT+0000 (Coordinated Universal Time)
+                at Thu May 06 2021 10:10:49 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

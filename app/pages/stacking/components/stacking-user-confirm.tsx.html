@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/pages/stacking/components/delegated-stacking-terms.tsx</title>
+    <title>Code coverage report for app/pages/stacking/components/stacking-user-confirm.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/pages/stacking/components</a> delegated-stacking-terms.tsx</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/pages/stacking/components</a> stacking-user-confirm.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -83,33 +83,19 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -118,68 +104,37 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-import type { StackProps, BoxProps } from '@stacks/ui';
-<span class="cstat-no" title="statement not covered" >import { Box, Text, ExclamationMarkCircleIcon, color, Stack } from '@stacks/ui';</span>
-<span class="cstat-no" title="statement not covered" >import { ClockIcon } from '@components/icons/clock';</span>
-<span class="cstat-no" title="statement not covered" >import { DelegationIcon } from '@components/icons/delegation-icon';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, BoxProps, color } from '@stacks/ui';</span>
 &nbsp;
-const RowItem: React.FC&lt;StackProps &amp; { icon: FC&lt;BoxProps&gt; }&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
-  icon: Icon,
-  children,
-  ...rest
-}) =&gt; (
-<span class="cstat-no" title="statement not covered" >  &lt;Stack isInline spacing="base-tight" alignItems="start" {...rest}&gt;</span>
-    &lt;Box color={color('text-caption')} size="16px" transform="translateY(4px)" opacity={0.75}&gt;
-      &lt;Icon size="16px" /&gt;
+interface StackingUserConfirmProps extends Omit&lt;BoxProps, 'onChange'&gt; {
+  onChange(userConfirmed: boolean): void;
+}
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >StackingUserConfirm: FC&lt;StackingUserConfirmProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; {</span>
+  const { onChange, ...rest } = <span class="cstat-no" title="statement not covered" >props;</span>
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;Box
+      as="label"
+      display="block"
+      py="base"
+      textStyle="body.small"
+      color={color('text-caption')}
+      userSelect="none"
+      {...rest}
+    &gt;
+      &lt;Box mr="base-tight" display="inline-block"&gt;
+        &lt;input type="checkbox" onChange={<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >onChange(e.target.checked)}</span> /&gt;
+      &lt;/Box&gt;
+      I have read and understand the above
     &lt;/Box&gt;
-    &lt;Text&gt;{children}&lt;/Text&gt;
-  &lt;/Stack&gt;
-);
-&nbsp;
-export const <span class="cstat-no" title="statement not covered" >DelegatedStackingTerms: FC&lt;StackProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; (</span>
-<span class="cstat-no" title="statement not covered" >  &lt;Stack</span>
-    borderLeft={`4px solid ${color('feedback-alert')}`}
-    textStyle={['body.small', 'body.large']}
-    spacing="base-loose"
-    pl="base"
-    {...props}
-  &gt;
-    &lt;RowItem icon={DelegationIcon}&gt;
-      Your delegation service will stack on your behalf and distribute BTC rewards. Hiro can’t help
-      you if they don’t pay you your BTC rewards.
-    &lt;/RowItem&gt;
-    &lt;RowItem icon={ClockIcon}&gt;
-      The pool has indefinite permission to lock your STX for up to 12 cycles at a time, unless
-      you've specified a cycle limit. You can revoke anytime, but your funds will be locked until
-      all cycles finish.
-    &lt;/RowItem&gt;
-    &lt;RowItem icon={ExclamationMarkCircleIcon}&gt;
-      Make sure you’ve researched and trust the pool
-    &lt;/RowItem&gt;
-  &lt;/Stack&gt;
-);
+  );
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -187,7 +142,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegatedStac
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:07:47 GMT+0000 (Coordinated Universal Time)
+                at Thu May 06 2021 10:10:49 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

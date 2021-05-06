@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
@@ -132,7 +132,11 @@
 <a name='L73'></a><a href='#L73'>73</a>
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,6 +146,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -158,12 +166,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -211,12 +219,16 @@
 <span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
 <span class="cstat-no" title="statement not covered" >import dayjs from 'dayjs';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { color, Flex, FlexProps, Text } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { Flex, FlexProps, Text } from '@stacks/ui';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { ExplainerTooltip } from '@components/tooltip';</span>
 <span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingFormInfoCard } from '../../components/stacking-form-info-card';</span>
+<span class="cstat-no" title="statement not covered" >import { calculateStackingBuffer } from '../../utils/calc-stacking-buffer';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
 &nbsp;
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -231,19 +243,15 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
 &nbsp;
   const amountToBeStacked = <span class="cstat-no" title="statement not covered" >balance === null ? new BigNumber(0) : balance;</span>
 &nbsp;
+  const poxInfo = <span class="cstat-no" title="statement not covered" >useSelector(selectPoxInfo);</span>
+&nbsp;
+  const buffer = <span class="cstat-no" title="statement not covered" >calculateStackingBuffer(</span>
+    amountToBeStacked,
+    new BigNumber(poxInfo?.min_amount_ustx || 0)
+  );
+&nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Flex
-      flexDirection="column"
-      boxShadow="low"
-      border={`1px solid ${color('border')}`}
-      borderRadius="8px"
-      minHeight="84px"
-      alignItems="flex-start"
-      minWidth={[null, null, '320px', '420px']}
-      position="sticky"
-      top="124px"
-      {...rest}
-    &gt;
+    &lt;StackingFormInfoCard minHeight="84px" alignItems="flex-start" {...rest}&gt;
       &lt;Flex flexDirection="column" px={['loose', 'extra-loose']} pt="extra-loose" pb="base-loose"&gt;
         &lt;Text textStyle="body.large.medium"&gt;You'll lock&lt;/Text&gt;
         &lt;Text fontSize="24px" fontWeight={600} letterSpacing="-0.04em" mt="extra-tight"&gt;
@@ -253,6 +261,10 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
       &lt;Hr /&gt;
       &lt;Flex flexDirection="column" px={['loose', 'extra-loose']} py="loose" width="100%"&gt;
         &lt;Flex justifyContent="space-between"&gt;
+          &lt;Text textStyle="body.large.medium"&gt;Buffer&lt;/Text&gt;
+          &lt;Text textAlign="right"&gt;{toHumanReadableStx(buffer.toString())}&lt;/Text&gt;
+        &lt;/Flex&gt;
+        &lt;Flex justifyContent="space-between" mt="tight"&gt;
           &lt;Flex alignItems="center"&gt;
             &lt;Text textStyle="body.large.medium" mr="tight"&gt;
               Cycles
@@ -279,7 +291,7 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
           &lt;Text textAlign="right"&gt;{dayjs(startDate).format('MMMM DD')}&lt;/Text&gt;
         &lt;/Flex&gt;
       &lt;/Flex&gt;
-    &lt;/Flex&gt;
+    &lt;/StackingFormInfoCard&gt;
   );
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -289,7 +301,7 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:07:47 GMT+0000 (Coordinated Universal Time)
+                at Thu May 06 2021 10:10:49 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../../prettify.js"></script>

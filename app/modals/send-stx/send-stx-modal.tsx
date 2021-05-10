@@ -59,11 +59,6 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const stacksApi = useApi();
-
-  useHotkeys('esc', () => void dispatch(homeActions.closeTxModal()));
-
-  const closeModal = () => dispatch(homeActions.closeTxModal());
-
   const [step, setStep] = useState(TxModalStep.DescribeTx);
   const [fee, setFee] = useState(new BigNumber(0));
   const [calculatingMaxSpend, setCalculatingMaxSpend] = useState(false);
@@ -177,6 +172,12 @@ export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
     form.resetForm();
     interactedWithSendAllBtn.current = false;
   };
+
+  const closeModal = () => {
+    resetAll();
+    dispatch(homeActions.closeTxModal());
+  };
+  useHotkeys('esc', closeModal);
 
   const sendStx = (tx: StacksTransaction) => {
     broadcastTx({

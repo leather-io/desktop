@@ -8,13 +8,14 @@ import {
   Button,
   ExclamationMarkCircleIcon,
   color,
+  Box,
 } from '@stacks/ui';
 
 export const StartStackingLayout: FC<FlexProps> = props => (
   <Flex
+    as="main"
     flexDirection="column"
     alignItems="flex-start"
-    maxWidth="976px"
     mx="auto"
     mt="150px"
     px="extra-loose"
@@ -23,30 +24,44 @@ export const StartStackingLayout: FC<FlexProps> = props => (
 );
 
 export const StackingOptionsCardContainer: FC<FlexProps> = props => (
-  <Flex flexDirection={['column', 'column', 'row']} width="100%" mt="40px" {...props} />
+  <Flex flexDirection={['column', 'column', 'column', 'row']} width="100%" mt="40px" {...props} />
 );
 
-export const StackingOptionCard: FC<FlexProps> = props => (
+export const StackingOptionCard: FC<FlexProps> = ({ children, ...props }) => (
   <Flex
+    px="loose"
+    py="extra-loose"
+    as="section"
     flexDirection="column"
-    border={`1px solid ${color('border')}`}
-    p="loose"
+    alignItems="center"
     borderRadius="6px"
     flex={1}
     {...props}
-  />
+  >
+    <Flex flexDirection="column" maxWidth={[null, null, '320', '400px']}>
+      {children}
+    </Flex>
+  </Flex>
 );
 
 export const StackingOptionCardTitle: FC<BoxProps> = props => (
-  <Text textStyle="display.small" fontSize="18px" {...props} />
+  <Text display="block" textStyle="display.large" fontSize="32px" mt="base-loose" {...props} />
 );
 
-export const StackingOptionCardAdvantage: FC<BoxProps> = props => (
+export const StackingOptionsCardDescription: FC<BoxProps> = props => (
+  <Text textStyle="body.large" mt="extra-loose" {...props} />
+);
+
+export const StackingOptionCardBenefitContainer: FC<BoxProps> = props => (
+  <Box mt={['tight', 'base', 'base', 'extra-loose']} mb="extra-loose" {...props} />
+);
+
+export const StackingOptionCardBenefit: FC<BoxProps> = props => (
   <Text
-    display="inline-block"
-    fontSize="14px"
-    color={color('text-caption')}
-    mt="tight"
+    display="block"
+    textStyle="body.large.medium"
+    color={color('text-body')}
+    mt="base"
     {...props}
   />
 );

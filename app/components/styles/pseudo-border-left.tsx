@@ -1,6 +1,6 @@
 import { ColorsStringLiteral, color } from '@stacks/ui';
 
-export function pseudoBorderLeft(themeColor: ColorsStringLiteral) {
+export function pseudoBorderLeft(themeColor: ColorsStringLiteral, borderWidth = '4px') {
   return {
     position: 'relative',
     _before: {
@@ -8,7 +8,7 @@ export function pseudoBorderLeft(themeColor: ColorsStringLiteral) {
       top: 0,
       left: 0,
       borderRadius: '8px',
-      width: '4px',
+      width: borderWidth,
       height: '100%',
       position: 'absolute',
       background: color(themeColor),

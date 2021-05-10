@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { Box, color, Flex, Text } from '@stacks/ui';
-import { ExternalLink } from '@components/external-link';
+import { Box, Flex, useMediaQuery } from '@stacks/ui';
 import { useHistory } from 'react-router-dom';
 
 import routes from '@constants/routes.json';
@@ -13,17 +12,24 @@ import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
 import {
   StartStackingLayout as Layout,
   StackingOptionsCardContainer as CardContainer,
+  StackingOptionsCardDescription as Description,
   StackingOptionCard as Card,
   StackingOptionCardTitle as Title,
   StackingOptionCardButton as OptionButton,
-  StackingOptionCardAdvantage as OptionBenefit,
+  StackingOptionCardBenefit as OptionBenefit,
+  StackingOptionCardBenefitContainer as OptionBenefitContainer,
   InsufficientStackingBalanceWarning,
 } from './components/start-stacking-layout';
 import { ExplainerTooltip } from '@components/tooltip';
 
+import divingBoardIllustration from '@assets/images/stack-in-a-pool.svg';
+import fishBowlIllustration from '@assets/images/stack-by-yourself.svg';
+import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
+
 export const ChooseStackingMethod: FC = () => {
   const history = useHistory();
   useBackButton(routes.HOME);
+  const [columnBreakpoint] = useMediaQuery('(min-width: 991px)');
 
   const { availableBalance } = useBalance();
 
@@ -34,53 +40,77 @@ export const ChooseStackingMethod: FC = () => {
   const meetsMinThreshold = availableBalance
     .plus(STACKING_CONTRACT_CALL_FEE)
     .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
+
   const sufficientBalanceToCoverFee = availableBalance.isGreaterThan(STACKING_CONTRACT_CALL_FEE);
 
   return (
     <Layout>
-      <Text textStyle="display.large" fontSize="32px" mt="tight" display="block" textAlign="center">
-        Start Stacking
-      </Text>
-      <Text mt="base" color={color('text-caption')} maxWidth="480px">
-        Lock your STX to support the network. As a reward, you’ll have the chance to earn BTC that
-        miners distribute as part of Proof-of-Transfer (PoX).
-      </Text>
-      <ExternalLink href="https://stacks.co/stacking-and-stx" fontWeight="normal" mt="base-tight">
-        Learn more about Stacking
-      </ExternalLink>
-
       <CardContainer>
         <Card>
+          <Box height="130px">
+            <img
+              src={divingBoardIllustration}
+              width="150px"
+              alt="Diving board illustration with a blue gradient and ominous-looking hole by Eugenia Digon"
+            />
+          </Box>
           <Title>Stack in a pool</Title>
-          <OptionBenefit>A pool stacks on your behalf</OptionBenefit>
-          <OptionBenefit>More predictable returns</OptionBenefit>
-          <Flex flexDirection="row" alignItems="center">
-            <OptionBenefit>No minimum required</OptionBenefit>
-            <Box ml="extra-tight" mt="tight">
-              <ExplainerTooltip>
-                Your chosen pool may set their own minimum amount to participate
-              </ExplainerTooltip>
-            </Box>
-          </Flex>
+          <Description>
+            Team up with other stackers in a pool, enabling you to stack even if you don’t meet the
+            minimum. You have to trust a pool with the payment of your rewards.
+          </Description>
+
+          <OptionBenefitContainer>
+            <OptionBenefit>A pool stacks on your behalf</OptionBenefit>
+            <OptionBenefit>More predictable returns</OptionBenefit>
+            <Flex flexDirection="row" alignItems="center">
+              <OptionBenefit>No minimum required</OptionBenefit>
+              <Box ml="extra-tight" mt="tight">
+                <ExplainerTooltip>
+                  Your chosen pool may set their own minimum amount to participate
+                </ExplainerTooltip>
+              </Box>
+            </Flex>
+          </OptionBenefitContainer>
+
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.DELEGATED_STACKING)}
               isDisabled={!sufficientBalanceToCoverFee}
             >
-              Stacks in a pool
+              Stack in a pool
             </OptionButton>
             {!sufficientBalanceToCoverFee && <InsufficientStackingBalanceWarning />}
           </Flex>
         </Card>
 
-        <Card ml={[null, null, 'loose']} mt={['loose', null, 'unset']}>
+        <Card
+          mt={['extra-loose', null, null, 'unset']}
+          {...(columnBreakpoint ? pseudoBorderLeft('border', '1px') : {})}
+        >
+          <Box height="130px">
+            <img
+              src={fishBowlIllustration}
+              width="150px"
+              alt="A darkened fish bowl with a lone fish looking to the right by Eugenia Digon"
+            />
+          </Box>
           <Title>Stack by yourself</Title>
-          <OptionBenefit>Interact with the protocol directly</OptionBenefit>
-          <OptionBenefit>No intermediaries</OptionBenefit>
-          <OptionBenefit>
-            Minimum required to stack is{' '}
-            {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
-          </OptionBenefit>
+
+          <Description>
+            When you stack by yourself, you’ll interact with the protocol directly. You don’t have
+            to trust a pool if you have a sufficient amount of STX available.
+          </Description>
+
+          <OptionBenefitContainer>
+            <OptionBenefit>Interact with the protocol directly</OptionBenefit>
+            <OptionBenefit>No intermediaries</OptionBenefit>
+            <OptionBenefit>
+              Minimum required to stack is{' '}
+              {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
+            </OptionBenefit>
+          </OptionBenefitContainer>
+
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.STACKING)}

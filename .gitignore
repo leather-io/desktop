@@ -1,6 +1,7 @@
 # Logs
 logs
 *.log
+screenshots/
 
 app/preload.js
 

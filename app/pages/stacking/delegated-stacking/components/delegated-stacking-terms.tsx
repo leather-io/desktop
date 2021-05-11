@@ -19,7 +19,7 @@ export const DelegatedStackingTerms: FC<StackProps> = props => (
       There will be no way to unlock your STX once the pool has started stacking them. You will need
       to wait until they unlock at the end of the pool's chosen number of cycles.
     </StackingTermItem>
-    <StackingTermItem title="Consider the following cooldown cycle" icon={ClockIcon}>
+    <StackingTermItem title="Consider the following cooldown cycle" icon={ClockIcon as any}>
       After you’ve finished pooling, you’ll have to wait one cycle before stacking or pooling with
       your STX address again.
     </StackingTermItem>

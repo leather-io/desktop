@@ -63,7 +63,7 @@ export const ChooseStackingMethod: FC = () => {
           <OptionBenefitContainer>
             <OptionBenefit>A pool stacks on your behalf</OptionBenefit>
             <OptionBenefit>More predictable returns</OptionBenefit>
-            <Flex flexDirection="row" alignItems="center">
+            <Flex alignItems="baseline">
               <OptionBenefit>No minimum required</OptionBenefit>
               <Box ml="extra-tight" mt="tight">
                 <ExplainerTooltip>
@@ -92,7 +92,7 @@ export const ChooseStackingMethod: FC = () => {
             <img
               src={fishBowlIllustration}
               width="150px"
-              alt="A darkened fish bowl with a lone fish looking to the right by Eugenia Digon"
+              alt="A dark fishbowl with a lone fish facing right, perhaps contemplating the benefits of Stacking, by Eugenia Digon"
             />
           </Box>
           <Title>Stack by yourself</Title>

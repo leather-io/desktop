@@ -84,20 +84,18 @@ export const DirectStacking: FC = () => {
       <ChooseDirectStackingAmountStep
         title={StackingStep.ChooseAmount}
         isComplete={steps.getIsComplete(StackingStep.ChooseAmount)}
-        state={steps.getView(StackingStep.ChooseAmount)}
         value={amount}
         minimumAmountToStack={poxInfo.paddedMinimumStackingAmountMicroStx}
         onEdit={() => steps.open(StackingStep.ChooseAmount)}
-        onComplete={amount => (setAmount(amount), steps.close(StackingStep.ChooseAmount))}
+        onComplete={amount => setAmount(amount)}
       />
       <ChooseCycleStep
         title={StackingStep.ChooseCycles}
         cycles={cyclesWithDefault(cycles)}
         cycleDuration={oneCycleDuration}
         isComplete={steps.getIsComplete(StackingStep.ChooseCycles)}
-        state={steps.getView(StackingStep.ChooseCycles)}
         onEdit={() => steps.open(StackingStep.ChooseCycles)}
-        onComplete={cycles => (setCycles(cycles), steps.close(StackingStep.ChooseCycles))}
+        onComplete={cycles => setCycles(cycles)}
         onUpdate={cycle => setCycles(cycle)}
       />
       <ChooseBtcAddressStep
@@ -105,9 +103,8 @@ export const DirectStacking: FC = () => {
         description="Choose the address where you’d like to receive bitcoin."
         value={btcAddress || undefined}
         isComplete={steps.getIsComplete(StackingStep.ChooseBtcAddress)}
-        state={steps.getView(StackingStep.ChooseBtcAddress)}
         onEdit={() => steps.open(StackingStep.ChooseBtcAddress)}
-        onComplete={address => (setBtcAddress(address), steps.close(StackingStep.ChooseBtcAddress))}
+        onComplete={address => setBtcAddress(address)}
       />
       <ConfirmAndStackStep
         title="Confirm and stack"

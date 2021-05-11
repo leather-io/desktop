@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { Box, BoxProps, Flex, Text, Stack, FlexProps, color } from '@stacks/ui';
+import { Box, Flex, Text, Stack, FlexProps, color } from '@stacks/ui';
 
 export interface StackingTermItem extends FlexProps {
   title: string;
-  icon: FC<BoxProps>;
+  icon: FC<any>;
 }
 export const StackingTermItem: FC<StackingTermItem> = props => {
   const { title, icon: Icon, children, ...rest } = props;

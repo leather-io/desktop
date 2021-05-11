@@ -22,7 +22,7 @@ import { App } from './pages/app';
 import { Settings } from './pages/settings/settings';
 import { DirectStacking } from './pages/stacking/direct-stacking/direct-stacking';
 import { ChooseStackingMethod } from './pages/start-stacking/start-stacking';
-import { StackingDelegation } from './pages/stacking/delegated-stacking/delegated-stacking';
+import { StackingDelegation } from './pages/stacking/delegated-stacking/pooled-stacking';
 
 export const routerConfig = [
   {

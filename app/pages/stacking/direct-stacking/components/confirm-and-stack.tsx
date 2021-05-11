@@ -18,7 +18,7 @@ export const ConfirmAndStackStep: FC<ConfirmAndLockStepProps> = props => {
   const [hasUserConfirmed, setHasUserConfirmed] = useState(false);
 
   return (
-    <StackingStep title={title} step={step} isComplete={false} state="open" mb="300px">
+    <StackingStep title={title} step={step} isComplete={false} mb="300px">
       <DirectStackingTerms mt="loose" />
       <StackingUserConfirm
         onChange={useConfirmed => setHasUserConfirmed(useConfirmed)}

@@ -21,7 +21,6 @@ dayjs.extend(advancedFormat);
 
 interface DurationCycleFromProps extends Omit<InputProps, 'form'> {
   duration: number | null;
-
   onUpdate(duration: number): void;
 }
 
@@ -40,7 +39,7 @@ export const DurationCyclesForm: FC<DurationCycleFromProps> = props => {
     return createCycleArray().map(cycles => {
       return `
         ${formatCycles(cycles)}
-        (expires around ${dayjs()
+        (ends around ${dayjs()
           .add(cycleInfo.estimateCycleDurationSeconds * cycles, 'seconds')
           .format('Do MMMM')})`;
     });

@@ -1,8 +1,5 @@
-import { StackingStepView } from './use-stacking-form-step';
-
 export interface StackingStepBaseProps {
-  title: string;
+  title?: string;
   step?: number;
-  isComplete: boolean;
-  state: StackingStepView;
+  isComplete?: boolean;
 }

@@ -1,26 +1,26 @@
-import React, { FC } from 'react';
+import React, { FC, forwardRef } from 'react';
 import { Input, InputProps } from '@stacks/ui';
+import { useField } from 'formik';
 
-interface CryptoAddressFormProps extends Omit<InputProps, 'form'> {
-  form: any;
+interface CryptoAddressInputProps extends Omit<InputProps, 'form'> {
   fieldName: string;
 }
 
-export const CryptoAddressForm: FC<CryptoAddressFormProps> = props => {
-  const { form, fieldName, children, ...rest } = props;
+export const CryptoAddressInput: FC<CryptoAddressInputProps> = forwardRef((props, ref) => {
+  const { fieldName, children, ...rest } = props;
+  const [field] = useField(fieldName);
   return (
-    <form onSubmit={form.handleSubmit}>
+    <>
       <Input
         id={fieldName}
         name={fieldName}
-        onChange={form.handleChange}
-        value={form.values[fieldName]}
         mt="loose"
         maxWidth="400px"
-        fontFamily={form.values[fieldName].length ? 'monospace' : 'unset'}
+        fontFamily={field.value.length ? 'monospace' : 'unset'}
+        ref={ref}
         {...rest}
       />
       {children}
-    </form>
+    </>
   );
-};
+});

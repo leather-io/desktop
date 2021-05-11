@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { ExternalLink } from '@components/external-link';
-import { StackingTitle } from '../../components/stacking-title';
+import { Title } from '@components/title';
 import { StackingDescription } from '../../components/stacking-description';
 import { NextCycleInfo } from '../../components/next-cycle-info';
 
@@ -10,7 +10,7 @@ interface StackingIntroProps {
 }
 export const DirectStackingIntro: FC<StackingIntroProps> = ({ timeUntilNextCycle }) => (
   <>
-    <StackingTitle>Stack by yourself</StackingTitle>
+    <Title>Stack by yourself</Title>
     <StackingDescription mt="base-tight">
       When you stack by yourself, you’ll get the chance to earn Bitcoin each cycle for every reward
       slot that you hold.

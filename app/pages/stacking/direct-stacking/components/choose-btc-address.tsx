@@ -14,7 +14,7 @@ import {
   StackingStepAction as Action,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
-import { CryptoAddressForm } from '../../components/crypto-address-form';
+import { CryptoAddressInput } from '../../components/crypto-address-form';
 import { ExplainerLabel } from '@components/tooltip';
 
 const StackingAddressErrorExplainer = memo(() => (
@@ -51,7 +51,7 @@ interface ChooseBtcAddressStepProps extends StackingStepBaseProps {
 }
 
 export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
-  const { isComplete, description, state, step, title, value, onEdit, onComplete } = props;
+  const { isComplete, description, step, title, value, onEdit, onComplete } = props;
 
   const form = useFormik({
     initialValues: { btcAddress: '' },
@@ -92,19 +92,12 @@ export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
   ) : null;
 
   return (
-    <Step
-      title={title}
-      step={step}
-      state={state}
-      value={value}
-      isComplete={isComplete}
-      onEdit={onEdit}
-    >
+    <Step title={title} step={step} value={value} isComplete={isComplete} onEdit={onEdit}>
       <Description>{description}</Description>
-      <CryptoAddressForm form={form} fieldName="btcAddress" placeholder="Bitcoin address">
+      <CryptoAddressInput form={form} fieldName="btcAddress" placeholder="Bitcoin address">
         {form.touched.btcAddress && errors}
         <Action type="submit">Continue</Action>
-      </CryptoAddressForm>
+      </CryptoAddressInput>
     </Step>
   );
 };

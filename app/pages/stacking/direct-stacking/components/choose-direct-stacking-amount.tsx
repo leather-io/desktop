@@ -22,7 +22,6 @@ import {
 import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
   StackingStep as Step,
-  StackingStepAction as Action,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
 import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
@@ -38,7 +37,7 @@ interface ChooseAmountStepProps extends StackingStepBaseProps {
 const BigNumberFloorRound = BigNumber.clone({ ROUNDING_MODE: BigNumber.ROUND_FLOOR });
 
 export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props => {
-  const { title, isComplete, state, step, value, minimumAmountToStack, onEdit, onComplete } = props;
+  const { title, isComplete, step, value, minimumAmountToStack, onEdit, onComplete } = props;
 
   const { availableBalance, availableBalanceValidator } = useBalance();
   const poxInfo = useSelector(selectPoxInfo);
@@ -106,7 +105,6 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
       title={title}
       step={step}
       value={currentValue.toString()}
-      state={state}
       isComplete={isComplete}
       onEdit={onEdit}
     >
@@ -203,7 +201,6 @@ export const ChooseDirectStackingAmountStep: FC<ChooseAmountStepProps> = props =
             )}
           </>
         )}
-        <Action type="submit">Continue</Action>
       </form>
     </Step>
   );

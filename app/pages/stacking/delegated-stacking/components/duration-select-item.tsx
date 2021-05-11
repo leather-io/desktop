@@ -1,38 +1,49 @@
-import React, { FC } from 'react';
-import { Box, color, Flex, Text } from '@stacks/ui';
+import React, { FC, memo } from 'react';
+import { Box, color, Flex, FlexProps, Text } from '@stacks/ui';
+import { useFocus } from 'use-events';
 
 type DelegationTypes = 'limited' | 'indefinite';
 
-interface DurationSelectItemProps {
+interface DurationSelectItemProps extends Omit<FlexProps, 'onChange'> {
   title: string;
   delegationType: DelegationTypes;
   activeDelegationType: DelegationTypes | null;
-
   onChange(duration: DelegationTypes): void;
-
-  isFirst?: boolean;
+  icon: JSX.Element;
 }
 
 export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
-  const { title, isFirst, delegationType, activeDelegationType, onChange, children } = props;
+  const { title, icon, delegationType, activeDelegationType, onChange, children, ...rest } = props;
+  const [isFocused, bind] = useFocus();
   return (
     <Flex
       minHeight="72px"
-      p="base"
+      p="base-loose"
       as="label"
-      borderTop={!isFirst ? `1px solid ${color('border')}` : 'unset'}
+      border={`1px solid ${color('border')}`}
+      borderRadius="12px"
+      position="relative"
+      {...(isFocused
+        ? {
+            _before: {
+              content: '""',
+              position: 'absolute',
+              top: '-1px',
+              left: '-1px',
+              right: '-1px',
+              bottom: '-1px',
+              borderRadius: '12px',
+              border: '2px solid #CEDAFA',
+            },
+          }
+        : {})}
+      {...rest}
     >
       <Flex width="100%">
         <Box position="relative" top="-3px">
-          <input
-            type="radio"
-            name="delegationType"
-            value={delegationType}
-            checked={delegationType === activeDelegationType}
-            onChange={e => onChange(e.target.value as DelegationTypes)}
-          />
+          {icon}
         </Box>
-        <Flex ml="base-tight" width="100%" flexDirection={['column', 'row']}>
+        <Flex ml="base-loose" width="100%" flexDirection={['column', 'row']}>
           <Box>
             <Text
               textStyle="body.small"
@@ -52,6 +63,17 @@ export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
               {children}
             </Text>
           </Box>
+        </Flex>
+        <Flex ml="loose" alignItems="center">
+          <input
+            type="radio"
+            name="delegationType"
+            value={delegationType}
+            checked={delegationType === activeDelegationType}
+            style={{ transform: 'scale(1.2)', outline: 0 }}
+            onChange={e => onChange(e.target.value as DelegationTypes)}
+            {...bind}
+          />
         </Flex>
       </Flex>
     </Flex>

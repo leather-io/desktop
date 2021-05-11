@@ -10,21 +10,22 @@ import {
   color,
   Box,
 } from '@stacks/ui';
+import { Title } from '@components/title';
 
 export const StartStackingLayout: FC<FlexProps> = props => (
   <Flex
     as="main"
-    flexDirection="column"
-    alignItems="flex-start"
+    flexDirection="row"
+    alignItems="center"
     mx="auto"
-    mt="150px"
+    minHeight="calc(100vh - 44px)"
     px="extra-loose"
     {...props}
   />
 );
 
 export const StackingOptionsCardContainer: FC<FlexProps> = props => (
-  <Flex flexDirection={['column', 'column', 'column', 'row']} width="100%" mt="40px" {...props} />
+  <Flex flexDirection={['column', 'column', 'column', 'row']} width="100%" my="56px" {...props} />
 );
 
 export const StackingOptionCard: FC<FlexProps> = ({ children, ...props }) => (
@@ -45,7 +46,7 @@ export const StackingOptionCard: FC<FlexProps> = ({ children, ...props }) => (
 );
 
 export const StackingOptionCardTitle: FC<BoxProps> = props => (
-  <Text display="block" textStyle="display.large" fontSize="32px" mt="base-loose" {...props} />
+  <Title fontSize="32px" mt="base-loose" {...props} />
 );
 
 export const StackingOptionsCardDescription: FC<BoxProps> = props => (

@@ -20,27 +20,10 @@ interface ChooseCycleStepProps extends StackingStepBaseProps {
 }
 
 export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
-  const {
-    isComplete,
-    cycleDuration,
-    state,
-    step,
-    cycles,
-    title,
-    onUpdate,
-    onEdit,
-    onComplete,
-  } = props;
+  const { isComplete, cycleDuration, step, cycles, title, onUpdate, onEdit, onComplete } = props;
   const value = `${formatCycles(cycles)} selected`;
   return (
-    <Step
-      step={step}
-      title={title}
-      value={value}
-      state={state}
-      isComplete={isComplete}
-      onEdit={onEdit}
-    >
+    <Step step={step} title={title} value={value} isComplete={isComplete} onEdit={onEdit}>
       <Description>
         Choose the amount of cycles to lock your STX. One cycle typically lasts {cycleDuration},
         depending on the Bitcoin block time. At the end of each cycle, you'll have the chance to

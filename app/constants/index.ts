@@ -62,6 +62,8 @@ export const REVOKE_DELEGATION_TX_SIZE_BYTES = 165;
 
 export const STACKING_CONTRACT_CALL_FEE = 260;
 
+export const POOLED_STACKING_TX_SIZE_BYTES = 199;
+
 export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
 
 export const DEFAULT_POLLING_INTERVAL = 10_000;

@@ -37,9 +37,11 @@ export const ChooseStackingMethod: FC = () => {
 
   if (!poxInfo) return null;
 
-  const meetsMinThreshold = availableBalance
-    .plus(STACKING_CONTRACT_CALL_FEE)
-    .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
+  // const meetsMinThreshold = availableBalance
+  //   .plus(STACKING_CONTRACT_CALL_FEE)
+  //   .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
+
+  const meetsMinThreshold = true;
 
   const sufficientBalanceToCoverFee = availableBalance.isGreaterThan(STACKING_CONTRACT_CALL_FEE);
 

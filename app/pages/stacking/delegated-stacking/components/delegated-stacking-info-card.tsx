@@ -1,32 +1,27 @@
 import React, { FC } from 'react';
-import { BigNumber } from 'bignumber.js';
 
-import { Box, color, Flex, FlexProps, Text } from '@stacks/ui';
+import { Box, Flex, FlexProps, Text } from '@stacks/ui';
 
 import { DelegationType } from '@models/index';
 import { Hr } from '@components/hr';
 
-import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
-import { ExplainerTooltip } from '@components/tooltip';
+import { POOLED_STACKING_TX_SIZE_BYTES } from '@constants/index';
+import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
+import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 import { truncateMiddle } from '@utils/tx-utils';
 import { formatCycles } from '@utils/stacking';
-import { StackingFormInfoCard } from '../../components/stacking-form-info-card';
-
-function attemptParseNumber(num: number | string | null) {
-  if (!num) return 0;
-  try {
-    if (typeof num !== 'number') {
-      const parsed = parseFloat(num);
-      return Number.isFinite(parsed) ? parsed : 0;
-    }
-    return num;
-  } catch (e) {
-    return 0;
-  }
-}
+import {
+  StackingInfoCard,
+  StackingInfoCardLabel as Label,
+  StackingInfoCardRow as Row,
+  StackingInfoCardGroup as Group,
+  StackingInfoCardValue as Value,
+  StackingInfoCardSection as Section,
+} from '../../components/stacking-info-card';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
 
 interface PoolingInfoCardProps extends FlexProps {
-  amount: number | null;
+  amount: string | number | null;
   poolStxAddress: string | null;
   durationInCycles: number | null;
   delegationType: DelegationType | null;
@@ -35,11 +30,12 @@ interface PoolingInfoCardProps extends FlexProps {
 
 export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
   const { amount, delegationType, poolStxAddress, durationInCycles, burnHeight, ...rest } = props;
+  const amountToBeStacked = stxToMicroStx(parseNumericalFormInput(amount)).integerValue();
 
-  const amountToBeStacked = stxToMicroStx(attemptParseNumber(amount)).integerValue();
+  const calcFee = useCalculateFee();
 
   return (
-    <StackingFormInfoCard {...rest}>
+    <StackingInfoCard {...rest}>
       <Box mx={['loose', 'extra-loose']}>
         <Flex flexDirection="column" pt="extra-loose" pb="base-loose">
           <Text textStyle="body.large.medium">You're pooling</Text>
@@ -54,45 +50,44 @@ export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
           </Text>
         </Flex>
         <Hr />
-        <Flex flexDirection="column" py="loose">
-          <Flex justifyContent="space-between">
-            <Flex color={color('text-caption')} alignItems="center">
-              <Text mr="tight">Pool address</Text>
-              <ExplainerTooltip>
-                This address is provided to you by your chosen pool for Stacking delegation
-                specifically.
-              </ExplainerTooltip>
-            </Flex>
-            <Text textStyle="body.large.medium" textAlign="right">
-              {poolStxAddress ? truncateMiddle(poolStxAddress) : '—'}
-            </Text>
-          </Flex>
-        </Flex>
-        <Hr />
-        <Flex flexDirection="column" py="loose">
-          <Flex justifyContent="space-between" alignItems="flex-start">
-            <Flex alignItems="center" color={color('text-caption')}>
-              <Text mr="tight">Delegation duration</Text>
-              <ExplainerTooltip>
-                How long you want to delegate to the pool. This is not necessarily the locking
-                duration. However, the locking period cannot be longer than the delegation duration.
-              </ExplainerTooltip>
-            </Flex>
-            <Flex flexDirection="column" justifyContent="flex-start" textStyle="body.large.medium">
-              <Text textAlign="right">
+        <Group mt="base-loose" mb="extra-loose">
+          <Section>
+            <Row>
+              <Label explainer=" How long you want to delegate to the pool. This is not necessarily the locking duration. However, the locking period cannot be longer than the delegation duration.">
+                Type
+              </Label>
+              <Value>
                 {delegationType === null && '—'}
                 {delegationType === 'limited' && formatCycles(durationInCycles ?? 0)}
                 {delegationType === 'indefinite' && 'Indefinite'}
-              </Text>
-              {burnHeight && (
-                <Text textStyle="caption" color={color('text-caption')} mt="extra-tight">
-                  Until burn block: {burnHeight}
-                </Text>
-              )}
-            </Flex>
-          </Flex>
-        </Flex>
+              </Value>
+            </Row>
+
+            {burnHeight && (
+              <Row>
+                <Label>Burn height</Label>
+                <Value>{burnHeight}</Value>
+              </Row>
+            )}
+          </Section>
+
+          <Section>
+            <Row>
+              <Label explainer="This address is provided to you by your chosen pool for Stacking delegation specifically.">
+                Pool address
+              </Label>
+              <Value>{poolStxAddress ? truncateMiddle(poolStxAddress) : '—'}</Value>
+            </Row>
+          </Section>
+
+          <Section>
+            <Row>
+              <Label>Fee</Label>
+              <Value>{toHumanReadableStx(calcFee(POOLED_STACKING_TX_SIZE_BYTES).toString())}</Value>
+            </Row>
+          </Section>
+        </Group>
       </Box>
-    </StackingFormInfoCard>
+    </StackingInfoCard>
   );
 };

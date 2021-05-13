@@ -19,6 +19,7 @@ const border = `1px solid ${color('border')}`;
 const ChangeStepButton: FC<FlexProps> = ({ children, ...props }) => (
   <Flex
     as="button"
+    type="button"
     alignItems="center"
     justifyContent="center"
     width="52px"

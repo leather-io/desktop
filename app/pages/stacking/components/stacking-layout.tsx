@@ -16,7 +16,7 @@ export const StackingLayout: FC<StackingLayoutProps> = props => {
       >
         <Box maxWidth={[null, null, '544px']} mr={[null, null, 'extra-loose']}>
           {intro}
-          <Box display={['block', null, 'none']} mt="base">
+          <Box display={['block', null, 'none']} mt={['extra-loose', null, null, null, 'base']}>
             {stackingInfoPanel}
           </Box>
           {stackingForm}

@@ -55,6 +55,8 @@ export const DurationCyclesForm: FC<DurationCycleFromProps> = props => {
       border={`1px solid ${color('border')}`}
       borderRadius="8px"
       onClick={e => (e.stopPropagation(), e.preventDefault())}
+      position="relative"
+      zIndex={10}
     >
       <Text alignItems="center" ml="tight" color={color('text-title')}>
         {cycleLabels[durationWithDefault(duration) - 1]}

@@ -1,10 +1,8 @@
 import React, { FC, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { useFocus } from 'use-events';
+
 import { useField } from 'formik';
 import { Text } from '@stacks/ui';
 
-import { selectAddress } from '@store/keys';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { ExternalLink } from '@components/external-link';
@@ -17,9 +15,8 @@ import {
 import { CryptoAddressInput } from '../../components/crypto-address-form';
 
 export const ChoosePoolStxAddressField: FC = () => {
-  const address = useSelector(selectAddress);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isFocused, bindFocus] = useFocus();
+
   const [field, meta] = useField('stxAddress');
 
   return (
@@ -41,7 +38,6 @@ export const ChoosePoolStxAddressField: FC = () => {
         ref={inputRef}
         fieldName="stxAddress"
         placeholder="Pool address"
-        {...bindFocus}
         {...field}
       >
         {meta.touched && meta.error && (

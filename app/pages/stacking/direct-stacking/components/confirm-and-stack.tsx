@@ -5,29 +5,23 @@ import { StackingUserConfirm } from '../../components/stacking-user-confirm';
 import { DirectStackingTerms } from './direct-stacking-terms';
 
 interface ConfirmAndLockStepProps {
-  title: string;
-  formComplete: boolean;
-  step?: number;
   timeUntilNextCycle: string;
   estimatedDuration: string;
   onConfirmAndLock(): void;
 }
 
 export const ConfirmAndStackStep: FC<ConfirmAndLockStepProps> = props => {
-  const { step, title, formComplete, onConfirmAndLock } = props;
+  const { onConfirmAndLock } = props;
   const [hasUserConfirmed, setHasUserConfirmed] = useState(false);
 
   return (
-    <StackingStep title={title} step={step} isComplete={false} mb="300px">
+    <StackingStep title="Confirm and stack" mb="300px">
       <DirectStackingTerms mt="loose" />
       <StackingUserConfirm
         onChange={useConfirmed => setHasUserConfirmed(useConfirmed)}
         mt="extra-loose"
       />
-      <StackingStepAction
-        onClick={onConfirmAndLock}
-        isDisabled={!formComplete || !hasUserConfirmed}
-      >
+      <StackingStepAction onClick={onConfirmAndLock} isDisabled={!hasUserConfirmed} type="submit">
         Confirm and start stacking
       </StackingStepAction>
     </StackingStep>

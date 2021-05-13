@@ -1,8 +1,16 @@
 import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
+import * as yup from 'yup';
+import { Form, Formik } from 'formik';
 
+import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
+import { useBalance } from '@hooks/use-balance';
+import { validateDecimalPrecision } from '@utils/form/validate-decimals';
+import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
 import { StackingModal } from '@modals/stacking/stacking-modal';
+import { btcAddressSchema } from '@utils/validators/btc-address-validator';
 import { useBackButton } from '@hooks/use-back-url';
 import routes from '@constants/routes.json';
 import { RootState } from '@store/index';
@@ -16,13 +24,12 @@ import {
 
 import { StackingLayout } from '../components/stacking-layout';
 import { StackingFormContainer } from '../components/stacking-form-container';
-import { ChooseBtcAddressStep } from './components/choose-btc-address';
-import { useStackingFormStep } from '../utils/use-stacking-form-step';
+import { ChooseBtcAddressField } from './components/choose-btc-address';
 
 import { DirectStackingInfoCard } from './components/direct-stacking-info-card';
 import { DirectStackingIntro } from './components/direct-stacking-intro';
-import { ChooseCycleStep } from './components/choose-cycles';
-import { ChooseDirectStackingAmountStep } from './components/choose-direct-stacking-amount';
+import { ChooseCycleField } from './components/choose-cycles';
+import { ChooseDirectStackingAmountField } from './components/choose-direct-stacking-amount';
 import { ConfirmAndStackStep } from './components/confirm-and-stack';
 import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';
 import { StackingGuideCard } from '../components/stacking-guide-card';
@@ -33,104 +40,134 @@ enum StackingStep {
   ChooseBtcAddress = 'Add your Bitcoin address',
 }
 
-const cyclesWithDefault = (numCycles: null | number) => numCycles ?? 1;
+const cyclesWithDefault = (numCycles: null | undefined | number) => numCycles ?? 1;
+
+interface DirectStackingForm {
+  amount: string;
+  btcAddress: string;
+  cycles: number;
+}
+
+const initialDirectStackingFormValues: DirectStackingForm = {
+  amount: '',
+  btcAddress: '',
+  cycles: 1,
+};
 
 export const DirectStacking: FC = () => {
   useBackButton(routes.CHOOSE_STACKING_METHOD);
-
-  const [amount, setAmount] = useState<BigNumber | null>(null);
-  const [cycles, setCycles] = useState<number | null>(null);
-  const [btcAddress, setBtcAddress] = useState<string | null>(null);
+  const { availableBalance, availableBalanceValidator } = useBalance();
   const [modalOpen, setModalOpen] = useState(false);
+  const [formValues, setFormValues] = useState<null | DirectStackingForm>(null);
 
-  const steps = useStackingFormStep<StackingStep>({
-    [StackingStep.ChooseAmount]: amount !== null,
-    [StackingStep.ChooseCycles]: cycles !== null,
-    [StackingStep.ChooseBtcAddress]: btcAddress !== null,
-  });
-
-  const { stackingCycleDuration, oneCycleDuration, nextCycleInfo, poxInfo } = useSelector(
-    (state: RootState) => ({
-      walletType: selectWalletType(state),
-      activeNode: selectActiveNodeApi(state),
-      oneCycleDuration: selectEstimatedStackingDuration(1)(state),
-      stackingCycleDuration: selectEstimatedStackingDuration(cyclesWithDefault(cycles))(state),
-      nextCycleInfo: selectNextCycleInfo(state),
-      poxInfo: selectPoxInfo(state),
-    })
-  );
+  const { stackingCycleDuration, nextCycleInfo, poxInfo } = useSelector((state: RootState) => ({
+    walletType: selectWalletType(state),
+    activeNode: selectActiveNodeApi(state),
+    stackingCycleDuration: selectEstimatedStackingDuration(cyclesWithDefault(formValues?.cycles))(
+      state
+    ),
+    nextCycleInfo: selectNextCycleInfo(state),
+    poxInfo: selectPoxInfo(state),
+  }));
 
   if (nextCycleInfo === null || poxInfo === null) return null;
+
+  const validationSchema = yup.object().shape({
+    amount: stxAmountSchema()
+      .test(availableBalanceValidator())
+      .test('test-precision', 'You cannot stack with a precision of less than 1 STX', value => {
+        // If `undefined`, throws `required` error
+        if (value === undefined) return true;
+        return validateDecimalPrecision(0)(value);
+      })
+      .test({
+        name: 'test-fee-margin',
+        message: 'You must stack less than your entire balance to allow for the transaction fee',
+        test: value => {
+          if (value === null || value === undefined) return false;
+          const uStxInput = stxToMicroStx(value);
+          return !uStxInput.isGreaterThan(availableBalance.minus(STACKING_CONTRACT_CALL_FEE));
+        },
+      })
+      .test({
+        name: 'test-min-utx',
+        message: `You must stack with at least ${toHumanReadableStx(
+          poxInfo.paddedMinimumStackingAmountMicroStx
+        )} `,
+        test: value => {
+          if (value === null || value === undefined) return false;
+          const uStxInput = stxToMicroStx(value);
+          return new BigNumber(poxInfo.paddedMinimumStackingAmountMicroStx).isLessThanOrEqualTo(
+            uStxInput
+          );
+        },
+      }),
+    cycles: yup.number().defined(),
+    btcAddress: btcAddressSchema(),
+  });
+
+  const openStackingTxSigningModal = (formValues: DirectStackingForm) => {
+    setFormValues(formValues);
+    setModalOpen(true);
+  };
 
   const stackingIntro = (
     <DirectStackingIntro timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle} />
   );
 
-  const stackingInfoCard = (
-    <StackingFormInfoPanel>
-      <DirectStackingInfoCard
-        cycles={cyclesWithDefault(cycles)}
-        balance={amount}
-        startDate={nextCycleInfo.nextCycleStartingAt}
-        blocksPerCycle={poxInfo.reward_cycle_length}
-        duration={stackingCycleDuration}
-      />
-      <StackingGuideCard mt="loose" />
-    </StackingFormInfoPanel>
-  );
-
-  const stackingForm = (
-    <StackingFormContainer>
-      <ChooseDirectStackingAmountStep
-        title={StackingStep.ChooseAmount}
-        isComplete={steps.getIsComplete(StackingStep.ChooseAmount)}
-        value={amount}
-        minimumAmountToStack={poxInfo.paddedMinimumStackingAmountMicroStx}
-        onEdit={() => steps.open(StackingStep.ChooseAmount)}
-        onComplete={amount => setAmount(amount)}
-      />
-      <ChooseCycleStep
-        title={StackingStep.ChooseCycles}
-        cycles={cyclesWithDefault(cycles)}
-        cycleDuration={oneCycleDuration}
-        isComplete={steps.getIsComplete(StackingStep.ChooseCycles)}
-        onEdit={() => steps.open(StackingStep.ChooseCycles)}
-        onComplete={cycles => setCycles(cycles)}
-        onUpdate={cycle => setCycles(cycle)}
-      />
-      <ChooseBtcAddressStep
-        title={StackingStep.ChooseBtcAddress}
-        description="Choose the address where you’d like to receive bitcoin."
-        value={btcAddress || undefined}
-        isComplete={steps.getIsComplete(StackingStep.ChooseBtcAddress)}
-        onEdit={() => steps.open(StackingStep.ChooseBtcAddress)}
-        onComplete={address => setBtcAddress(address)}
-      />
-      <ConfirmAndStackStep
-        title="Confirm and stack"
-        formComplete={steps.allComplete}
-        estimatedDuration={stackingCycleDuration}
-        timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle}
-        onConfirmAndLock={() => setModalOpen(true)}
-      />
-    </StackingFormContainer>
-  );
-
   return (
     <>
-      {modalOpen && btcAddress && amount !== null && (
+      {modalOpen && formValues && (
         <StackingModal
           onClose={() => setModalOpen(false)}
-          amountToStack={amount}
-          numCycles={cyclesWithDefault(cycles)}
-          poxAddress={btcAddress}
+          amountToStack={new BigNumber(formValues.amount)}
+          numCycles={cyclesWithDefault(formValues.cycles)}
+          poxAddress={formValues.btcAddress}
         />
       )}
-      <StackingLayout
-        intro={stackingIntro}
-        stackingInfoPanel={stackingInfoCard}
-        stackingForm={stackingForm}
-      />
+      <Formik
+        initialValues={initialDirectStackingFormValues}
+        onSubmit={values => openStackingTxSigningModal(values)}
+        validationSchema={validationSchema}
+      >
+        {({ values }) => {
+          return (
+            <StackingLayout
+              intro={stackingIntro}
+              stackingInfoPanel={
+                <StackingFormInfoPanel>
+                  <DirectStackingInfoCard
+                    cycles={cyclesWithDefault(values.cycles)}
+                    amount={values.amount}
+                    btcAddress={values.btcAddress}
+                    startDate={nextCycleInfo.nextCycleStartingAt}
+                    blocksPerCycle={poxInfo.reward_cycle_length}
+                    duration={stackingCycleDuration}
+                  />
+                  <StackingGuideCard mt="loose" />
+                </StackingFormInfoPanel>
+              }
+              stackingForm={
+                <Form>
+                  <StackingFormContainer>
+                    <ChooseDirectStackingAmountField
+                      title={StackingStep.ChooseAmount}
+                      minimumAmountToStack={poxInfo.paddedMinimumStackingAmountMicroStx}
+                    />
+                    <ChooseCycleField cycles={cyclesWithDefault(values.cycles)} />
+                    <ChooseBtcAddressField />
+                    <ConfirmAndStackStep
+                      estimatedDuration={stackingCycleDuration}
+                      timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle}
+                      onConfirmAndLock={() => setModalOpen(true)}
+                    />
+                  </StackingFormContainer>
+                </Form>
+              }
+            />
+          );
+        }}
+      </Formik>
     </>
   );
 };

@@ -13,6 +13,7 @@ import { DurationSelectItem } from './duration-select-item';
 import { DurationCyclesForm } from './duration-cycles-form';
 import { LimitedStackingIcon } from './limited-stacking-icon';
 import { IndefiniteStackingIcon } from './indefinite-stacking-icon';
+import { OneCycleDescriptor } from '../../components/one-cycle-descriptor';
 
 export const ChoosePoolingDurationField: FC = () => {
   const [durationTypeField, durationMeta, durationTypeHelpers] = useField('delegationType');
@@ -54,6 +55,7 @@ export const ChoosePoolingDurationField: FC = () => {
           manually at any time to prevent further locks.
         </DurationSelectItem>
       </Stack>
+      <OneCycleDescriptor mt="loose" />
       {durationMeta.touched && durationMeta.error && (
         <ErrorLabel mt="base-loose">
           <ErrorText>{durationMeta.error}</ErrorText>

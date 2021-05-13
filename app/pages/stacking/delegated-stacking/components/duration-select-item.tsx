@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC } from 'react';
 import { Box, color, Flex, FlexProps, Text } from '@stacks/ui';
 import { useFocus } from 'use-events';
 
@@ -20,6 +20,7 @@ export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
       minHeight="72px"
       p="base-loose"
       as="label"
+      htmlFor={delegationType}
       border={`1px solid ${color('border')}`}
       borderRadius="12px"
       position="relative"
@@ -54,7 +55,7 @@ export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
               {title}
             </Text>
             <Text
-              textStyle="caption"
+              textStyle="body.small"
               color={color('text-caption')}
               mt="tight"
               display="inline-block"
@@ -67,6 +68,7 @@ export const DurationSelectItem: FC<DurationSelectItemProps> = props => {
         <Flex ml="loose" alignItems="center">
           <input
             type="radio"
+            id={delegationType}
             name="delegationType"
             value={delegationType}
             checked={delegationType === activeDelegationType}

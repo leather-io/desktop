@@ -29,7 +29,7 @@ export const StackingStepAction: ForwardRefExoticComponentWithAs<
   ButtonProps,
   'button'
 > = forwardRefWithAs(({ children, ...props }, ref) => (
-  <Button size="md" mt="loose" ref={ref} {...props} w>
+  <Button size="md" mt="loose" ref={ref} {...props}>
     {children}
   </Button>
 ));

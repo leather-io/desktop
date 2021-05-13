@@ -10,7 +10,7 @@ import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
 import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';
-import { selectPoxInfo } from '@store/stacking';
+import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';
 import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
 import { stxAddressSchema } from '@utils/validators/stx-address-validator';
 import {
@@ -34,25 +34,25 @@ import { selectAddress } from '@store/keys';
 type Nullable<T> = { [K in keyof T]: T[K] | null };
 
 interface PoolingFormIndefiniteValues {
+  delegationType: 'indefinite';
   amount: number;
   stxAddress: string;
-  delegationType: 'indefinite';
 }
 
 interface PoolingFormLimitedValues {
-  amount: number;
-  stxAddress: string;
   delegationType: 'limited';
+  amount: string;
+  stxAddress: string;
   cycles: number;
 }
 
 type PoolingFormValues = PoolingFormIndefiniteValues | PoolingFormLimitedValues;
 
 const initialPoolingFormValues: Nullable<PoolingFormValues> = {
-  amount: (undefined as unknown) as null,
+  amount: '',
   stxAddress: '',
   delegationType: null,
-  cycles: null,
+  cycles: 1,
 };
 
 export const StackingDelegation: FC = () => {
@@ -61,9 +61,10 @@ export const StackingDelegation: FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [formValues, setFormValues] = useState<null | PoolingFormValues>(null);
 
-  const { poxInfo, address } = useSelector((state: RootState) => ({
+  const { poxInfo, address, nextCycleInfo } = useSelector((state: RootState) => ({
     poxInfo: selectPoxInfo(state),
     address: selectAddress(state),
+    nextCycleInfo: selectNextCycleInfo(state),
   }));
 
   const cyclesToUntilBurnBlockHeight = useCallback(
@@ -95,7 +96,7 @@ export const StackingDelegation: FC = () => {
         message: `You must delegate at least ${toHumanReadableStx(
           MIN_DELEGATED_STACKING_AMOUNT_USTX
         )}`,
-        test: (value: any) => {
+        test(value: any) {
           if (value === null || value === undefined) return false;
           const enteredAmount = stxToMicroStx(value);
           return enteredAmount.isGreaterThanOrEqualTo(MIN_DELEGATED_STACKING_AMOUNT_USTX);
@@ -106,7 +107,7 @@ export const StackingDelegation: FC = () => {
         message: `You cannot delegate more than ${toHumanReadableStx(
           MAX_DELEGATED_STACKING_AMOUNT_USTX.toString()
         )}`,
-        test: (value: any) => {
+        test(value: any) {
           if (value === null || value === undefined) return false;
           const enteredAmount = stxToMicroStx(value);
           return enteredAmount.isLessThanOrEqualTo(MAX_DELEGATED_STACKING_AMOUNT_USTX);
@@ -114,11 +115,13 @@ export const StackingDelegation: FC = () => {
       }),
   });
 
-  const handleSubmit = values => {
+  const handleSubmit = (values: PoolingFormValues) => {
     console.log(values);
     setFormValues(values);
     setModalOpen(true);
   };
+
+  if (nextCycleInfo === null) return null;
 
   return (
     <>
@@ -135,7 +138,7 @@ export const StackingDelegation: FC = () => {
         />
       )}
       <Formik
-        initialValues={initialPoolingFormValues}
+        initialValues={initialPoolingFormValues as PoolingFormValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
         // remove this style of validation
@@ -148,7 +151,9 @@ export const StackingDelegation: FC = () => {
       >
         {({ submitForm, values }) => (
           <StackingLayout
-            intro={<PooledStackingIntro />}
+            intro={
+              <PooledStackingIntro timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle} />
+            }
             stackingInfoPanel={
               <StackingFormInfoPanel>
                 <PoolingInfoCard

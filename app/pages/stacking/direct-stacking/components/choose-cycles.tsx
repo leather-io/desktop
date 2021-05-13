@@ -1,47 +1,50 @@
 import React, { FC } from 'react';
+import { useField } from 'formik';
 
 import { Stepper } from '@components/stepper';
 import { MAX_STACKING_CYCLES, MIN_STACKING_CYCLES } from '@constants/index';
-import { formatCycles } from '@utils/stacking';
 
-import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
   StackingStep as Step,
-  StackingStepAction as Action,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { OneCycleDescriptor } from '../../components/one-cycle-descriptor';
 
-interface ChooseCycleStepProps extends StackingStepBaseProps {
+interface ChooseCycleStepProps {
   cycles: number;
-  cycleDuration: string;
-  onEdit(): void;
-  onComplete(cycle: number): void;
-  onUpdate(cycle: number): void;
 }
 
-export const ChooseCycleStep: FC<ChooseCycleStepProps> = props => {
-  const { isComplete, cycleDuration, step, cycles, title, onUpdate, onEdit, onComplete } = props;
-  const value = `${formatCycles(cycles)} selected`;
+export const ChooseCycleField: FC<ChooseCycleStepProps> = props => {
+  const { cycles } = props;
+  const [_field, meta, helpers] = useField('cycles');
+
   return (
-    <Step step={step} title={title} value={value} isComplete={isComplete} onEdit={onEdit}>
+    <Step title="Duration">
       <Description>
-        Choose the amount of cycles to lock your STX. One cycle typically lasts {cycleDuration},
-        depending on the Bitcoin block time. At the end of each cycle, you'll have the chance to
-        earn bitcoin.
+        Every cycle, each of your reward slots will be eligible for rewards. After your chosen
+        duration, you’ll need to wait one cycle before you can stack from this address again.
       </Description>
+
       <Stepper
         mt="loose"
         amount={cycles}
         onIncrement={cycle => {
           if (cycle > MAX_STACKING_CYCLES) return;
-          onUpdate(cycle);
+          helpers.setValue(cycle);
         }}
         onDecrement={cycle => {
           if (cycle < MIN_STACKING_CYCLES) return;
-          onUpdate(cycle);
+          helpers.setValue(cycle);
         }}
       />
-      <Action onClick={() => onComplete(cycles)}>Continue</Action>
+      <OneCycleDescriptor mt="loose" />
+      {meta.touched && meta.error && (
+        <ErrorLabel>
+          <ErrorText>{meta.error}</ErrorText>
+        </ErrorLabel>
+      )}
     </Step>
   );
 };

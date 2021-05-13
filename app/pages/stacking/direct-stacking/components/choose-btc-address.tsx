@@ -1,17 +1,13 @@
 import React, { FC, memo } from 'react';
-import { useFormik } from 'formik';
-import { validate, getAddressInfo } from 'bitcoin-address-validation';
+import { useField } from 'formik';
 
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { isMainnet, isTestnet } from '@utils/network-utils';
-import { STACKING_ADDRESS_FORMAT_HELP_URL, SUPPORTED_BTC_ADDRESS_FORMATS } from '@constants/index';
+import { STACKING_ADDRESS_FORMAT_HELP_URL } from '@constants/index';
 import { ExternalLink } from '@components/external-link';
 
-import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
 import {
   StackingStep as Step,
-  StackingStepAction as Action,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
 import { CryptoAddressInput } from '../../components/crypto-address-form';
@@ -43,60 +39,22 @@ const StackingAddressErrorExplainer = memo(() => (
   </>
 ));
 
-interface ChooseBtcAddressStepProps extends StackingStepBaseProps {
-  description: string;
-  value?: string;
-  onEdit(): void;
-  onComplete(address: string): void;
-}
+export const ChooseBtcAddressField: FC = () => {
+  const [field, meta] = useField('btcAddress');
 
-export const ChooseBtcAddressStep: FC<ChooseBtcAddressStepProps> = props => {
-  const { isComplete, description, step, title, value, onEdit, onComplete } = props;
-
-  const form = useFormik({
-    initialValues: { btcAddress: '' },
-    validate: ({ btcAddress }) => {
-      const isValid = validate(btcAddress);
-      if (!isValid) {
-        return {
-          btcAddress: `The address you've entered is invalid`,
-        };
-      }
-      const validationReport = getAddressInfo(btcAddress);
-      if (!validationReport) return { btcAddress: 'Invalid BTC address' };
-      if (isMainnet() && validationReport.network === 'testnet') {
-        return { btcAddress: 'Testnet addresses not supported on Mainnet' };
-      }
-      if (isTestnet() && validationReport.network !== 'testnet') {
-        return { btcAddress: 'Mainnet addresses not supported on Testnet' };
-      }
-      // https://github.com/blockstack/stacks-blockchain/issues/1902
-      if (!SUPPORTED_BTC_ADDRESS_FORMATS.includes(validationReport.type as any)) {
-        return { btcAddress: 'is-bech32' };
-      }
-      return {};
-    },
-    onSubmit: ({ btcAddress }) => onComplete(btcAddress),
-  });
-
-  const errors = form.errors.btcAddress ? (
+  const errors = meta.error ? (
     <ErrorLabel maxWidth="430px">
       <ErrorText lineHeight="18px">
-        {form.errors.btcAddress === 'is-bech32' ? (
-          <StackingAddressErrorExplainer />
-        ) : (
-          form.errors.btcAddress
-        )}
+        {meta.error === 'is-bech32' ? <StackingAddressErrorExplainer /> : meta.error}
       </ErrorText>
     </ErrorLabel>
   ) : null;
 
   return (
-    <Step title={title} step={step} value={value} isComplete={isComplete} onEdit={onEdit}>
-      <Description>{description}</Description>
-      <CryptoAddressInput form={form} fieldName="btcAddress" placeholder="Bitcoin address">
-        {form.touched.btcAddress && errors}
-        <Action type="submit">Continue</Action>
+    <Step title="Bitcoin address">
+      <Description>Choose the address where you’d like to receive bitcoin.</Description>
+      <CryptoAddressInput fieldName="btcAddress" placeholder="Bitcoin address" {...field}>
+        {meta.touched && errors}
       </CryptoAddressInput>
     </Step>
   );

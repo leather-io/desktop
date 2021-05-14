@@ -55,7 +55,7 @@ enum TxModalStep {
   NetworkError,
 }
 
-export const TransactionModal: FC<TxModalProps> = ({ address, isOpen }) => {
+export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const stacksApi = useApi();

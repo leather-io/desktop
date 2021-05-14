@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Flex, Box, Text, color, Button } from '@stacks/ui';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,19 +7,29 @@ import { useCalculateFee } from '@hooks/use-calculate-fee';
 import { useBalance } from '@hooks/use-balance';
 import { isRevokingDelegationTx, truncateMiddle } from '@utils/tx-utils';
 import { toHumanReadableStx } from '@utils/unit-convert';
-import { DelegatedIcon } from '@components/icons/delegated-icon';
-import { selectPoxInfo } from '@store/stacking';
+import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
 import { homeActions } from '@store/home/home.reducer';
 import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
 import { useMempool } from '@hooks/use-mempool';
+import pooledStackingImg from '@assets/images/pooled-stacking-swimming-pool.svg';
+import {
+  InfoCard,
+  InfoCardGroup,
+  InfoCardLabel as Label,
+  InfoCardRow as Row,
+  InfoCardSection as Section,
+  InfoCardValue as Value,
+} from '@components/info-card';
+import { Hr } from '@components/hr';
+import { IconBan } from '@tabler/icons';
+import { Title } from '@components/title';
 
 export const DelegationCard: FC = () => {
   const dispatch = useDispatch();
   const { outboundMempoolTxs } = useMempool();
   const delegationStatus = useDelegationStatus();
   const poxInfo = useSelector(selectPoxInfo);
+  const stackerInfo = useSelector(selectStackerInfo);
 
   const hasPendingRevokeCall = outboundMempoolTxs.some(tx =>
     isRevokingDelegationTx(tx, poxInfo?.contract_id)
@@ -28,94 +38,132 @@ export const DelegationCard: FC = () => {
   const balance = useBalance();
   const calculateFee = useCalculateFee();
 
+  const revocationFee = useMemo(() => calculateFee(REVOKE_DELEGATION_TX_SIZE_BYTES), [
+    calculateFee,
+  ]);
   const hasSufficientBalanceToCoverFee = balance.availableBalance.isGreaterThanOrEqualTo(
-    calculateFee(REVOKE_DELEGATION_TX_SIZE_BYTES)
+    revocationFee
   );
 
   if (!delegationStatus.delegated) return null;
 
   return (
-    <Flex
-      flexDirection="column"
-      mt="extra-loose"
-      borderRadius="8px"
-      boxShadow="0px 1px 2px rgba(0, 0, 0, 0.04);"
-      border={`1px solid ${color('border')}`}
-      minHeight="180px"
-    >
-      <Box>
-        <Flex mt="loose" justifyContent="center">
-          <DelegatedIcon size="44px" />
-        </Flex>
-        <Text
-          display="block"
-          color={color('text-caption')}
-          textStyle="caption"
-          mt="tight"
-          textAlign="center"
-        >
-          You've delegated up to
-        </Text>
-        <Flex justifyContent="center" mt="tight">
-          <Text textStyle="body.large.medium" fontSize="24px">
-            {toHumanReadableStx(delegationStatus.amountMicroStx.toString())}
-          </Text>
-        </Flex>
-        <Box mr="2px">
-          <Flex flexDirection="column" alignItems="center" mt="base-tight" mb="base">
-            <Text textStyle="caption" color={color('text-caption')}>
-              Delegated to
-            </Text>
-            <Text fontSize="13px" mt="tight" color={color('text-title')}>
-              {truncateMiddle(delegationStatus.delegatedTo, 6)}
-            </Text>
-            {delegationStatus.deadDelegation && (
-              <Flex flexDirection="column" alignItems="center" mt="base">
-                <ErrorLabel mt="1px" px="loose">
-                  <ErrorText>
-                    Your delegation has expired. Your pool is no longer able to stack on your
-                    behalf. Revoke your delegation and reinitiate if you wish to continue Stacking.
-                  </ErrorText>
-                </ErrorLabel>
-              </Flex>
-            )}
-          </Flex>
-        </Box>
-        <Box borderTop={`1px solid ${color('border')}`} py="extra-tight" px="extra-tight">
-          {hasSufficientBalanceToCoverFee ? (
-            <Button
-              variant="link"
-              border={0}
-              py="base-tight"
-              px="base"
-              textStyle="body.small"
-              color={color('text-body')}
-              pointerEvents={
-                hasPendingRevokeCall || !hasSufficientBalanceToCoverFee ? 'none' : 'all'
-              }
-              cursor={
-                hasPendingRevokeCall || !hasSufficientBalanceToCoverFee ? 'not-allowed' : 'unset'
-              }
-              onClick={() => dispatch(homeActions.openRevokeDelegationModal())}
-            >
-              {hasPendingRevokeCall ? 'Currently revoking STX' : 'Revoke delegation'}
-            </Button>
-          ) : (
+    <InfoCard minHeight="180px" mt="extra-loose" px={['loose', 'extra-loose']}>
+      <Flex mt="loose">
+        <img
+          src={pooledStackingImg}
+          alt="Colourful illustration of a diving board protruding out of a blue hole"
+        />
+      </Flex>
+
+      {!delegationStatus.deadDelegation && (
+        <>
+          <Flex flexDirection="column" mt="base-loose" pb="base-loose">
+            <Text textStyle="body.large.medium">You're pooling</Text>
             <Text
-              mx="base-loose"
-              my="tight"
-              textStyle="caption"
-              color={color('text-caption')}
-              lineHeight="18px"
-              display="block"
+              fontSize="24px"
+              mt="extra-tight"
+              fontWeight={500}
+              fontFamily="Open Sauce"
+              letterSpacing="-0.02em"
             >
-              You don't have enough unlocked STX to cover the transaction fee needed to revoke your
-              delegation. Please deposit a small amount of STX or wait for any locked STX to unlock
-              if you wish to revoke delegation.
+              {toHumanReadableStx(delegationStatus.amountMicroStx)}
             </Text>
-          )}
+          </Flex>
+          <Hr />
+          <InfoCardGroup my="loose">
+            <Section>
+              <Row>
+                <Label>Status</Label>
+                <Value
+                  color={color(
+                    stackerInfo?.isCurrentlyStacking ? 'feedback-success' : 'text-caption'
+                  )}
+                >
+                  {stackerInfo?.isCurrentlyStacking ? 'Active' : 'Waiting on pool'}
+                </Value>
+              </Row>
+              <Row>
+                <Label>Type</Label>
+                <Value>{delegationStatus.untilBurnHeight ? 'One time' : 'Indefinite'}</Value>
+              </Row>
+              <Row>
+                <Label>Progress</Label>
+                <Value>
+                  {stackerInfo?.stackingPercentage ? stackerInfo?.stackingPercentage : '0'}%
+                </Value>
+              </Row>
+            </Section>
+
+            <Section>
+              <Row>
+                <Label>Pool address</Label>
+                <Value>{truncateMiddle(delegationStatus.delegatedTo, 6)}</Value>
+              </Row>
+            </Section>
+
+            <Section>
+              <Row>
+                <Label>
+                  {hasSufficientBalanceToCoverFee ? (
+                    <Button
+                      variant="link"
+                      border={0}
+                      color={color('text-caption')}
+                      textStyle="body.small"
+                      fontSize="16px"
+                      pointerEvents={
+                        hasPendingRevokeCall || !hasSufficientBalanceToCoverFee ? 'none' : 'all'
+                      }
+                      cursor={
+                        hasPendingRevokeCall || !hasSufficientBalanceToCoverFee
+                          ? 'not-allowed'
+                          : 'unset'
+                      }
+                      onClick={() => dispatch(homeActions.openRevokeDelegationModal())}
+                    >
+                      <Box mr="extra-tight">
+                        <IconBan size="14px" />
+                      </Box>
+                      {hasPendingRevokeCall ? 'Currently revoking STX' : 'Revoke delegation'}
+                    </Button>
+                  ) : (
+                    <Text
+                      textStyle="caption"
+                      mb="tight"
+                      color={color('text-caption')}
+                      lineHeight="18px"
+                      display="block"
+                    >
+                      You don't have enough unlocked STX to cover the transaction fee needed to
+                      revoke your delegation. Please deposit a small amount of STX or wait for any
+                      locked STX to unlock if you wish to revoke delegation.
+                    </Text>
+                  )}
+                </Label>
+              </Row>
+            </Section>
+          </InfoCardGroup>
+        </>
+      )}
+
+      {delegationStatus.deadDelegation && (
+        <Box mt="base" mb="loose">
+          <Title fontSize="24px">You’ve finished pooling</Title>
+          <Text>
+            You pooled for 6 cycles. Revoke the pool’s permission to stack on your behalf to start
+            stacking again.
+          </Text>
+          <Box color={color('text-caption')} mt="loose">
+            Fees: <Text color={color('text-body')}>{toHumanReadableStx(revocationFee)}</Text>
+          </Box>
+          <Box>
+            <Button onClick={() => dispatch(homeActions.openRevokeDelegationModal())} mt="loose">
+              Revoke permission
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Flex>
+      )}
+    </InfoCard>
   );
 };

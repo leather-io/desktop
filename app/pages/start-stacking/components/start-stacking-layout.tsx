@@ -57,15 +57,20 @@ export const StackingOptionCardBenefitContainer: FC<BoxProps> = props => (
   <Box mt={['tight', 'base', 'base', 'extra-loose']} mb="extra-loose" {...props} />
 );
 
-export const StackingOptionCardBenefit: FC<BoxProps> = props => (
-  <Text
-    display="block"
-    textStyle="body.large.medium"
-    color={color('text-body')}
-    mt="base"
-    {...props}
-  />
-);
+interface StackingOptionCardBenefitProps extends BoxProps {
+  icon: FC;
+}
+export const StackingOptionCardBenefit: FC<StackingOptionCardBenefitProps> = props => {
+  const { icon: Icon, ...rest } = props;
+  return (
+    <Flex alignItems="center" my="base">
+      <Flex width="32px" justifyContent="center" alignItems="center" mr="tight">
+        <Icon />
+      </Flex>
+      <Text display="block" textStyle="body.large.medium" color={color('text-body')} {...rest} />
+    </Flex>
+  );
+};
 
 export const StackingOptionCardButton: FC<ButtonProps> = props => (
   <Button alignSelf="flex-start" mt="base" {...((props as unknown) as any)} />

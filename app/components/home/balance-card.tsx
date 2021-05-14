@@ -11,13 +11,12 @@ import { ExternalLink } from '@components/external-link';
 import { makeExplorerAddressLink } from '@utils/external-links';
 import { isTestnet } from '@utils/network-utils';
 import { useBalance } from '@hooks/use-balance';
+import { Title } from '@components/title';
 
 interface BalanceCardProps {
   address: string | null;
   onSelectSend(): void;
-
   onSelectReceive(): void;
-
   onRequestTestnetStx({ stacking }: { stacking: boolean }): Promise<any>;
 }
 
@@ -52,9 +51,9 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
           </ExternalLink>
         )}
       </Flex>
-      <Text fontSize="40px" lineHeight="56px" fontWeight="bold" letterSpacing="-0.01em">
+      <Title fontSize="40px" lineHeight="56px">
         {availableBalance === null ? '–' : toHumanReadableStx(availableBalance.toString())}
-      </Text>
+      </Title>
 
       {features.stacking && lockedBalance !== null && lockedBalance.isGreaterThan(0) && (
         <Flex

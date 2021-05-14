@@ -4,22 +4,30 @@ import { validateAddressChain } from '../../crypto/validate-address-net';
 import { NETWORK } from '@constants/index';
 
 export function stxAddressSchema() {
+  let timer = 0;
   return yup
     .string()
     .defined('Must define a STX address')
     .test({
       name: 'address-validation',
-      test(value: any) {
-        if (!value) return false;
-        const valid = validateStacksAddress(value);
+      async test(value: any, context) {
+        return new Promise(resolve => {
+          clearTimeout(timer);
+          timer = window.setTimeout(() => {
+            if (!value) return resolve(false);
+            const valid = validateStacksAddress(value);
 
-        if (!valid) {
-          return this.createError({ message: 'Input address is not a valid STX address' });
-        }
-        if (!validateAddressChain(value)) {
-          return this.createError({ message: `Must use a ${NETWORK} STX address` });
-        }
-        return true;
+            if (!valid) {
+              return resolve(
+                context.createError({ message: 'Input address is not a valid STX address' })
+              );
+            }
+            if (!validateAddressChain(value)) {
+              return resolve(context.createError({ message: `Must use a ${NETWORK} STX address` }));
+            }
+            return resolve(true);
+          }, 400);
+        });
       },
     });
 }

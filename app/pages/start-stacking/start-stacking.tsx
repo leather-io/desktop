@@ -25,11 +25,16 @@ import { ExplainerTooltip } from '@components/tooltip';
 import divingBoardIllustration from '@assets/images/stack-in-a-pool.svg';
 import fishBowlIllustration from '@assets/images/stack-by-yourself.svg';
 import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
+import { IconUser, IconChartLine, IconLock, IconUserMinus } from '@tabler/icons';
+import { StepsIcon } from '@components/icons/steps';
+import { useModifierKey } from '@hooks/use-modifier-key';
 
 export const ChooseStackingMethod: FC = () => {
   const history = useHistory();
   useBackButton(routes.HOME);
   const [columnBreakpoint] = useMediaQuery('(min-width: 991px)');
+
+  const { isPressed: holdingAltKey } = useModifierKey('alt', 1000);
 
   const { availableBalance } = useBalance();
 
@@ -37,11 +42,9 @@ export const ChooseStackingMethod: FC = () => {
 
   if (!poxInfo) return null;
 
-  // const meetsMinThreshold = availableBalance
-  //   .plus(STACKING_CONTRACT_CALL_FEE)
-  //   .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
-
-  const meetsMinThreshold = true;
+  const meetsMinThreshold = availableBalance
+    .plus(STACKING_CONTRACT_CALL_FEE)
+    .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
 
   const sufficientBalanceToCoverFee = availableBalance.isGreaterThan(STACKING_CONTRACT_CALL_FEE);
 
@@ -63,22 +66,24 @@ export const ChooseStackingMethod: FC = () => {
           </Description>
 
           <OptionBenefitContainer>
-            <OptionBenefit>A pool stacks on your behalf</OptionBenefit>
-            <OptionBenefit>More predictable returns</OptionBenefit>
-            <Flex alignItems="baseline">
-              <OptionBenefit>No minimum required</OptionBenefit>
-              <Box ml="extra-tight" mt="tight">
-                <ExplainerTooltip>
-                  Your chosen pool may set their own minimum amount to participate
-                </ExplainerTooltip>
-              </Box>
-            </Flex>
+            <OptionBenefit icon={IconUser}>A pool stacks on your behalf</OptionBenefit>
+            <OptionBenefit icon={IconChartLine}>More predictable returns</OptionBenefit>
+            <OptionBenefit icon={StepsIcon}>
+              <Flex>
+                No minimum required
+                <Box ml="extra-tight" alignSelf="center">
+                  <ExplainerTooltip>
+                    Your chosen pool may set their own minimum amount to participate
+                  </ExplainerTooltip>
+                </Box>
+              </Flex>
+            </OptionBenefit>
           </OptionBenefitContainer>
 
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.DELEGATED_STACKING)}
-              isDisabled={!sufficientBalanceToCoverFee}
+              isDisabled={!sufficientBalanceToCoverFee && !holdingAltKey}
             >
               Stack in a pool
             </OptionButton>
@@ -105,9 +110,9 @@ export const ChooseStackingMethod: FC = () => {
           </Description>
 
           <OptionBenefitContainer>
-            <OptionBenefit>Interact with the protocol directly</OptionBenefit>
-            <OptionBenefit>No intermediaries</OptionBenefit>
-            <OptionBenefit>
+            <OptionBenefit icon={IconLock}>Interact with the protocol directly</OptionBenefit>
+            <OptionBenefit icon={IconUserMinus}>No intermediaries</OptionBenefit>
+            <OptionBenefit icon={StepsIcon}>
               Minimum required to stack is{' '}
               {toHumanReadableStx(poxInfo?.paddedMinimumStackingAmountMicroStx || 0)}
             </OptionBenefit>
@@ -116,7 +121,7 @@ export const ChooseStackingMethod: FC = () => {
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.STACKING)}
-              isDisabled={!meetsMinThreshold}
+              isDisabled={!meetsMinThreshold && !holdingAltKey}
             >
               Stack by yourself
             </OptionButton>

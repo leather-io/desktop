@@ -33,22 +33,23 @@ import { selectAddress } from '@store/keys';
 
 type Nullable<T> = { [K in keyof T]: T[K] | null };
 
-interface PoolingFormIndefiniteValues {
+interface PoolingFormIndefiniteValues<N> {
   delegationType: 'indefinite';
-  amount: number;
+  amount: N;
   stxAddress: string;
 }
-
-interface PoolingFormLimitedValues {
+interface PoolingFormLimitedValues<N> {
   delegationType: 'limited';
-  amount: string;
+  amount: N;
   stxAddress: string;
   cycles: number;
 }
+type AbstractPoolingFormValues<N> = PoolingFormIndefiniteValues<N> | PoolingFormLimitedValues<N>;
 
-type PoolingFormValues = PoolingFormIndefiniteValues | PoolingFormLimitedValues;
+type EditingFormValues = AbstractPoolingFormValues<string | number>;
+type CompletedFormValues = AbstractPoolingFormValues<BigNumber>;
 
-const initialPoolingFormValues: Nullable<PoolingFormValues> = {
+const initialPoolingFormValues: Nullable<EditingFormValues> = {
   amount: '',
   stxAddress: '',
   delegationType: null,
@@ -59,7 +60,7 @@ export const StackingDelegation: FC = () => {
   useBackButton(routes.CHOOSE_STACKING_METHOD);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [formValues, setFormValues] = useState<null | PoolingFormValues>(null);
+  const [formValues, setFormValues] = useState<null | CompletedFormValues>(null);
 
   const { poxInfo, address, nextCycleInfo } = useSelector((state: RootState) => ({
     poxInfo: selectPoxInfo(state),
@@ -105,7 +106,7 @@ export const StackingDelegation: FC = () => {
       .test({
         name: 'test-max-allowed-delegated-stacking',
         message: `You cannot delegate more than ${toHumanReadableStx(
-          MAX_DELEGATED_STACKING_AMOUNT_USTX.toString()
+          MAX_DELEGATED_STACKING_AMOUNT_USTX
         )}`,
         test(value: any) {
           if (value === null || value === undefined) return false;
@@ -113,22 +114,22 @@ export const StackingDelegation: FC = () => {
           return enteredAmount.isLessThanOrEqualTo(MAX_DELEGATED_STACKING_AMOUNT_USTX);
         },
       }),
+    delegationType: yup.string().typeError(`Make sure to choose a duration you'd like to pool for`),
   });
 
-  const handleSubmit = (values: PoolingFormValues) => {
-    console.log(values);
-    setFormValues(values);
+  function handleSubmit(values: EditingFormValues) {
+    setFormValues({ ...values, amount: stxToMicroStx(values.amount) });
     setModalOpen(true);
-  };
+  }
 
   if (nextCycleInfo === null) return null;
 
   return (
     <>
-      {modalOpen && formValues && formValues.amount && formValues.stxAddress && (
+      {modalOpen && formValues && (
         <DelegatedStackingModal
           delegateeStxAddress={formValues.stxAddress}
-          amountToStack={new BigNumber(formValues.amount)}
+          amountToStack={formValues.amount}
           burnHeight={
             formValues.delegationType === 'limited'
               ? cyclesToUntilBurnBlockHeight(formValues.cycles)
@@ -138,16 +139,9 @@ export const StackingDelegation: FC = () => {
         />
       )}
       <Formik
-        initialValues={initialPoolingFormValues as PoolingFormValues}
+        initialValues={initialPoolingFormValues as EditingFormValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
-        // remove this style of validation
-        validate={({ delegationType }) => {
-          if (delegationType === null) {
-            return { delegationType: 'You must select a duration' };
-          }
-          return {};
-        }}
       >
         {({ submitForm, values }) => (
           <StackingLayout

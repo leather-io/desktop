@@ -112,7 +112,10 @@ export const DirectStacking: FC = () => {
   };
 
   const stackingIntro = (
-    <DirectStackingIntro timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle} />
+    <DirectStackingIntro
+      timeUntilNextCycle={nextCycleInfo.formattedTimeToNextCycle}
+      estimatedStackingMinimum={String(poxInfo.min_amount_ustx)}
+    />
   );
 
   return (

@@ -11,13 +11,13 @@ import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 import { truncateMiddle } from '@utils/tx-utils';
 import { formatCycles } from '@utils/stacking';
 import {
-  StackingInfoCard,
-  StackingInfoCardLabel as Label,
-  StackingInfoCardRow as Row,
-  StackingInfoCardGroup as Group,
-  StackingInfoCardValue as Value,
-  StackingInfoCardSection as Section,
-} from '../../components/stacking-info-card';
+  InfoCard,
+  InfoCardLabel as Label,
+  InfoCardRow as Row,
+  InfoCardGroup as Group,
+  InfoCardValue as Value,
+  InfoCardSection as Section,
+} from '../../../../components/info-card';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
 
 interface PoolingInfoCardProps extends FlexProps {
@@ -35,7 +35,7 @@ export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
   const calcFee = useCalculateFee();
 
   return (
-    <StackingInfoCard {...rest}>
+    <InfoCard {...rest}>
       <Box mx={['loose', 'extra-loose']}>
         <Flex flexDirection="column" pt="extra-loose" pb="base-loose">
           <Text textStyle="body.large.medium">You're pooling</Text>
@@ -83,11 +83,11 @@ export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
           <Section>
             <Row>
               <Label>Fee</Label>
-              <Value>{toHumanReadableStx(calcFee(POOLED_STACKING_TX_SIZE_BYTES).toString())}</Value>
+              <Value>{toHumanReadableStx(calcFee(POOLED_STACKING_TX_SIZE_BYTES))}</Value>
             </Row>
           </Section>
         </Group>
       </Box>
-    </StackingInfoCard>
+    </InfoCard>
   );
 };

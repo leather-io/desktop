@@ -6,7 +6,7 @@ import btcIllustration from '@assets/images/abstract-btc-tower.svg';
 import { openExternalLink } from '@utils/external-links';
 import { STACKING_GUIDE_URL } from '@constants/index';
 
-import { StackingInfoCard } from './stacking-info-card';
+import { InfoCard } from '@components/info-card';
 import { LegalDisclaimerTooltip } from '@components/legal-disclaimer-tooltip';
 
 const openStackingGuide = () => openExternalLink(STACKING_GUIDE_URL);
@@ -23,7 +23,7 @@ export const StackingGuideCard: FC<FlexProps> = props => {
         {...bindHover}
         {...bindFocus}
       >
-        <StackingInfoCard
+        <InfoCard
           flexDirection="row"
           p="base-loose"
           alignItems="center"
@@ -45,7 +45,7 @@ export const StackingGuideCard: FC<FlexProps> = props => {
               to get the most out of Stacking ↗
             </Text>
           </Text>
-        </StackingInfoCard>
+        </InfoCard>
       </Box>
     </LegalDisclaimerTooltip>
   );

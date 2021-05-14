@@ -50,9 +50,6 @@ export const ChooseDirectStackingAmountField: FC<ChooseAmountFieldProps> = props
     void helpers.setValue(updatedAmount.toString());
   }, [availableBalance, helpers]);
 
-  // const currentValue =
-  //   value === null ? toHumanReadableStx(0) : toHumanReadableStx(value.toString());
-
   if (poxInfo === null) return null;
 
   const numberOfRewardSlots = calculateRewardSlots(
@@ -112,9 +109,9 @@ export const ChooseDirectStackingAmountField: FC<ChooseAmountFieldProps> = props
             <Text>
               This entered amount would get you {numberOfRewardSlots.toString()} reward slot
               {numberOfRewardSlots.toNumber() === 1 ? '' : 's'} with a{' '}
-              {toHumanReadableStx((floorRoundedStxBuffer || 0).toString())} buffer at the current
-              minimum. However, that minimum is subject to change and there is no guarantee you will
-              get any reward slots.
+              {toHumanReadableStx(floorRoundedStxBuffer || 0)} buffer at the current minimum.
+              However, that minimum is subject to change and there is no guarantee you will get any
+              reward slots.
             </Text>
             <Text>
               You <strong>will not</strong> be able to add more STX for locking from this address

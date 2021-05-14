@@ -1,27 +1,26 @@
 import React, { FC } from 'react';
 import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
-
+import { useSelector } from 'react-redux';
 import { Box, Flex, FlexProps, Text } from '@stacks/ui';
 
 import { Hr } from '@components/hr';
 
-import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
-import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
-import {
-  StackingInfoCard,
-  StackingInfoCardLabel as Label,
-  StackingInfoCardRow as Row,
-  StackingInfoCardGroup as Group,
-  StackingInfoCardValue as Value,
-  StackingInfoCardSection as Section,
-} from '../../components/stacking-info-card';
-import { calculateStackingBuffer } from '../../utils/calc-stacking-buffer';
-import { useSelector } from 'react-redux';
 import { selectPoxInfo } from '@store/stacking';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
 import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
 import { truncateMiddle } from '@utils/tx-utils';
+import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
+import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import {
+  InfoCard,
+  InfoCardLabel as Label,
+  InfoCardRow as Row,
+  InfoCardGroup as Group,
+  InfoCardValue as Value,
+  InfoCardSection as Section,
+} from '../../../../components/info-card';
+import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -42,13 +41,18 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
     stxToMicroStx(parseNumericalFormInput(amount))
   ).integerValue();
 
+  const numberOfRewardSlots = calculateRewardSlots(
+    amountToBeStacked,
+    new BigNumber(poxInfo?.min_amount_ustx || 0)
+  ).integerValue();
+
   const buffer = calculateStackingBuffer(
     amountToBeStacked,
     new BigNumber(poxInfo?.min_amount_ustx || 0)
   );
 
   return (
-    <StackingInfoCard minHeight="84px" {...rest}>
+    <InfoCard minHeight="84px" {...rest}>
       <Box mx={['loose', 'extra-loose']}>
         <Flex flexDirection="column" pt="extra-loose" pb="base-loose">
           <Text textStyle="body.large.medium">You'll lock</Text>
@@ -59,24 +63,22 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
             fontFamily="Open Sauce"
             letterSpacing="-0.02em"
           >
-            {toHumanReadableStx(amountToBeStacked.toString())}
+            {toHumanReadableStx(amountToBeStacked)}
           </Text>
         </Flex>
         <Hr />
         <Group width="100%" mt="base-loose" mb="extra-loose">
           <Section>
             <Row>
-              <Label explainer="This is the estimated number of reward slots you'll get. Be aware the minimum can change before the next cycle begins.">
-                Reward slot
+              <Label explainer="This is the estimated number of reward slots. The minimum can change before the next cycle begins.">
+                Reward slots
               </Label>
-              <Value>xxx</Value>
+              <Value>{numberOfRewardSlots.toString()}</Value>
             </Row>
 
             <Row>
               <Label>Buffer</Label>
-              <Value>
-                {buffer.isEqualTo(0) ? 'No buffer' : toHumanReadableStx(buffer.toString())}
-              </Value>
+              <Value>{buffer.isEqualTo(0) ? 'No buffer' : toHumanReadableStx(buffer)}</Value>
             </Row>
           </Section>
 
@@ -118,6 +120,6 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
           </Section>
         </Group>
       </Box>
-    </StackingInfoCard>
+    </InfoCard>
   );
 };

@@ -18,7 +18,7 @@ import {
   HomeCardState,
 } from '@store/home';
 
-import { TransactionModal } from '@modals/send-stx/send-stx-modal';
+import { SendStxModal } from '@modals/send-stx/send-stx-modal';
 import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
 import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';
 
@@ -139,11 +139,7 @@ export const Home: FC = () => {
   return (
     <>
       <ReceiveStxModal isOpen={receiveModalOpen} />
-      <TransactionModal
-        isOpen={txModalOpen}
-        balance={availableBalance.toString()}
-        address={address}
-      />
+      <SendStxModal isOpen={txModalOpen} balance={availableBalance.toString()} address={address} />
       {revokeDelegationModalOpen && <RevokeDelegationModal />}
       <HomeLayout
         transactionList={transactionList}

@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useState, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -31,7 +31,7 @@ export const RevokeDelegationModal: FC = () => {
     null
   );
 
-  const getRevocationTxOptions = useCallback((): ContractCallOptions => {
+  const revocationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');
     return stackingClient.getRevokeDelegateStxOptions(poxInfo.contract_id);
   }, [poxInfo, stackingClient]);
@@ -55,7 +55,7 @@ export const RevokeDelegationModal: FC = () => {
   return (
     <TxSigningModal
       action="revoke delegation"
-      txDetails={getRevocationTxOptions()}
+      txDetails={revocationTxOptions}
       isBroadcasting={isBroadcasting}
       error={nodeResponseError}
       onTransactionSigned={tx => revokeDelegation(tx)}

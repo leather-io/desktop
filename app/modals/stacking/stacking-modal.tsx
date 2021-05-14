@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -46,7 +46,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
   const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
     null
   );
-  const createStackingTxOptions = useCallback(() => {
+  const stackingTxOptions = useMemo(() => {
     if (!poxInfo) throw new Error('poxInfo not defined');
     if (!coreNodeInfo) throw new Error('Stacking requires coreNodeInfo');
     return stackingClient.getStackOptions({
@@ -75,7 +75,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
   return (
     <TxSigningModal
       action="stack"
-      txDetails={createStackingTxOptions()}
+      txDetails={stackingTxOptions}
       isBroadcasting={isBroadcasting}
       error={nodeResponseError}
       onTryAgain={() => setNodeResponseError(null)}

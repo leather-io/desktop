@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import { color, Flex, FlexProps, Text } from '@stacks/ui';
-import { ClockIcon } from '@components/icons/clock';
+import { StepsIcon } from '@components/icons/steps';
 
-interface NextCycleStartTimeProps extends FlexProps {
-  nextCycleStartsIn: string;
+interface EstimatedMinimumLabelProps extends FlexProps {
+  estimatedStackingMinimum: string;
 }
-
-export const NextCycleStartTime: FC<NextCycleStartTimeProps> = props => {
-  const { nextCycleStartsIn, ...rest } = props;
+export const EstimatedMinimumLabel: FC<EstimatedMinimumLabelProps> = props => {
+  const { estimatedStackingMinimum, ...rest } = props;
   return (
     <Flex {...rest}>
       <Flex
@@ -18,11 +17,11 @@ export const NextCycleStartTime: FC<NextCycleStartTimeProps> = props => {
         alignItems="center"
         justifyContent="center"
       >
-        <ClockIcon size="14px" />
+        <StepsIcon size="14px" />
       </Flex>
       <Flex ml="base" flexDirection="column">
         <Text as="h4" display="block" textStyle="body.large.medium" lineHeight="20px">
-          Next cycle starts in
+          Estimated minimum
         </Text>
         <Text
           display="block"
@@ -31,7 +30,7 @@ export const NextCycleStartTime: FC<NextCycleStartTimeProps> = props => {
           lineHeight="20px"
           mt="extra-tight"
         >
-          {nextCycleStartsIn}
+          {estimatedStackingMinimum}
         </Text>
       </Flex>
     </Flex>

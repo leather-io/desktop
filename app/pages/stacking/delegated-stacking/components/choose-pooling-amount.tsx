@@ -25,7 +25,6 @@ export const ChoosePoolingAmountField: FC = () => {
         <Input
           id="stxAmount"
           mt="loose"
-          defaultValue={undefined}
           placeholder="Amount of STX to Stack"
           ref={inputRef}
           {...field}

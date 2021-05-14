@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -50,15 +50,16 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
   const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
     null
   );
-  const createDelegationTxOptions = useCallback((): ContractCallOptions => {
+  const delegationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');
+    console.log(amountToStack.toString());
     return stackingClient.getDelegateOptions({
       amountMicroStx: new BN(amountToStack.toString()),
       contract: poxInfo.contract_id,
       delegateTo: delegateeStxAddress,
       untilBurnBlockHeight: burnHeight,
     });
-  }, [poxInfo, stackingClient, amountToStack, delegateeStxAddress, burnHeight]);
+  }, [amountToStack, burnHeight, delegateeStxAddress, poxInfo, stackingClient]);
 
   const delegateStx = (signedTx: StacksTransaction) =>
     broadcastTx({
@@ -76,7 +77,7 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
   return (
     <TxSigningModal
       action="initate pooling"
-      txDetails={createDelegationTxOptions()}
+      txDetails={delegationTxOptions}
       isBroadcasting={isBroadcasting}
       error={nodeResponseError}
       onTryAgain={() => setNodeResponseError(null)}

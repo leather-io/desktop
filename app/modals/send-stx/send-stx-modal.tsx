@@ -91,6 +91,7 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
       recipient: '',
       amount: '',
       memo: '',
+      noMemoRequired: false,
     },
     validationSchema: yup.object().shape({
       recipient: yup
@@ -128,11 +129,25 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
           }
         )
         .required(),
-      memo: yup
-        .string()
-        .test('test-max-memo-length', 'Transaction memo cannot exceed 34 bytes', (value = '') =>
-          value === null ? false : !exceedsMaxLengthBytes(value, MEMO_MAX_LENGTH_BYTES)
-        ),
+      memo: yup.string().when('noMemoRequired', {
+        is: false,
+        then: yup
+          .string()
+          .required()
+          .test({
+            name: 'memo-required',
+            message: 'Memo is required. If you do not need to set a memo, confirm this below.',
+            test(value: unknown) {
+              if (typeof value !== 'string') return false;
+              if (value.trim() === '') return false;
+              return true;
+            },
+          })
+          .test('test-max-memo-length', 'Transaction memo cannot exceed 34 bytes', (value = '') =>
+            value === null ? false : !exceedsMaxLengthBytes(value, MEMO_MAX_LENGTH_BYTES)
+          ),
+      }),
+      noMemoRequired: yup.boolean().required(),
     }),
     onSubmit: async () => {
       setLoading(true);
@@ -229,7 +244,6 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
           onSendEntireBalance={updateAmountFieldToMaxBalance}
           feeEstimateError={feeEstimateError}
         />
-
         <TxModalFooter>
           <TxModalButton mode="tertiary" onClick={closeModal}>
             Cancel

@@ -10,8 +10,15 @@ export function useFetchAccountNonce() {
   const api = useApi();
   const address = useSelector(selectAddress);
 
-  const nonceFetcher = useCallback(() => api.getNonce(address || ''), [api, address]);
-  const { data } = useQuery(ApiResource.Nonce, nonceFetcher);
+  const nonceFetcher = useCallback(
+    ({ queryKey }) => {
+      const [_, innerAddress] = queryKey;
+      if (!innerAddress) return;
+      return api.getNonce(innerAddress);
+    },
+    [api]
+  );
+  const { data } = useQuery([ApiResource.Nonce, address], nonceFetcher);
   if (!data) return { nonce: 0 };
   return { nonce: data.nonce };
 }

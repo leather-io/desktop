@@ -32,7 +32,7 @@ export const ConnectLedger: React.FC = () => {
   const [ledgerLaunchVersionError, setLedgerLaunchVersionError] = useState<string | null>(null);
   useBackButton(routes.CREATE);
 
-  const { step, isLocked } = usePrepareLedger();
+  const { step, isLocked, appVersionErrorText, isSupportedAppVersion } = usePrepareLedger();
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -114,10 +114,15 @@ export const ConnectLedger: React.FC = () => {
           <ErrorText>You must approve the action that appears on your Ledger device</ErrorText>
         </ErrorLabel>
       )}
+      {!isSupportedAppVersion && (
+        <ErrorLabel mt="base-loose">
+          <ErrorText>{appVersionErrorText}</ErrorText>
+        </ErrorLabel>
+      )}
       <OnboardingButton
         mt="loose"
         onClick={handleLedger}
-        isDisabled={step < 2 || loading || isLocked}
+        isDisabled={step < 2 || loading || isLocked || !isSupportedAppVersion}
         isLoading={loading}
       >
         Continue

@@ -64,6 +64,10 @@ export const STACKING_CONTRACT_CALL_FEE = 260;
 
 export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
 
+export const SUPPORTED_LEDGER_VERSION_MAJOR = 0;
+
+export const SUPPORTED_LEDGER_VERSION_MINOR = 11;
+
 export const DEFAULT_POLLING_INTERVAL = 10_000;
 
 export const features = {

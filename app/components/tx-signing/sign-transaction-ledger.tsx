@@ -8,18 +8,23 @@ import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
 import { safeAwait } from '@utils/safe-await';
 import { capitalize } from '@utils/capitalize';
 
-import { SignTransactionProps } from './sign-transaction';
 import {
   StackingModalButton as Button,
   StackingModalFooter as Footer,
 } from '../../modals/components/stacking-modal-layout';
+import { SignTransactionProps } from './sign-transaction';
 
 type SignTransactionLedgerProps = SignTransactionProps;
 
 export const SignTransactionLedger = (props: SignTransactionLedgerProps) => {
   const { action, txOptions, isBroadcasting, onTransactionSigned, onClose } = props;
 
-  const { step: ledgerStep, isLocked } = usePrepareLedger();
+  const {
+    step: ledgerStep,
+    isLocked,
+    isSupportedAppVersion,
+    appVersionErrorText,
+  } = usePrepareLedger();
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const { createLedgerContractCallTx } = useCreateLedgerContractCallTx();
   const { createLedgerTokenTransferTx } = useCreateLedgerTokenTransferTx();
@@ -33,7 +38,11 @@ export const SignTransactionLedger = (props: SignTransactionLedgerProps) => {
 
   return (
     <>
-      <SignTxWithLedger step={ledgerStep} isLocked={isLocked} ledgerError={null} />
+      <SignTxWithLedger
+        step={ledgerStep}
+        isLocked={isLocked}
+        ledgerError={isSupportedAppVersion ? null : appVersionErrorText}
+      />
       <Footer>
         <Button mode="tertiary" onClick={onClose}>
           Close

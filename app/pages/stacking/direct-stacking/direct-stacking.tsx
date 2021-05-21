@@ -107,7 +107,7 @@ export const DirectStacking: FC = () => {
   });
 
   const openStackingTxSigningModal = (formValues: DirectStackingForm) => {
-    setFormValues(formValues);
+    setFormValues({ ...formValues, amount: stxToMicroStx(formValues.amount).toString() });
     setModalOpen(true);
   };
 

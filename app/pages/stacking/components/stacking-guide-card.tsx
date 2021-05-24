@@ -18,6 +18,7 @@ export const StackingGuideCard: FC<FlexProps> = props => {
     <LegalDisclaimerTooltip {...props}>
       <Box
         as="a"
+        display="block"
         onClick={openStackingGuide}
         href={STACKING_GUIDE_URL}
         {...bindHover}

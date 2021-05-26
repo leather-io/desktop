@@ -1,11 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { Box, Flex, FlexProps, Text } from '@stacks/ui';
 
 import { DelegationType } from '@models/index';
 import { Hr } from '@components/hr';
 
-import { POOLED_STACKING_TX_SIZE_BYTES } from '@constants/index';
+import {
+  UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
+  POOLED_STACKING_TX_SIZE_BYTES,
+} from '@constants/index';
 import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
 import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 import { truncateMiddle } from '@utils/tx-utils';
@@ -30,9 +33,20 @@ interface PoolingInfoCardProps extends FlexProps {
 
 export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
   const { amount, delegationType, poolStxAddress, durationInCycles, burnHeight, ...rest } = props;
-  const amountToBeStacked = stxToMicroStx(parseNumericalFormInput(amount)).integerValue();
 
   const calcFee = useCalculateFee();
+
+  const amountToBeStacked = useMemo(
+    () => stxToMicroStx(parseNumericalFormInput(amount)).integerValue(),
+    [amount]
+  );
+
+  const humanReadableAmount = useMemo(() => {
+    if (amountToBeStacked.isGreaterThan(UI_IMPOSED_MAX_STACKING_AMOUNT_USTX)) {
+      return '—';
+    }
+    return toHumanReadableStx(amountToBeStacked);
+  }, [amountToBeStacked]);
 
   return (
     <InfoCard {...rest}>
@@ -46,7 +60,7 @@ export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
             letterSpacing="-0.02em"
             mt="extra-tight"
           >
-            {toHumanReadableStx(amountToBeStacked.toString())}
+            {humanReadableAmount}
           </Text>
         </Flex>
         <Hr />

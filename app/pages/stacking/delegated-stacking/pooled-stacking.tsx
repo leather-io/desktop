@@ -14,7 +14,7 @@ import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';
 import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
 import { stxAddressSchema } from '@utils/validators/stx-address-validator';
 import {
-  MAX_DELEGATED_STACKING_AMOUNT_USTX,
+  UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
   MIN_DELEGATED_STACKING_AMOUNT_USTX,
 } from '@constants/index';
 
@@ -106,12 +106,12 @@ export const StackingDelegation: FC = () => {
       .test({
         name: 'test-max-allowed-delegated-stacking',
         message: `You cannot delegate more than ${toHumanReadableStx(
-          MAX_DELEGATED_STACKING_AMOUNT_USTX
+          UI_IMPOSED_MAX_STACKING_AMOUNT_USTX
         )}`,
         test(value: any) {
           if (value === null || value === undefined) return false;
           const enteredAmount = stxToMicroStx(value);
-          return enteredAmount.isLessThanOrEqualTo(MAX_DELEGATED_STACKING_AMOUNT_USTX);
+          return enteredAmount.isLessThanOrEqualTo(UI_IMPOSED_MAX_STACKING_AMOUNT_USTX);
         },
       }),
     delegationType: yup.string().typeError(`Make sure to choose a duration you'd like to pool for`),

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { Hr } from '@components/hr';
 
 import { selectPoxInfo } from '@store/stacking';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
-import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
+import { STACKING_CONTRACT_CALL_FEE, UI_IMPOSED_MAX_STACKING_AMOUNT_USTX } from '@constants/index';
 import { truncateMiddle } from '@utils/tx-utils';
 import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
 import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
@@ -37,9 +37,19 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
   const calcFee = useCalculateFee();
   const poxInfo = useSelector(selectPoxInfo);
 
-  const amountToBeStacked = new BigNumber(
-    stxToMicroStx(parseNumericalFormInput(amount))
-  ).integerValue();
+  const amountToBeStacked = useMemo(
+    () => stxToMicroStx(parseNumericalFormInput(amount)).integerValue(),
+    [amount]
+  );
+
+  const humanReadableAmount = useMemo(() => {
+    // There is no enforced upper limit for direct stacking
+    // but for rididuclous numbers we don't display in UI to prevent layouts breaking
+    if (amountToBeStacked.isGreaterThan(UI_IMPOSED_MAX_STACKING_AMOUNT_USTX.multipliedBy(100))) {
+      return '—';
+    }
+    return toHumanReadableStx(amountToBeStacked);
+  }, [amountToBeStacked]);
 
   const numberOfRewardSlots = calculateRewardSlots(
     amountToBeStacked,
@@ -63,7 +73,7 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
             fontFamily="Open Sauce"
             letterSpacing="-0.02em"
           >
-            {toHumanReadableStx(amountToBeStacked)}
+            {humanReadableAmount}
           </Text>
         </Flex>
         <Hr />

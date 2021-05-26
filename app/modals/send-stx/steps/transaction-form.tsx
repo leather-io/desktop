@@ -69,6 +69,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
           )}
           <Button
             mode="tertiary"
+            type="button"
             size="sm"
             height="28px"
             right="12px"

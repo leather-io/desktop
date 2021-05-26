@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useQueryClient } from 'react-query';
 import { useFormik } from 'formik';
@@ -73,7 +73,6 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
     null
   );
   const [loading, setLoading] = useState(false);
-  const interactedWithSendAllBtn = useRef(false);
   const { nonce } = useLatestNonce();
 
   const [txDetails, setTxDetails] = useState<TokenTransferOptions | null>(null);
@@ -84,9 +83,6 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
     string ? Buffer.from(string).length > maxLengthBytes : false;
 
   const form = useFormik({
-    validateOnChange: true,
-    validateOnMount: !interactedWithSendAllBtn.current,
-    validateOnBlur: !interactedWithSendAllBtn.current,
     initialValues: {
       recipient: '',
       amount: '',
@@ -185,15 +181,12 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
     setFeeEstimateError(null);
     setNodeResponseError(null);
     form.resetForm();
-    interactedWithSendAllBtn.current = false;
   };
-
   const closeModal = () => {
     resetAll();
     dispatch(homeActions.closeTxModal());
   };
   useHotkeys('esc', closeModal);
-
   const sendStx = (tx: StacksTransaction) => {
     broadcastTx({
       async onSuccess(txId: string) {
@@ -211,7 +204,6 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
   };
 
   const updateAmountFieldToMaxBalance = async () => {
-    interactedWithSendAllBtn.current = true;
     setCalculatingMaxSpend(true);
     const [error, feeRate] = await safeAwait(new Api(stacksApi.baseUrl).getFeeRate());
     if (error) setCalculatingMaxSpend(false);
@@ -229,7 +221,6 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
         amount: microStxToStx(balanceLessFee.toString()).toString(),
       });
       setCalculatingMaxSpend(false);
-      setTimeout(() => (interactedWithSendAllBtn.current = false), 1000);
     }
   };
 
@@ -244,6 +235,7 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
           onSendEntireBalance={updateAmountFieldToMaxBalance}
           feeEstimateError={feeEstimateError}
         />
+
         <TxModalFooter>
           <TxModalButton mode="tertiary" onClick={closeModal}>
             Cancel

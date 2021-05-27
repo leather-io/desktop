@@ -7,7 +7,7 @@ interface TxModalHeaderProps {
 
 export const ModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose }) => (
   <Flex
-    height="84px"
+    minHeight="84px"
     px="extra-loose"
     alignItems="center"
     borderBottom={`1px solid ${color('border')}`}

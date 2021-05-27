@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/pages/stacking/components/next-cycle-info.tsx</title>
+    <title>Code coverage report for app/pages/stacking/components/estimated-minimum-label.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../../prettify.css" />
     <link rel="stylesheet" href="../../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/pages/stacking/components</a> next-cycle-info.tsx</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">app/pages/stacking/components</a> estimated-minimum-label.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -88,17 +88,31 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -120,36 +134,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, Text, FlexProps, color } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { color, Flex, FlexProps, Text } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { StepsIcon } from '@components/icons/steps';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { CalendarIcon } from '@components/icons/calendar-circle';</span>
-&nbsp;
-interface NextCycleInfoProps extends FlexProps {
-  timeUntilNextCycle: string;
+interface EstimatedMinimumLabelProps extends FlexProps {
+  estimatedStackingMinimum: string;
 }
-&nbsp;
-export const <span class="cstat-no" title="statement not covered" >NextCycleInfo: FC&lt;NextCycleInfoProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> timeUntilNextCycle, ...props }) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >  &lt;Flex</span>
-    boxShadow="low"
-    border={`1px solid ${color('border')}`}
-    borderRadius="8px"
-    minHeight="84px"
-    alignItems="center"
-    px="loose"
-    py="base-tight"
-    {...props}
-  &gt;
-    &lt;CalendarIcon display={['none', 'flex']} mr="base" /&gt;
-    &lt;Flex flexDirection="column" justifyContent="space-evenly"&gt;
-      &lt;Text display="block" textStyle="body.large.medium" lineHeight="20px"&gt;
-        Next cycle starts in about {timeUntilNextCycle}
-      &lt;/Text&gt;
-      &lt;Text display="block" textStyle="body.small" color={color('text-caption')} mt="extra-tight"&gt;
-        Lock your STX for a chance to earn Bitcoin when the next cycle starts
-      &lt;/Text&gt;
+export const <span class="cstat-no" title="statement not covered" >EstimatedMinimumLabel: FC&lt;EstimatedMinimumLabelProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; {</span>
+  const { estimatedStackingMinimum, ...rest } = <span class="cstat-no" title="statement not covered" >props;</span>
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;Flex {...rest}&gt;
+      &lt;Flex
+        width="44px"
+        height="44px"
+        background={color('bg-4')}
+        borderRadius="50%"
+        alignItems="center"
+        justifyContent="center"
+      &gt;
+        &lt;StepsIcon size="14px" /&gt;
+      &lt;/Flex&gt;
+      &lt;Flex ml="base" flexDirection="column"&gt;
+        &lt;Text as="h4" display="block" textStyle="body.large.medium" lineHeight="20px"&gt;
+          Estimated minimum
+        &lt;/Text&gt;
+        &lt;Text
+          display="block"
+          textStyle="body.large"
+          color={color('text-caption')}
+          lineHeight="20px"
+          mt="extra-tight"
+        &gt;
+          {estimatedStackingMinimum}
+        &lt;/Text&gt;
+      &lt;/Flex&gt;
     &lt;/Flex&gt;
-  &lt;/Flex&gt;
-);
+  );
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -157,7 +178,7 @@ export const <span class="cstat-no" title="statement not covered" >NextCycleInfo
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:14:36 GMT+0000 (Coordinated Universal Time)
+                at Thu May 27 2021 12:26:03 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

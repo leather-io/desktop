@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/pages/stacking/delegated-stacking/components/duration-select.tsx</title>
+    <title>Code coverage report for app/components/icons/steps.tsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../../../prettify.css" />
-    <link rel="stylesheet" href="../../../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../../../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../../index.html">All files</a> / <a href="index.html">app/pages/stacking/delegated-stacking/components</a> duration-select.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">app/components/icons</a> steps.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
@@ -72,13 +72,21 @@
 <a name='L13'></a><a href='#L13'>13</a>
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
-<a name='L16'></a><a href='#L16'>16</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -87,21 +95,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, BoxProps, color } from '@stacks/ui';</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, BoxProps } from '@stacks/ui';</span>
 &nbsp;
-type DurationSelectProps = BoxProps;
-&nbsp;
-export const <span class="cstat-no" title="statement not covered" >DurationSelect: FC&lt;DurationSelectProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; (</span>
-<span class="cstat-no" title="statement not covered" >  &lt;Box</span>
-    mt="extra-loose"
-    boxShadow="low"
-    border={`1px solid ${color('border')}`}
-    borderRadius="8px"
-    width={[null, '432px']}
-    {...props}
-  /&gt;
-);
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >S</span>tepsIcon(</span>props: BoxProps) {
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;Box {...props}&gt;
+      &lt;svg
+        height="16"
+        width="16"
+        fill="none"
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+      &gt;
+        &lt;path
+          d="M9.5 3C9.5 2.44772 9.94771 2 10.5 2H15C15.5523 2 16 2.44772 16 3C16 3.55228 15.5523 4 15 4H11.5V8C11.5 8.55228 11.0523 9 10.5 9H6.5V13C6.5 13.5523 6.05228 14 5.5 14H1C0.447715 14 0 13.5523 0 13C0 12.4477 0.447715 12 1 12H4.5V8C4.5 7.44772 4.94772 7 5.5 7H9.5V3Z"
+          fill="currentColor"
+          fillRule="evenodd"
+        /&gt;
+      &lt;/svg&gt;
+    &lt;/Box&gt;
+  );
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -109,17 +130,17 @@ export const <span class="cstat-no" title="statement not covered" >DurationSelec
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:14:36 GMT+0000 (Coordinated Universal Time)
+                at Thu May 27 2021 12:26:03 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
-        <script src="../../../../../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../../../sorter.js"></script>
-        <script src="../../../../../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     

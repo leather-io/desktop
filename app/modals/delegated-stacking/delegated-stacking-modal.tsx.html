@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/41</span>
+                <span class='fraction'>0/42</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/37</span>
             </div>
         
             
@@ -144,7 +144,8 @@
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
 <a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -199,6 +200,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -231,7 +233,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState, useCallback } from 'react';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState, useMemo } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
 <span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router-dom';</span>
 <span class="cstat-no" title="statement not covered" >import { useHotkeys } from 'react-hotkeys-hook';</span>
@@ -283,15 +285,16 @@ export const <span class="cstat-no" title="statement not covered" >DelegatedStac
   const [nodeResponseError, setNodeResponseError] = <span class="cstat-no" title="statement not covered" >useState&lt;PostCoreNodeTransactionsError | null&gt;(</span>
     null
   );
-  const createDelegationTxOptions = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(): ContractCallOptions =</span>&gt; {</span>
+  const delegationTxOptions = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >(): ContractCallOptions =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (!poxInfo) <span class="cstat-no" title="statement not covered" >throw new Error('`poxInfo` undefined');</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log(amountToStack.toString());</span>
 <span class="cstat-no" title="statement not covered" >    return stackingClient.getDelegateOptions({</span>
       amountMicroStx: new BN(amountToStack.toString()),
       contract: poxInfo.contract_id,
       delegateTo: delegateeStxAddress,
       untilBurnBlockHeight: burnHeight,
     });
-  }, [poxInfo, stackingClient, amountToStack, delegateeStxAddress, burnHeight]);
+  }, [amountToStack, burnHeight, delegateeStxAddress, poxInfo, stackingClient]);
 &nbsp;
   const delegateStx = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>ignedTx: StacksTransaction) =&gt;</span>
 <span class="cstat-no" title="statement not covered" >    broadcastTx({</span>
@@ -309,7 +312,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegatedStac
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;TxSigningModal
       action="initate pooling"
-      txDetails={createDelegationTxOptions()}
+      txDetails={delegationTxOptions}
       isBroadcasting={isBroadcasting}
       error={nodeResponseError}
       onTryAgain={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setNodeResponseError(null)}</span>
@@ -325,7 +328,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegatedStac
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu May 06 2021 10:14:36 GMT+0000 (Coordinated Universal Time)
+                at Thu May 27 2021 12:26:03 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

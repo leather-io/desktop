@@ -1,3 +1,23 @@
+# [4.3.0](https://github.com/blockstack/stacks-wallet/compare/v4.2.0...v4.3.0) (2021-05-27)
+
+
+### Bug Fixes
+
+* **stx-form:** validation error throwing inaccurately, closes [#815](https://github.com/blockstack/stacks-wallet/issues/815) ([53e3957](https://github.com/blockstack/stacks-wallet/commit/53e39575ea9ca5d8fdcb72e9905974032a227982))
+* add memo warning to prevent user error, closes [#571](https://github.com/blockstack/stacks-wallet/issues/571) ([ff9085c](https://github.com/blockstack/stacks-wallet/commit/ff9085cdc59d18a16d222901796f73a31262b570))
+* **ledger:** ledger app version handling ([958eca8](https://github.com/blockstack/stacks-wallet/commit/958eca8cfa6870c5416b07fb85559f6eb3b26479))
+* **stacking:** micro stx unit conversion ([e84227e](https://github.com/blockstack/stacks-wallet/commit/e84227e5e4a1fa556ffe6f36cac750db462e870f))
+* send stx form not resetting ([31155de](https://github.com/blockstack/stacks-wallet/commit/31155de445066e3410309b47dee35f3119749b23))
+* **theme:** handle theme change during closed window ([7e4771e](https://github.com/blockstack/stacks-wallet/commit/7e4771e39dd505897bcfc8d3226b66a9d7f75734))
+
+
+### Features
+
+* **stacking:** improve direct stacking page ux ([7b0bcc4](https://github.com/blockstack/stacks-wallet/commit/7b0bcc449a3e69c003451ed286ec8e71b4d3bb6a))
+* **stacking:** improve pooled stacking ux ([c342b26](https://github.com/blockstack/stacks-wallet/commit/c342b26229290b0cf8db0de2d5cbae0967bad508))
+* **stacking:** improve stacking selection page ux ([46d910d](https://github.com/blockstack/stacks-wallet/commit/46d910d7152b2822419e4de9489d4d4a929fa8d3))
+* **stacking:** improve stacking status cards ([f2bcdf9](https://github.com/blockstack/stacks-wallet/commit/f2bcdf97d631dc8035579ac5cd1a1c1a99e2cf44))
+
 # [4.2.0](https://github.com/blockstack/stacks-wallet/compare/v4.1.3...v4.2.0) (2021-05-06)
 
 

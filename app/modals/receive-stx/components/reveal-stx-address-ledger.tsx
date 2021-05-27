@@ -15,9 +15,8 @@ export const RevealStxAddressLedger: FC = () => {
   const { step, isLocked } = usePrepareLedger();
   const [address, setAddress] = useState<null | string>(null);
   const [success, setSuccess] = useState(false);
-  const [pendingLedgerAction, setPendingLedgerAction] = useState<'idle' | 'pending' | 'complete'>(
-    'idle'
-  );
+  const [pendingLedgerAction, setPendingLedgerAction] =
+    useState<'idle' | 'pending' | 'complete'>('idle');
 
   const { address: persistedAddress } = useSelector((state: RootState) => ({
     address: selectAddress(state),

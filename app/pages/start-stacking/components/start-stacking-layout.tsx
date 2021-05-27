@@ -73,7 +73,7 @@ export const StackingOptionCardBenefit: FC<StackingOptionCardBenefitProps> = pro
 };
 
 export const StackingOptionCardButton: FC<ButtonProps> = props => (
-  <Button alignSelf="flex-start" mt="base" {...((props as unknown) as any)} />
+  <Button alignSelf="flex-start" mt="base" {...(props as unknown as any)} />
 );
 
 export const InsufficientStackingBalanceWarning: FC<FlexProps> = props => (

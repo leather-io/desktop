@@ -7,8 +7,9 @@ type WhenWalletCallback = ReturnType<typeof whenWalletFactory>;
 
 export function useWalletType() {
   const walletType = useSelector(selectWalletType);
-  const whenWallet = useCallback<WhenWalletCallback>(args => whenWalletFactory(walletType)(args), [
-    walletType,
-  ]);
+  const whenWallet = useCallback<WhenWalletCallback>(
+    args => whenWalletFactory(walletType)(args),
+    [walletType]
+  );
   return { walletType, whenWallet };
 }

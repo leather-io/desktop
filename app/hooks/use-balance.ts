@@ -15,10 +15,10 @@ export function useBalance() {
   const totalBalanceValue = useSelector(selectTotalBalance);
   const lockedBalanceValue = useSelector(selectLockedBalance);
 
-  const sumTotal = useMemo(() => sumTxsTotalSpentByAddress(outboundMempoolTxs, address || ''), [
-    outboundMempoolTxs,
-    address,
-  ]);
+  const sumTotal = useMemo(
+    () => sumTxsTotalSpentByAddress(outboundMempoolTxs, address || ''),
+    [outboundMempoolTxs, address]
+  );
 
   const availableBalance = useMemo(() => {
     const balance = new BigNumber(availableBalanceValue || 0).minus(sumTotal);
@@ -26,9 +26,10 @@ export function useBalance() {
     return balance;
   }, [availableBalanceValue, sumTotal]);
 
-  const availableBalanceValidator = useCallback(() => stxBalanceValidator(availableBalance), [
-    availableBalance,
-  ]);
+  const availableBalanceValidator = useCallback(
+    () => stxBalanceValidator(availableBalance),
+    [availableBalance]
+  );
 
   return {
     availableBalance,

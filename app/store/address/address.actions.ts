@@ -29,6 +29,5 @@ export function getAddressDetails(address: string) {
   };
 }
 
-export const updateAddressBalance = createAction<{ address: string; balance: string }>(
-  'address/update-balance'
-);
+export const updateAddressBalance =
+  createAction<{ address: string; balance: string }>('address/update-balance');

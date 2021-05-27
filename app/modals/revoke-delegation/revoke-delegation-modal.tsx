@@ -27,9 +27,8 @@ export const RevokeDelegationModal: FC = () => {
   const { refetch: refetchMempool } = useMempool();
   const poxInfo = useSelector(selectPoxInfo);
 
-  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
-    null
-  );
+  const [nodeResponseError, setNodeResponseError] =
+    useState<PostCoreNodeTransactionsError | null>(null);
 
   const revocationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');

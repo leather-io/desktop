@@ -20,15 +20,8 @@ interface TxSigningModalProps {
 }
 
 export const TxSigningModal: FC<TxSigningModalProps> = props => {
-  const {
-    action,
-    txDetails,
-    isBroadcasting,
-    error,
-    onTryAgain,
-    onClose,
-    onTransactionSigned,
-  } = props;
+  const { action, txDetails, isBroadcasting, error, onTryAgain, onClose, onTransactionSigned } =
+    props;
 
   const { nonce } = useLatestNonce();
 

@@ -69,7 +69,7 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
 
   return (
     <TransactionListItemContainer
-      ref={(containerRef as unknown) as RefObject<HTMLDivElement>}
+      ref={containerRef as unknown as RefObject<HTMLDivElement>}
       onClick={() => onSelectTx(tx.tx_id)}
       data-txid={tx.tx_id}
       focused={focused}

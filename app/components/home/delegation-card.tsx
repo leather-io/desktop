@@ -38,12 +38,12 @@ export const DelegationCard: FC = () => {
   const balance = useBalance();
   const calculateFee = useCalculateFee();
 
-  const revocationFee = useMemo(() => calculateFee(REVOKE_DELEGATION_TX_SIZE_BYTES), [
-    calculateFee,
-  ]);
-  const hasSufficientBalanceToCoverFee = balance.availableBalance.isGreaterThanOrEqualTo(
-    revocationFee
+  const revocationFee = useMemo(
+    () => calculateFee(REVOKE_DELEGATION_TX_SIZE_BYTES),
+    [calculateFee]
   );
+  const hasSufficientBalanceToCoverFee =
+    balance.availableBalance.isGreaterThanOrEqualTo(revocationFee);
 
   if (!delegationStatus.delegated) return null;
 

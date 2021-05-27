@@ -43,9 +43,8 @@ export const StackingModal: FC<StackingModalProps> = props => {
     coreNodeInfo: selectCoreNodeInfo(state),
   }));
 
-  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
-    null
-  );
+  const [nodeResponseError, setNodeResponseError] =
+    useState<PostCoreNodeTransactionsError | null>(null);
   const stackingTxOptions = useMemo(() => {
     if (!poxInfo) throw new Error('poxInfo not defined');
     if (!coreNodeInfo) throw new Error('Stacking requires coreNodeInfo');

@@ -44,7 +44,7 @@ export const persistWalletType = async (walletType: WalletType) => {
 };
 
 export const getInitialStateFromDisk = () => {
-  return (main.store.initialValue() as unknown) as DiskStore;
+  return main.store.initialValue() as unknown as DiskStore;
 };
 
 export const clearDiskStorage = async () => main.store.clear();

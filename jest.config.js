@@ -19,7 +19,7 @@ module.exports = {
   moduleDirectories: ['node_modules', 'app/node_modules'],
   setupFiles: ['./internals/scripts/CheckBuildsExist.js'],
   setupFilesAfterEnv: ['<rootDir>/app/tests/_setup-tests.ts'],
-  coverageReporters: ['html'],
+  coverageReporters: ['html', 'json-summary'],
   globals: {
     api: true,
     CONFIG: true,
@@ -27,8 +27,7 @@ module.exports = {
       tsconfig: 'tsconfig.tests.json',
       diagnostics: {
         ignoreCodes: [
-          6133,
-          2304,
+          6133, 2304,
           // Object is possibly `null`
           2531,
         ],

@@ -72,6 +72,8 @@ export const SUPPORTED_LEDGER_VERSION_MINOR = 11;
 
 export const DEFAULT_POLLING_INTERVAL = 10_000;
 
+export const SEND_MANY_CONTACT_ID = 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.send-many-memo';
+
 export const features = {
   stacking: true,
   lifetimeRewards: false,

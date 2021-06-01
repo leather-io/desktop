@@ -20,7 +20,7 @@ export function useTransactionList() {
 
   const dedupedPendingTxs = useMemo(() => {
     return R.uniqWith(txIdEquals, [...pendingTxs, ...mempoolTxs]).filter(
-      mempoolTx => !txs.map(tx => tx.tx_id).includes(mempoolTx.tx_id)
+      mempoolTx => !txs.map(({ tx }) => tx.tx_id).includes(mempoolTx.tx_id)
     );
   }, [txIdEquals, pendingTxs, mempoolTxs, txs]);
 
@@ -29,7 +29,7 @@ export function useTransactionList() {
 
   const focusTxDomNode = useCallback(
     (shift: (i: number) => number) => {
-      const allTxs = [...dedupedPendingTxs, ...txs];
+      const allTxs = [...dedupedPendingTxs, ...txs.map(({ tx }) => tx)];
       if (allTxs.length === 0) return;
       if (focusedTxIdRef.current === null) {
         const txId = allTxs[0].tx_id;
@@ -53,6 +53,7 @@ export function useTransactionList() {
   return {
     txs,
     pendingTxs: dedupedPendingTxs,
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     txCount: txs.length + dedupedPendingTxs.length,
     focusTxDomNode,
     focusedTxIdRef,

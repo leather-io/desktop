@@ -1,4 +1,4 @@
-import React, { FC, useRef, RefObject, useEffect, MutableRefObject } from 'react';
+import React, { FC, useRef, useEffect, MutableRefObject } from 'react';
 import { useHover, useFocus } from 'use-events';
 import { Box, color, Flex, Stack, Text } from '@stacks/ui';
 import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
@@ -69,7 +69,7 @@ export const TransactionListItemMempool: FC<TransactionListItemMempoolProps> = p
 
   return (
     <TransactionListItemContainer
-      ref={containerRef as unknown as RefObject<HTMLDivElement>}
+      ref={containerRef}
       onClick={() => onSelectTx(tx.tx_id)}
       data-txid={tx.tx_id}
       focused={focused}

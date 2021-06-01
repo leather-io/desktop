@@ -1,9 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@stacks/ui';
-import {
-  Transaction,
-  PostCoreNodeTransactionsError,
-} from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
+
 import urljoin from 'url-join';
 import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 
@@ -13,15 +12,19 @@ import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { Dispatch, GetState } from '@store/index';
 import { selectActiveNodeApi } from '@store/stacks-node';
 
-export const pendingTransactionSuccessful = createAction<Transaction>(
+export const pendingTransactionSuccessful = createAction<AddressTransactionWithTransfers>(
   'transactions/pending-transaction-successful'
 );
 
-export const addNewTransaction = createAction<Transaction>('transactions/new-transaction');
+export const addNewTransaction = createAction<AddressTransactionWithTransfers>(
+  'transactions/new-transaction'
+);
 
 const fetchTxName = 'transactions/fetch-transactions';
 export const fetchTransactions = createAction<{ displayLoading?: boolean }>(fetchTxName);
-export const fetchTransactionsDone = createAction<Transaction[]>(fetchTxName + '-done');
+export const fetchTransactionsDone = createAction<AddressTransactionWithTransfers[]>(
+  fetchTxName + '-done'
+);
 export const fetchTransactionsFail = createAction<string>(fetchTxName + '-fail');
 
 export function getAddressTransactions(
@@ -32,7 +35,7 @@ export function getAddressTransactions(
     dispatch(fetchTransactions(options));
     const activeNode = selectActiveNodeApi(getState());
     const client = new Api(activeNode.url);
-    const [error, response] = await safeAwait(client.getAddressTransactions(address));
+    const [error, response] = await safeAwait(client.getAddressTransactionsWithTransfers(address));
     if (error) {
       dispatch(fetchTransactionsFail('Unable to fetch recent transactions'));
       return;

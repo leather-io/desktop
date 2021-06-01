@@ -101,9 +101,8 @@ export const Home: FC = () => {
           <TransactionListItem
             domNodeMapRef={txDomNodeRefMap}
             activeTxIdRef={focusedTxIdRef}
-            key={tx.tx_id}
-            tx={tx}
-            address={address}
+            key={tx.tx.tx_id}
+            txWithEvents={tx}
             onSelectTx={openTxInExplorer}
           />
         ))}

@@ -16,6 +16,7 @@ import {
   CoreNodeInfoResponse,
   NetworkBlockTimesResponse,
 } from '@blockstack/stacks-blockchain-api-types';
+import { AddressTransactionsWithTransfersListResponse } from '@stacks/stacks-blockchain-api-types';
 import packageJson from '../../package.json';
 
 const defaultHeaders = [
@@ -24,7 +25,6 @@ const defaultHeaders = [
 ];
 
 defaultHeaders.forEach(({ name, value }) => (axios.defaults.headers.common[name] = value));
-
 export class Api {
   stacksApiConfig = new Configuration({
     basePath: this.baseUrl,
@@ -54,6 +54,17 @@ export class Api {
   async getAddressTransactions(address: string) {
     return axios.get<TransactionResults>(
       urljoin(this.baseUrl, `/extended/v1/address/${address}/transactions`),
+      {
+        params: {
+          limit: 50,
+        },
+      }
+    );
+  }
+
+  async getAddressTransactionsWithTransfers(address: string) {
+    return axios.get<AddressTransactionsWithTransfersListResponse>(
+      urljoin(this.baseUrl, `/extended/v1/address/${address}/transactions_with_transfers`),
       {
         params: {
           limit: 50,

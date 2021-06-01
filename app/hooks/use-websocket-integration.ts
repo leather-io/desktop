@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAddress } from '@store/keys';
 import { useApi } from './use-api';
 import { updateAddressBalance } from '@store/address';
-import { addNewTransaction, pendingTransactionSuccessful } from '@store/transaction';
 import { RootState } from '@store/index';
 import { selectPoxInfo } from '@store/stacking';
 
@@ -47,8 +46,9 @@ export function useWebSocketIntegration() {
             await safeAwait(delegationStatus.refetch());
           }
           if (newTx.data.tx_status !== 'success') return;
-          dispatch(addNewTransaction(newTx.data));
-          dispatch(pendingTransactionSuccessful(newTx.data));
+          // commented out as not particularly needed given polling for new tx
+          // dispatch(addNewTransaction(newTx.data));
+          // dispatch(pendingTransactionSuccessful(newTx.data));
         });
       } catch {}
     }

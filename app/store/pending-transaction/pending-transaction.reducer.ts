@@ -39,7 +39,7 @@ export const pendingTransactionSlice = createSlice({
     'transactions/pending-transaction-successful': (
       state,
       action: ReturnType<typeof pendingTransactionSuccessful>
-    ) => pendingTransactionAdapter.removeOne(state, action.payload.tx_id),
+    ) => pendingTransactionAdapter.removeOne(state, action.payload.tx.tx_id),
   },
 });
 

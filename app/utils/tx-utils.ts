@@ -3,7 +3,9 @@ import {
   MempoolTransaction,
   ContractCallTransaction,
 } from '@blockstack/stacks-blockchain-api-types';
+import { SEND_MANY_CONTACT_ID } from '@constants/index';
 import BigNumber from 'bignumber.js';
+import { StxTxDirection } from './get-stx-transfer-direction';
 import { sumStxTxTotal } from './sum-stx-tx-total';
 
 type AnyTx = Transaction | MempoolTransaction;
@@ -58,8 +60,27 @@ export function isMempoolTx(tx: AnyTx): tx is MempoolTransaction {
   return tx.tx_status === 'pending';
 }
 
+export function isSendManyTx(tx: AnyTx) {
+  return tx.tx_type === 'contract_call' && tx.contract_call.contract_id === SEND_MANY_CONTACT_ID;
+}
+
 export function sumTxsTotalSpentByAddress(txs: AnyTx[], address: string) {
   return txs.reduce((acc, tx) => acc.plus(sumStxTxTotal(address, tx)), new BigNumber(0));
+}
+
+interface InferSendManyTransferOperationReturn {
+  direction: StxTxDirection;
+  amount: BigNumber;
+}
+export function inferSendManyTransferOperation(
+  sentAmount: string,
+  receivedAmount: string
+): InferSendManyTransferOperationReturn {
+  const sent = new BigNumber(sentAmount);
+  const received = new BigNumber(receivedAmount);
+  const amount = sent.minus(received);
+  const direction = amount.isNegative() ? 'received' : 'sent';
+  return { amount: amount.absoluteValue(), direction };
 }
 
 export function shortenHex(hex: string, length = 4) {

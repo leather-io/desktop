@@ -9,13 +9,14 @@ import React, {
 import { useSelector } from 'react-redux';
 import { useHover, useFocus } from 'use-events';
 import { Box, color, Stack, Text } from '@stacks/ui';
-import { Transaction } from '@blockstack/stacks-blockchain-api-types';
+
+import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
+import { getContractName, getTxTypeName } from '@stacks/ui-utils';
 
 import { RootState } from '@store/index';
 import { selectPoxInfo } from '@store/stacking';
 import { capitalize } from '@utils/capitalize';
-import { getStxTxDirection } from '@utils/get-stx-transfer-direction';
-import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
+
 import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { makeExplorerTxLink } from '@utils/external-links';
@@ -25,6 +26,8 @@ import {
   isDelegateStxTx,
   isRevokingDelegationTx,
   isDelegatedStackingTx,
+  inferSendManyTransferOperation,
+  isSendManyTx,
 } from '@utils/tx-utils';
 
 import {
@@ -33,24 +36,26 @@ import {
   deregisterHandler,
 } from './transaction-list-context-menu';
 import { TransactionListItemContainer } from './transaction-list-item-container';
-import { getContractName, getTxTypeName } from '@stacks/ui-utils';
 
 interface TransactionListItemProps {
-  tx: Transaction;
-  address: string;
+  txWithEvents: AddressTransactionWithTransfers;
   activeTxIdRef: MutableRefObject<any>;
   domNodeMapRef: MutableRefObject<any>;
-
   onSelectTx(txId: string): void;
 }
 
 export const TransactionListItem: FC<TransactionListItemProps> = props => {
-  const { tx, address, onSelectTx, activeTxIdRef, domNodeMapRef } = props;
+  const { txWithEvents, onSelectTx, activeTxIdRef, domNodeMapRef } = props;
   const { poxInfo } = useSelector((state: RootState) => ({
     poxInfo: selectPoxInfo(state),
   }));
 
-  const direction = getStxTxDirection(address, tx);
+  const tx = txWithEvents.tx;
+
+  const { direction, amount } = inferSendManyTransferOperation(
+    txWithEvents.stx_sent,
+    txWithEvents.stx_received
+  );
 
   const txFailed =
     tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition';
@@ -59,7 +64,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     if (txFailed) {
       return 'failed';
     }
-    if (tx.tx_type === 'token_transfer') {
+    if (tx.tx_type === 'token_transfer' || isSendManyTx(tx)) {
       return direction;
     }
     if (isStackingTx(tx, poxInfo?.contract_id) || isDelegatedStackingTx(tx, poxInfo?.contract_id)) {
@@ -77,7 +82,6 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
   const transactionTitle = useCallback(() => {
     if (tx.tx_type === 'token_transfer') return capitalize(direction);
     if (isStackingTx(tx, poxInfo?.contract_id)) {
-      if (tx.tx_status === 'pending') return 'Initiating Stacking';
       if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition')
         return 'Stacking initiation failed';
       return 'Stacking initiated successfully';
@@ -86,13 +90,11 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
       return 'Pool Stacked STX';
     }
     if (isDelegateStxTx(tx, poxInfo?.contract_id)) {
-      if (tx.tx_status === 'pending') return 'Initiating delegation';
       if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition')
         return 'Failed to delegate STX';
       return 'Delegated STX';
     }
     if (isRevokingDelegationTx(tx, poxInfo?.contract_id)) {
-      if (tx.tx_status === 'pending') return 'Initiating revocation';
       if (tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition')
         return 'Failed to revoke delegation';
       return 'Revoked STX';
@@ -100,6 +102,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     if (tx.tx_type === 'smart_contract') {
       return getContractName(tx.smart_contract.contract_id);
     }
+    if (isSendManyTx(tx)) return capitalize(direction);
     return capitalize(tx.tx_type).replace('_', ' ');
   }, [direction, poxInfo?.contract_id, tx]);
 
@@ -181,8 +184,8 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
               Failed
             </Text>
           ) : null}
-          {sumPrefix +
-            toHumanReadableStx(sumStxTxTotal(address, tx, poxInfo?.contract_id).toString())}
+          {sumPrefix}
+          {toHumanReadableStx(amount)}
         </Text>
         <Text textStyle="body.small" color={color('text-caption')}>
           {memo}

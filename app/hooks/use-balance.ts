@@ -20,6 +20,12 @@ export function useBalance() {
     [outboundMempoolTxs, address]
   );
 
+  const totalBalance = useMemo(() => {
+    const balance = new BigNumber(totalBalanceValue || 0).minus(sumTotal);
+    if (balance.isLessThan(0)) return new BigNumber(0);
+    return balance;
+  }, [totalBalanceValue, sumTotal]);
+
   const availableBalance = useMemo(() => {
     const balance = new BigNumber(availableBalanceValue || 0).minus(sumTotal);
     if (balance.isLessThan(0)) return new BigNumber(0);
@@ -34,7 +40,7 @@ export function useBalance() {
   return {
     availableBalance,
     availableBalanceValidator,
-    totalBalance: totalBalanceValue,
+    totalBalance,
     lockedBalance: lockedBalanceValue,
   };
 }

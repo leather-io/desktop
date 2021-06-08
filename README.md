@@ -1,8 +1,7 @@
 # Stacks Wallet for Desktop
 
-[![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet/)
-
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/blockstack/stacks-wallet/Build)
+[![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet/)
 
 ![Stacks Wallet Hero](/resources/readme.png)
 

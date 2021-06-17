@@ -39,6 +39,9 @@ export const AddressDisplayer: FC<AddressDisplayerProps> = props => {
           {address ? address : `You'll see your address when you've unlocked your wallet`}
         </Text>
       </Flex>
+      <Text textStyle="caption" color={color('text-caption')} mt="base-tight">
+        You do not need a memo to receive STX from elsewhere, such as a cryptocurrency exchange
+      </Text>
       <Flex justifyContent="center" mt="base-tight" mb="tight">
         <Button variant="link" onClick={onCopy}>
           {hasCopied ? 'Copied' : 'Copy address'}

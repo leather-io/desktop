@@ -170,30 +170,36 @@
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
 <a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -285,10 +291,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { createAction } from '@reduxjs/toolkit';</span>
 <span class="cstat-no" title="statement not covered" >import { safeAwait } from '@stacks/ui';</span>
-import {
-  Transaction,
-  PostCoreNodeTransactionsError,
-} from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
+&nbsp;
 <span class="cstat-no" title="statement not covered" >import urljoin from 'url-join';</span>
 import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 &nbsp;
@@ -298,15 +303,19 @@ import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 import { Dispatch, GetState } from '@store/index';
 <span class="cstat-no" title="statement not covered" >import { selectActiveNodeApi } from '@store/stacks-node';</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >pendingTransactionSuccessful = createAction&lt;Transaction&gt;(</span>
+export const <span class="cstat-no" title="statement not covered" >pendingTransactionSuccessful = createAction&lt;AddressTransactionWithTransfers&gt;(</span>
   'transactions/pending-transaction-successful'
 );
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >addNewTransaction = createAction&lt;Transaction&gt;('transactions/new-transaction');</span>
+export const <span class="cstat-no" title="statement not covered" >addNewTransaction = createAction&lt;AddressTransactionWithTransfers&gt;(</span>
+  'transactions/new-transaction'
+);
 &nbsp;
 const fetchTxName = <span class="cstat-no" title="statement not covered" >'transactions/fetch-transactions';</span>
 export const <span class="cstat-no" title="statement not covered" >fetchTransactions = createAction&lt;{ displayLoading?: boolean }&gt;(fetchTxName);</span>
-export const <span class="cstat-no" title="statement not covered" >fetchTransactionsDone = createAction&lt;Transaction[]&gt;(fetchTxName + '-done');</span>
+export const <span class="cstat-no" title="statement not covered" >fetchTransactionsDone = createAction&lt;AddressTransactionWithTransfers[]&gt;(</span>
+  fetchTxName + '-done'
+);
 export const <span class="cstat-no" title="statement not covered" >fetchTransactionsFail = createAction&lt;string&gt;(fetchTxName + '-fail');</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >g</span>etAddressTransactions(</span>
@@ -317,7 +326,7 @@ export const <span class="cstat-no" title="statement not covered" >fetchTransact
 <span class="cstat-no" title="statement not covered" >    dispatch(fetchTransactions(options));</span>
     const activeNode = <span class="cstat-no" title="statement not covered" >selectActiveNodeApi(getState());</span>
     const client = <span class="cstat-no" title="statement not covered" >new Api(activeNode.url);</span>
-    const [error, response] = <span class="cstat-no" title="statement not covered" >await safeAwait(client.getAddressTransactions(address));</span>
+    const [error, response] = <span class="cstat-no" title="statement not covered" >await safeAwait(client.getAddressTransactionsWithTransfers(address));</span>
 <span class="cstat-no" title="statement not covered" >    if (error) {</span>
 <span class="cstat-no" title="statement not covered" >      dispatch(fetchTransactionsFail('Unable to fetch recent transactions'));</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
@@ -403,7 +412,7 @@ export interface BroadcastTransactionArgs {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jun 15 2021 10:44:29 GMT+0000 (Coordinated Universal Time)
+                at Tue Jun 22 2021 07:42:37 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

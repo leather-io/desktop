@@ -1,3 +1,12 @@
+## [4.3.1](https://github.com/blockstack/stacks-wallet/compare/v4.3.0...v4.3.1) (2021-06-24)
+
+
+### Bug Fixes
+
+* add memo not needed warning, closes [#571](https://github.com/blockstack/stacks-wallet/issues/571) ([9da0ed5](https://github.com/blockstack/stacks-wallet/commit/9da0ed56fe2b5262a363c56518e45559b0706393))
+* display send-many tx amounts accurately, closes [#776](https://github.com/blockstack/stacks-wallet/issues/776) ([3197ca4](https://github.com/blockstack/stacks-wallet/commit/3197ca4db598724d97b960fae4f79caec2c02b8a))
+* display send-many tx amounts accurately, closes [#776](https://github.com/blockstack/stacks-wallet/issues/776) ([073c41a](https://github.com/blockstack/stacks-wallet/commit/073c41a213c663c0f1ee921c1de3e5117ae80c57))
+
 # [4.3.0](https://github.com/blockstack/stacks-wallet/compare/v4.2.0...v4.3.0) (2021-05-27)
 
 

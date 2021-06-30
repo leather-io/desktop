@@ -217,8 +217,10 @@ export const selectStackerInfo = createSelector(
     const blocksUntilStackingCycleBegins =
       addressBalances.lock_height - state.coreNodeInfo.burn_block_height;
 
-    const stackingPercentage =
+    const stackingPercentageLong =
       ((cycleLengthInBlocks - blocksUntilUnlocked) / cycleLengthInBlocks) * 100;
+
+    const stackingPercentage = Number(stackingPercentageLong.toFixed(2));
 
     let status: StackingStatus = StackingStatus.NotStacking;
     if (isPreStackingPeriodStart) status = StackingStatus.StackedPreCycle;

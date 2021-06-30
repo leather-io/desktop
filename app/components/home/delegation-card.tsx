@@ -89,9 +89,7 @@ export const DelegationCard: FC = () => {
               </Row>
               <Row>
                 <Label>Progress</Label>
-                <Value>
-                  {stackerInfo?.stackingPercentage ? stackerInfo?.stackingPercentage : '0'}%
-                </Value>
+                <Value>{stackerInfo?.stackingPercentage ?? 0}%</Value>
               </Row>
             </Section>
 

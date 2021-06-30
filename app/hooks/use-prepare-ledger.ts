@@ -41,7 +41,9 @@ export function usePrepareLedger() {
   const appVersionErrorText = useMemo(() => {
     return `
       Make sure to upgrade your Stacks app to the latest version in Ledger Live.
-      This version of the Stacks Wallet only works with ${SUPPORTED_LEDGER_VERSION_MAJOR}.${SUPPORTED_LEDGER_VERSION_MINOR}.
+      This version of the Stacks Wallet only works with ${String(
+        SUPPORTED_LEDGER_VERSION_MAJOR
+      )}.${String(SUPPORTED_LEDGER_VERSION_MINOR)}.
       Detected version ${String(appVersion?.major)}.${String(appVersion?.minor)}
     `;
   }, [appVersion]);

@@ -13,6 +13,8 @@ import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input'
 import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 import { truncateMiddle } from '@utils/tx-utils';
 import { formatCycles } from '@utils/stacking';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useWalletType } from '@hooks/use-wallet-type';
 import {
   InfoCard,
   InfoCardLabel as Label,
@@ -21,7 +23,8 @@ import {
   InfoCardValue as Value,
   InfoCardSection as Section,
 } from '../../../../components/info-card';
-import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useSelector } from 'react-redux';
+import { selectPoxInfo } from '@store/stacking';
 
 interface PoolingInfoCardProps extends FlexProps {
   amount: string | number | null;
@@ -35,6 +38,8 @@ export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
   const { amount, delegationType, poolStxAddress, durationInCycles, burnHeight, ...rest } = props;
 
   const calcFee = useCalculateFee();
+  const { whenWallet } = useWalletType();
+  const poxInfo = useSelector(selectPoxInfo);
 
   const amountToBeStacked = useMemo(
     () => stxToMicroStx(parseNumericalFormInput(amount)).integerValue(),
@@ -92,11 +97,31 @@ export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
               </Label>
               <Value>{poolStxAddress ? truncateMiddle(poolStxAddress) : '—'}</Value>
             </Row>
+            <Row>
+              <Label
+                explainer={whenWallet({
+                  software: undefined,
+                  ledger: `You'll see this contract address come up when signing the transaction on your Ledger device`,
+                })}
+              >
+                Contract
+              </Label>
+              <Value>{truncateMiddle(poxInfo?.contract_id ?? '')}</Value>
+            </Row>
           </Section>
 
           <Section>
             <Row>
-              <Label>Fee</Label>
+              <Label
+                explainer={whenWallet({
+                  software: undefined,
+                  ledger: `This will appear as ${calcFee(
+                    POOLED_STACKING_TX_SIZE_BYTES
+                  ).toString()} µSTX on your Ledger device`,
+                })}
+              >
+                Fee
+              </Label>
               <Value>{toHumanReadableStx(calcFee(POOLED_STACKING_TX_SIZE_BYTES))}</Value>
             </Row>
           </Section>

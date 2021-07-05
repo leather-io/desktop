@@ -2,11 +2,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { LedgerError } from '@zondax/ledger-blockstack';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { SUPPORTED_LEDGER_VERSION_MAJOR, SUPPORTED_LEDGER_VERSION_MINOR } from '@constants/index';
+import {
+  LATEST_LEDGER_VERSION_MAJOR,
+  LATEST_LEDGER_VERSION_MINOR,
+  SUPPORTED_LEDGER_VERSIONS_MINOR,
+} from '@constants/index';
 
 import type { LedgerMessageEvents } from '../main/register-ledger-listeners';
 import { useListenLedgerEffect } from './use-listen-ledger-effect';
 import { messages$ } from './use-message-events';
+import { isTestnet } from '@utils/network-utils';
 
 export enum LedgerConnectStep {
   Disconnected,
@@ -30,23 +35,29 @@ export function usePrepareLedger() {
   const [isLocked, setIsLocked] = useState(false);
   const [appVersion, setAppVersion] = useState<AppVersion | null>(null);
 
-  const isSupportedAppVersion = useMemo(() => {
-    if (appVersion === null) return true;
-    return (
-      appVersion.major === SUPPORTED_LEDGER_VERSION_MAJOR &&
-      appVersion.minor === SUPPORTED_LEDGER_VERSION_MINOR
-    );
+  const versionSupportsTestnetLedger = useMemo(() => {
+    if (appVersion === null) return false;
+    return appVersion.major >= 0 && appVersion.minor > 11;
   }, [appVersion]);
 
+  const isSupportedAppVersion = useMemo(() => {
+    if (appVersion === null) return true;
+    if (!versionSupportsTestnetLedger && isTestnet()) return false;
+    return SUPPORTED_LEDGER_VERSIONS_MINOR.includes(appVersion.minor);
+  }, [appVersion, versionSupportsTestnetLedger]);
+
   const appVersionErrorText = useMemo(() => {
+    if (!versionSupportsTestnetLedger && isTestnet()) {
+      return `Cannot use Ledger on testnet with app version 0.11.0 or lower. Upgrade on Ledger Live.`;
+    }
     return `
       Make sure to upgrade your Stacks app to the latest version in Ledger Live.
       This version of the Stacks Wallet only works with ${String(
-        SUPPORTED_LEDGER_VERSION_MAJOR
-      )}.${String(SUPPORTED_LEDGER_VERSION_MINOR)}.
+        LATEST_LEDGER_VERSION_MAJOR
+      )}.${String(LATEST_LEDGER_VERSION_MINOR)}.
       Detected version ${String(appVersion?.major)}.${String(appVersion?.minor)}
     `;
-  }, [appVersion]);
+  }, [appVersion, versionSupportsTestnetLedger]);
 
   useListenLedgerEffect();
 

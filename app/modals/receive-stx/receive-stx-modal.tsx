@@ -22,10 +22,11 @@ export const ReceiveStxModal: FC<{ isOpen: boolean }> = memo(({ isOpen }) => {
   return (
     <Modal handleClose={closeModal} minWidth="488px" isOpen={isOpen}>
       <ModalHeader onSelectClose={closeModal}>Receive STX</ModalHeader>
-      {whenWallet({
-        ledger: <RevealStxAddressLedger />,
-        software: <RevealStxAddressSoftware />,
-      })}
+      {isOpen &&
+        whenWallet({
+          ledger: <RevealStxAddressLedger />,
+          software: <RevealStxAddressSoftware />,
+        })}
       <TxModalFooter>
         <Button
           size="md"

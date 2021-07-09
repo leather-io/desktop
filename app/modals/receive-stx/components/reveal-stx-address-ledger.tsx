@@ -10,9 +10,11 @@ import { RootState } from '@store/index';
 import { AddressDisplayer } from './address-displayer';
 import { SevereWarning } from '@components/severe-warning';
 import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
 
 export const RevealStxAddressLedger: FC = () => {
-  const { step, isLocked } = usePrepareLedger();
+  const { step, isLocked, isSupportedAppVersion, appVersionErrorText } = usePrepareLedger();
   const [address, setAddress] = useState<null | string>(null);
   const [success, setSuccess] = useState(false);
   const [pendingLedgerAction, setPendingLedgerAction] =
@@ -81,6 +83,11 @@ export const RevealStxAddressLedger: FC = () => {
             </Box>
           </Stack>
         </Flex>
+      )}
+      {!isSupportedAppVersion && (
+        <ErrorLabel my="base-loose">
+          <ErrorText>{appVersionErrorText}</ErrorText>
+        </ErrorLabel>
       )}
       <Box>
         {pendingLedgerAction === 'pending' && address && (

@@ -10,8 +10,9 @@ import {
 
 import type { LedgerMessageEvents } from '../main/register-ledger-listeners';
 import { useListenLedgerEffect } from './use-listen-ledger-effect';
-import { messages$ } from './use-message-events';
 import { isTestnet } from '@utils/network-utils';
+import { messages$ } from './use-message-events';
+import { useCheckForUpdates } from './use-check-for-updates';
 
 export enum LedgerConnectStep {
   Disconnected,
@@ -34,6 +35,7 @@ export function usePrepareLedger() {
   const [step, setStep] = useState<LedgerConnectStep>(LedgerConnectStep.Disconnected);
   const [isLocked, setIsLocked] = useState(false);
   const [appVersion, setAppVersion] = useState<AppVersion | null>(null);
+  const { isNewerReleaseAvailable } = useCheckForUpdates();
 
   const versionSupportsTestnetLedger = useMemo(() => {
     if (appVersion === null) return false;
@@ -51,13 +53,15 @@ export function usePrepareLedger() {
       return `Cannot use Ledger on testnet with app version 0.11.0 or lower. Upgrade on Ledger Live.`;
     }
     return `
-      Make sure to upgrade your Stacks app to the latest version in Ledger Live.
-      This version of the Stacks Wallet only works with ${String(
-        LATEST_LEDGER_VERSION_MAJOR
-      )}.${String(LATEST_LEDGER_VERSION_MINOR)}.
+      Make sure to upgrade your Stacks app to the latest version in Ledger Live. ${
+        isNewerReleaseAvailable
+          ? 'You should also upgrade your Stacks Wallet to the latest version.'
+          : ''
+      }
+      This version of the Stacks Wallet only works with ${LATEST_LEDGER_VERSION_MAJOR}.${LATEST_LEDGER_VERSION_MINOR}.
       Detected version ${String(appVersion?.major)}.${String(appVersion?.minor)}
     `;
-  }, [appVersion, versionSupportsTestnetLedger]);
+  }, [appVersion?.major, appVersion?.minor, isNewerReleaseAvailable, versionSupportsTestnetLedger]);
 
   useListenLedgerEffect();
 

@@ -1,12 +1,12 @@
 import BigNumber from 'bignumber.js';
 
 import { useMempool } from '@hooks/use-mempool';
-import { useFetchAccountNonce } from '@hooks/use-fetch-account-nonce';
+import { useFetchPossibleNextNonce } from '@hooks/use-fetch-account-nonce';
 
 export function useLatestNonce() {
   const { outboundMempoolTxs } = useMempool();
 
-  const resp = useFetchAccountNonce();
+  const resp = useFetchPossibleNextNonce();
 
   if (!resp) return { nonce: 0 };
 

@@ -80,4 +80,5 @@ export const features = {
   stacking: true,
   lifetimeRewards: false,
   txContentMenus: true,
+  microblocks: true,
 };

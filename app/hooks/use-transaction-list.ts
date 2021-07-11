@@ -53,7 +53,6 @@ export function useTransactionList() {
   return {
     txs,
     pendingTxs: dedupedPendingTxs,
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     txCount: txs.length + dedupedPendingTxs.length,
     focusTxDomNode,
     focusedTxIdRef,

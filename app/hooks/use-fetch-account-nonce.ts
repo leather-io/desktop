@@ -6,7 +6,7 @@ import { ApiResource } from '@models';
 import { selectAddress } from '@store/keys';
 import { useApi } from '@hooks/use-api';
 
-export function useFetchAccountNonce() {
+export function useFetchPossibleNextNonce() {
   const api = useApi();
   const address = useSelector(selectAddress);
 
@@ -20,5 +20,5 @@ export function useFetchAccountNonce() {
   );
   const { data } = useQuery([ApiResource.Nonce, address], nonceFetcher);
   if (!data) return { nonce: 0 };
-  return { nonce: data.nonce };
+  return { nonce: data.possible_next_nonce };
 }

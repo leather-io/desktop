@@ -6,6 +6,8 @@ import {
   Configuration,
   SmartContractsApi,
   GetContractDataMapEntryRequest,
+  Middleware,
+  RequestContext,
 } from '@stacks/blockchain-api-client';
 import {
   Transaction,
@@ -18,6 +20,7 @@ import {
 } from '@blockstack/stacks-blockchain-api-types';
 import { AddressTransactionsWithTransfersListResponse } from '@stacks/stacks-blockchain-api-types';
 import packageJson from '../../package.json';
+import { features } from '@constants/index';
 
 const defaultHeaders = [
   { name: 'x-hiro-product', value: 'stacks-wallet-desktop' },
@@ -26,12 +29,23 @@ const defaultHeaders = [
 
 defaultHeaders.forEach(({ name, value }) => (axios.defaults.headers.common[name] = value));
 export class Api {
+  unanchoredMiddleware: Middleware = {
+    pre: (context: RequestContext) => {
+      const url = new URL(context.url);
+      url.searchParams.set('unanchored', 'true');
+      return Promise.resolve({
+        init: context.init,
+        url: url.toString(),
+      });
+    },
+  };
   stacksApiConfig = new Configuration({
     basePath: this.baseUrl,
     headers: defaultHeaders.reduce((acc: Record<string, string>, hdr) => {
       acc[hdr.name] = hdr.value;
       return acc;
     }, {}),
+    middleware: features.microblocks ? [this.unanchoredMiddleware] : [],
   });
 
   accountsApi = new AccountsApi(this.stacksApiConfig);
@@ -42,12 +56,16 @@ export class Api {
 
   async getAddressBalance(address: string) {
     return axios.get<AddressBalanceResponse>(
-      urljoin(this.baseUrl, `/extended/v1/address/${address}/balances`)
+      urljoin(this.baseUrl, `/extended/v1/address/${address}/balances`),
+      { params: { unanchored: true } }
     );
   }
 
   async getNonce(address: string) {
-    const { data } = await axios.get(urljoin(this.baseUrl, `/v2/accounts/${address}`));
+    const { data } = await axios.get(
+      urljoin(this.baseUrl, `extended/v1/address/${address}/nonces`),
+      { params: { unanchored: true } }
+    );
     return data;
   }
 
@@ -57,6 +75,7 @@ export class Api {
       {
         params: {
           limit: 50,
+          unanchored: true,
         },
       }
     );
@@ -68,6 +87,7 @@ export class Api {
       {
         params: {
           limit: 50,
+          unanchored: true,
         },
       }
     );
@@ -116,7 +136,8 @@ export class Api {
 
   async getMempoolTransactions(address: string): Promise<MempoolTransaction[]> {
     const mempoolTxs = await axios.get(
-      urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=200&address=${address}`)
+      urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=200&address=${address}`),
+      { params: { unanchored: true } }
     );
     return mempoolTxs.data.results;
   }

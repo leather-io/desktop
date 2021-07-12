@@ -75,7 +75,7 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
 
   return (
     <TxSigningModal
-      action="initate pooling"
+      action="initiate pooling"
       txDetails={delegationTxOptions}
       isBroadcasting={isBroadcasting}
       error={nodeResponseError}

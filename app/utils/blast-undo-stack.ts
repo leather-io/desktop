@@ -8,5 +8,5 @@ export function blastUndoStackToRemovePasswordFromMemory(element: HTMLInputEleme
   for (let i = 0; i < 256; i++) document.execCommand('undo');
   const newFakeValue = '0'.repeat(pwLength);
   element.value = newFakeValue;
-  global.gc();
+  global.gc?.();
 }

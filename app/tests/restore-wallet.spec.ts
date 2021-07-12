@@ -10,7 +10,6 @@ import { getTestConfigPath } from './get-test-config-path';
 import { createGlobalFeature, resetWallet } from './features/global.feature';
 import { HomeFeature } from './features/home.feature';
 import { initSoftwareWallet } from './features/onboarding.feature';
-import path from 'path';
 
 const PASSWORD = 'hello9*&^*^*dkfskjdfskljdfsj';
 const SEED_PHRASE =
@@ -30,7 +29,7 @@ describe('Restore wallet flow', () => {
 
   afterEach(async () => await app.close());
 
-  test('Restore wallet', async done => {
+  test('Restore wallet', async () => {
     await initSoftwareWallet(page)(SEED_PHRASE, PASSWORD);
 
     const globalFeature = createGlobalFeature(page);
@@ -69,7 +68,5 @@ describe('Restore wallet flow', () => {
     await resetWallet(page);
     await delay(1000);
     await page.screenshot({ path: 'screenshots/finished-page.png' });
-
-    done();
   }, 120_0000);
 });

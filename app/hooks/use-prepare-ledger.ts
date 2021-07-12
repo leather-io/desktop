@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LedgerError } from '@zondax/ledger-blockstack';
+import compareVersions from 'compare-versions';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import {
+  EARLIEST_SUPPORTED_LEDGER_VERSION,
   LATEST_LEDGER_VERSION_MAJOR,
   LATEST_LEDGER_VERSION_MINOR,
-  SUPPORTED_LEDGER_VERSIONS_MINOR,
 } from '@constants/index';
 
 import type { LedgerMessageEvents } from '../main/register-ledger-listeners';
@@ -45,7 +46,9 @@ export function usePrepareLedger() {
   const isSupportedAppVersion = useMemo(() => {
     if (appVersion === null) return true;
     if (!versionSupportsTestnetLedger && isTestnet()) return false;
-    return SUPPORTED_LEDGER_VERSIONS_MINOR.includes(appVersion.minor);
+    const { major, minor, patch } = appVersion;
+    const currentVersion = `${major}.${minor}.${patch}`;
+    return compareVersions.compare(currentVersion, EARLIEST_SUPPORTED_LEDGER_VERSION, '>=');
   }, [appVersion, versionSupportsTestnetLedger]);
 
   const appVersionErrorText = useMemo(() => {
@@ -58,10 +61,18 @@ export function usePrepareLedger() {
           ? 'You should also upgrade your Stacks Wallet to the latest version.'
           : ''
       }
-      This version of the Stacks Wallet only works with ${LATEST_LEDGER_VERSION_MAJOR}.${LATEST_LEDGER_VERSION_MINOR}.
-      Detected version ${String(appVersion?.major)}.${String(appVersion?.minor)}
+      This version of the Stacks Wallet works with ${EARLIEST_SUPPORTED_LEDGER_VERSION} onwards.
+      Detected version ${String(appVersion?.major)}.${String(appVersion?.minor)}.${String(
+      appVersion?.patch
+    )}
     `;
-  }, [appVersion?.major, appVersion?.minor, isNewerReleaseAvailable, versionSupportsTestnetLedger]);
+  }, [
+    appVersion?.major,
+    appVersion?.minor,
+    appVersion?.patch,
+    isNewerReleaseAvailable,
+    versionSupportsTestnetLedger,
+  ]);
 
   useListenLedgerEffect();
 

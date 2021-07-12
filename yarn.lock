@@ -5921,9 +5921,10 @@ electron-debug@3.2.0:
     electron-is-dev "^1.1.0"
     electron-localshortcut "^3.1.0"
 
-"electron-devtools-installer@git+https://github.com/MarshallOfSound/electron-devtools-installer.git":
-  version "0.0.0-development"
-  resolved "git+https://github.com/MarshallOfSound/electron-devtools-installer.git#31bf8632c32dd6a714b00289708c012a06741fd7"
+electron-devtools-installer@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-3.2.0.tgz#acc48d24eb7033fe5af284a19667e73b78d406d0"
+  integrity sha512-t3UczsYugm4OAbqvdImMCImIMVdFzJAHgbwHpkl5jmfu1izVgUcP/mnrPqJIpEeCK1uZGpt+yHgWEN+9EwoYhQ==
   dependencies:
     rimraf "^3.0.2"
     semver "^7.2.1"

@@ -19,7 +19,7 @@ import path from 'path';
 import { app, BrowserWindow, ipcMain, session } from 'electron';
 import windowState from 'electron-window-state';
 import contextMenu from 'electron-context-menu';
-import installExtension, { ExtensionReference, REDUX_DEVTOOLS } from 'electron-devtools-installer';
+import installExtension, { REDUX_DEVTOOLS } from 'electron-devtools-installer';
 
 import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
@@ -49,13 +49,10 @@ app.setPath('userData', getUserDataPath(app));
 app.setPath('logs', path.join(getUserDataPath(app), 'logs'));
 app.commandLine.appendSwitch('js-flags', '--expose-gc');
 
-// https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/2788
-const extensions: ExtensionReference[] = [REDUX_DEVTOOLS]; // [REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS];
-
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await app.whenReady();
-    await installExtension(extensions, {
+    await installExtension(REDUX_DEVTOOLS, {
       loadExtensionOptions: { allowFileAccess: true },
     } as any)
       .then(name => console.log(`Added Extension:  ${name}`))

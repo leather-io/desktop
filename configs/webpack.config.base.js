@@ -85,7 +85,7 @@ export default {
     }),
 
     new webpack.EnvironmentPlugin({
-      STX_NETWORK: process.env.STX_NETWORK,
+      STX_NETWORK: process.env.STX_NETWORK || 'testnet',
     }),
   ],
 };

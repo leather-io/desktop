@@ -2,7 +2,7 @@ import {
   CoreNodePoxResponse,
   CoreNodeInfoResponse,
   NetworkBlockTimesResponse,
-} from '@blockstack/stacks-blockchain-api-types';
+} from '@stacks/stacks-blockchain-api-types';
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 
 import { RootState } from '..';

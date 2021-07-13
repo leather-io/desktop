@@ -1391,16 +1391,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blockstack/prettier-config@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.6.tgz#8a41cd378ba061b79770987f2a6ad0c92b64bd72"
-  integrity sha512-ke0MdyblmoUqSJBEutsG8/6G7KAjCB+uOcgZHPJvJr4R+i5yRhT4GSe5nV/wREINuK0jj2GvaA6qlx4PQTKQUA==
-
-"@blockstack/stacks-blockchain-api-types@0.44":
-  version "0.44.0"
-  resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.44.0.tgz#d6f35dc5c793e81095a829f9dd4de09a610dbab7"
-  integrity sha512-C+8i3OQpZQzB+booZ/C6NsUSdB+GpNKToRh7WPu23XOK471nuETYdWACVLho79LxNWn+t5qNN8Ge3UIsYHYzag==
-
 "@blockstack/stacks-blockchain-api-types@^0.34.1":
   version "0.34.2"
   resolved "https://registry.yarnpkg.com/@blockstack/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.34.2.tgz#de65f6556f8b988784718aca0d8e14284a81d914"
@@ -2801,10 +2791,10 @@
   dependencies:
     prettier "^2.3.0"
 
-"@stacks/stacks-blockchain-api-types@0.61.0":
-  version "0.61.0"
-  resolved "https://registry.yarnpkg.com/@stacks/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.61.0.tgz#f8bc61ad7781fdc0d9e9db711580db984f164e93"
-  integrity sha512-yPOfTUboo5eA9BZL/hqMcM71GstrFs9YWzOrJFPeP4cOO1wgYvAcckgBRbgiE3NqeX0A7SLZLDAXLZbATuRq9w==
+"@stacks/stacks-blockchain-api-types@0.56.0":
+  version "0.56.0"
+  resolved "https://registry.yarnpkg.com/@stacks/stacks-blockchain-api-types/-/stacks-blockchain-api-types-0.56.0.tgz#240718dd935de10b57bb75fd7e57524f85c53a00"
+  integrity sha512-TsFD8Of3c4/VqSLHa0oICI2R2zr4erRcNC0ejfg3jTU5WktC7ueJw942S5+wGIzvuCCJH9zdBHh3wdaCwM/rLw==
 
 "@stacks/transactions@^1.0.1":
   version "1.4.1"

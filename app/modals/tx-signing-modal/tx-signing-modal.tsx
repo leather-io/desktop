@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Modal } from '@stacks/ui';
 import BN from 'bn.js';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 
 import { SignTransaction } from '@components/tx-signing/sign-transaction';
 import { useLatestNonce } from '@hooks/use-latest-nonce';

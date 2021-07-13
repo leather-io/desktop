@@ -4,7 +4,7 @@ import { useQueryClient } from 'react-query';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import BN from 'bn.js';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 import { BigNumber } from 'bignumber.js';
 import { Modal } from '@modals/components/base-modal';
 import {

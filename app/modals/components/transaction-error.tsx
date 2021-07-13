@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 
 import { TxModalButton, TxModalFooter } from '@modals/send-stx/send-stx-modal-layout';
 import { FailedBroadcastError } from '@modals/send-stx/steps/failed-broadcast-error';

@@ -1,4 +1,4 @@
-import { Transaction, MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { Transaction, MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import { c32addressDecode } from 'c32check';
 
 export type StxTxDirection = 'sent' | 'received';

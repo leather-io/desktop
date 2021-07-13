@@ -1,4 +1,4 @@
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import { isStackingTx, isDelegateStxTx, isRevokingDelegationTx } from '@utils/tx-utils';
 
 export function getMempoolTxLabel(tx: MempoolTransaction, address: string, contractId: string) {

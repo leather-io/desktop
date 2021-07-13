@@ -15,8 +15,8 @@ import {
   CoreNodePoxResponse,
   CoreNodeInfoResponse,
   NetworkBlockTimesResponse,
-} from '@blockstack/stacks-blockchain-api-types';
-import { AddressTransactionsWithTransfersListResponse } from '@stacks/stacks-blockchain-api-types';
+  AddressTransactionsWithTransfersListResponse,
+} from '@stacks/stacks-blockchain-api-types';
 import packageJson from '../../package.json';
 
 const defaultHeaders = [

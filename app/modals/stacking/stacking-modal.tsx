@@ -16,7 +16,7 @@ import { safeAwait } from '@utils/safe-await';
 import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
 import { useBroadcastTx } from '@hooks/use-broadcast-tx';
 import { useMempool } from '@hooks/use-mempool';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
 
 interface StackingModalProps {

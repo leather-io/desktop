@@ -4,7 +4,7 @@ import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 import { selectPoxInfo } from '@store/stacking';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 
 import { safeAwait } from '@utils/safe-await';
 import { homeActions } from '@store/home';

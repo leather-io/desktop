@@ -1,8 +1,8 @@
-import type { Transaction, TransactionEvent } from '@blockstack/stacks-blockchain-api-types';
+import type { Transaction, TransactionEvent } from '@stacks/stacks-blockchain-api-types';
 import BigNumber from 'bignumber.js';
 import { getStxTxDirection } from './get-stx-transfer-direction';
-import { isStackingTx } from './tx-utils';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { isMempoolTx, isStackingTx } from './tx-utils';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 
 export function sumStxTxTotal(
   address: string,
@@ -16,8 +16,8 @@ export function sumStxTxTotal(
   if (
     tx.tx_type === 'coinbase' ||
     tx.tx_type === 'poison_microblock' ||
-    (tx.tx_type === 'contract_call' && tx.tx_status === 'pending') ||
-    (tx.tx_type === 'smart_contract' && tx.tx_status === 'pending')
+    (tx.tx_type === 'contract_call' && isMempoolTx(tx)) ||
+    (tx.tx_type === 'smart_contract' && isMempoolTx(tx))
   ) {
     return new BigNumber(tx.fee_rate);
   }
@@ -36,5 +36,6 @@ export function sumStxTxTotal(
     current.event_type === 'stx_asset' && current.asset.asset_event_type === 'transfer'
       ? new BigNumber(current.asset.amount || 0).plus(prev)
       : initialValue;
+
   return tx.events.reduce(sumEventTransferHandler, initialValue).plus(tx.fee_rate);
 }

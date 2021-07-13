@@ -19,7 +19,7 @@ import { useBroadcastTx } from '@hooks/use-broadcast-tx';
 import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
 import { useMempool } from '@hooks/use-mempool';
 
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 
 import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
 

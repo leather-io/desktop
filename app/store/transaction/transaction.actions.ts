@@ -1,7 +1,9 @@
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@stacks/ui';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
-import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
+import {
+  PostCoreNodeTransactionsError,
+  AddressTransactionWithTransfers,
+} from '@stacks/stacks-blockchain-api-types';
 
 import urljoin from 'url-join';
 import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';

@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { selectAddress } from '@store/keys';
 import { ApiResource } from '@models';
 import { useFetchAccountNonce } from '@hooks/use-fetch-account-nonce';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import { useApi } from './use-api';
 
 interface UseMempool {

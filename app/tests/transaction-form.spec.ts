@@ -52,7 +52,7 @@ describeOnlyTestnet('Transaction flow', () => {
     await app.close();
   });
 
-  test('Transaction form', async done => {
+  test('Transaction form', async () => {
     await initSoftwareWallet(page)(SEED_PHRASE, PASSWORD);
     const globalFeature = createGlobalFeature(page);
 
@@ -106,7 +106,5 @@ describeOnlyTestnet('Transaction flow', () => {
     expect(memo).toEqual(TX_MEMO);
     expect(recipient).toEqual(TX_RECIPIENT);
     expect(amount).toEqual(stxToMicroStx(TX_AMOUNT).toString());
-
-    done();
   }, 120_0000);
 });

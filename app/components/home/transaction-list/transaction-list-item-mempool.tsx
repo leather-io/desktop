@@ -1,7 +1,7 @@
 import React, { FC, useRef, useEffect, MutableRefObject } from 'react';
 import { useHover, useFocus } from 'use-events';
 import { Box, color, Flex, Stack, Text } from '@stacks/ui';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import { getTxTypeName } from '@stacks/ui-utils';
 
 import { toHumanReadableStx } from '@utils/unit-convert';

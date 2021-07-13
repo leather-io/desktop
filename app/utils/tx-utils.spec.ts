@@ -1,5 +1,5 @@
 import { sumTxsTotalSpentByAddress } from './tx-utils';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 
 const mempoolTxs: MempoolTransaction[] = [
   {

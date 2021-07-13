@@ -3,15 +3,11 @@ import { LedgerError } from '@zondax/ledger-blockstack';
 import compareVersions from 'compare-versions';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import {
-  EARLIEST_SUPPORTED_LEDGER_VERSION,
-  LATEST_LEDGER_VERSION_MAJOR,
-  LATEST_LEDGER_VERSION_MINOR,
-} from '@constants/index';
 
+import { EARLIEST_SUPPORTED_LEDGER_VERSION } from '@constants/index';
+import { isTestnet } from '@utils/network-utils';
 import type { LedgerMessageEvents } from '../main/register-ledger-listeners';
 import { useListenLedgerEffect } from './use-listen-ledger-effect';
-import { isTestnet } from '@utils/network-utils';
 import { messages$ } from './use-message-events';
 import { useCheckForUpdates } from './use-check-for-updates';
 

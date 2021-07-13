@@ -42,7 +42,7 @@ export const fetchStackerInfo = createAsyncThunk(
     network.coreApiUrl = node.url;
     const stackingClient = new StackingClient(address, network as any);
     const [error, resp] = await safeAwait(stackingClient.getStatus());
-    if (resp) return resp;
+    if (resp) return resp as any;
     if (error) return { error };
     throw new Error();
   }

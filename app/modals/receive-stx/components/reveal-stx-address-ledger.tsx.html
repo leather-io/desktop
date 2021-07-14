@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/28</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -157,7 +157,14 @@
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
 <a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -169,36 +176,43 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -269,9 +283,11 @@ import { RootState } from '@store/index';
 <span class="cstat-no" title="statement not covered" >import { AddressDisplayer } from './address-displayer';</span>
 <span class="cstat-no" title="statement not covered" >import { SevereWarning } from '@components/severe-warning';</span>
 <span class="cstat-no" title="statement not covered" >import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';</span>
+<span class="cstat-no" title="statement not covered" >import { ErrorLabel } from '@components/error-label';</span>
+<span class="cstat-no" title="statement not covered" >import { ErrorText } from '@components/error-text';</span>
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >RevealStxAddressLedger: FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
-  const { step, isLocked } = <span class="cstat-no" title="statement not covered" >usePrepareLedger();</span>
+  const { step, isLocked, isSupportedAppVersion, appVersionErrorText } = <span class="cstat-no" title="statement not covered" >usePrepareLedger();</span>
   const [address, setAddress] = <span class="cstat-no" title="statement not covered" >useState&lt;null | string&gt;(null);</span>
   const [success, setSuccess] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const [pendingLedgerAction, setPendingLedgerAction] =
@@ -341,6 +357,11 @@ export const <span class="cstat-no" title="statement not covered" >RevealStxAddr
           &lt;/Stack&gt;
         &lt;/Flex&gt;
       )}
+      {!isSupportedAppVersion &amp;&amp; (
+        &lt;ErrorLabel my="base-loose"&gt;
+          &lt;ErrorText&gt;{appVersionErrorText}&lt;/ErrorText&gt;
+        &lt;/ErrorLabel&gt;
+      )}
       &lt;Box&gt;
         {pendingLedgerAction === 'pending' &amp;&amp; address &amp;&amp; (
           &lt;Flex mb="base"&gt;
@@ -364,7 +385,7 @@ export const <span class="cstat-no" title="statement not covered" >RevealStxAddr
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jul 13 2021 15:11:37 GMT+0000 (Coordinated Universal Time)
+                at Wed Jul 14 2021 14:24:35 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

@@ -35,5 +35,7 @@ export function useMempool(): UseMempool {
     .filter(tx => tx.sender_address === address)
     .filter(tx => tx.nonce >= nonce);
 
-  return { mempoolTxs, outboundMempoolTxs, refetch };
+  const pendingMempoolTxs = mempoolTxs.filter(tx => tx.tx_status === 'pending');
+
+  return { mempoolTxs: pendingMempoolTxs, outboundMempoolTxs, refetch };
 }

@@ -17,7 +17,7 @@ export const TransactionList: FC<TransactionListProps> = props => {
   const { node, txCount, loading, children, error } = props;
 
   if (loading) return <TransactionListLoading />;
-  if (error) return <TransactionListError node={node} error={error} />;
+  if (error && txCount === 0) return <TransactionListError node={node} error={error} />;
   if (txCount === 0) return <TransactionListEmpty />;
 
   return (

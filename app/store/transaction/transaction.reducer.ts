@@ -54,11 +54,8 @@ const selectors = transactionAdapter.getSelectors(selectTxState);
 
 export const selectTransactionList = (state: RootState) => selectors.selectAll(state);
 
-export const selectMostRecentlyTxError = createSelector(
-  selectTxState,
-  state => state.mostRecentBroadcastError
-);
 export const selectTransactionsLoading = createSelector(selectTxState, state => state.loading);
+
 export const selectTransactionListFetchError = createSelector(
   selectTxState,
   state => state.fetchTxError

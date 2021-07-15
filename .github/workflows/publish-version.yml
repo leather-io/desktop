@@ -124,6 +124,19 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
 
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          # Required, workflow file name or ID
+          workflow: create-version.yml
+          # Optional, uploaded artifact name,
+          # will download all artifacts if not specified
+          # and extract them in respective subdirectories
+          # https://github.com/actions/download-artifact#download-all-artifacts
+          name: release-notes
+
+      - run: ls -R .
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

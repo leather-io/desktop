@@ -16,6 +16,31 @@
 
 ### Features
 
+* adds some cool new shit ([027a4e6](https://github.com/blockstack/stacks-wallet/commit/027a4e6cfc24562c6c8364666f65f65998da620f))
+* test 4 ([ac5d2a1](https://github.com/blockstack/stacks-wallet/commit/ac5d2a17e87d49f671f9c17bc5d00cb0ee62ab9a))
+* test 5 ([40c4b11](https://github.com/blockstack/stacks-wallet/commit/40c4b119ca149d80360d9c30e572a4b6509ae283))
+* test 6 ([28e42ef](https://github.com/blockstack/stacks-wallet/commit/28e42ef91aba56fa84052f64bd2e1db83def2fac))
+* test release process 3 ([2047418](https://github.com/blockstack/stacks-wallet/commit/2047418d0572a201dd325b20b6adfd8069e3ff30))
+* **home:** add illustration, closes [#724](https://github.com/blockstack/stacks-wallet/issues/724) ([f23f31b](https://github.com/blockstack/stacks-wallet/commit/f23f31b289f2ebba095730d84f99580ba3d97270))
+
+# [4.4.0-beta.1](https://github.com/blockstack/stacks-wallet/compare/v4.3.1...v4.4.0-beta.1) (2021-07-15)
+
+
+### Bug Fixes
+
+* add release notes to upload ([c5f57ad](https://github.com/blockstack/stacks-wallet/commit/c5f57ad3e325a4c0dc1ca6015825fd0fbedff2fe))
+* test release process ([843903a](https://github.com/blockstack/stacks-wallet/commit/843903af29bf5c47f8084ffffd450cbafe76ca73))
+* test release process 2 ([b5b1f8c](https://github.com/blockstack/stacks-wallet/commit/b5b1f8cdda5c481a9460ecc12758849a2876bda9))
+* **home:** only show 'tx_status' pending mempool txs, closes [#867](https://github.com/blockstack/stacks-wallet/issues/867) ([b65a2c0](https://github.com/blockstack/stacks-wallet/commit/b65a2c00a6d9dfa5fcb3a0bbdc74146d3ff9f69f))
+* **home:** use cached txs as fallback when endpoint fails ([46e7711](https://github.com/blockstack/stacks-wallet/commit/46e771107b29e52cf1eedd3dbd248044953940b3))
+* round stacking percentage, closes [#837](https://github.com/blockstack/stacks-wallet/issues/837) ([1e82dcd](https://github.com/blockstack/stacks-wallet/commit/1e82dcda7b2538403662bf4420c0b758a4ba61d5))
+* use earliest stacks app version check ([4bd329e](https://github.com/blockstack/stacks-wallet/commit/4bd329e88cb4f6c0dc1998b601a144c3a360ddaf))
+* **ledger:** support Stacks app 0.13.0 ([e4df8d9](https://github.com/blockstack/stacks-wallet/commit/e4df8d93f232216ed237ec07fa5d7b0415289bc5))
+* **ledger:** upgrade ledger package ([281e176](https://github.com/blockstack/stacks-wallet/commit/281e176290cabb7c2bb96a4e23cc33e08b9b4e55))
+
+
+### Features
+
 * test 4 ([ac5d2a1](https://github.com/blockstack/stacks-wallet/commit/ac5d2a17e87d49f671f9c17bc5d00cb0ee62ab9a))
 * test release process 3 ([2047418](https://github.com/blockstack/stacks-wallet/commit/2047418d0572a201dd325b20b6adfd8069e3ff30))
 * **home:** add illustration, closes [#724](https://github.com/blockstack/stacks-wallet/issues/724) ([f23f31b](https://github.com/blockstack/stacks-wallet/commit/f23f31b289f2ebba095730d84f99580ba3d97270))

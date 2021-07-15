@@ -1,3 +1,10 @@
+# [4.4.0-beta.5](https://github.com/blockstack/stacks-wallet/compare/v4.4.0-beta.4...v4.4.0-beta.5) (2021-07-15)
+
+
+### Features
+
+* i call the big one bitey ([ac0818b](https://github.com/blockstack/stacks-wallet/commit/ac0818bfcbafbf311cf407d78b696e928a180fbe))
+
 # [4.4.0-beta.4](https://github.com/blockstack/stacks-wallet/compare/v4.4.0-beta.3...v4.4.0-beta.4) (2021-07-15)
 
 

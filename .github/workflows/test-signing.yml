@@ -1,6 +1,17 @@
 name: Test siging
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - 'master'
+      - 'beta'
+    tags-ignore:
+      - '**'
+    paths-ignore:
+      - '**/CHANGELOG.md'
+      - '**/package.json'
+      - '**/yarn.lock'
+  pull_request:
 
 jobs:
   create-fake-files:

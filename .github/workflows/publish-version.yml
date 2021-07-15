@@ -124,18 +124,11 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
 
-      - name: Download artifact
+      - name: Download release-notes.txt from create-version workflow
         uses: dawidd6/action-download-artifact@v2
         with:
-          # Required, workflow file name or ID
           workflow: create-version.yml
-          # Optional, uploaded artifact name,
-          # will download all artifacts if not specified
-          # and extract them in respective subdirectories
-          # https://github.com/actions/download-artifact#download-all-artifacts
           name: release-notes
-
-      - run: ls -R .
 
       - name: Create Release
         id: create_release
@@ -147,6 +140,7 @@ jobs:
           release_name: Stacks Wallet v${{ needs.build.outputs.version }}
           draft: false
           prerelease: ${{ contains(needs.build.outputs.version, 'beta') }}
+          body_path: release-notes.txt
 
   upload-release-assets:
     runs-on: ubuntu-latest

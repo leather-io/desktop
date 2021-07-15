@@ -141,17 +141,26 @@ jobs:
       - name: Kill first line of release notes
         run: sed -i '1d' release-notes.txt
 
-      - name: SHA-256 the binaries
-        run: shasum -a 256 stacks-wallet*
-
       - name: Add ```
         run: echo "\`\`\`" >> release-notes.txt
 
-      - name: Add hashes to release
-        run: shasum -a 256 stacks-wallet* >> release-notes.txt
+      - name: Create hashes file
+        run: shasum -a 256 stacks-wallet* >> shasums.txt
 
-      - name: Add ```
-        run: echo "\`\`\`" >> release-notes.txt
+      - run: cat shasums.txt
+
+      - name: Import GPG key
+        id: import_gpg_key
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - run: gpg --armor --output shasums.txt.asc --clearsign shasums.txt
+
+      - run: cat release-notes.txt shasums.txt.asc > release-body.txt
+
+      - run: echo "\`\`\`" >> release-body.txt
 
       - name: Create Release
         id: create_release
@@ -163,7 +172,7 @@ jobs:
           release_name: Stacks Wallet v${{ needs.build.outputs.version }}
           draft: false
           prerelease: ${{ contains(needs.build.outputs.version, 'beta') }}
-          body_path: release-notes.txt
+          body_path: release-body.txt
 
   upload-release-assets:
     runs-on: ubuntu-latest

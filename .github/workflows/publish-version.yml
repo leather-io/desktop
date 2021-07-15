@@ -129,6 +129,9 @@ jobs:
         with:
           path: release
 
+      - name: Move binaries to root directory
+        run: mv release/*/stacks-wallet* .
+
       - name: Download release-notes.txt from create-version workflow
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -139,10 +142,16 @@ jobs:
         run: sed -i '1d' release-notes.txt
 
       - name: SHA-256 the binaries
-        run: shasum -a 256 release/*/stacks-wallet*
+        run: shasum -a 256 stacks-wallet*
+
+      - name: Add ```
+        run: echo "\`\`\`" >> release-notes.txt
 
       - name: Add hashes to release
-        run: shasum -a 256 release/*/stacks-wallet* >> release-notes.txt
+        run: shasum -a 256 stacks-wallet* >> release-notes.txt
+
+      - name: Add ```
+        run: echo "\`\`\`" >> release-notes.txt
 
       - name: Create Release
         id: create_release

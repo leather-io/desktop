@@ -124,11 +124,25 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
 
+      - name: Download binaries
+        uses: actions/download-artifact@v2
+        with:
+          path: release
+
       - name: Download release-notes.txt from create-version workflow
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: create-version.yml
           name: release-notes
+
+      - name: Kill first line of release notes
+        run: sed -Ie '1d' release-notes.txt
+
+      - name: SHA-256 the binaries
+        run: shasum -a 256 release/*
+
+      - name: Add hashes to release
+        run: shasum -a 256 release/* >> release-notes.txt
 
       - name: Create Release
         id: create_release

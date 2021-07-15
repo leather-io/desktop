@@ -1,3 +1,10 @@
+# [4.4.0-beta.4](https://github.com/blockstack/stacks-wallet/compare/v4.4.0-beta.3...v4.4.0-beta.4) (2021-07-15)
+
+
+### Features
+
+* test 9, even beter-er ([f1993d7](https://github.com/blockstack/stacks-wallet/commit/f1993d71d2964fc7bf70a4c81d2835c9330de119))
+
 # [4.4.0-beta.3](https://github.com/blockstack/stacks-wallet/compare/v4.4.0-beta.2...v4.4.0-beta.3) (2021-07-15)
 
 

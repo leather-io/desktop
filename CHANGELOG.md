@@ -1,3 +1,10 @@
+# [4.4.0-beta.2](https://github.com/blockstack/stacks-wallet/compare/v4.4.0-beta.1...v4.4.0-beta.2) (2021-07-15)
+
+
+### Features
+
+* test 7 ([3986473](https://github.com/blockstack/stacks-wallet/commit/39864739c4b5c9b80509fe40463f9461129c0ddd))
+
 # [4.4.0-beta.1](https://github.com/blockstack/stacks-wallet/compare/v4.3.1...v4.4.0-beta.1) (2021-07-15)
 
 

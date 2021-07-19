@@ -23,7 +23,7 @@ const issueBody = `
 
 -->
 
-Bug found testing Stacks Wallet build ${String(shaShort)}, ${String(version)}.
+Bug found testing Hiro Wallet build ${String(shaShort)}, ${String(version)}.
 
 `;
 

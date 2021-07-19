@@ -18,7 +18,7 @@ export const Welcome: React.FC = () => {
 
   return (
     <Onboarding>
-      <OnboardingTitle>Stacks Wallet</OnboardingTitle>
+      <OnboardingTitle>Hiro Wallet</OnboardingTitle>
       <OnboardingText>
         Manage your STX holdings, and earn Bitcoin by participating in Stacking
       </OnboardingText>

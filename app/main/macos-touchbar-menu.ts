@@ -3,7 +3,7 @@ import { BrowserWindow, TouchBar } from 'electron';
 const { TouchBarLabel } = TouchBar;
 
 const stxTouchBarButton = new TouchBarLabel({
-  label: 'Stacks Wallet',
+  label: 'Hiro Wallet',
 });
 
 const touchBar = new TouchBar({

@@ -50,7 +50,7 @@ export const RestoreWallet: React.FC = () => {
     const mnemonicLength = parsedMnemonic.split(' ').length;
 
     if (mnemonicLength !== 12 && mnemonicLength !== 24) {
-      setError('The Stacks Wallet can be used with only 12 and 24-word Secret Keys');
+      setError('The Hiro Wallet can be used with only 12 and 24-word Secret Keys');
       return;
     }
 

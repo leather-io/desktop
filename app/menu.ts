@@ -68,17 +68,17 @@ export default class MenuBuilder {
 
   buildDarwinTemplate() {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'Stacks Wallet',
+      label: 'Hiro Wallet',
       submenu: [
         {
-          label: 'About Stacks Wallet',
+          label: 'About Hiro Wallet',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide Stacks Wallet',
+          label: 'Hide Hiro Wallet',
           accelerator: 'Command+H',
           selector: 'hide:',
         },

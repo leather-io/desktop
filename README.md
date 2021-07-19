@@ -1,12 +1,11 @@
-# Stacks Wallet for Desktop
+# Hiro Wallet for Desktop
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/blockstack/stacks-wallet/Build)
 [![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet/)
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/blockstack/stacks-wallet)
 
-
-![Stacks Wallet Hero](/resources/readme.png)
+![Hiro Wallet Hero](/resources/readme.png)
 
 Implementation of the Stacks 2.0 wallet for Desktop
 

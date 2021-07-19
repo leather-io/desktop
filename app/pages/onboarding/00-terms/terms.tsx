@@ -22,10 +22,10 @@ export const Terms: React.FC = () => {
         Terms of Service
       </OnboardingTitle>
       <OnboardingText mb="extra-loose">
-        You must first accept the terms of service before using the Stacks Wallet
+        You must first accept the terms of service before using the Hiro Wallet
       </OnboardingText>
       <Box textStyle="body.small" mx="base">
-        These terms of use (“<strong>Terms</strong>”) govern your use of the Stacks Wallet software
+        These terms of use (“<strong>Terms</strong>”) govern your use of the Hiro Wallet software
         (the “<strong>Software</strong>”) made available to you by {FULL_ENTITY_NAME} (“
         <strong>{ENTITY_NAME}</strong>”). By clicking “I Accept,” downloading, installing,
         accessing, or using the Software, you agree to be bound by the following terms and

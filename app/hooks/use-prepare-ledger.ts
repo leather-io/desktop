@@ -54,10 +54,10 @@ export function usePrepareLedger() {
     return `
       Make sure to upgrade your Stacks app to the latest version in Ledger Live. ${
         isNewerReleaseAvailable
-          ? 'You should also upgrade your Stacks Wallet to the latest version.'
+          ? 'You should also upgrade your Hiro Wallet to the latest version.'
           : ''
       }
-      This version of the Stacks Wallet works with ${EARLIEST_SUPPORTED_LEDGER_VERSION} onwards.
+      This version of the Hiro Wallet works with ${EARLIEST_SUPPORTED_LEDGER_VERSION} onwards.
       Detected version ${String(appVersion?.major)}.${String(appVersion?.minor)}.${String(
       appVersion?.patch
     )}

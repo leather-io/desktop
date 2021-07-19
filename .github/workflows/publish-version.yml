@@ -161,7 +161,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ needs.build.outputs.version }}
-          release_name: Stacks Wallet v${{ needs.build.outputs.version }}
+          release_name: Hiro Wallet v${{ needs.build.outputs.version }}
           draft: false
           prerelease: ${{ contains(needs.build.outputs.version, 'beta') }}
           body_path: release-body.txt
@@ -220,4 +220,4 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            🔔 New Stacks Wallet released: [Download `v${{ needs.build.outputs.version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.build.outputs.version }})
+            🔔 New Hiro Wallet released: [Download `v${{ needs.build.outputs.version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.build.outputs.version }})

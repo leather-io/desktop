@@ -1,7 +1,7 @@
 {
   "name": "stacks-wallet",
   "version": "4.4.0",
-  "description": "Stacks Wallet 2.0 — Stacking",
+  "description": "Hiro Wallet 2.0 — Stacking",
   "prettier": "@stacks/prettier-config",
   "homepage": "https://hiro.so/wallet",
   "author": {

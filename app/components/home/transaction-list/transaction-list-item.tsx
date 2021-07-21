@@ -57,7 +57,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
     txWithEvents.stx_received
   );
 
-  const inMicroblock = tx.burn_block_time_iso === '';
+  const inMicroblock = tx.is_unanchored;
 
   const txFailed =
     tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition';
@@ -115,7 +115,7 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
       tx.token_transfer.memo.replace('0x', '').replace(/^(0{2})+|(0{2})+$/g, ''),
       'hex'
     ).toString('utf8');
-  const txDate = new Date(tx.burn_block_time_iso);
+  const txDate = new Date(tx.burn_block_time_iso || tx.parent_burn_block_time_iso);
   const txDateShort = txDate.toLocaleString();
 
   const containerRef = useRef<HTMLButtonElement>(null);

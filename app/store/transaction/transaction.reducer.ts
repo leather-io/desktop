@@ -20,7 +20,7 @@ export interface TransactionState extends EntityState<AddressTransactionWithTran
 const transactionAdapter = createEntityAdapter<AddressTransactionWithTransfers>({
   selectId: ({ tx }) => tx.tx_id,
   sortComparer: (tx1, tx2) => {
-    if (tx1.tx.burn_block_time_iso === '') return -1;
+    if (tx1.tx.is_unanchored) return -1;
     return tx2.tx.burn_block_time - tx1.tx.burn_block_time;
   },
 });

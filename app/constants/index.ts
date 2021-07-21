@@ -26,7 +26,7 @@ export const STATUS_PAGE_URL = 'http://status.test-blockstack.com';
 
 export const DEFAULT_STACKS_NODE_URL = whenNetwork<string>({
   mainnet: 'https://stacks-node-api.mainnet.stacks.co',
-  testnet: 'https://stacks-node-api.testnet.stacks.co',
+  testnet: 'https://stacks-node-api-microblocks.testnet.stacks.co',
 });
 
 export const EXPLORER_URL = 'https://explorer.stacks.co';

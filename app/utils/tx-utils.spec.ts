@@ -8,6 +8,8 @@ const mempoolTxs: MempoolTransaction[] = [
     tx_type: 'contract_call',
     receipt_time: 1615994184,
     receipt_time_iso: '2021-03-17T15:16:24.000Z',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     nonce: 0,
     fee_rate: '216',
     sender_address: 'SP6EQ6KBBYWCSD11XNKMS0VGQCPTT0G7PVWPBYW2',
@@ -25,6 +27,8 @@ const mempoolTxs: MempoolTransaction[] = [
     tx_type: 'token_transfer',
     receipt_time: 1615994162,
     receipt_time_iso: '2021-03-17T15:16:02.000Z',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     nonce: 5,
     fee_rate: '180',
     sender_address: 'SP6EQ6KBBYWCSD11XNKMS0VGQCPTT0G7PVWPBYW2',
@@ -42,6 +46,8 @@ const mempoolTxs: MempoolTransaction[] = [
     tx_type: 'token_transfer',
     receipt_time: 1615994030,
     receipt_time_iso: '2021-03-17T15:13:50.000Z',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     nonce: 130,
     fee_rate: '400',
     sender_address: 'SP6EQ6KBBYWCSD11XNKMS0VGQCPTT0G7PVWPBYW2',

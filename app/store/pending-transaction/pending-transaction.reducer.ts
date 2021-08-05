@@ -8,7 +8,7 @@ import {
 
 import { RootState } from '..';
 import { fetchTransactionsDone, pendingTransactionSuccessful } from '../transaction';
-import { MempoolTransaction, Transaction } from '@blockstack/stacks-blockchain-api-types';
+import { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 
 export type PendingTransactionState = EntityState<MempoolTransaction>;
 

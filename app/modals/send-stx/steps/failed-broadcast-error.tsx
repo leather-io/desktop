@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Flex, Box, Text, color } from '@stacks/ui';
-import { PostCoreNodeTransactionsError } from '@blockstack/stacks-blockchain-api-types';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 
 import failedCrossSvg from '../../../assets/images/failed-cross.svg';
 import { ExplainerTooltip } from '@components/tooltip';

@@ -1,5 +1,5 @@
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import { sumTxsTotalSpentByAddress } from './tx-utils';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
 
 const mempoolTxs: MempoolTransaction[] = [
   {
@@ -8,17 +8,17 @@ const mempoolTxs: MempoolTransaction[] = [
     tx_type: 'contract_call',
     receipt_time: 1615994184,
     receipt_time_iso: '2021-03-17T15:16:24.000Z',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     nonce: 0,
     fee_rate: '216',
     sender_address: 'SP6EQ6KBBYWCSD11XNKMS0VGQCPTT0G7PVWPBYW2',
     sponsored: false,
     post_condition_mode: 'deny',
     post_conditions: [],
+    anchor_mode: 'any',
     contract_call: {
       contract_id: 'SP000000000000000000002Q6VF78.pox',
       function_name: 'delegate-stx',
+      function_signature: '',
     },
   },
   {
@@ -27,12 +27,12 @@ const mempoolTxs: MempoolTransaction[] = [
     tx_type: 'token_transfer',
     receipt_time: 1615994162,
     receipt_time_iso: '2021-03-17T15:16:02.000Z',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     nonce: 5,
     fee_rate: '180',
     sender_address: 'SP6EQ6KBBYWCSD11XNKMS0VGQCPTT0G7PVWPBYW2',
     sponsored: false,
+    anchor_mode: 'any',
+    post_conditions: [],
     post_condition_mode: 'deny',
     token_transfer: {
       recipient_address: 'SP1P72Z3704VMT3DMHPP2CB8TGQWGDBHD3RPR9GZS',
@@ -46,10 +46,10 @@ const mempoolTxs: MempoolTransaction[] = [
     tx_type: 'token_transfer',
     receipt_time: 1615994030,
     receipt_time_iso: '2021-03-17T15:13:50.000Z',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     nonce: 130,
     fee_rate: '400',
+    anchor_mode: 'any',
+    post_conditions: [],
     sender_address: 'SP6EQ6KBBYWCSD11XNKMS0VGQCPTT0G7PVWPBYW2',
     sponsored: false,
     post_condition_mode: 'deny',

@@ -27,6 +27,10 @@ describe('Restore wallet flow', () => {
     page = await app.firstWindow();
   });
 
+  async function takeScreenshot(name: string) {
+    await page.screenshot({ path: `screenshots/${process.platform}/${name}.png` });
+  }
+
   afterEach(async () => await app.close());
 
   test('Restore wallet', async () => {
@@ -48,7 +52,7 @@ describe('Restore wallet flow', () => {
     await homeFeature.waitFor('stxAddressText');
     const stxAddressLabel = await homeFeature.$('stxAddressText');
 
-    await page.screenshot({ path: 'screenshots/restore-wallet-address.png' });
+    await takeScreenshot('restore-wallet-address');
 
     expect(await stxAddressLabel.textContent()).toEqual(
       whenNetwork({
@@ -59,14 +63,10 @@ describe('Restore wallet flow', () => {
 
     await homeFeature.click('receiveStxModalCloseBtn');
 
-    await page.screenshot({
-      path: `screenshots/restore-wallet/${String(
-        process.env.STX_NETWORK
-      )}-after-close-stx-modal.png`,
-    });
+    await takeScreenshot(`${String(process.env.STX_NETWORK)}-after-close-stx-modal.png`);
 
     await resetWallet(page);
     await delay(1000);
-    await page.screenshot({ path: 'screenshots/finished-page.png' });
+    await takeScreenshot('finished-page');
   }, 120_0000);
 });

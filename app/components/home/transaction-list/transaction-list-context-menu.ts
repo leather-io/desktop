@@ -1,4 +1,4 @@
-import { Transaction } from '@blockstack/stacks-blockchain-api-types';
+import { Transaction } from '@stacks/stacks-blockchain-api-types';
 
 import { hasMemo, getRecipientAddress } from '@utils/tx-utils';
 import { features } from '../../../constants/index';

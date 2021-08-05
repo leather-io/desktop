@@ -78,5 +78,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: test-screenshots-${{ steps.date.outputs.date }}
+          name: test-screenshots-${{ matrix.os }}-${{ matrix.stx_network }}-${{ steps.date.outputs.date }}
           path: screenshots

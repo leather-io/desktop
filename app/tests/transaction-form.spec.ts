@@ -16,6 +16,7 @@ import { setUpElectronApp } from './_setup-tests';
 import { getTestConfigPath } from './get-test-config-path';
 
 const PASSWORD = 'hello9*&^*^*dkfskjdfskljdfsj';
+// ST71MG1BZ1QDSHXT4GZ5H2FGFX24XKM2ND5GXPV6
 const SEED_PHRASE =
   'area kid fat gaze foster eyebrow pen heart draft capable lecture attract daughter news glue saddle exact disorder win olive observe burst option wasp';
 const TX_RECIPIENT = 'STWQ9GP5J69F07RX287ECZ8MRWV48C402HF8CBWB';
@@ -25,7 +26,7 @@ const TX_MEMO = 'test-memo-field000';
 function interceptTransactionBroadcast(page: Page): Promise<Buffer> {
   return new Promise(resolve => {
     page.on('request', request => {
-      if (request.url() === 'https://stacks-node-api.testnet.stacks.co/v2/transactions') {
+      if (request.url().endsWith('/v2/transactions')) {
         const requestBody = request.postDataBuffer();
         if (requestBody === null) return;
         resolve(requestBody);
@@ -52,6 +53,10 @@ describeOnlyTestnet('Transaction flow', () => {
     await app.close();
   });
 
+  async function takeScreenshot(name: string) {
+    await page.screenshot({ path: `screenshots/${process.platform}/${name}.png` });
+  }
+
   test('Transaction form', async done => {
     await initSoftwareWallet(page)(SEED_PHRASE, PASSWORD);
     const globalFeature = createGlobalFeature(page);
@@ -72,15 +77,13 @@ describeOnlyTestnet('Transaction flow', () => {
     const memoInput = await page.$(homeFeature.select.sendStxFormMemoInput);
     await memoInput.type(TX_MEMO);
 
-    await delay(6000);
-
     const previewTxBtn = await page.$(homeFeature.select.sendStxFormPreviewBtn);
     await previewTxBtn.click();
 
-    await delay(1000);
-
     const memoPreview = await page.$(`text="${TX_MEMO}"`);
     expect(memoPreview).not.toBeNull();
+
+    await takeScreenshot('after-form-complete');
 
     await homeFeature.waitFor('sendStxFormSendBtn');
 
@@ -89,12 +92,15 @@ describeOnlyTestnet('Transaction flow', () => {
 
     await homeFeature.waitFor('decryptWalletInput');
 
+    await takeScreenshot('decrypt-wallet');
+
     const decryptWalletPasswordInput = await page.$(homeFeature.select.decryptWalletInput);
     await decryptWalletPasswordInput.type(PASSWORD);
 
     const broadcastTxBtn = await page.$(homeFeature.select.sendStxFormBroadcastBtn);
     await broadcastTxBtn.click();
 
+    await takeScreenshot('sent');
     const requestBody = await interceptTransactionBroadcast(page);
 
     const deserialisedTx = deserializeTransaction(requestBody);

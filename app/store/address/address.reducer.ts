@@ -1,4 +1,4 @@
-import { AddressStxBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
+import { AddressStxBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { createReducer, createSelector } from '@reduxjs/toolkit';
 import BigNumber from 'bignumber.js';
 

@@ -1,6 +1,6 @@
 import { Dispatch, GetState } from '../index';
 import { createAction } from '@reduxjs/toolkit';
-import { AddressStxBalanceResponse } from '@blockstack/stacks-blockchain-api-types';
+import { AddressStxBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { safeAwait } from '@stacks/ui';
 
 import { Api } from '../../api/api';
@@ -24,7 +24,7 @@ export function getAddressDetails(address: string) {
       return;
     }
     if (response) {
-      dispatch(fetchAddressDone(response));
+      dispatch(fetchAddressDone(response as AddressStxBalanceResponse));
     }
   };
 }

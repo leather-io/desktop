@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import * as R from 'ramda';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/index';
 import { selectTransactionList } from '@store/transaction';

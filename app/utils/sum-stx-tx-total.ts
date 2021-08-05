@@ -1,8 +1,11 @@
-import type { Transaction, TransactionEvent } from '@blockstack/stacks-blockchain-api-types';
+import type {
+  Transaction,
+  TransactionEvent,
+  MempoolTransaction,
+} from '@stacks/stacks-blockchain-api-types';
 import BigNumber from 'bignumber.js';
 import { getStxTxDirection } from './get-stx-transfer-direction';
-import { isStackingTx } from './tx-utils';
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { isMempoolTx, isStackingTx } from './tx-utils';
 
 export function sumStxTxTotal(
   address: string,
@@ -16,13 +19,13 @@ export function sumStxTxTotal(
   if (
     tx.tx_type === 'coinbase' ||
     tx.tx_type === 'poison_microblock' ||
-    (tx.tx_type === 'contract_call' && tx.tx_status === 'pending') ||
-    (tx.tx_type === 'smart_contract' && tx.tx_status === 'pending')
+    (tx.tx_type === 'contract_call' && tx.tx_status !== 'success') ||
+    (tx.tx_type === 'smart_contract' && tx.tx_status !== 'success')
   ) {
     return new BigNumber(tx.fee_rate);
   }
 
-  if (isStackingTx(tx, poxContractId) && tx.tx_result?.repr) {
+  if (isStackingTx(tx, poxContractId) && !isMempoolTx(tx) && tx.tx_result?.repr) {
     // We get the amount stacked from the tx_result
     const matcher = /\(tuple \(lock-amount\su(\d+)/;
     const matches = matcher.exec(tx.tx_result.repr);

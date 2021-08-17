@@ -91,29 +91,17 @@ export const StackingDelegation: FC = () => {
         return value !== address;
       },
     }),
-    amount: stxAmountSchema()
-      .test({
-        name: 'test-min-allowed-delegated-stacking',
-        message: `You must delegate at least ${toHumanReadableStx(
-          MIN_DELEGATED_STACKING_AMOUNT_USTX
-        )}`,
-        test(value: any) {
-          if (value === null || value === undefined) return false;
-          const enteredAmount = stxToMicroStx(value);
-          return enteredAmount.isGreaterThanOrEqualTo(MIN_DELEGATED_STACKING_AMOUNT_USTX);
-        },
-      })
-      .test({
-        name: 'test-max-allowed-delegated-stacking',
-        message: `You cannot delegate more than ${toHumanReadableStx(
-          UI_IMPOSED_MAX_STACKING_AMOUNT_USTX
-        )}`,
-        test(value: any) {
-          if (value === null || value === undefined) return false;
-          const enteredAmount = stxToMicroStx(value);
-          return enteredAmount.isLessThanOrEqualTo(UI_IMPOSED_MAX_STACKING_AMOUNT_USTX);
-        },
-      }),
+    amount: stxAmountSchema().test({
+      name: 'test-max-allowed-delegated-stacking',
+      message: `You cannot delegate more than ${toHumanReadableStx(
+        UI_IMPOSED_MAX_STACKING_AMOUNT_USTX
+      )}`,
+      test(value: any) {
+        if (value === null || value === undefined) return false;
+        const enteredAmount = stxToMicroStx(value);
+        return enteredAmount.isLessThanOrEqualTo(UI_IMPOSED_MAX_STACKING_AMOUNT_USTX);
+      },
+    }),
     delegationType: yup.string().typeError(`Make sure to choose a duration you'd like to pool for`),
   });
 

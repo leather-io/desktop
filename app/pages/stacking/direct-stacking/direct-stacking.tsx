@@ -73,35 +73,15 @@ export const DirectStacking: FC = () => {
   if (nextCycleInfo === null || poxInfo === null) return null;
 
   const validationSchema = yup.object().shape({
-    amount: stxAmountSchema()
-      .test(availableBalanceValidator())
-      .test('test-precision', 'You cannot stack with a precision of less than 1 STX', value => {
+    amount: stxAmountSchema().test(
+      'test-precision',
+      'You cannot stack with a precision of less than 1 STX',
+      value => {
         // If `undefined`, throws `required` error
         if (value === undefined) return true;
         return validateDecimalPrecision(0)(value);
-      })
-      .test({
-        name: 'test-fee-margin',
-        message: 'You must stack less than your entire balance to allow for the transaction fee',
-        test: value => {
-          if (value === null || value === undefined) return false;
-          const uStxInput = stxToMicroStx(value);
-          return !uStxInput.isGreaterThan(availableBalance.minus(STACKING_CONTRACT_CALL_FEE));
-        },
-      })
-      .test({
-        name: 'test-min-utx',
-        message: `You must stack with at least ${toHumanReadableStx(
-          poxInfo.paddedMinimumStackingAmountMicroStx
-        )} `,
-        test: value => {
-          if (value === null || value === undefined) return false;
-          const uStxInput = stxToMicroStx(value);
-          return new BigNumber(poxInfo.paddedMinimumStackingAmountMicroStx).isLessThanOrEqualTo(
-            uStxInput
-          );
-        },
-      }),
+      }
+    ),
     cycles: yup.number().defined(),
     btcAddress: btcAddressSchema(),
   });

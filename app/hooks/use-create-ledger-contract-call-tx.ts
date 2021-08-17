@@ -32,12 +32,16 @@ function useCreateLedgerTxFactory(
         publicKey: publicKey.toString('hex'),
       } as any);
 
+      console.log('Unsigned tx', unsignedTx, unsignedTx.serialize());
+
       const resp = await main.ledger.signTransaction(unsignedTx.serialize().toString('hex'));
 
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');
       }
-      return unsignedTx.createTxWithSignature(resp.signatureVRS);
+      const signedTx = unsignedTx.createTxWithSignature(resp.signatureVRS);
+      console.log('Signed tx', signedTx, signedTx.serialize());
+      return signedTx;
     },
     [coreNodeInfo, method, poxInfo, publicKey]
   );

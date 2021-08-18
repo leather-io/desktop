@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/77</span>
+                <span class='fraction'>0/78</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/108</span>
+                <span class='fraction'>0/112</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/71</span>
+                <span class='fraction'>0/72</span>
             </div>
         
             
@@ -312,16 +312,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -332,6 +328,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -405,8 +407,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -508,6 +508,8 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
     txWithEvents.stx_received
   );
 &nbsp;
+  const inMicroblock = <span class="cstat-no" title="statement not covered" >tx.is_unanchored;</span>
+&nbsp;
   const txFailed =
 <span class="cstat-no" title="statement not covered" >    tx.tx_status === 'abort_by_response' || tx.tx_status === 'abort_by_post_condition';</span>
 &nbsp;
@@ -564,7 +566,7 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
       tx.token_transfer.memo.replace('0x', '').replace(/^(0{2})+|(0{2})+$/g, ''),
       'hex'
     ).toString('utf8');
-  const txDate = <span class="cstat-no" title="statement not covered" >new Date(tx.burn_block_time_iso);</span>
+  const txDate = <span class="cstat-no" title="statement not covered" >new Date(tx.burn_block_time_iso || tx.parent_burn_block_time_iso);</span>
   const txDateShort = <span class="cstat-no" title="statement not covered" >txDate.toLocaleString();</span>
 &nbsp;
   const containerRef = <span class="cstat-no" title="statement not covered" >useRef&lt;HTMLButtonElement&gt;(null);</span>
@@ -585,7 +587,7 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
     txid: tx.tx_id,
     recipientAddress: getRecipientAddress(tx) || '',
     memo: memo || '',
-    date: txDate &amp;&amp; txDate.toISOString(),
+    date: txDate instanceof Date ? txDate.toISOString() : '',
     txDetails: JSON.stringify(tx, null, 2),
     explorerLink: makeExplorerTxLink(tx.tx_id),
   });
@@ -614,12 +616,10 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
         &lt;/Text&gt;
         &lt;Stack isInline spacing="tight"&gt;
           &lt;Text textStyle="body.small" color={color('text-caption')}&gt;
-            {getTxTypeName(
-              tx as any // TODO: fix in ui-utils
-            )}
+            {getTxTypeName(tx)}
           &lt;/Text&gt;
           &lt;Text textStyle="body.small" color={color('text-caption')}&gt;
-            {txDateShort}
+            {inMicroblock ? 'In Microblock' : txDateShort}
           &lt;/Text&gt;
         &lt;/Stack&gt;
       &lt;/Box&gt;
@@ -652,7 +652,7 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Jul 21 2021 16:57:15 GMT+0000 (Coordinated Universal Time)
+                at Wed Aug 18 2021 08:49:04 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/20</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
@@ -94,15 +94,10 @@
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -113,7 +108,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -131,8 +125,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -145,8 +137,7 @@
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { selectAddress } from '@store/keys';</span>
 <span class="cstat-no" title="statement not covered" >import { ApiResource } from '@models';</span>
-<span class="cstat-no" title="statement not covered" >import { useFetchAccountNonce } from '@hooks/use-fetch-account-nonce';</span>
-import { MempoolTransaction } from '@blockstack/stacks-blockchain-api-types';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 <span class="cstat-no" title="statement not covered" >import { useApi } from './use-api';</span>
 &nbsp;
 interface UseMempool {
@@ -157,7 +148,6 @@ interface UseMempool {
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seMempool(</span>): UseMempool {
   const api = <span class="cstat-no" title="statement not covered" >useApi();</span>
   const address = <span class="cstat-no" title="statement not covered" >useSelector(selectAddress);</span>
-  const { nonce } = <span class="cstat-no" title="statement not covered" >useFetchAccountNonce();</span>
 &nbsp;
   const mempoolFetcher = <span class="cstat-no" title="statement not covered" >useCallback(</span>
 <span class="fstat-no" title="function not covered" >    ({</span> queryKey }) =&gt; {
@@ -172,9 +162,7 @@ interface UseMempool {
     mempoolFetcher
   );
 &nbsp;
-  const outboundMempoolTxs = <span class="cstat-no" title="statement not covered" >mempoolTxs</span>
-    .filter(<span class="fstat-no" title="function not covered" >tx </span>=&gt; <span class="cstat-no" title="statement not covered" >tx.sender_address === address)</span>
-    .filter(<span class="fstat-no" title="function not covered" >tx </span>=&gt; <span class="cstat-no" title="statement not covered" >tx.nonce &gt;= nonce)</span>;
+  const outboundMempoolTxs = <span class="cstat-no" title="statement not covered" >mempoolTxs.filter(<span class="fstat-no" title="function not covered" >tx </span>=&gt; <span class="cstat-no" title="statement not covered" >tx.sender_address === address)</span>;</span>
 &nbsp;
   const pendingMempoolTxs = <span class="cstat-no" title="statement not covered" >mempoolTxs.filter(<span class="fstat-no" title="function not covered" >tx </span>=&gt; <span class="cstat-no" title="statement not covered" >tx.tx_status === 'pending')</span>;</span>
 &nbsp;
@@ -187,7 +175,7 @@ interface UseMempool {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Jul 21 2021 16:57:15 GMT+0000 (Coordinated Universal Time)
+                at Wed Aug 18 2021 08:49:04 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

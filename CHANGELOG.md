@@ -1,3 +1,16 @@
+# [4.5.0](https://github.com/blockstack/stacks-wallet/compare/v4.4.0...v4.5.0) (2021-08-18)
+
+
+### Bug Fixes
+
+* outdated ues of [@blockstack](https://github.com/blockstack) scope types package ([d35bffa](https://github.com/blockstack/stacks-wallet/commit/d35bffa0a072a7d03212004f260bc59ff1259ea5))
+
+
+### Features
+
+* fix nonce issue, fix microblocks date issue ([1d3aa1c](https://github.com/blockstack/stacks-wallet/commit/1d3aa1c428f8429ea24267b15a4032cb6c8e2b83))
+* **microblocks:** support microblock txs ([b1c1cc9](https://github.com/blockstack/stacks-wallet/commit/b1c1cc9c4c1fadcbb14d34ff1611b764aad3fb73))
+
 # [4.4.0](https://github.com/blockstack/stacks-wallet/compare/v4.3.1...v4.4.0) (2021-07-14)
 
 

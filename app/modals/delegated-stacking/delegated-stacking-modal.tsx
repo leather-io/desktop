@@ -7,6 +7,7 @@ import BN from 'bn.js';
 
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
+import { POOLED_STACKING_TX_SIZE_BYTES } from '@constants/index';
 
 import { selectPoxInfo } from '@store/stacking';
 import { safeAwait } from '@utils/safe-await';
@@ -22,6 +23,7 @@ import { useMempool } from '@hooks/use-mempool';
 import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 
 import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
 
 interface StackingModalProps {
   delegateeStxAddress: string;
@@ -40,6 +42,7 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
   const { broadcastTx, isBroadcasting } = useBroadcastTx();
 
   const { refetch } = useMempool();
+  const calcFee = useCalculateFee();
 
   const api = useApi();
 
@@ -49,16 +52,20 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
 
   const [nodeResponseError, setNodeResponseError] =
     useState<PostCoreNodeTransactionsError | null>(null);
+
   const delegationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');
     console.log(amountToStack.toString());
-    return stackingClient.getDelegateOptions({
-      amountMicroStx: new BN(amountToStack.toString()),
-      contract: poxInfo.contract_id,
-      delegateTo: delegateeStxAddress,
-      untilBurnBlockHeight: burnHeight,
-    });
-  }, [amountToStack, burnHeight, delegateeStxAddress, poxInfo, stackingClient]);
+    return {
+      ...stackingClient.getDelegateOptions({
+        amountMicroStx: new BN(amountToStack.toString()),
+        contract: poxInfo.contract_id,
+        delegateTo: delegateeStxAddress,
+        untilBurnBlockHeight: burnHeight,
+      }),
+      fee: new BN(calcFee(POOLED_STACKING_TX_SIZE_BYTES).toString()),
+    };
+  }, [amountToStack, burnHeight, calcFee, delegateeStxAddress, poxInfo, stackingClient]);
 
   const delegateStx = (signedTx: StacksTransaction) =>
     broadcastTx({

@@ -41,6 +41,7 @@ import { useBroadcastTx } from '@hooks/use-broadcast-tx';
 import { TransactionError } from '@modals/components/transaction-error';
 import { ModalHeader } from '@modals/components/modal-header';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
 
 interface TxModalProps {
   balance: string;
@@ -66,6 +67,7 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const [total, setTotal] = useState(new BigNumber(0));
   const { availableBalance: balance } = useBalance();
   const { broadcastTx, isBroadcasting } = useBroadcastTx();
+  const calcFee = useCalculateFee();
 
   const [feeEstimateError, setFeeEstimateError] = useState<string | null>(null);
 
@@ -144,27 +146,23 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
       }),
       noMemoRequired: yup.boolean().required(),
     }),
-    onSubmit: async () => {
+    onSubmit() {
       setLoading(true);
       setFeeEstimateError(null);
-      const [error, feeRate] = await safeAwait(new Api(stacksApi.baseUrl).getFeeRate());
-      if (error) {
-        setFeeEstimateError('Error fetching estimate fees');
-      }
-      if (feeRate) {
-        const fee = new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);
-        const amount = stxToMicroStx(form.values.amount);
-        setFee(fee);
-        setTotal(amount.plus(fee.toString()));
-        setAmount(amount);
-        setStep(TxModalStep.PreviewTx);
-      }
+      const fee = calcFee(STX_TRANSFER_TX_SIZE_BYTES);
+      const amount = stxToMicroStx(form.values.amount);
+      setFee(fee);
+      setTotal(amount.plus(fee.toString()));
+      setAmount(amount);
+      setStep(TxModalStep.PreviewTx);
+
       setTxDetails({
         recipient: form.values.recipient,
         network: stacksNetwork,
         amount: new BN(stxToMicroStx(form.values.amount || 0).toString()),
         memo: form.values.memo,
         nonce: new BN(nonce),
+        fee: new BN(fee.toString()),
       });
       setLoading(false);
     },

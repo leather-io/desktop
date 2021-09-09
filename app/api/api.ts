@@ -118,7 +118,7 @@ export class Api {
   }
 
   async getNodeStatus() {
-    return axios.post(urljoin(this.baseUrl, `/extended/v1/status`));
+    return axios.get(urljoin(this.baseUrl, `/extended/v1/status`));
   }
 
   async getCoreDetails() {

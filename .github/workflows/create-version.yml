@@ -3,7 +3,7 @@ name: Create version
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
       - 'beta'
     tags-ignore:
       - '**'

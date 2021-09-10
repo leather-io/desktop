@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/136</span>
+                <span class='fraction'>0/134</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/41</span>
+                <span class='fraction'>0/37</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/129</span>
+                <span class='fraction'>0/127</span>
             </div>
         
             
@@ -363,9 +363,7 @@
 <a name='L304'></a><a href='#L304'>304</a>
 <a name='L305'></a><a href='#L305'>305</a>
 <a name='L306'></a><a href='#L306'>306</a>
-<a name='L307'></a><a href='#L307'>307</a>
-<a name='L308'></a><a href='#L308'>308</a>
-<a name='L309'></a><a href='#L309'>309</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L307'></a><a href='#L307'>307</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -408,6 +406,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -422,6 +421,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -512,21 +512,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -716,6 +712,7 @@ import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-typ
 <span class="cstat-no" title="statement not covered" >import { TransactionError } from '@modals/components/transaction-error';</span>
 <span class="cstat-no" title="statement not covered" >import { ModalHeader } from '@modals/components/modal-header';</span>
 <span class="cstat-no" title="statement not covered" >import { HomeSelectors } from 'app/tests/features/home.selectors';</span>
+<span class="cstat-no" title="statement not covered" >import { useCalculateFee } from '@hooks/use-calculate-fee';</span>
 &nbsp;
 interface TxModalProps {
   balance: string;
@@ -741,6 +738,7 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
   const [total, setTotal] = <span class="cstat-no" title="statement not covered" >useState(new BigNumber(0));</span>
   const { availableBalance: balance } = <span class="cstat-no" title="statement not covered" >useBalance();</span>
   const { broadcastTx, isBroadcasting } = <span class="cstat-no" title="statement not covered" >useBroadcastTx();</span>
+  const calcFee = <span class="cstat-no" title="statement not covered" >useCalculateFee();</span>
 &nbsp;
   const [feeEstimateError, setFeeEstimateError] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
 &nbsp;
@@ -819,27 +817,23 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
       }),
       noMemoRequired: yup.boolean().required(),
     }),
-    onSubmit: <span class="fstat-no" title="function not covered" >async </span>() =&gt; {
+<span class="fstat-no" title="function not covered" >    onSubmit(</span>) {
 <span class="cstat-no" title="statement not covered" >      setLoading(true);</span>
 <span class="cstat-no" title="statement not covered" >      setFeeEstimateError(null);</span>
-      const [error, feeRate] = <span class="cstat-no" title="statement not covered" >await safeAwait(new Api(stacksApi.baseUrl).getFeeRate());</span>
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
-<span class="cstat-no" title="statement not covered" >        setFeeEstimateError('Error fetching estimate fees');</span>
-      }
-<span class="cstat-no" title="statement not covered" >      if (feeRate) {</span>
-        const fee = <span class="cstat-no" title="statement not covered" >new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);</span>
-        const amount = <span class="cstat-no" title="statement not covered" >stxToMicroStx(form.values.amount);</span>
-<span class="cstat-no" title="statement not covered" >        setFee(fee);</span>
-<span class="cstat-no" title="statement not covered" >        setTotal(amount.plus(fee.toString()));</span>
-<span class="cstat-no" title="statement not covered" >        setAmount(amount);</span>
-<span class="cstat-no" title="statement not covered" >        setStep(TxModalStep.PreviewTx);</span>
-      }
+      const fee = <span class="cstat-no" title="statement not covered" >calcFee(STX_TRANSFER_TX_SIZE_BYTES);</span>
+      const amount = <span class="cstat-no" title="statement not covered" >stxToMicroStx(form.values.amount);</span>
+<span class="cstat-no" title="statement not covered" >      setFee(fee);</span>
+<span class="cstat-no" title="statement not covered" >      setTotal(amount.plus(fee.toString()));</span>
+<span class="cstat-no" title="statement not covered" >      setAmount(amount);</span>
+<span class="cstat-no" title="statement not covered" >      setStep(TxModalStep.PreviewTx);</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >      setTxDetails({</span>
         recipient: form.values.recipient,
         network: stacksNetwork,
         amount: new BN(stxToMicroStx(form.values.amount || 0).toString()),
         memo: form.values.memo,
         nonce: new BN(nonce),
+        fee: new BN(fee.toString()),
       });
 <span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
     },
@@ -988,7 +982,7 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Sep 10 2021 11:13:31 GMT+0000 (Coordinated Universal Time)
+                at Fri Sep 10 2021 11:15:00 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

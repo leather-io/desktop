@@ -219,7 +219,7 @@
     "@tippyjs/react": "4.2.5",
     "@zondax/ledger-blockstack": "0.2.0",
     "argon2-browser": "1.15.3",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "bignumber.js": "9.0.1",
     "bip39": "3.0.3",
     "bitcoin-address-validation": "2.0.1",

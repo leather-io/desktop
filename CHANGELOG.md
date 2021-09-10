@@ -1,3 +1,10 @@
+## [4.5.1](https://github.com/blockstack/stacks-wallet/compare/v4.5.0...v4.5.1) (2021-09-10)
+
+
+### Bug Fixes
+
+* use a get to check status ([091f6de](https://github.com/blockstack/stacks-wallet/commit/091f6de99925faf0a2fde0245092b201648fede3))
+
 # [4.5.0](https://github.com/blockstack/stacks-wallet/compare/v4.4.0...v4.5.0) (2021-08-18)
 
 

@@ -1,3 +1,10 @@
+## [4.5.2](https://github.com/blockstack/stacks-wallet/compare/v4.5.1...v4.5.2) (2021-09-10)
+
+
+### Bug Fixes
+
+* update axios library ([c1f24bc](https://github.com/blockstack/stacks-wallet/commit/c1f24bccfaf5c9ac012cd0b525963fc3f86c0da3))
+
 ## [4.5.1](https://github.com/blockstack/stacks-wallet/compare/v4.5.0...v4.5.1) (2021-09-10)
 
 

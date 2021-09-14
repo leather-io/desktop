@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   useCreateLedgerContractCallTx,
   useCreateLedgerTokenTransferTx,
@@ -13,36 +14,56 @@ import {
   StackingModalFooter as Footer,
 } from '../../modals/components/stacking-modal-layout';
 import { SignTransactionProps } from './sign-transaction';
+import { RootState } from '@store/index';
+import { selectAddress } from '@store/keys';
 
 type SignTransactionLedgerProps = SignTransactionProps;
 
 export const SignTransactionLedger = (props: SignTransactionLedgerProps) => {
   const { action, txOptions, isBroadcasting, onTransactionSigned, onClose } = props;
+  const [ledgerAddress, setLedgerAddress] = useState<null | string>(null);
 
   const {
     step: ledgerStep,
     isLocked,
     isSupportedAppVersion,
     appVersionErrorText,
+    publicKeysDoNotMatchError,
   } = usePrepareLedger();
+
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const { persistedAddress } = useSelector((state: RootState) => ({
+    persistedAddress: selectAddress(state),
+  }));
   const { createLedgerContractCallTx } = useCreateLedgerContractCallTx();
   const { createLedgerTokenTransferTx } = useCreateLedgerTokenTransferTx();
 
   const createLedgerTx = useCallback(async () => {
+    const data = await main.ledger.showStxAddress();
+    if (persistedAddress !== data.address) {
+      setLedgerAddress(data.address);
+    }
     if ('recipient' in txOptions) {
       return createLedgerTokenTransferTx(txOptions);
     }
     return createLedgerContractCallTx(txOptions);
-  }, [createLedgerContractCallTx, createLedgerTokenTransferTx, txOptions]);
+  }, [createLedgerContractCallTx, createLedgerTokenTransferTx, persistedAddress, txOptions]);
+
+  const ledgerError = useMemo(() => {
+    if (!isSupportedAppVersion) return appVersionErrorText;
+    if (ledgerAddress && persistedAddress !== ledgerAddress) return publicKeysDoNotMatchError;
+    return null;
+  }, [
+    appVersionErrorText,
+    isSupportedAppVersion,
+    ledgerAddress,
+    persistedAddress,
+    publicKeysDoNotMatchError,
+  ]);
 
   return (
     <>
-      <SignTxWithLedger
-        step={ledgerStep}
-        isLocked={isLocked}
-        ledgerError={isSupportedAppVersion ? null : appVersionErrorText}
-      />
+      <SignTxWithLedger step={ledgerStep} isLocked={isLocked} ledgerError={ledgerError} />
       <Footer>
         <Button mode="tertiary" onClick={onClose}>
           Close

@@ -15,7 +15,8 @@ import { ErrorText } from '@components/error-text';
 
 export const RevealStxAddressLedger: FC = () => {
   const { step, isLocked, isSupportedAppVersion, appVersionErrorText } = usePrepareLedger();
-  const [address, setAddress] = useState<null | string>(null);
+
+  const [ledgerAddress, setLedgerAddress] = useState<null | string>(null);
   const [success, setSuccess] = useState(false);
   const [pendingLedgerAction, setPendingLedgerAction] =
     useState<'idle' | 'pending' | 'complete'>('idle');
@@ -26,7 +27,7 @@ export const RevealStxAddressLedger: FC = () => {
 
   const stepToShow = success ? LedgerConnectStep.ActionComplete : step;
 
-  const showAddress = persistedAddress === address && address !== null;
+  const showAddress = persistedAddress === ledgerAddress && ledgerAddress !== null;
 
   const verifyAddress = useCallback(async () => {
     setPendingLedgerAction('pending');
@@ -34,7 +35,7 @@ export const RevealStxAddressLedger: FC = () => {
       const fromDeviceAddr = await main.ledger.showStxAddress();
       if (fromDeviceAddr && fromDeviceAddr.address) {
         setSuccess(fromDeviceAddr.address === persistedAddress);
-        setAddress(fromDeviceAddr.address);
+        setLedgerAddress(fromDeviceAddr.address);
       }
       await main.ledger.requestAndConfirmStxAddress();
       setPendingLedgerAction('complete');
@@ -48,8 +49,18 @@ export const RevealStxAddressLedger: FC = () => {
       mb="base-tight"
       mx="extra-loose"
     >
-      {address ? (
-        <AddressDisplayer address={address} />
+      {ledgerAddress && persistedAddress ? (
+        <>
+          <AddressDisplayer address={persistedAddress} />
+          <Box>
+            {ledgerAddress !== persistedAddress && (
+              <SevereWarning mt="tight" mb="base" pr="base-loose">
+                The addresses do not match. Make sure you're using the same Ledger device with which
+                you created this wallet.
+              </SevereWarning>
+            )}
+          </Box>
+        </>
       ) : (
         <Flex flexDirection="column" mx="extra-loose" width="320px">
           <Stack spacing="base-loose">
@@ -73,14 +84,6 @@ export const RevealStxAddressLedger: FC = () => {
             >
               Request Ledger address
             </Button>
-            <Box>
-              {address !== null && address !== persistedAddress && (
-                <SevereWarning mt="tight" mb="base" pr="base-loose">
-                  The addresses do not match. Make sure you're using the same Ledger device with
-                  which you created this wallet.
-                </SevereWarning>
-              )}
-            </Box>
           </Stack>
         </Flex>
       )}
@@ -90,7 +93,7 @@ export const RevealStxAddressLedger: FC = () => {
         </ErrorLabel>
       )}
       <Box>
-        {pendingLedgerAction === 'pending' && address && (
+        {pendingLedgerAction === 'pending' && ledgerAddress && (
           <Flex mb="base">
             <Box>
               <Spinner color={color('text-caption')} size="xs" />

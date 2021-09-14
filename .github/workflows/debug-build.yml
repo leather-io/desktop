@@ -40,7 +40,7 @@ jobs:
 
           - os: windows-latest
             NPM_COMMAND: win
-            UPLOAD_ASSETS: release/*/*.exe
+            UPLOAD_ASSETS: release/**/*.exe
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 

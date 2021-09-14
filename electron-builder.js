@@ -23,6 +23,11 @@ const baseConfig = {
     'preload.js',
     'package.json',
   ],
+  nsis: {
+    perMachine: true,
+    oneClick: false,
+    allowToChangeInstallationDirectory: true,
+  },
   dmg: {
     contents: [
       {
@@ -43,6 +48,12 @@ const baseConfig = {
       {
         target: 'nsis',
         arch: ['x64', 'ia32'],
+      },
+    ],
+    extraFiles: [
+      {
+        from: './resources/libusbK.dll',
+        to: '.',
       },
     ],
     publisherName: 'Hiro Systems PBC',

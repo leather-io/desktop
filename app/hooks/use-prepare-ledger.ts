@@ -11,6 +11,8 @@ import { useListenLedgerEffect } from './use-listen-ledger-effect';
 import { messages$ } from './use-message-events';
 import { useCheckForUpdates } from './use-check-for-updates';
 
+const publicKeysDoNotMatchError = `Public key mismatch. Make sure you're using the same Ledger you created the wallet with.`;
+
 export enum LedgerConnectStep {
   Disconnected,
   ConnectedAppClosed,
@@ -103,5 +105,12 @@ export function usePrepareLedger() {
     return () => sub.unsubscribe();
   }, []);
 
-  return { step, isLocked, appVersion, isSupportedAppVersion, appVersionErrorText };
+  return {
+    step,
+    isLocked,
+    appVersion,
+    isSupportedAppVersion,
+    appVersionErrorText,
+    publicKeysDoNotMatchError,
+  };
 }

@@ -150,7 +150,7 @@ jobs:
           sed -i '1d' release-notes.txt
           echo "\`\`\`" >> release-notes.txt
           shasum -a 256 stacks-wallet* >> shasums.txt
-          gpg --armor --output shasums.txt.asc --clearsign shasums.txt
+          gpg --armor --output shasums.txt.asc --clearsign --digest-algo SHA256 shasums.txt
           cat release-notes.txt shasums.txt.asc > release-body.txt
           echo "\`\`\`" >> release-body.txt
 
@@ -214,7 +214,6 @@ jobs:
 
     steps:
       - name: Discord notification
-        if: github.ref == 'refs/heads/main'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master

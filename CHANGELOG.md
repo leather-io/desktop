@@ -1,3 +1,10 @@
+## [4.5.3](https://github.com/blockstack/stacks-wallet/compare/v4.5.2...v4.5.3) (2021-09-15)
+
+
+### Bug Fixes
+
+* **windows:** update windows build config, dummy dll ([7b5bda1](https://github.com/blockstack/stacks-wallet/commit/7b5bda164752ca82ce8233d198deb2173c3a98de))
+
 ## [4.5.2](https://github.com/blockstack/stacks-wallet/compare/v4.5.1...v4.5.2) (2021-09-10)
 
 

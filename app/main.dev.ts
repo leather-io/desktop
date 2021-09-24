@@ -31,6 +31,7 @@ import { registerIpcStoreHandlers } from './main/register-store-handlers';
 import { registerIpcContextMenuHandlers } from './main/register-context-menus';
 import { addMacOsTouchBarMenu } from './main/macos-touchbar-menu';
 import { registerThemeModeHandlers } from './main/register-theme-mode-handlers';
+import { registerSentryStateListener } from './main/register-sentry-state-listener';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
@@ -156,6 +157,8 @@ const createWindow = async () => {
   registerThemeModeHandlers(mainWindow.webContents);
 
   registerIpcContextMenuHandlers(mainWindow);
+
+  registerSentryStateListener();
 
   if (process.platform === 'darwin') addMacOsTouchBarMenu(mainWindow);
 };

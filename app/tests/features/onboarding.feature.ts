@@ -13,6 +13,10 @@ export function createOnboardingFeature(page: Page) {
       return page.$(selector);
     },
 
+    findAcceptDiagnosticsBtn() {
+      return page.$(createTestSelector(OnboardingSelector.BtnAcceptDiagnosticPermission));
+    },
+
     findAcceptBtn() {
       return page.$(createTestSelector(OnboardingSelector.BtnAcceptTerms));
     },
@@ -42,8 +46,8 @@ export function createOnboardingFeature(page: Page) {
 export function initSoftwareWallet(page: Page) {
   return async (seed: string, password: string) => {
     const onboarding = createOnboardingFeature(page);
-    const termsOfServicePageTitle = await onboarding.findTermsOfServiceTitle();
 
+    const termsOfServicePageTitle = await onboarding.findTermsOfServiceTitle();
     if (!termsOfServicePageTitle) {
       expect(termsOfServicePageTitle).toBeTruthy();
       throw new Error('Test not started in clean environment, loaded a `config.json`');
@@ -54,6 +58,9 @@ export function initSoftwareWallet(page: Page) {
 
     const button = await onboarding.findAcceptBtn();
     await button.click();
+
+    const diagnosticPermissionBtn = await onboarding.findAcceptDiagnosticsBtn();
+    await diagnosticPermissionBtn.click();
 
     const restoreWalletButton = await onboarding.findResoreWalletBtn();
     await restoreWalletButton.click();

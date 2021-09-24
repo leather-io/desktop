@@ -5,7 +5,7 @@ import { Screen } from '@components/screen';
 
 export const SettingsLayout: FC = ({ children }) => (
   <Screen>
-    <Box mt="68px">
+    <Box mt="68px" pb="84px">
       <Text as="h1" textStyle="display.large" fontSize="32px" display="block">
         Settings
       </Text>

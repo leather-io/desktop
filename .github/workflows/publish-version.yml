@@ -100,6 +100,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_ENV: production
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           CSC_LINK: ${{ secrets[matrix.CSC_LINK_SECRET_NAME] }}
           CSC_KEY_PASSWORD: ${{ secrets[matrix.CSC_KEY_PASSWORD_SECRET_NAME] }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -214,7 +215,6 @@ jobs:
 
     steps:
       - name: Discord notification
-        if: github.ref == 'refs/heads/main'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master

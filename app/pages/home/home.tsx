@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner } from '@stacks/ui';
 
+import routes from '@constants/routes.json';
 import { openTxInExplorer } from '@utils/external-links';
 
 import { RootState } from '@store/index';
@@ -27,6 +29,8 @@ import { useTransactionList } from '@hooks/use-transaction-list';
 import { useBalance } from '@hooks/use-balance';
 import { useApi } from '@hooks/use-api';
 import { useLatestNonce } from '@hooks/use-latest-nonce';
+import { RequestDiagnosticsModal } from '@modals/request-diagnostics/request-diagnostic-modal';
+import { usePromptUserToSetDiagnosticPermissions } from '@hooks/use-diagnostic-permission-prompt';
 
 import { StackingCard } from '@components/home/stacking-card';
 import { StackingLoading } from '@components/home/stacking-loading';
@@ -47,6 +51,7 @@ export const Home: FC = () => {
   const dispatch = useDispatch();
   const api = useApi();
   useLatestNonce();
+  usePromptUserToSetDiagnosticPermissions();
 
   const { delegated: isDelegated } = useDelegationStatus();
   const { availableBalance } = useBalance();
@@ -146,6 +151,9 @@ export const Home: FC = () => {
         stackingCard={isDelegated ? <DelegationCard /> : stackingCardMap[stackingCardState]}
         stackingRewardCard={stackingRewardCard}
       />
+      <Switch>
+        <Route exact path={routes.HOME_REQUEST_DIAGNOSTICS} component={RequestDiagnosticsModal} />
+      </Switch>
     </>
   );
 };

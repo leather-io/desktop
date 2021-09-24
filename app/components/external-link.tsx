@@ -10,7 +10,7 @@ interface ExternalLinkProps extends BoxProps {
 export const ExternalLink: FC<ExternalLinkProps> = ({ href, children, ...props }) => {
   const openUrl = () => openExternalLink(href);
   return (
-    <LegalDisclaimerTooltip>
+    <LegalDisclaimerTooltip display="inline-block">
       <Text
         onClick={openUrl}
         as="button"

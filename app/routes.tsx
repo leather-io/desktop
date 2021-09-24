@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useStore } from 'react-redux';
+import * as Sentry from '@sentry/react';
 
 import routes from './constants/routes.json';
 import { Home } from './pages/home/home';
@@ -23,6 +24,22 @@ import { Settings } from './pages/settings/settings';
 import { DirectStacking } from './pages/stacking/direct-stacking/direct-stacking';
 import { ChooseStackingMethod } from './pages/start-stacking/start-stacking';
 import { StackingDelegation } from './pages/stacking/delegated-stacking/pooled-stacking';
+import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
+import { Diagnostics } from './pages/onboarding/01-diagnostics/diagnostics';
+
+let diagnosticsEnabled = false;
+
+if (process.env.SENRTY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENRTY_DSN,
+    beforeSend(event) {
+      if (!diagnosticsEnabled) return null;
+      return event;
+    },
+  });
+}
+
+Sentry.setContext('network', { network: process.env.STX_NETWORK });
 
 export const routerConfig = [
   {
@@ -30,8 +47,16 @@ export const routerConfig = [
     component: Home,
   },
   {
+    path: routes.HOME_REQUEST_DIAGNOSTICS,
+    component: Home,
+  },
+  {
     path: routes.TERMS,
     component: Terms,
+  },
+  {
+    path: routes.REQUEST_DIAGNOSTICS,
+    component: Diagnostics,
   },
   {
     path: routes.WELCOME,
@@ -92,6 +117,12 @@ const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : rou
 export function Routes() {
   // `useStore` required as we only want the value on initial render
   const store = useStore();
+  const diagnosticPermission = useHasUserGivenDiagnosticPermissions();
+
+  useEffect(() => {
+    diagnosticsEnabled = !!diagnosticPermission;
+  }, [diagnosticPermission]);
+
   const address = selectAddress(store.getState());
   return (
     <App>
@@ -100,7 +131,7 @@ export function Routes() {
           <Route key={i} exact {...route} />
         ))}
       </Switch>
-      <Redirect exact from="/" to={getAppStartingRoute(address)} />
+      <Redirect to={getAppStartingRoute(address)} />
     </App>
   );
 }

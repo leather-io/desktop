@@ -9,12 +9,11 @@ import {
   OnboardingText,
 } from '@components/onboarding';
 import { useBackButton } from '@hooks/use-back-url';
-import { WalletWarning } from '@components/wallet-warning';
 import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();
-  useBackButton(routes.TERMS);
+  useBackButton(routes.REQUEST_DIAGNOSTICS);
 
   return (
     <Onboarding>
@@ -33,7 +32,6 @@ export const Welcome: React.FC = () => {
       >
         I already have a wallet
       </OnboardingButton>
-      <WalletWarning mt="extra-loose" />
     </Onboarding>
   );
 };

@@ -5,4 +5,5 @@ export enum OnboardingSelector {
   BtnContinueWithKey = 'btn-continue-with-key',
   InputPassword = 'input-password',
   BtnContinueFromPassword = 'btn-continue-from-password',
+  BtnAcceptDiagnosticPermission = 'btn-accept-diagnostic-permission',
 }

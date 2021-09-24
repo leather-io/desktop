@@ -61,7 +61,8 @@ const walletApi = {
   // Expose protected methods that allow the renderer process to use
   // the ipcRenderer without exposing the entire object
   store: {
-    set: async (key: string, value: string) => ipcRenderer.invoke('store-set', { key, value }),
+    set: async (key: string, value: string | boolean) =>
+      ipcRenderer.invoke('store-set', { key, value }),
     get: async (key: string) => ipcRenderer.invoke('store-get', { key }),
     delete: async (key: string) => ipcRenderer.invoke('store-delete', { key }),
     clear: async () => ipcRenderer.invoke('store-clear'),
@@ -103,6 +104,15 @@ const walletApi = {
     setSystemMode() {
       return ipcRenderer.invoke('theme:set-system-mode');
     },
+  },
+
+  /**
+   * This method is needed to share the user's diagnostics preference
+   * with the `main` script, that otherwise has no way of determining
+   * what this state is.
+   */
+  setDiagnosticPermission(updatedPermission: boolean) {
+    return ipcRenderer.send('set-diagnostics-permission', updatedPermission);
   },
 
   ledger: {

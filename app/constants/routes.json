@@ -1,6 +1,8 @@
 {
-  "HOME": "/",
+  "HOME": "/home",
+  "HOME_REQUEST_DIAGNOSTICS": "/home/request-diagnostics",
   "TERMS": "/onboard/terms",
+  "REQUEST_DIAGNOSTICS": "/onboard/terms/request-diagnostics",
   "WELCOME": "/onboard/welcome",
   "CREATE": "/onboard/create",
   "RESTORE": "/onboard/restore",

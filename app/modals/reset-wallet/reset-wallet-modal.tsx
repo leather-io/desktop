@@ -8,7 +8,6 @@ import { SettingsSelectors } from 'app/tests/features/settings.selectors';
 
 interface ResetWalletModalProps {
   isOpen: boolean;
-
   onClose(): void;
 }
 

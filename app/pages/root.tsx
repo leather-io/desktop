@@ -8,6 +8,7 @@ import { color, CSSReset } from '@stacks/ui';
 import { Store } from '@store/index';
 import { Routes } from '../routes';
 import { loadFonts } from '@utils/load-fonts';
+import { Toaster } from 'react-hot-toast';
 import { css, Global } from '@emotion/react';
 
 const GlobalStyle = css`
@@ -47,7 +48,6 @@ interface RootProps {
 
 export interface BackContext {
   backUrl: null | string | (() => void);
-
   setBackUrl(url: null | string | (() => void)): void;
 }
 
@@ -68,6 +68,7 @@ function Root({ store, history, persistor }: RootProps) {
         <BackActionContext.Provider value={{ backUrl, setBackUrl }}>
           <Global styles={GlobalStyle} />
           {CSSReset}
+          <Toaster position="bottom-center" />
           <ConnectedRouter history={history}>
             <Routes />
           </ConnectedRouter>

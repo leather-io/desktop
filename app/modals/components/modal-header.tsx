@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
-import { Text, color, Flex, IconButton, CloseIcon } from '@stacks/ui';
+import { Text, color, Flex, IconButton, CloseIcon, FlexProps } from '@stacks/ui';
 
-interface TxModalHeaderProps {
+interface TxModalHeaderProps extends FlexProps {
   onSelectClose: () => void;
 }
 
-export const ModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose }) => (
+export const ModalHeader: FC<TxModalHeaderProps> = ({ children, onSelectClose, ...props }) => (
   <Flex
     minHeight="84px"
     px="extra-loose"
     alignItems="center"
     borderBottom={`1px solid ${color('border')}`}
     justifyContent="space-between"
+    {...props}
   >
     <Text as="h2" textStyle="display.small">
       {children}

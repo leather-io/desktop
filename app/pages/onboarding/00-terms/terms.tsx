@@ -234,7 +234,7 @@ export const Terms: React.FC = () => {
             Close
           </OnboardingButton>
           <OnboardingButton
-            onClick={() => history.push(routes.WELCOME)}
+            onClick={() => history.push(routes.REQUEST_DIAGNOSTICS)}
             ml="base"
             data-test={OnboardingSelector.BtnAcceptTerms}
           >

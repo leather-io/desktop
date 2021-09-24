@@ -6,6 +6,7 @@ import { PersistConfig } from 'redux-persist';
 import { KeysState, createKeysReducer } from './keys';
 import { TransactionState, transactionReducer } from './transaction';
 import { addressReducer, AddressState } from './address';
+import { settingsReducer, SettingsState } from './settings';
 import { HomeState, homeSlice } from './home';
 import { pendingTransactionReducer, PendingTransactionState } from './pending-transaction';
 import { stacksNodeReducer, StacksNodeState } from './stacks-node';
@@ -22,6 +23,7 @@ export interface RootState {
   home: HomeState;
   stacksNode: StacksNodeState;
   stacking: StackingState;
+  settings: SettingsState;
   _persist: any;
 }
 
@@ -32,7 +34,7 @@ export type Store = ReduxStore<RootState, Action<string>>;
 export const persistConfig: PersistConfig<RootState> = {
   key: 'root',
   storage: reduxPersistElectronStore(),
-  whitelist: ['stacksNode'],
+  whitelist: ['stacksNode', 'settings'],
 };
 
 interface RootReducerArgs {
@@ -50,6 +52,7 @@ export function createRootReducer({ history, keys }: RootReducerArgs) {
     home: homeSlice.reducer,
     stacksNode: stacksNodeReducer,
     stacking: stackingSlice.reducer,
+    settings: settingsReducer,
   });
 }
 

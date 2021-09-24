@@ -11,7 +11,7 @@ export enum ApiResource {
 
 declare global {
   const CONFIG: {
-    NODE_ENV: 'development' | 'production';
+    NODE_ENV: 'development' | 'production' | 'test';
     DEBUG_PROD: string;
     STX_NETWORK: 'testnet' | 'mainnet';
     PLAIN_HMR?: string;

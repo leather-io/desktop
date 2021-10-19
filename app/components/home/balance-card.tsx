@@ -7,7 +7,7 @@ import { toHumanReadableStx } from '@utils/unit-convert';
 import { safeAwait } from '@utils/safe-await';
 import { delay } from '@utils/delay';
 
-import { ExternalLink } from '@components/external-link';
+import { InternalLink } from '@components/internal-link';
 import { makeExplorerAddressLink } from '@utils/external-links';
 import { isTestnet } from '@utils/network-utils';
 import { useBalance } from '@hooks/use-balance';
@@ -46,9 +46,9 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
         </Text>
 
         {address !== null && (
-          <ExternalLink href={makeExplorerAddressLink(address)} textStyle="caption" ml="tight">
+          <InternalLink href={makeExplorerAddressLink(address)} textStyle="caption" ml="tight">
             View on Explorer
-          </ExternalLink>
+          </InternalLink>
         )}
       </Flex>
       <Title fontSize="40px" lineHeight="56px">

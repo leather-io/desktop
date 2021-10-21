@@ -12,7 +12,7 @@ import { ExternalLink } from '@components/external-link';
 
 import { useBalance } from '@hooks/use-balance';
 import {
-  STACKING_CONTRACT_CALL_FEE,
+  STACKING_CONTRACT_CALL_TX_BYTES,
   STACKING_LEARN_MORE_URL,
   STACKING_MINIMIUM_FOR_NEXT_CYCLE_URL,
 } from '@constants/index';
@@ -45,7 +45,7 @@ export const ChooseDirectStackingAmountField: FC<ChooseAmountFieldProps> = props
 
   const setMax = useCallback(() => {
     const updatedAmount = new BigNumberFloorRound(
-      microStxToStx(availableBalance.minus(STACKING_CONTRACT_CALL_FEE).toString())
+      microStxToStx(availableBalance.minus(STACKING_CONTRACT_CALL_TX_BYTES).toString())
     ).decimalPlaces(0);
     void helpers.setValue(updatedAmount.toString());
   }, [availableBalance, helpers]);

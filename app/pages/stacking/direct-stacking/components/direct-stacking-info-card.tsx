@@ -7,8 +7,7 @@ import { Box, Flex, FlexProps, Text } from '@stacks/ui';
 import { Hr } from '@components/hr';
 
 import { selectPoxInfo } from '@store/stacking';
-import { useCalculateFee } from '@hooks/use-calculate-fee';
-import { STACKING_CONTRACT_CALL_FEE, UI_IMPOSED_MAX_STACKING_AMOUNT_USTX } from '@constants/index';
+import { UI_IMPOSED_MAX_STACKING_AMOUNT_USTX } from '@constants/index';
 import { truncateMiddle } from '@utils/tx-utils';
 import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
 import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
@@ -29,12 +28,11 @@ interface StackingInfoCardProps extends FlexProps {
   blocksPerCycle: number;
   btcAddress: string;
   amount: number | string | null;
+  fee: BigNumber;
 }
-
 export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
-  const { cycles, duration, amount, btcAddress, blocksPerCycle, startDate, ...rest } = props;
+  const { cycles, duration, amount, btcAddress, blocksPerCycle, startDate, fee, ...rest } = props;
 
-  const calcFee = useCalculateFee();
   const poxInfo = useSelector(selectPoxInfo);
 
   const amountToBeStacked = useMemo(
@@ -125,7 +123,7 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
           <Section>
             <Row>
               <Label>Fee</Label>
-              <Value>{toHumanReadableStx(calcFee(STACKING_CONTRACT_CALL_FEE).toString())}</Value>
+              <Value>{toHumanReadableStx(fee).toString()}</Value>
             </Row>
           </Section>
         </Group>

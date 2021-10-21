@@ -8,11 +8,12 @@ import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
 import { useBalance } from '@hooks/use-balance';
 import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
-import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
+import { STACKING_CONTRACT_CALL_TX_BYTES } from '@constants/index';
 import { StackingModal } from '@modals/stacking/stacking-modal';
 import { btcAddressSchema } from '@utils/validators/btc-address-validator';
 import { useBackButton } from '@hooks/use-back-url';
 import routes from '@constants/routes.json';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
 import { RootState } from '@store/index';
 import { selectWalletType } from '@store/keys';
 import { selectActiveNodeApi } from '@store/stacks-node';
@@ -70,6 +71,9 @@ export const DirectStacking: FC = () => {
     poxInfo: selectPoxInfo(state),
   }));
 
+  const calcFee = useCalculateFee();
+  const directStackingTxFee = calcFee(STACKING_CONTRACT_CALL_TX_BYTES);
+
   if (nextCycleInfo === null || poxInfo === null) return null;
 
   const validationSchema = yup.object().shape({
@@ -86,7 +90,7 @@ export const DirectStacking: FC = () => {
         test: value => {
           if (value === null || value === undefined) return false;
           const uStxInput = stxToMicroStx(value);
-          return !uStxInput.isGreaterThan(availableBalance.minus(STACKING_CONTRACT_CALL_FEE));
+          return !uStxInput.isGreaterThan(availableBalance.minus(directStackingTxFee));
         },
       })
       .test({
@@ -126,6 +130,7 @@ export const DirectStacking: FC = () => {
           amountToStack={new BigNumber(formValues.amount)}
           numCycles={cyclesWithDefault(formValues.cycles)}
           poxAddress={formValues.btcAddress}
+          fee={directStackingTxFee}
         />
       )}
       <Formik
@@ -146,6 +151,7 @@ export const DirectStacking: FC = () => {
                     startDate={nextCycleInfo.nextCycleStartingAt}
                     blocksPerCycle={poxInfo.reward_cycle_length}
                     duration={stackingCycleDuration}
+                    fee={directStackingTxFee}
                   />
                   <StackingGuideCard mt="loose" />
                 </StackingFormInfoPanel>

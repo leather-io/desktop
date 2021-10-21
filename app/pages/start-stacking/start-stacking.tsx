@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectPoxInfo } from '@store/stacking';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { useBalance } from '@hooks/use-balance';
-import { STACKING_CONTRACT_CALL_FEE } from '@constants/index';
+import { POOLED_STACKING_TX_SIZE_BYTES, STACKING_CONTRACT_CALL_TX_BYTES } from '@constants/index';
 import {
   StartStackingLayout as Layout,
   StackingOptionsCardContainer as CardContainer,
@@ -28,6 +28,7 @@ import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
 import { IconUser, IconChartLine, IconLock, IconUserMinus } from '@tabler/icons';
 import { StepsIcon } from '@components/icons/steps';
 import { useModifierKey } from '@hooks/use-modifier-key';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
 
 export const ChooseStackingMethod: FC = () => {
   const history = useHistory();
@@ -36,17 +37,21 @@ export const ChooseStackingMethod: FC = () => {
 
   const { isPressed: holdingAltKey } = useModifierKey('alt', 1000);
 
+  const calcFee = useCalculateFee();
+
   const { availableBalance } = useBalance();
 
   const poxInfo = useSelector(selectPoxInfo);
 
   if (!poxInfo) return null;
 
-  const meetsMinThreshold = availableBalance
-    .plus(STACKING_CONTRACT_CALL_FEE)
+  const meetsMinThresholdForDirectStacking = availableBalance
+    .plus(calcFee(STACKING_CONTRACT_CALL_TX_BYTES))
     .isGreaterThanOrEqualTo(poxInfo.paddedMinimumStackingAmountMicroStx);
 
-  const sufficientBalanceToCoverFee = availableBalance.isGreaterThan(STACKING_CONTRACT_CALL_FEE);
+  const hasSufficientBalanceToCoverPoolingTxFee = availableBalance.isGreaterThan(
+    calcFee(POOLED_STACKING_TX_SIZE_BYTES)
+  );
 
   return (
     <Layout>
@@ -83,11 +88,11 @@ export const ChooseStackingMethod: FC = () => {
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.DELEGATED_STACKING)}
-              isDisabled={!sufficientBalanceToCoverFee && !holdingAltKey}
+              isDisabled={!hasSufficientBalanceToCoverPoolingTxFee && !holdingAltKey}
             >
               Stack in a pool
             </OptionButton>
-            {!sufficientBalanceToCoverFee && <InsufficientStackingBalanceWarning />}
+            {!hasSufficientBalanceToCoverPoolingTxFee && <InsufficientStackingBalanceWarning />}
           </Flex>
         </Card>
 
@@ -121,11 +126,11 @@ export const ChooseStackingMethod: FC = () => {
           <Flex alignItems="center">
             <OptionButton
               onClick={() => history.push(routes.STACKING)}
-              isDisabled={!meetsMinThreshold && !holdingAltKey}
+              isDisabled={!meetsMinThresholdForDirectStacking && !holdingAltKey}
             >
               Stack by yourself
             </OptionButton>
-            {!meetsMinThreshold && <InsufficientStackingBalanceWarning />}
+            {!meetsMinThresholdForDirectStacking && <InsufficientStackingBalanceWarning />}
           </Flex>
         </Card>
       </CardContainer>

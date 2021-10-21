@@ -23,11 +23,11 @@ interface StackingModalProps {
   poxAddress: string;
   numCycles: number;
   amountToStack: BigNumber;
+  fee: BigNumber;
   onClose(): void;
 }
-
 export const StackingModal: FC<StackingModalProps> = props => {
-  const { onClose, numCycles, poxAddress, amountToStack } = props;
+  const { onClose, numCycles, poxAddress, amountToStack, fee } = props;
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -48,14 +48,15 @@ export const StackingModal: FC<StackingModalProps> = props => {
   const stackingTxOptions = useMemo(() => {
     if (!poxInfo) throw new Error('poxInfo not defined');
     if (!coreNodeInfo) throw new Error('Stacking requires coreNodeInfo');
-    return stackingClient.getStackOptions({
+    const stackingTxOptions = stackingClient.getStackOptions({
       amountMicroStx: new BN(amountToStack.toString()),
       poxAddress,
       cycles: numCycles,
       contract: poxInfo.contract_id,
       burnBlockHeight: coreNodeInfo.burn_block_height,
     });
-  }, [amountToStack, coreNodeInfo, numCycles, poxAddress, poxInfo, stackingClient]);
+    return { ...stackingTxOptions, fee: new BN(fee.toString()) };
+  }, [amountToStack, coreNodeInfo, numCycles, poxAddress, poxInfo, stackingClient, fee]);
 
   const stackStx = (signedTx: StacksTransaction) =>
     broadcastTx({

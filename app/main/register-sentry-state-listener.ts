@@ -3,9 +3,9 @@ import * as Sentry from '@sentry/electron/dist/main';
 
 let diagnosticsEnabled = false;
 
-if (process.env.SENRTY_DSN) {
+if (process.env.SENTRY_DSN) {
   Sentry.init({
-    dsn: process.env.SENRTY_DSN,
+    dsn: process.env.SENTRY_DSN,
     beforeSend(event) {
       if (!diagnosticsEnabled) return null;
       return event;

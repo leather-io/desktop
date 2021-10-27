@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        if: github.repository == 'blockstack/stacks-wallet'
+        if: github.repository == 'hirosystems/stacks-wallet'
         with:
           header: '> _Building new release, please wait for the latest_&nbsp; <img src="https://user-images.githubusercontent.com/1618764/97873036-51dfb200-1d17-11eb-89f5-0a922dc3ac92.gif" width="12" />'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -171,13 +171,13 @@ jobs:
 
     steps:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        if: (!contains(needs.*.result, 'failure')) && github.repository == 'blockstack/stacks-wallet'
+        if: (!contains(needs.*.result, 'failure')) && github.repository == 'hirosystems/stacks-wallet'
         with:
           header: '> [Download the latest build](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        if: (contains(needs.*.result, 'failure')) && github.repository == 'blockstack/stacks-wallet'
+        if: (contains(needs.*.result, 'failure')) && github.repository == 'hirosystems/stacks-wallet'
         with:
           header: '> _Build failed, [see here for details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

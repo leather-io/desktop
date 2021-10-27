@@ -68,7 +68,7 @@ jobs:
         id: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}-${{ secrets.CACHE_BUSTER }}
 
       - name: Variables
         id: vars

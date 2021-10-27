@@ -35,9 +35,6 @@ jobs:
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 
-    outputs:
-      version: ${{ steps.extract_version.outputs.version }}
-
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.6.0
@@ -72,10 +69,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 12
-
-      - name: Extract version
-        id: extract_version
-        uses: Saionaro/extract-package-version@v1.0.6
 
       #
       # Windows build breaks when using the package.json script to install `app/` packages
@@ -125,6 +118,10 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
 
+      - name: Extract version
+        id: extract_version
+        uses: Saionaro/extract-package-version@v1.1.1
+
       - name: Download binaries
         uses: actions/download-artifact@v2
         with:
@@ -155,16 +152,20 @@ jobs:
           cat release-notes.txt shasums.txt.asc > release-body.txt
           echo "\`\`\`" >> release-body.txt
 
+      - run: echo ${{ steps.extract_version.outputs.version }}
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
+        # check for case where it hasn't found version number
+        if: steps.extract_version.outputs.version != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ needs.build.outputs.version }}
-          release_name: Hiro Wallet v${{ needs.build.outputs.version }}
+          tag_name: v${{ steps.extract_version.outputs.version }}
+          release_name: Hiro Wallet v${{ steps.extract_version.outputs.version }}
           draft: false
-          prerelease: ${{ contains(needs.build.outputs.version, 'beta') }}
+          prerelease: ${{ contains(steps.extract_version.outputs.version, 'beta') }}
           body_path: release-body.txt
 
   upload-release-assets:

@@ -46,6 +46,7 @@ import {
   BalanceCard,
 } from '@components/home';
 import { HomeLayout } from './home-layout';
+import { useAnalytics } from '@hooks/use-analytics';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();
@@ -82,7 +83,14 @@ export const Home: FC = () => {
 
   const { txs, pendingTxs, txCount, focusedTxIdRef, txDomNodeRefMap } = useTransactionList();
 
+  const analytics = useAnalytics();
+
   if (!address) return <Spinner />;
+
+  const openTxInExplorerTracked = (txId: string) => {
+    void analytics.track('view_transaction');
+    return openTxInExplorer(txId);
+  };
 
   const transactionList = (
     <>
@@ -99,7 +107,7 @@ export const Home: FC = () => {
             activeTxIdRef={focusedTxIdRef}
             key={pendingTxs.tx_id}
             tx={pendingTxs}
-            onSelectTx={openTxInExplorer}
+            onSelectTx={openTxInExplorerTracked}
           />
         ))}
         {txs.map(tx => (
@@ -108,7 +116,7 @@ export const Home: FC = () => {
             activeTxIdRef={focusedTxIdRef}
             key={tx.tx.tx_id}
             txWithEvents={tx}
-            onSelectTx={openTxInExplorer}
+            onSelectTx={openTxInExplorerTracked}
           />
         ))}
       </TransactionList>

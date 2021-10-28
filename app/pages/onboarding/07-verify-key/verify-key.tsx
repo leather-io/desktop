@@ -17,6 +17,7 @@ import {
   OnboardingFooter,
   OnboardingFooterLink,
 } from '@components/onboarding';
+import { useAnalytics } from '@hooks/use-analytics';
 
 export const VerifyKey: React.FC = () => {
   const history = useHistory();
@@ -24,6 +25,7 @@ export const VerifyKey: React.FC = () => {
   const mnemonic = useSelector(selectMnemonic);
   const [inputMnemonic, setInputMnemonic] = useState('');
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const analytics = useAnalytics();
 
   const mnemonicCorrect = mnemonic === inputMnemonic;
 
@@ -36,7 +38,11 @@ export const VerifyKey: React.FC = () => {
   const handleMnemonicValidation = (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
-    if (!mnemonicCorrect) return;
+    if (!mnemonicCorrect) {
+      void analytics.track('submit_invalid_secret_key');
+      return;
+    }
+    void analytics.track('submit_valid_secret_key');
     history.push(routes.SET_PASSWORD);
   };
 

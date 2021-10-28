@@ -6,6 +6,7 @@ import { FormikProps } from 'formik';
 import { capitalize } from '@utils/capitalize';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
+import { useAnalytics } from '@hooks/use-analytics';
 interface TxModalFormProps {
   balance: string;
   form: FormikProps<{ recipient: string; amount: string; memo: string; noMemoRequired: boolean }>;
@@ -16,6 +17,11 @@ interface TxModalFormProps {
 
 export const TxModalForm: FC<TxModalFormProps> = props => {
   const { balance, form, isCalculatingMaxSpend, feeEstimateError, onSendEntireBalance } = props;
+  const analytics = useAnalytics();
+  const onSendEntireBalanceTracked = () => {
+    void analytics.track('select_maximum_amount_for_send');
+    onSendEntireBalance();
+  };
   return (
     <Box mb="extra-loose">
       <Flex flexDirection="column" alignItems="center" mt="48px">
@@ -76,7 +82,7 @@ export const TxModalForm: FC<TxModalFormProps> = props => {
             top="22px"
             style={{ position: 'absolute' }}
             width="80px"
-            onClick={onSendEntireBalance}
+            onClick={onSendEntireBalanceTracked}
             isLoading={isCalculatingMaxSpend}
           >
             Send max

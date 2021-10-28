@@ -21,6 +21,7 @@ import {
 import { ExplainerTooltip } from '@components/tooltip';
 import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
 import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
+import { useAnalytics } from '@hooks/use-analytics';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
   if (result.isMnemonicPhrase) {
@@ -51,6 +52,7 @@ export const SetPassword: React.FC = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [successfullyChosenStrongPass, setSuccessfullyChosenStrongPass] = useState(false);
+  const analytics = useAnalytics();
 
   const handleBack = useCallback(() => {
     history.goBack();
@@ -76,8 +78,11 @@ export const SetPassword: React.FC = () => {
     if (result.meetsAllStrengthRequirements) {
       setBtnDisabled(true);
       setSuccessfullyChosenStrongPass(true);
+      void analytics.track('submit_valid_password');
       blastUndoStackToRemovePasswordFromMemory(passwordInputRef.current);
       dispatch(setSoftwareWallet({ password, history }));
+    } else {
+      void analytics.track('submit_invalid_password');
     }
   };
 

@@ -26,6 +26,7 @@ import { ChooseStackingMethod } from './pages/start-stacking/start-stacking';
 import { StackingDelegation } from './pages/stacking/delegated-stacking/pooled-stacking';
 import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
 import { Diagnostics } from './pages/onboarding/01-diagnostics/diagnostics';
+import { initSegment } from '@utils/init-segment';
 
 let diagnosticsEnabled = false;
 
@@ -38,6 +39,8 @@ if (process.env.SENTRY_DSN) {
     },
   });
 }
+
+initSegment();
 
 Sentry.setContext('network', { network: process.env.STX_NETWORK });
 

@@ -1,3 +1,18 @@
+# [4.6.0-beta.1](https://github.com/blockstack/stacks-wallet/compare/v4.5.3...v4.6.0-beta.1) (2021-10-28)
+
+
+### Bug Fixes
+
+* lack of warning when you're using the wrong ledger device ([099b03f](https://github.com/blockstack/stacks-wallet/commit/099b03f84c7ed2f6c684a794820504f20d17a8ab))
+* remove 3rd party notification from link to explorer, closes [#937](https://github.com/blockstack/stacks-wallet/issues/937) ([edf6bb3](https://github.com/blockstack/stacks-wallet/commit/edf6bb32ea42f1a4d6b7a7004fb28245f3223486))
+* **stacking:** fee incorrectly applied to stacking contract calls ([cf608d0](https://github.com/blockstack/stacks-wallet/commit/cf608d0af4434e397945fcc0f91f8b751b0f0c91))
+* typo with SENTRY_DSN ([5ba69ed](https://github.com/blockstack/stacks-wallet/commit/5ba69ed617f1e0bc9806ae1a54ee5ccafb2aa5ea))
+
+
+### Features
+
+* **sentry:** add opt-in diagnostics with sentry, closes [#899](https://github.com/blockstack/stacks-wallet/issues/899) ([5670b9d](https://github.com/blockstack/stacks-wallet/commit/5670b9d4e5c4fbc0fd92229b23838742b2f9617f))
+
 ## [4.5.3](https://github.com/blockstack/stacks-wallet/compare/v4.5.2...v4.5.3) (2021-09-15)
 
 

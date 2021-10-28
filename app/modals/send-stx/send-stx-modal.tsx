@@ -42,6 +42,7 @@ import { TransactionError } from '@modals/components/transaction-error';
 import { ModalHeader } from '@modals/components/modal-header';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useAnalytics } from '@hooks/use-analytics';
 
 interface TxModalProps {
   balance: string;
@@ -77,6 +78,8 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
   const { nonce } = useLatestNonce();
 
   const [txDetails, setTxDetails] = useState<TokenTransferOptions | null>(null);
+
+  const analytics = useAnalytics();
 
   const totalIsMoreThanBalance = total.isGreaterThan(balance);
 
@@ -185,6 +188,7 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
   };
   useHotkeys('esc', closeModal);
   const sendStx = (tx: StacksTransaction) => {
+    void analytics.track('broadcast_transaction');
     broadcastTx({
       async onSuccess(txId: string) {
         await safeAwait(watchForNewTxToAppear({ txId, nodeUrl: stacksApi.baseUrl }));

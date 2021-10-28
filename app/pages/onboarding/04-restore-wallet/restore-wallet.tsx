@@ -20,6 +20,7 @@ import {
 import { ExternalLink } from '@components/external-link';
 import { parseSeedPhraseInput } from '@utils/parse-seed-phrase';
 import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
+import { useAnalytics } from '@hooks/use-analytics';
 
 export const RestoreWallet: React.FC = () => {
   useBackButton(routes.WELCOME);
@@ -29,6 +30,7 @@ export const RestoreWallet: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const history = useHistory();
   const dispatch = useDispatch();
+  const analytics = useAnalytics();
 
   const handleMnemonicInput = (e: React.FormEvent<HTMLInputElement>) => {
     if (hasSubmitted) setHasSubmitted(false);
@@ -44,6 +46,7 @@ export const RestoreWallet: React.FC = () => {
 
     if (parsedMnemonic === null) {
       setError('Unable to parse Secret Key input');
+      void analytics.track('submit_invalid_secret_key');
       return;
     }
 
@@ -51,10 +54,12 @@ export const RestoreWallet: React.FC = () => {
 
     if (mnemonicLength !== 12 && mnemonicLength !== 24) {
       setError('The Hiro Wallet can be used with only 12 and 24-word Secret Keys');
+      void analytics.track('submit_invalid_secret_key');
       return;
     }
 
     if (!validateMnemonic(parsedMnemonic)) {
+      void analytics.track('submit_invalid_secret_key');
       setError('bip39error');
       return;
     }

@@ -20,6 +20,8 @@ jobs:
 
     env:
       STX_NETWORK: ${{ matrix.stx_network }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
 
     strategy:
       matrix:

@@ -112,6 +112,7 @@ jobs:
 
     outputs:
       release_upload_url: ${{ steps.create_release.outputs.upload_url }}
+      new_version: ${{ steps.extract_version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v2
@@ -204,7 +205,7 @@ jobs:
         with:
           upload_url: ${{ needs.create-release.outputs.release_upload_url }}
           asset_path: release/stacks-wallet-${{ matrix.stx_network }}-${{ matrix.os }}/stacks-wallet.${{ matrix.stx_network }}.${{ matrix.ext }}
-          asset_name: stacks-wallet.${{ matrix.stx_network }}.v${{ needs.build.outputs.version }}.${{ matrix.ext }}
+          asset_name: stacks-wallet.${{ matrix.stx_network }}.v${{ needs.create-release.outputs.new_version }}.${{ matrix.ext }}
           asset_content_type: application/octet-stream
 
   announce-release:
@@ -221,4 +222,4 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            🔔 New Hiro Wallet released: [Download `v${{ needs.build.outputs.version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.build.outputs.version }})
+            🔔 New Hiro Wallet released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})

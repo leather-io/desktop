@@ -210,16 +210,24 @@ jobs:
 
   announce-release:
     runs-on: ubuntu-latest
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_NOTIFS_WEBHOOK }}
 
     needs:
       - create-release
       - upload-release-assets
 
     steps:
-      - name: Discord notification
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Discord Stable Release Notification
+        if: contains(needs.create-release.outputs.new_version, 'dev') == false
         uses: Ilshidur/action-discord@master
         with:
           args: |
             🔔 New Hiro Wallet released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})
+
+      - name: Discord Dev Release Notification
+        if: contains(needs.create-release.outputs.new_version, 'dev') == true
+        uses: Ilshidur/action-discord@master
+        with:
+          args: |
+            New Hiro Wallet Preview released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})

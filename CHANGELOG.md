@@ -1,3 +1,10 @@
+# [4.6.0-dev.2](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.1...v4.6.0-dev.2) (2021-10-28)
+
+
+### Bug Fixes
+
+* separate discord notifications, stable/dev ([55114dc](https://github.com/blockstack/stacks-wallet/commit/55114dc26d0dc0afbaee9dc1de13c9fb74d3a512))
+
 # [4.6.0-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.5.3...v4.6.0-dev.1) (2021-10-28)
 
 

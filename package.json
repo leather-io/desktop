@@ -44,7 +44,7 @@
         "channel": "3.x"
       },
       {
-        "name": "beta",
+        "name": "dev",
         "prerelease": true
       },
       "main"

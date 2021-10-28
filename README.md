@@ -2,6 +2,7 @@
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/blockstack/stacks-wallet/Build)
 [![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet/)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/blockstack/stacks-wallet)](https://github.com/blockstack/stacks-wallet/releases/latest)
 
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/blockstack/stacks-wallet)
 

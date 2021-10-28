@@ -5,6 +5,7 @@ import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
 import { clearDiskStorage } from '@utils/disk-store';
 import { ModalHeader } from '@modals/components/modal-header';
 import { SettingsSelectors } from 'app/tests/features/settings.selectors';
+import { useAnalytics } from '@hooks/use-analytics';
 
 interface ResetWalletModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
   const timer = useRef<number>(0);
   const cancelBtnRef = useRef<HTMLDivElement>();
   const PANIC_CANCEL_TIME = 3500;
+  const analytics = useAnalytics();
 
   const closeModal = useCallback(() => {
     setWipingWallet(false);
@@ -30,12 +32,13 @@ export const ResetWalletModal: FC<ResetWalletModalProps> = ({ isOpen, onClose })
 
   const resetWallet = useCallback(() => {
     setWipingWallet(true);
+    void analytics.track('reset_wallet');
     // Allow user to grace period to panic cancel operations
     // Focusing cancel btn ensures any key press of: enter, space, esc
     // will cancel the pending operation
     cancelBtnRef.current?.focus();
     timer.current = window.setTimeout(() => void clearStorage(), PANIC_CANCEL_TIME);
-  }, [cancelBtnRef, timer]);
+  }, [cancelBtnRef, timer, analytics]);
 
   return (
     <Modal isOpen={isOpen} handleClose={onClose} minWidth={['100%', '488px']}>

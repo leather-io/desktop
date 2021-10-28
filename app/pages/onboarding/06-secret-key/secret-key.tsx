@@ -15,6 +15,7 @@ import {
 } from '@components/onboarding';
 import { selectMnemonic } from '@store/keys/keys.reducer';
 import { useBackButton } from '@hooks/use-back-url';
+import { useAnalytics } from '@hooks/use-analytics';
 
 export const SecretKey: React.FC = () => {
   const history = useHistory();
@@ -28,6 +29,11 @@ export const SecretKey: React.FC = () => {
   }
 
   const { onCopy, hasCopied } = useClipboard(mnemonic);
+  const analytics = useAnalytics();
+  const onCopyTracked = () => {
+    void analytics.track('copy_secret_key_to_clipboard');
+    onCopy();
+  };
 
   return (
     <Onboarding>
@@ -40,7 +46,7 @@ export const SecretKey: React.FC = () => {
         <Text textStyle="body.small" mt="loose" mx="loose" lineHeight="20px" display="block">
           {mnemonic}
         </Text>
-        <Button variant="link" mt="tight" onClick={onCopy}>
+        <Button variant="link" mt="tight" onClick={onCopyTracked}>
           <Text textStyle="caption.medium" fontSize="12px">
             Copy to clipboard
           </Text>

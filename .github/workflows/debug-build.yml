@@ -120,6 +120,7 @@ jobs:
           BRANCH_NAME: ${{ steps.vars.outputs.branch_name }}
           CSC_LINK: ${{ secrets[matrix.CSC_LINK_SECRET_NAME] }}
           CSC_KEY_PASSWORD: ${{ secrets[matrix.CSC_KEY_PASSWORD_SECRET_NAME] }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
 

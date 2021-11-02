@@ -1,3 +1,10 @@
+# [4.6.0-dev.3](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.2...v4.6.0-dev.3) (2021-11-02)
+
+
+### Bug Fixes
+
+* **sentry:** use dsn in debug mode ([eea392c](https://github.com/blockstack/stacks-wallet/commit/eea392cdb10c6347c9324f2ea26049a352e981ef))
+
 # [4.6.0-dev.2](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.1...v4.6.0-dev.2) (2021-10-28)
 
 

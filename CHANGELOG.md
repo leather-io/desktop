@@ -1,3 +1,21 @@
+# [4.6.0](https://github.com/blockstack/stacks-wallet/compare/v4.5.3...v4.6.0) (2021-11-08)
+
+
+### Bug Fixes
+
+* lack of warning when you're using the wrong ledger device ([64661b1](https://github.com/blockstack/stacks-wallet/commit/64661b1fdeb6dd3b762bbc7b2e498af2ea711a1e))
+* remove 3rd party notification from link to explorer, closes [#937](https://github.com/blockstack/stacks-wallet/issues/937) ([57e3dab](https://github.com/blockstack/stacks-wallet/commit/57e3dab7d42da0bd1ff710343e35cbebca56e650))
+* **sentry:** use dsn in debug mode ([a4ab09b](https://github.com/blockstack/stacks-wallet/commit/a4ab09b58e80cbe2955df8c76988f56e4c20f813))
+* separate discord notifications, stable/dev ([1ce3de8](https://github.com/blockstack/stacks-wallet/commit/1ce3de886eb1548bd392b09f351ed5ba3677223a))
+* **stacking:** fee incorrectly applied to stacking contract calls ([7fbaf6e](https://github.com/blockstack/stacks-wallet/commit/7fbaf6e283a99540b6133e7c4c50dd1e9f46d79d))
+* typo with SENTRY_DSN ([0086913](https://github.com/blockstack/stacks-wallet/commit/0086913ebd927c95fb9f88fc5d6a54b2c0544c30))
+
+
+### Features
+
+* **sentry:** add opt-in diagnostics with sentry, closes [#899](https://github.com/blockstack/stacks-wallet/issues/899) ([f8c08ca](https://github.com/blockstack/stacks-wallet/commit/f8c08ca27213ab8bc1e76594640d61e1c7fcb7c8))
+* update release flow branches ([e546a33](https://github.com/blockstack/stacks-wallet/commit/e546a3351b4a9e947950859984b440fd0867891f))
+
 # [4.6.0-dev.3](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.2...v4.6.0-dev.3) (2021-11-02)
 
 

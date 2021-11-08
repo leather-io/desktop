@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/39</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/34</span>
+                <span class='fraction'>0/37</span>
             </div>
         
             
@@ -130,7 +130,14 @@
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -170,18 +177,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -218,6 +232,10 @@
 <span class="cstat-no" title="statement not covered" >      return page.$(selector);</span>
     },
 &nbsp;
+<span class="fstat-no" title="function not covered" >    findAcceptDiagnosticsBtn(</span>) {
+<span class="cstat-no" title="statement not covered" >      return page.$(createTestSelector(OnboardingSelector.BtnAcceptDiagnosticPermission));</span>
+    },
+&nbsp;
 <span class="fstat-no" title="function not covered" >    findAcceptBtn(</span>) {
 <span class="cstat-no" title="statement not covered" >      return page.$(createTestSelector(OnboardingSelector.BtnAcceptTerms));</span>
     },
@@ -247,8 +265,8 @@
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >i</span>nitSoftwareWallet(</span>page: Page) {
 <span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >async </span>(seed: string, password: string) =&gt; {</span>
     const onboarding = <span class="cstat-no" title="statement not covered" >createOnboardingFeature(page);</span>
-    const termsOfServicePageTitle = <span class="cstat-no" title="statement not covered" >await onboarding.findTermsOfServiceTitle();</span>
 &nbsp;
+    const termsOfServicePageTitle = <span class="cstat-no" title="statement not covered" >await onboarding.findTermsOfServiceTitle();</span>
 <span class="cstat-no" title="statement not covered" >    if (!termsOfServicePageTitle) {</span>
 <span class="cstat-no" title="statement not covered" >      expect(termsOfServicePageTitle).toBeTruthy();</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Test not started in clean environment, loaded a `config.json`');</span>
@@ -259,6 +277,9 @@
 &nbsp;
     const button = <span class="cstat-no" title="statement not covered" >await onboarding.findAcceptBtn();</span>
 <span class="cstat-no" title="statement not covered" >    await button.click();</span>
+&nbsp;
+    const diagnosticPermissionBtn = <span class="cstat-no" title="statement not covered" >await onboarding.findAcceptDiagnosticsBtn();</span>
+<span class="cstat-no" title="statement not covered" >    await diagnosticPermissionBtn.click();</span>
 &nbsp;
     const restoreWalletButton = <span class="cstat-no" title="statement not covered" >await onboarding.findResoreWalletBtn();</span>
 <span class="cstat-no" title="statement not covered" >    await restoreWalletButton.click();</span>
@@ -283,7 +304,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Sep 15 2021 12:36:05 GMT+0000 (Coordinated Universal Time)
+                at Mon Nov 08 2021 08:09:14 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

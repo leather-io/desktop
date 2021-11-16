@@ -1,3 +1,10 @@
+# [4.6.0-dev.4](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.3...v4.6.0-dev.4) (2021-11-16)
+
+
+### Features
+
+* add segment integration ([c1d6f1f](https://github.com/blockstack/stacks-wallet/commit/c1d6f1f1b447aa2ec178a4b0ff019940a4f0ea43)), closes [#928](https://github.com/blockstack/stacks-wallet/issues/928)
+
 # [4.6.0-dev.3](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.2...v4.6.0-dev.3) (2021-11-02)
 
 

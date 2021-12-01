@@ -19,7 +19,6 @@ import { validateDecimalPrecision } from '@utils/form/validate-decimals';
 
 import { useLatestNonce } from '@hooks/use-latest-nonce';
 import { safeAwait } from '@utils/safe-await';
-import { Api } from '@api/api';
 import { STX_DECIMAL_PRECISION, STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
 
 import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
@@ -43,6 +42,7 @@ import { ModalHeader } from '@modals/components/modal-header';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
 import { useAnalytics } from '@hooks/use-analytics';
+import { delay } from '@utils/delay';
 
 interface TxModalProps {
   balance: string;
@@ -206,23 +206,20 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
 
   const updateAmountFieldToMaxBalance = async () => {
     setCalculatingMaxSpend(true);
-    const [error, feeRate] = await safeAwait(new Api(stacksApi.baseUrl).getFeeRate());
-    if (error) setCalculatingMaxSpend(false);
-    if (feeRate) {
-      const fee = new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);
-      const balanceLessFee = new BigNumber(balance).minus(fee.toString());
-      if (balanceLessFee.isLessThanOrEqualTo(0)) {
-        void form.setFieldTouched('amount');
-        form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');
-        setCalculatingMaxSpend(false);
-        return;
-      }
-      void form.setValues({
-        ...form.values,
-        amount: microStxToStx(balanceLessFee.toString()).toString(),
-      });
+    await delay(300);
+    const fee = calcFee(STX_TRANSFER_TX_SIZE_BYTES);
+    const balanceLessFee = new BigNumber(balance).minus(fee.toString());
+    if (balanceLessFee.isLessThanOrEqualTo(0)) {
+      void form.setFieldTouched('amount');
+      form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');
       setCalculatingMaxSpend(false);
+      return;
     }
+    await form.setValues({
+      ...form.values,
+      amount: microStxToStx(balanceLessFee.toString()).toString(),
+    });
+    setCalculatingMaxSpend(false);
   };
 
   const txFormStepMap: Record<TxModalStep, () => JSX.Element> = {

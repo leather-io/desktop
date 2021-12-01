@@ -20,12 +20,8 @@
 
 ### Features
 
-<<<<<<< HEAD
 * **sentry:** add opt-in diagnostics with sentry, closes [#899](https://github.com/blockstack/stacks-wallet/issues/899) ([f8c08ca](https://github.com/blockstack/stacks-wallet/commit/f8c08ca27213ab8bc1e76594640d61e1c7fcb7c8))
 * update release flow branches ([e546a33](https://github.com/blockstack/stacks-wallet/commit/e546a3351b4a9e947950859984b440fd0867891f))
-=======
-* add segment integration ([c1d6f1f](https://github.com/blockstack/stacks-wallet/commit/c1d6f1f1b447aa2ec178a4b0ff019940a4f0ea43)), closes [#928](https://github.com/blockstack/stacks-wallet/issues/928)
->>>>>>> 416920bc (chore(release): 4.6.0-dev.4)
 
 # [4.6.0-dev.3](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.2...v4.6.0-dev.3) (2021-11-02)
 

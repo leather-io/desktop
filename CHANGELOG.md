@@ -1,3 +1,10 @@
+# [4.6.0-dev.5](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.4...v4.6.0-dev.5) (2021-12-01)
+
+
+### Bug Fixes
+
+* **send-form:** incorrect fee calc in send max button ([b4c1fee](https://github.com/blockstack/stacks-wallet/commit/b4c1fee7c7f9c83f46d83fd3e20f92d9fd5369b9))
+
 # [4.6.0-dev.4](https://github.com/blockstack/stacks-wallet/compare/v4.6.0-dev.3...v4.6.0-dev.4) (2021-11-16)
 
 

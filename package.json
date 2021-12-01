@@ -55,7 +55,7 @@
       [
         "@semantic-release/npm",
         {
-          "npmPublish": false
+          "npmPublish": "@babel/plugin-transform-runtime"
         }
       ],
       "@semantic-release/changelog",
@@ -68,9 +68,7 @@
     ]
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "extends": ["@commitlint/config-conventional"]
   },
   "repository": {
     "type": "git",
@@ -269,8 +267,6 @@
   },
   "browserslist": [],
   "renovate": {
-    "extends": [
-      "bliss"
-    ]
+    "extends": ["bliss"]
   }
 }

@@ -1,6 +1,12 @@
 name: Integration tests
 
-on: [pull_request]
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'API URL to test'
+        required: true
 
 jobs:
   test-integration:
@@ -9,6 +15,7 @@ jobs:
     env:
       STX_NETWORK: ${{ matrix.stx_network }}
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+      DEFAULT_TESTNET_STACKS_NODE_URL: ${{ github.event.inputs.name }}
 
     strategy:
       matrix:

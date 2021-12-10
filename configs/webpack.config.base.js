@@ -86,6 +86,7 @@ export default {
 
     new webpack.EnvironmentPlugin({
       STX_NETWORK: process.env.STX_NETWORK,
+      DEFAULT_TESTNET_STACKS_NODE_URL: process.env.DEFAULT_TESTNET_STACKS_NODE_URL,
       SENTRY_DSN: process.env.SENTRY_DSN || '',
     }),
   ],

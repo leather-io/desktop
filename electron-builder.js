@@ -82,7 +82,7 @@ const networkConfigs = {
   testnet: {
     productName: 'Hiro Wallet Testnet',
     appId: 'so.hiro.StacksWalletTestnet',
-    artifactName: 'stacks-wallet.testnet.${ext}',
+    artifactName: 'hiro-wallet.testnet.${ext}',
     mac: {
       icon: 'icon.testnet.icns',
     },
@@ -102,7 +102,7 @@ const networkConfigs = {
     productName: 'Hiro Wallet',
     appId: 'so.hiro.StacksWallet',
     icon: 'icon-512x512.png',
-    artifactName: 'stacks-wallet.mainnet.${ext}',
+    artifactName: 'hiro-wallet.mainnet.${ext}',
     mac: {
       icon: 'icon.icns',
     },

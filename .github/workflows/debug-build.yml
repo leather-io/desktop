@@ -131,7 +131,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         name: ${{ matrix.NPM_COMMAND }} ${{ matrix.stx_network }} upload
         with:
-          name: stacks-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
+          name: hiro-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
           path: ${{ matrix.UPLOAD_ASSETS }}
 
   asset-signatures:

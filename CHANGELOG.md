@@ -1,3 +1,10 @@
+## [4.6.1](https://github.com/blockstack/stacks-wallet/compare/v4.6.0...v4.6.1) (2021-12-23)
+
+
+### Bug Fixes
+
+* entitlement issue ([4f12660](https://github.com/blockstack/stacks-wallet/commit/4f12660e2d72a62e5e2433257de2e31a1010dbe2))
+
 # [4.6.0](https://github.com/blockstack/stacks-wallet/compare/v4.5.3...v4.6.0) (2021-11-08)
 
 

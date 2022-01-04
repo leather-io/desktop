@@ -1,3 +1,15 @@
+# [4.7.0-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.6.1...v4.7.0-dev.1) (2022-01-04)
+
+
+### Bug Fixes
+
+* **send-form:** incorrect fee calc in send max button ([7188bd8](https://github.com/blockstack/stacks-wallet/commit/7188bd8a2f8a28e611d82877261ff547669be275))
+
+
+### Features
+
+* add segment integration ([5382781](https://github.com/blockstack/stacks-wallet/commit/5382781f35c9da2a1f2f30242c7c3c0d7204e78e)), closes [#928](https://github.com/blockstack/stacks-wallet/issues/928)
+
 ## [4.6.1](https://github.com/blockstack/stacks-wallet/compare/v4.6.0...v4.6.1) (2021-12-23)
 
 

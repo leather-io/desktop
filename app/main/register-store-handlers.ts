@@ -22,4 +22,6 @@ export function registerIpcStoreHandlers(userDataPath: string) {
   ipcMain.on('store-getEntireStore', event => {
     event.returnValue = store.store;
   });
+
+  return store;
 }

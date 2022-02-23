@@ -31,11 +31,17 @@ import { registerIpcStoreHandlers } from './main/register-store-handlers';
 import { registerIpcContextMenuHandlers } from './main/register-context-menus';
 import { addMacOsTouchBarMenu } from './main/macos-touchbar-menu';
 import { registerThemeModeHandlers } from './main/register-theme-mode-handlers';
-import { registerSentryStateListener } from './main/register-sentry-state-listener';
+import {
+  initializeSentry,
+  registerSentryStateListener,
+} from './main/register-sentry-state-listener';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
+
+const store = registerIpcStoreHandlers(getUserDataPath(app));
+initializeSentry(store);
 
 contextMenu({ showCopyImage: false, showSearchWithGoogle: false });
 
@@ -183,8 +189,6 @@ app.on('window-all-closed', () => {
 
 app.on('ready', () => {
   void createWindow();
-  // We only want to run these once per app lifecycle
-  void app.whenReady().then(() => registerIpcStoreHandlers(getUserDataPath(app)));
 });
 
 app.on('activate', () => {

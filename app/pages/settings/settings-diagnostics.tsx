@@ -17,7 +17,13 @@ export const SettingsDiagnostics = memo(() => {
 
   const updateDiagnosticPermissions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const diagnosticsEnabled = e.target.checked;
-    toast(diagnosticsEnabled ? 'Diagnostics enabled' : 'Diagnostics disabled');
+    toast(
+      <div style={{ textAlign: 'center' }}>
+        {diagnosticsEnabled ? 'Diagnostics enabled' : 'Diagnostics disabled'}
+        <br />
+        (restart needed to apply changes)
+      </div>
+    );
     dispatch(diagnosticsEnabled ? grantDiagnosticsPermission() : revokeDiagnosticPermission());
     main.setDiagnosticPermission(diagnosticsEnabled);
   };

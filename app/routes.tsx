@@ -28,17 +28,7 @@ import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
 import { Diagnostics } from './pages/onboarding/01-diagnostics/diagnostics';
 import { initSegment } from '@utils/init-segment';
 
-let diagnosticsEnabled = false;
-
-if (process.env.SENTRY_DSN) {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    beforeSend(event) {
-      if (!diagnosticsEnabled) return null;
-      return event;
-    },
-  });
-}
+let diagnosticsEnabled = true;
 
 initSegment();
 
@@ -121,6 +111,18 @@ export function Routes() {
   // `useStore` required as we only want the value on initial render
   const store = useStore();
   const diagnosticPermission = useHasUserGivenDiagnosticPermissions();
+
+  useEffect(() => {
+    if (process.env.SENTRY_DSN && diagnosticPermission) {
+      Sentry.init({
+        dsn: process.env.SENTRY_DSN,
+        beforeSend(event) {
+          if (!diagnosticsEnabled) return null;
+          return event;
+        },
+      });
+    }
+  }, []);
 
   useEffect(() => {
     diagnosticsEnabled = !!diagnosticPermission;

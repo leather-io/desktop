@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useStore } from 'react-redux';
 import * as Sentry from '@sentry/react';
@@ -27,8 +27,6 @@ import { StackingDelegation } from './pages/stacking/delegated-stacking/pooled-s
 import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
 import { Diagnostics } from './pages/onboarding/01-diagnostics/diagnostics';
 import { initSegment } from '@utils/init-segment';
-
-let diagnosticsEnabled = true;
 
 initSegment();
 
@@ -111,21 +109,24 @@ export function Routes() {
   // `useStore` required as we only want the value on initial render
   const store = useStore();
   const diagnosticPermission = useHasUserGivenDiagnosticPermissions();
+  const [userDisabledDiagnosticsInCurrentSession, setUserDisabledDiagnosticsInCurrentSession] =
+    useState(false);
 
   useEffect(() => {
     if (process.env.SENTRY_DSN && diagnosticPermission) {
       Sentry.init({
         dsn: process.env.SENTRY_DSN,
         beforeSend(event) {
-          if (!diagnosticsEnabled) return null;
+          if (userDisabledDiagnosticsInCurrentSession) return null;
           return event;
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    diagnosticsEnabled = !!diagnosticPermission;
+    setUserDisabledDiagnosticsInCurrentSession(!diagnosticPermission);
   }, [diagnosticPermission]);
 
   const address = selectAddress(store.getState());

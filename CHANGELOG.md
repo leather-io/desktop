@@ -1,3 +1,11 @@
+# [4.7.0-dev.2](https://github.com/blockstack/stacks-wallet/compare/v4.7.0-dev.1...v4.7.0-dev.2) (2022-02-28)
+
+
+### Bug Fixes
+
+* initialize sentry after loading store and checking for diagnosticPermission ([e6e7396](https://github.com/blockstack/stacks-wallet/commit/e6e73966f8f6f9aa11b8486a86170c652aae6ee4))
+* remove sentry from main process ([8d50414](https://github.com/blockstack/stacks-wallet/commit/8d50414ddb2e9a1a5fd7618d2945de49f579cb22))
+
 # [4.7.0-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.6.1...v4.7.0-dev.1) (2022-01-04)
 
 

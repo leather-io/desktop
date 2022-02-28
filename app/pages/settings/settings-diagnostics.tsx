@@ -21,7 +21,7 @@ export const SettingsDiagnostics = memo(() => {
       <div style={{ textAlign: 'center' }}>
         {diagnosticsEnabled ? 'Diagnostics enabled' : 'Diagnostics disabled'}
         <br />
-        (restart needed to apply changes)
+        Restart to apply changes
       </div>
     );
     dispatch(diagnosticsEnabled ? grantDiagnosticsPermission() : revokeDiagnosticPermission());

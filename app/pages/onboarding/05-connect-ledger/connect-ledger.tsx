@@ -65,7 +65,6 @@ export const ConnectLedger: React.FC = () => {
         }
         dispatch(
           setLedgerWallet({
-            address: deviceResponse.address,
             publicKey: deviceResponse.publicKey,
             onSuccess: () => history.push(routes.HOME),
           })

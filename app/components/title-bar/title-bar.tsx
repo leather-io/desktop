@@ -26,6 +26,8 @@ export const TitleBar: FC = () => {
 
   const isBlurred = winState === 'blurred';
   const isOnboarding = matchPath(location.pathname, { path: '/onboard' }) !== null;
+  const isLocked = matchPath(location.pathname, { path: routes.UNLOCK }) !== null;
+  const showSettingButton = !isOnboarding && !isLocked;
 
   if (!el) return null;
 
@@ -63,7 +65,7 @@ export const TitleBar: FC = () => {
       </Flex>
       <Stack alignItems="center" pr="base-loose" isInline spacing="tight">
         <ColorModeButton color={color('text-title')} />
-        {!isOnboarding && (
+        {showSettingButton && (
           <SettingsButton
             onClick={() => routerHistory.push(routes.SETTINGS)}
             color={color('text-title')}

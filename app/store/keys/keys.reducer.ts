@@ -7,7 +7,9 @@ import {
   persistLedgerWallet,
   persistMnemonicSafe,
   persistMnemonic,
+  setPublicKey,
 } from './keys.actions';
+import { AddressVersion, publicKeyFromBuffer, publicKeyToAddress } from '@stacks/transactions';
 
 export interface KeysState {
   walletType: WalletType;
@@ -16,18 +18,29 @@ export interface KeysState {
   salt?: string;
   decryptionError?: string;
   encryptedMnemonic?: string;
-  stxAddress?: string;
   publicKey?: string;
+  /**
+   * @deprecated we now persist publicKey and derive address from it.
+   */
+  stxAddress?: string;
+  signedIn: boolean;
 }
 
 const initialState: Readonly<KeysState> = Object.freeze({
   mnemonic: null,
   decrypting: false,
   walletType: 'software',
+  signedIn: false,
 });
 
-export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
-  createReducer({ ...initialState, ...keys }, builder =>
+const addressVersionMap = {
+  mainnet: AddressVersion.MainnetSingleSig,
+  testnet: AddressVersion.TestnetSingleSig,
+};
+
+export const createKeysReducer = (keys: Partial<KeysState> = {}) => {
+  const signedIn = !!keys.stxAddress || !!keys.signedIn; // handle legacy state
+  return createReducer({ ...initialState, ...keys, signedIn: signedIn }, builder =>
     builder
       .addCase(persistMnemonicSafe, (state, action) => {
         if (state.mnemonic !== null) {
@@ -36,18 +49,21 @@ export const createKeysReducer = (keys: Partial<KeysState> = {}) =>
         return { ...state, mnemonic: action.payload };
       })
       .addCase(persistMnemonic, (state, action) => ({ ...state, mnemonic: action.payload }))
+      .addCase(setPublicKey, (state, action) => ({ ...state, publicKey: action.payload }))
       .addCase(setPasswordSuccess, (state, { payload }) => ({
         ...state,
         ...payload,
         mnemonic: null,
+        signedIn: true,
       }))
       .addCase(persistLedgerWallet, (state, { payload }) => ({
         ...state,
-        stxAddress: payload.address,
         publicKey: payload.publicKey,
         walletType: 'ledger',
+        signedIn: true,
       }))
   );
+};
 
 export const selectKeysSlice = (state: RootState) => state.keys;
 export const selectDecryptionError = createSelector(
@@ -61,8 +77,16 @@ export const selectEncryptedMnemonic = createSelector(
   selectKeysSlice,
   state => state.encryptedMnemonic
 );
-export const selectAddress = createSelector(selectKeysSlice, state => state.stxAddress);
 export const selectSalt = createSelector(selectKeysSlice, state => state.salt);
 export const selectPublicKey = createSelector(selectKeysSlice, state =>
   state.publicKey ? Buffer.from(state.publicKey, 'hex') : null
 );
+export const selectAddress = createSelector(selectPublicKey, publicKey =>
+  publicKey
+    ? publicKeyToAddress(
+        addressVersionMap[process.env.STX_NETWORK as keyof typeof addressVersionMap],
+        publicKeyFromBuffer(publicKey)
+      )
+    : undefined
+);
+export const selectSignedIn = createSelector(selectKeysSlice, state => state.signedIn);

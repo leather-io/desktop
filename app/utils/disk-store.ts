@@ -3,32 +3,28 @@ import { WalletType } from '../models/wallet-type';
 enum StoreIndex {
   Salt = 'salt',
   EncryptedMnemonic = 'encryptedMnemonic',
-  StxAddress = 'stxAddress',
   PublicKey = 'publicKey',
   WalletType = 'walletType',
+  SignedIn = 'signedIn',
 }
 
 interface SoftwareWallet {
   [StoreIndex.WalletType]: 'software';
   [StoreIndex.Salt]: string;
   [StoreIndex.EncryptedMnemonic]: string;
-  [StoreIndex.StxAddress]: string;
+  [StoreIndex.SignedIn]: boolean;
 }
 
 interface LedgerWallet {
   [StoreIndex.WalletType]: 'ledger';
-  [StoreIndex.StxAddress]: string;
   [StoreIndex.PublicKey]: string;
+  [StoreIndex.SignedIn]: boolean;
 }
 
 export type DiskStore = LedgerWallet | SoftwareWallet;
 
 export const persistEncryptedMnemonic = async (encryptedMnemonic: string) => {
   return main.store.set(StoreIndex.EncryptedMnemonic, encryptedMnemonic);
-};
-
-export const persistStxAddress = async (stxAddress: string) => {
-  return main.store.set(StoreIndex.StxAddress, stxAddress);
 };
 
 export const persistPublicKey = async (publicKey: string) => {
@@ -41,6 +37,10 @@ export const persistSalt = async (salt: string) => {
 
 export const persistWalletType = async (walletType: WalletType) => {
   return main.store.set(StoreIndex.WalletType, walletType);
+};
+
+export const persistSignedIn = async () => {
+  return main.store.set(StoreIndex.SignedIn, true);
 };
 
 export const getInitialStateFromDisk = () => {

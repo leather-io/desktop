@@ -10,15 +10,16 @@ import { MNEMONIC_ENTROPY } from '@constants/index';
 import {
   persistSalt,
   persistEncryptedMnemonic,
-  persistStxAddress,
   persistWalletType,
   persistPublicKey,
+  persistSignedIn,
 } from '@utils/disk-store';
 import { generateSalt } from '../../crypto/key-generation';
 import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
 
 import { selectMnemonic } from './keys.reducer';
+import { createStacksPrivateKey, getPublicKey, publicKeyToString } from '@stacks/transactions';
 
 type History = ReturnType<typeof useHistory>;
 
@@ -26,8 +27,9 @@ export const persistMnemonicSafe = createAction<string>('keys/save-mnemonic-safe
 
 export const persistMnemonic = createAction<string>('keys/save-mnemonic');
 
+export const setPublicKey = createAction<string>('keys/set-public-key');
+
 interface PersistLedgerWalletAction {
-  address: string;
   publicKey: string;
 }
 export const persistLedgerWallet = createAction<PersistLedgerWalletAction>(
@@ -35,18 +37,17 @@ export const persistLedgerWallet = createAction<PersistLedgerWalletAction>(
 );
 
 interface SetLedgerAddress {
-  address: string;
   publicKey: string;
   onSuccess: () => void;
 }
-export function setLedgerWallet({ address, publicKey, onSuccess }: SetLedgerAddress) {
+export function setLedgerWallet({ publicKey, onSuccess }: SetLedgerAddress) {
   return async (dispatch: Dispatch) => {
     await Promise.all([
-      persistStxAddress(address),
       persistPublicKey(publicKey),
       persistWalletType('ledger'),
+      persistSignedIn(),
     ]);
-    dispatch(persistLedgerWallet({ address, publicKey }));
+    dispatch(persistLedgerWallet({ publicKey }));
     onSuccess();
   };
 }
@@ -54,7 +55,7 @@ export function setLedgerWallet({ address, publicKey, onSuccess }: SetLedgerAddr
 interface SetPasswordSuccess {
   salt: string;
   encryptedMnemonic: string;
-  stxAddress: string;
+  publicKey: string;
 }
 
 export const setPasswordSuccess = createAction<SetPasswordSuccess>('keys/set-password-success');
@@ -83,13 +84,16 @@ export function setSoftwareWallet({ password, history }: SetSoftwareWallet) {
 
     const encryptedMnemonic = await encryptMnemonic({ derivedKeyHash, mnemonic });
     const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
-    const { address } = deriveStxAddressKeychain(rootNode);
+    const { privateKey } = deriveStxAddressKeychain(rootNode);
+    const senderKey = createStacksPrivateKey(privateKey);
+    const publicKey = publicKeyToString(getPublicKey(senderKey));
     await Promise.all([
-      persistStxAddress(address),
+      persistPublicKey(publicKey),
       persistSalt(salt),
       persistEncryptedMnemonic(encryptedMnemonic),
+      persistSignedIn(),
     ]);
-    dispatch(setPasswordSuccess({ salt, encryptedMnemonic, stxAddress: address }));
+    dispatch(setPasswordSuccess({ salt, encryptedMnemonic, publicKey }));
     history.push(routes.HOME);
   };
 }

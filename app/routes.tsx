@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react';
 
 import routes from './constants/routes.json';
 import { Home } from './pages/home/home';
-import { selectAddress } from './store/keys/keys.reducer';
+import { selectSignedIn, selectPublicKey } from '@store/keys';
 
 import {
   Terms,
@@ -27,6 +27,7 @@ import { StackingDelegation } from './pages/stacking/delegated-stacking/pooled-s
 import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
 import { Diagnostics } from './pages/onboarding/01-diagnostics/diagnostics';
 import { initSegment } from '@utils/init-segment';
+import { Unlock } from './pages/Unlock';
 
 initSegment();
 
@@ -101,9 +102,21 @@ export const routerConfig = [
     path: routes.STACKING,
     component: DirectStacking,
   },
+  {
+    path: routes.UNLOCK,
+    component: Unlock,
+  },
 ];
 
-const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.TERMS);
+const getAppStartingRoute = (publicKey: Buffer | null, signedIn: boolean) => {
+  if (!signedIn) {
+    return routes.TERMS;
+  }
+  if (!publicKey) {
+    return routes.UNLOCK;
+  }
+  return routes.HOME;
+};
 
 export function Routes() {
   // `useStore` required as we only want the value on initial render
@@ -129,7 +142,8 @@ export function Routes() {
     setUserDisabledDiagnosticsInCurrentSession(!diagnosticPermission);
   }, [diagnosticPermission]);
 
-  const address = selectAddress(store.getState());
+  const signedIn = selectSignedIn(store.getState());
+  const publicKey = selectPublicKey(store.getState());
   return (
     <App>
       <Switch>
@@ -137,7 +151,7 @@ export function Routes() {
           <Route key={i} exact {...route} />
         ))}
       </Switch>
-      <Redirect to={getAppStartingRoute(address)} />
+      <Redirect to={getAppStartingRoute(publicKey, signedIn)} />
     </App>
   );
 }

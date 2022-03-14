@@ -14,6 +14,5 @@
   "CHOOSE_STACKING_METHOD": "/choose-stacking-method",
   "STACKING": "/stacking",
   "DELEGATED_STACKING": "/delegated-stacking",
-  "SETTINGS": "/settings",
-  "TEST": "/test"
+  "SETTINGS": "/settings"
 }

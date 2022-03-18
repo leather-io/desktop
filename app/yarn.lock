@@ -334,10 +334,10 @@ are-we-there-yet@~1.1.2:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
 
-argon2-browser@1.15.3:
-  version "1.15.3"
-  resolved "https://registry.yarnpkg.com/argon2-browser/-/argon2-browser-1.15.3.tgz#0bf95b9af8eb4a2171bacde00fabe455ad5f840c"
-  integrity sha512-CLY1Y+hqdP305Wnkh7ZyWVDmBc3SRjaFETqQ0Sx2Rc2x0D/o+rSscL1P4hVI1Yz6qMHP469vc2DyJJesq9h8WQ==
+argon2-browser@1.18.0:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/argon2-browser/-/argon2-browser-1.18.0.tgz#f35820211e0a431aed7f82b9348477234be69bec"
+  integrity sha512-ImVAGIItnFnvET1exhsQB7apRztcoC5TnlSqernMJDUjbc/DLq3UEYeXFrLPrlaIl8cVfwnXb6wX2KpFf2zxHw==
 
 argparse@^1.0.7:
   version "1.0.10"

@@ -17,7 +17,7 @@
     "@stacks/network": "1.2.2",
     "@stacks/stacking": "1.4.1",
     "@stacks/transactions": "1.4.1",
-    "argon2-browser": "1.15.3",
+    "argon2-browser": "1.18.0",
     "bitcoinjs-lib": "5.2.0",
     "blockstack": "21.1.1"
   }

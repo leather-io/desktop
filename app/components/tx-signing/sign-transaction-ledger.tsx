@@ -66,7 +66,7 @@ export const SignTransactionLedger = (props: SignTransactionLedgerProps) => {
       <SignTxWithLedger step={ledgerStep} isLocked={isLocked} ledgerError={ledgerError} />
       <Footer>
         <Button mode="tertiary" onClick={onClose}>
-          Close
+          Close button
         </Button>
         <Button
           isLoading={hasSubmitted || isBroadcasting}

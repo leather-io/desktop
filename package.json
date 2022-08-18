@@ -81,7 +81,7 @@
     "url": "https://github.com/blockstack/stacks-wallet/issues"
   },
   "devDependencies": {
-    "@actions/core": "1.2.6",
+    "@actions/core": "1.9.1",
     "@babel/core": "7.13.14",
     "@babel/generator": "7.13.9",
     "@babel/plugin-proposal-class-properties": "7.13.0",

@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-11, ubuntu-20.04]
         stx_network: [testnet, mainnet]
 
     steps:
@@ -33,13 +33,13 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 15
+          node-version: 14
 
       - name: Add required Linux dependencies
         uses: ./.github/actions/linux-deps
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
 
       - name: Install packages
         uses: nick-invision/retry@v2
@@ -78,10 +78,10 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - run: yarn test:integration
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-11'
 
       - run: xvfb-run --auto-servernum -- yarn test:integration
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
 
       - uses: actions/upload-artifact@v2
         if: always()

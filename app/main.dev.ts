@@ -29,7 +29,6 @@ import { getUserDataPath } from './main/get-user-data-path';
 import { registerLedgerListeners } from './main/register-ledger-listeners';
 import { registerIpcStoreHandlers } from './main/register-store-handlers';
 import { registerIpcContextMenuHandlers } from './main/register-context-menus';
-import { addMacOsTouchBarMenu } from './main/macos-touchbar-menu';
 import { registerThemeModeHandlers } from './main/register-theme-mode-handlers';
 
 // CSP enabled in production mode, don't warn in development
@@ -156,8 +155,6 @@ const createWindow = async () => {
   registerThemeModeHandlers(mainWindow.webContents);
 
   registerIpcContextMenuHandlers(mainWindow);
-
-  if (process.platform === 'darwin') addMacOsTouchBarMenu(mainWindow);
 };
 
 app.on('web-contents-created', (_event, contents) => {

@@ -14,16 +14,16 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-10.11, ubuntu-20.04, windows-latest]
         stx_network: [testnet, mainnet]
         include:
-          - os: macos-latest
+          - os: macos-10.11
             UPLOAD_ASSETS: release/**/*.dmg
             NPM_COMMAND: mac
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_APPLE
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_APPLE
 
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             NPM_COMMAND: linux
             UPLOAD_ASSETS: |
               release/**/*.deb
@@ -50,7 +50,7 @@ jobs:
 
       - name: Add required Linux dependencies
         uses: ./.github/actions/linux-deps
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
 
       - name: Variables
         id: vars
@@ -60,16 +60,14 @@ jobs:
 
       - name: Install code-signing certs - Apple only
         uses: apple-actions/import-codesign-certs@v1
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-10.11'
         with:
           p12-file-base64: ${{ secrets.CODE_SIGNING_CERTIFICATE_APPLE }}
           p12-password: ${{ secrets.CODE_SIGNING_PASSWORD_APPLE }}
 
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
-
+          node-version: 14
       #
       # Windows build breaks when using the package.json script to install `app/` packages
       # using separate run to install those packages separately
@@ -107,7 +105,7 @@ jobs:
           path: ${{ matrix.UPLOAD_ASSETS }}
 
   create-release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - build
 
@@ -171,7 +169,7 @@ jobs:
           body_path: release-body.txt
 
   upload-release-assets:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - build
       - create-release
@@ -210,7 +208,7 @@ jobs:
           asset_content_type: application/octet-stream
 
   announce-release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_NOTIFS_WEBHOOK }}
 

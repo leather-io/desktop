@@ -3,7 +3,7 @@ import rimraf from 'rimraf';
 
 import { _electron, ElectronApplication, Page } from 'playwright';
 
-import { deserializeTransaction, cvToValue } from '@stacks/transactions';
+import { deserializeTransaction, cvToValue, TokenTransferPayload } from '@stacks/transactions';
 import { getUserDataPath } from '../main/get-user-data-path';
 
 import { delay } from '../utils/delay';
@@ -104,7 +104,7 @@ describeOnlyTestnet('Transaction flow', () => {
     const requestBody = await interceptTransactionBroadcast(page);
 
     const deserialisedTx = deserializeTransaction(requestBody);
-    const payload = deserialisedTx.payload as any;
+    const payload = deserialisedTx.payload as TokenTransferPayload;
     const amount = payload.amount.toString();
     const recipient = cvToValue(payload.recipient);
     const memo = payload.memo.content.replace(/\0/g, '');

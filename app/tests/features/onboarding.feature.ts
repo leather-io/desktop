@@ -8,7 +8,6 @@ export function createOnboardingFeature(page: Page) {
     async findTermsOfServiceTitle() {
       // force top of page
       await repeatAction(100)(() => page.keyboard.press('Shift+Space'));
-      await page.screenshot({ path: 'screenshots/terms-page.png' });
       const selector = 'text="Terms of Service"';
       return page.$(selector);
     },

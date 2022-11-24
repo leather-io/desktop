@@ -28,10 +28,9 @@ jobs:
       - name: Add required Linux dependencies
         uses: ./.github/actions/linux-deps
 
-      - name: Use Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Cache node_modules
         id: cache
@@ -63,10 +62,9 @@ jobs:
       - name: Add required Linux dependencies
         uses: ./.github/actions/linux-deps
 
-      - name: Set up node
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 14
 
       - name: Cache node_modules
         id: cache

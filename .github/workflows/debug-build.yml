@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   announce-start:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
@@ -25,16 +25,16 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-11, ubuntu-20.04, windows-latest]
         stx_network: [testnet, mainnet]
         include:
-          - os: macos-latest
+          - os: macos-11
             NPM_COMMAND: mac
             UPLOAD_ASSETS: release/**/*.dmg
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_APPLE
             CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_APPLE
 
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             NPM_COMMAND: linux
             UPLOAD_ASSETS: |
               release/**/*.deb
@@ -57,7 +57,7 @@ jobs:
 
       - name: Add required Linux dependencies
         uses: ./.github/actions/linux-deps
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
 
       - name: Import GPG key
         id: import_gpg_key
@@ -81,15 +81,19 @@ jobs:
 
       - name: Install code-signing certs - Apple only
         uses: apple-actions/import-codesign-certs@v1
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-11'
         with:
           p12-file-base64: ${{ secrets.CODE_SIGNING_CERTIFICATE_APPLE }}
           p12-password: ${{ secrets.CODE_SIGNING_PASSWORD_APPLE }}
 
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 14
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '2.7.18'
+          architecture: x64
 
       #
       # Windows build breaks when using the package.json script to install `app/` packages
@@ -135,7 +139,7 @@ jobs:
           path: ${{ matrix.UPLOAD_ASSETS }}
 
   asset-signatures:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - debug-build
 
@@ -165,7 +169,7 @@ jobs:
           path: shasum.txt.asc
 
   announce-completion:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     if: always()
 

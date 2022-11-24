@@ -26,12 +26,12 @@ jobs:
           fetch-depth: 0
 
       - name: Add required Linux dependencies
-        uses: ./.github/actions/linux-deps
+        uses: ./.github/actions/linux-deps/
 
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 16
 
       - name: Cache node_modules
         id: cache
@@ -66,7 +66,7 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 18
 
       - name: Cache node_modules
         id: cache

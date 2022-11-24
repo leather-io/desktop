@@ -89,7 +89,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 18
 
       #
       # Windows build breaks when using the package.json script to install `app/` packages

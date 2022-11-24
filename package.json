@@ -229,6 +229,7 @@
     "bn.js": "https://github.com/kyranjamie/bn.js",
     "buffer": "6.0.3",
     "c32check": "1.1.2",
+    "caniuse-lite": "^1.0.30001434",
     "connected-react-router": "6.9.1",
     "core-js": "3.9.1",
     "dayjs": "1.10.4",

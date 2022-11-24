@@ -88,19 +88,21 @@ const createWindow = async () => {
     title: `Hiro Wallet` + (process.env.STX_NETWORK === 'testnet' ? ' Testnet' : ''),
     webPreferences: {
       disableBlinkFeatures: 'Auxclick',
+      sandbox: false,
       spellcheck: false,
       webSecurity: true,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       nodeIntegrationInSubFrames: false,
       enableRemoteModule: false,
-      worldSafeExecuteJavaScript: true,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 28 });
+  console.log('xxxxxxxxxxx', path.join(__dirname, 'preload.js'));
+
+  if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 14 });
 
   mainWindowState.manage(mainWindow);
 
@@ -157,7 +159,7 @@ const createWindow = async () => {
 
   registerIpcContextMenuHandlers(mainWindow);
 
-  if (process.platform === 'darwin') addMacOsTouchBarMenu(mainWindow);
+  MacOsTouchBarMenu(mainWindow);
 };
 
 app.on('web-contents-created', (_event, contents) => {

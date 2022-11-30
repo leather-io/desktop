@@ -1,7 +1,7 @@
 import { AddressHashMode } from '@stacks/transactions';
 import BN from 'bn.js';
-import { address } from 'bitcoinjs-lib';
-
+import { base58check } from '@scure/base';
+import { sha256 } from '@noble/hashes/sha256';
 import { NETWORK } from '@constants/index';
 
 const poxKeyToVersionBytesMap: Record<'mainnet' | 'testnet', any> = {
@@ -24,7 +24,9 @@ export function convertPoxAddressToBtc(network: 'mainnet' | 'testnet') {
     const ver = new BN(version).toNumber() as AddressHashMode;
     if (ver === AddressHashMode.SerializeP2WPKH || ver === AddressHashMode.SerializeP2WSH)
       return null;
-    return address.toBase58Check(hashbytes, poxKeyToVersionBytesMap[network][ver]);
+    return base58check(sha256).encode(
+      Buffer.concat([Buffer.from([poxKeyToVersionBytesMap[network][ver]]), hashbytes])
+    );
   };
 }
 

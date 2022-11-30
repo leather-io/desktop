@@ -5,7 +5,7 @@ import { selectActiveNodeApi } from '@store/stacks-node/stacks-node.reducer';
 import { RootState } from '@store/index';
 import { Api } from '@api/api';
 import { safeAwait } from '@utils/safe-await';
-import { stacksNetwork } from '../../environment';
+import { createStacksNetwork } from '../../environment';
 
 export const fetchStackingInfo = createAsyncThunk('stacking/details', async (_arg, thunkApi) => {
   const state = thunkApi.getState() as RootState;
@@ -38,9 +38,7 @@ export const fetchStackerInfo = createAsyncThunk(
   async (address: string, thunkApi) => {
     const state = thunkApi.getState() as RootState;
     const node = selectActiveNodeApi(state);
-    const network = stacksNetwork;
-    network.coreApiUrl = node.url;
-    const stackingClient = new StackingClient(address, network as any);
+    const stackingClient = new StackingClient(address, createStacksNetwork(node.url));
     const [error, resp] = await safeAwait(stackingClient.getStatus());
     if (resp) return resp as any;
     if (error) return { error };

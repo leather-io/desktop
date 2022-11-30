@@ -13,8 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "@ledgerhq/hw-transport-node-hid": "6.6",
-    "@stacks/keychain": "1.4.1",
-    "@stacks/network": "1.2.2",
+    "@stacks/keychain": "4.3.8",
+    "@stacks/network": "6.0.0",
     "@stacks/stacking": "1.4.1",
     "@stacks/transactions": "1.4.1",
     "argon2-browser": "1.15.3",

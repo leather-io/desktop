@@ -10,3 +10,10 @@ export const stacksNetwork = whenNetwork<StacksNetwork>({
   mainnet: new StacksMainnet(),
   testnet: new StacksTestnet(),
 });
+
+export function createStacksNetwork(url: string) {
+  return whenNetwork<StacksNetwork>({
+    mainnet: new StacksMainnet({ url }),
+    testnet: new StacksTestnet({ url }),
+  });
+}

@@ -9,7 +9,6 @@ import urljoin from 'url-join';
 import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 
 import { Api } from '../../api/api';
-import { stacksNetwork } from '../../environment';
 import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { Dispatch, GetState } from '@store/index';
 import { selectActiveNodeApi } from '@store/stacks-node';
@@ -70,7 +69,6 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
     dispatch(broadcastTx());
 
     const activeNode = selectActiveNodeApi(getState());
-    stacksNetwork.coreApiUrl = activeNode.url;
 
     try {
       const blockchainResponse = await broadcastRawTransaction(

@@ -21,7 +21,7 @@ export const DirectStackingIntro: FC<StackingIntroProps> = props => {
         reward slot that you hold.
       </StackingDescription>
       <StackingDescription mt="base">
-        The STX required per reward slot can fluctuate from cycle to cycle.If you’re close to the
+        The STX required per reward slot can fluctuate from cycle to cycle. If you’re close to the
         current minimum, consider pooling instead to help make sure you don’t end up without
         rewards.
       </StackingDescription>

@@ -1,3 +1,10 @@
+# [4.7.0-dev.3](https://github.com/blockstack/stacks-wallet/compare/v4.7.0-dev.2...v4.7.0-dev.3) (2022-12-09)
+
+
+### Bug Fixes
+
+* add missing space ([89345e9](https://github.com/blockstack/stacks-wallet/commit/89345e9a72bf4ac91ccbd09af26fbd52ec11746d))
+
 # [4.7.0-dev.2](https://github.com/blockstack/stacks-wallet/compare/v4.7.0-dev.1...v4.7.0-dev.2) (2022-02-28)
 
 

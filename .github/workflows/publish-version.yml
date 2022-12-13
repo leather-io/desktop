@@ -14,10 +14,10 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-10.11, ubuntu-20.04, windows-latest]
+        os: [macos-11, ubuntu-20.04, windows-latest]
         stx_network: [testnet, mainnet]
         include:
-          - os: macos-10.11
+          - os: macos-11
             UPLOAD_ASSETS: release/**/*.dmg
             NPM_COMMAND: mac
             CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_APPLE
@@ -60,7 +60,7 @@ jobs:
 
       - name: Install code-signing certs - Apple only
         uses: apple-actions/import-codesign-certs@v1
-        if: matrix.os == 'macos-10.11'
+        if: matrix.os == 'macos-11'
         with:
           p12-file-base64: ${{ secrets.CODE_SIGNING_CERTIFICATE_APPLE }}
           p12-password: ${{ secrets.CODE_SIGNING_PASSWORD_APPLE }}

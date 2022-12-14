@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/37</span>
+                <span class='fraction'>0/33</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/127</span>
+                <span class='fraction'>0/128</span>
             </div>
         
             
@@ -363,7 +363,8 @@
 <a name='L304'></a><a href='#L304'>304</a>
 <a name='L305'></a><a href='#L305'>305</a>
 <a name='L306'></a><a href='#L306'>306</a>
-<a name='L307'></a><a href='#L307'>307</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -385,7 +386,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -394,6 +394,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -407,6 +408,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -437,8 +439,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -548,6 +552,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -575,15 +580,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -690,7 +692,6 @@ import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-typ
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { useLatestNonce } from '@hooks/use-latest-nonce';</span>
 <span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
-<span class="cstat-no" title="statement not covered" >import { Api } from '@api/api';</span>
 <span class="cstat-no" title="statement not covered" >import { STX_DECIMAL_PRECISION, STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { validateStacksAddress } from '@utils/get-stx-transfer-direction';</span>
@@ -713,6 +714,8 @@ import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-typ
 <span class="cstat-no" title="statement not covered" >import { ModalHeader } from '@modals/components/modal-header';</span>
 <span class="cstat-no" title="statement not covered" >import { HomeSelectors } from 'app/tests/features/home.selectors';</span>
 <span class="cstat-no" title="statement not covered" >import { useCalculateFee } from '@hooks/use-calculate-fee';</span>
+<span class="cstat-no" title="statement not covered" >import { useAnalytics } from '@hooks/use-analytics';</span>
+<span class="cstat-no" title="statement not covered" >import { delay } from '@utils/delay';</span>
 &nbsp;
 interface TxModalProps {
   balance: string;
@@ -748,6 +751,8 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
   const { nonce } = <span class="cstat-no" title="statement not covered" >useLatestNonce();</span>
 &nbsp;
   const [txDetails, setTxDetails] = <span class="cstat-no" title="statement not covered" >useState&lt;TokenTransferOptions | null&gt;(null);</span>
+&nbsp;
+  const analytics = <span class="cstat-no" title="statement not covered" >useAnalytics();</span>
 &nbsp;
   const totalIsMoreThanBalance = <span class="cstat-no" title="statement not covered" >total.isGreaterThan(balance);</span>
 &nbsp;
@@ -856,6 +861,7 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
   };
 <span class="cstat-no" title="statement not covered" >  useHotkeys('esc', closeModal);</span>
   const sendStx = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>x: StacksTransaction) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    void analytics.track('broadcast_transaction');</span>
 <span class="cstat-no" title="statement not covered" >    broadcastTx({</span>
 <span class="fstat-no" title="function not covered" >      async </span>onSuccess(txId: string) {
 <span class="cstat-no" title="statement not covered" >        await safeAwait(watchForNewTxToAppear({ txId, nodeUrl: stacksApi.baseUrl }));</span>
@@ -873,23 +879,20 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
 &nbsp;
   const updateAmountFieldToMaxBalance = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setCalculatingMaxSpend(true);</span>
-    const [error, feeRate] = <span class="cstat-no" title="statement not covered" >await safeAwait(new Api(stacksApi.baseUrl).getFeeRate());</span>
-<span class="cstat-no" title="statement not covered" >    if (error) <span class="cstat-no" title="statement not covered" >setCalculatingMaxSpend(false);</span></span>
-<span class="cstat-no" title="statement not covered" >    if (feeRate) {</span>
-      const fee = <span class="cstat-no" title="statement not covered" >new BigNumber(feeRate.data).multipliedBy(STX_TRANSFER_TX_SIZE_BYTES);</span>
-      const balanceLessFee = <span class="cstat-no" title="statement not covered" >new BigNumber(balance).minus(fee.toString());</span>
-<span class="cstat-no" title="statement not covered" >      if (balanceLessFee.isLessThanOrEqualTo(0)) {</span>
-<span class="cstat-no" title="statement not covered" >        void form.setFieldTouched('amount');</span>
-<span class="cstat-no" title="statement not covered" >        form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');</span>
-<span class="cstat-no" title="statement not covered" >        setCalculatingMaxSpend(false);</span>
-<span class="cstat-no" title="statement not covered" >        return;</span>
-      }
-<span class="cstat-no" title="statement not covered" >      void form.setValues({</span>
-        ...form.values,
-        amount: microStxToStx(balanceLessFee.toString()).toString(),
-      });
+<span class="cstat-no" title="statement not covered" >    await delay(300);</span>
+    const fee = <span class="cstat-no" title="statement not covered" >calcFee(STX_TRANSFER_TX_SIZE_BYTES);</span>
+    const balanceLessFee = <span class="cstat-no" title="statement not covered" >new BigNumber(balance).minus(fee.toString());</span>
+<span class="cstat-no" title="statement not covered" >    if (balanceLessFee.isLessThanOrEqualTo(0)) {</span>
+<span class="cstat-no" title="statement not covered" >      void form.setFieldTouched('amount');</span>
+<span class="cstat-no" title="statement not covered" >      form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');</span>
 <span class="cstat-no" title="statement not covered" >      setCalculatingMaxSpend(false);</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
     }
+<span class="cstat-no" title="statement not covered" >    await form.setValues({</span>
+      ...form.values,
+      amount: microStxToStx(balanceLessFee.toString()).toString(),
+    });
+<span class="cstat-no" title="statement not covered" >    setCalculatingMaxSpend(false);</span>
   };
 &nbsp;
   const txFormStepMap: Record&lt;TxModalStep, () =&gt; JSX.Element&gt; = <span class="cstat-no" title="statement not covered" >{</span>
@@ -982,7 +985,7 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Dec 23 2021 14:33:38 GMT+0000 (Coordinated Universal Time)
+                at Wed Dec 14 2022 08:36:42 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

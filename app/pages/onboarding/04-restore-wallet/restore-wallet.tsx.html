@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/47</span>
+                <span class='fraction'>0/52</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/44</span>
+                <span class='fraction'>0/49</span>
             </div>
         
             
@@ -192,7 +192,12 @@
 <a name='L133'></a><a href='#L133'>133</a>
 <a name='L134'></a><a href='#L134'>134</a>
 <a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -214,13 +219,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -228,6 +228,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -239,6 +246,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -246,8 +254,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -349,6 +359,7 @@
 <span class="cstat-no" title="statement not covered" >import { ExternalLink } from '@components/external-link';</span>
 <span class="cstat-no" title="statement not covered" >import { parseSeedPhraseInput } from '@utils/parse-seed-phrase';</span>
 <span class="cstat-no" title="statement not covered" >import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';</span>
+<span class="cstat-no" title="statement not covered" >import { useAnalytics } from '@hooks/use-analytics';</span>
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >RestoreWallet: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  useBackButton(routes.WELCOME);</span>
@@ -358,6 +369,7 @@ export const <span class="cstat-no" title="statement not covered" >RestoreWallet
   const [error, setError] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
   const history = <span class="cstat-no" title="statement not covered" >useHistory();</span>
   const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
+  const analytics = <span class="cstat-no" title="statement not covered" >useAnalytics();</span>
 &nbsp;
   const handleMnemonicInput = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>: React.FormEvent&lt;HTMLInputElement&gt;) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (hasSubmitted) <span class="cstat-no" title="statement not covered" >setHasSubmitted(false);</span></span>
@@ -373,6 +385,7 @@ export const <span class="cstat-no" title="statement not covered" >RestoreWallet
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (parsedMnemonic === null) {</span>
 <span class="cstat-no" title="statement not covered" >      setError('Unable to parse Secret Key input');</span>
+<span class="cstat-no" title="statement not covered" >      void analytics.track('submit_invalid_secret_key');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
@@ -380,10 +393,12 @@ export const <span class="cstat-no" title="statement not covered" >RestoreWallet
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (mnemonicLength !== 12 &amp;&amp; mnemonicLength !== 24) {</span>
 <span class="cstat-no" title="statement not covered" >      setError('The Hiro Wallet can be used with only 12 and 24-word Secret Keys');</span>
+<span class="cstat-no" title="statement not covered" >      void analytics.track('submit_invalid_secret_key');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (!validateMnemonic(parsedMnemonic)) {</span>
+<span class="cstat-no" title="statement not covered" >      void analytics.track('submit_invalid_secret_key');</span>
 <span class="cstat-no" title="statement not covered" >      setError('bip39error');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
@@ -469,7 +484,7 @@ export const <span class="cstat-no" title="statement not covered" >RestoreWallet
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Dec 23 2021 14:33:38 GMT+0000 (Coordinated Universal Time)
+                at Wed Dec 14 2022 08:36:42 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

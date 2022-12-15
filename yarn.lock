@@ -2984,6 +2984,14 @@
     socket.io-client "^4.0.1"
     ws "^7.4.0"
 
+"@stacks/common@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@stacks/common/-/common-6.0.0.tgz#ce80a11ca5d16db8276891db3ecc8e4f2eb1b43a"
+  integrity sha512-tETwccvbYvaZ7u3ZucWNMOIPN97r6IPeZXKIFhLc1KSVaWSGEPTtZcwVp+Rz3mu2XgI2pg37SUrOWXSL7OOkDw==
+  dependencies:
+    "@types/bn.js" "^5.1.0"
+    "@types/node" "^18.0.4"
+
 "@stacks/common@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@stacks/common/-/common-1.2.2.tgz#1365ffb0f8bd9e4cd194c63c65a1bb2c83876ba1"
@@ -3299,6 +3307,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/bn.js@^5.1.0":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@types/bn.js/-/bn.js-5.1.1.tgz#b51e1b55920a4ca26e9285ff79936bbdec910682"
+  integrity sha512-qNrYbZqMx0uJAfKnKclPh+dTwK33KfLHYqtyODwd5HnXOjnkhc4qgn3BrK6RWyGZm5+sIFE7Q7Vz6QQtJB7w7g==
+  dependencies:
+    "@types/node" "*"
+
 "@types/cheerio@*":
   version "0.22.28"
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.28.tgz#90808aabb44fec40fa2950f4c72351e3e4eb065b"
@@ -3520,6 +3535,11 @@
   version "14.14.37"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
   integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
+
+"@types/node@^18.0.4":
+  version "18.11.15"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.15.tgz#de0e1fbd2b22b962d45971431e2ae696643d3f5d"
+  integrity sha512-VkhBbVo2+2oozlkdHXLrb3zjsRkpdnaU2bXmX8Wgle3PUi569eLRaHGlgETQHR7lLL1w7GiG3h9SnePhxNDecw==
 
 "@types/node@^8.0.0":
   version "8.10.66"

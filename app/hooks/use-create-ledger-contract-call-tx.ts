@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { LedgerError } from '@zondax/ledger-blockstack';
+import { bytesToHex } from '@stacks/common';
 
 import { RootState } from '@store/index';
 import {
@@ -32,7 +33,7 @@ function useCreateLedgerTxFactory(
         publicKey: publicKey.toString('hex'),
       } as any);
 
-      const resp = await main.ledger.signTransaction(unsignedTx.serialize().toString('hex'));
+      const resp = await main.ledger.signTransaction(bytesToHex(unsignedTx.serialize()));
 
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');

@@ -94,7 +94,7 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
 }
 
 export async function broadcastRawTransaction(
-  rawTx: Buffer,
+  rawTx: Uint8Array,
   url: string
 ): Promise<TxBroadcastResult> {
   const requestHeaders = {

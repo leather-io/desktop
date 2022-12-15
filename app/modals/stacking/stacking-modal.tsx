@@ -49,7 +49,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
     if (!poxInfo) throw new Error('poxInfo not defined');
     if (!coreNodeInfo) throw new Error('Stacking requires coreNodeInfo');
     const stackingTxOptions = stackingClient.getStackOptions({
-      amountMicroStx: new BN(amountToStack.toString()),
+      amountMicroStx: amountToStack.toString(),
       poxAddress,
       cycles: numCycles,
       contract: poxInfo.contract_id,

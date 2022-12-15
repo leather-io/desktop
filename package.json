@@ -213,6 +213,7 @@
     "@sentry/electron": "3.0.0",
     "@sentry/react": "6.17.9",
     "@stacks/blockchain-api-client": "0.62.3",
+    "@stacks/common": "6.0.0",
     "@stacks/ui": "7.8.0",
     "@stacks/ui-core": "7.3.0",
     "@stacks/ui-theme": "7.5.0",

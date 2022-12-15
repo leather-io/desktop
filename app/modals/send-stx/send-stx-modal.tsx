@@ -3,11 +3,12 @@ import { useDispatch } from 'react-redux';
 import { useQueryClient } from 'react-query';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import BN from 'bn.js';
+
 import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 import { BigNumber } from 'bignumber.js';
 import { Modal } from '@modals/components/base-modal';
 import {
+  AnchorMode,
   MEMO_MAX_LENGTH_BYTES,
   StacksTransaction,
   TokenTransferOptions,
@@ -162,10 +163,11 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
       setTxDetails({
         recipient: form.values.recipient,
         network: stacksNetwork,
-        amount: new BN(stxToMicroStx(form.values.amount || 0).toString()),
+        amount: stxToMicroStx(form.values.amount || 0).toString(),
         memo: form.values.memo,
-        nonce: new BN(nonce),
-        fee: new BN(fee.toString()),
+        nonce: nonce,
+        fee: fee.toString(),
+        anchorMode: AnchorMode.Any,
       });
       setLoading(false);
     },

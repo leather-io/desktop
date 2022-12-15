@@ -8,6 +8,8 @@ import {
 
 import { DEFAULT_STACKS_NODE_URL } from '@constants/index';
 import { RootState } from '..';
+import { whenNetwork } from '@utils/network-utils';
+import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
 
 export interface StacksNode {
   url: string;
@@ -62,4 +64,11 @@ export const selectActiveNodeApi = createSelector(
     if (state.selectedApiId === 'default') return defaultNode;
     return state.entities[state.selectedApiId] as StacksNode;
   }
+);
+
+export const selectActiveStacksNetwork = createSelector(selectActiveNodeApi, activeNode =>
+  whenNetwork<StacksNetwork>({
+    mainnet: new StacksMainnet({ url: activeNode.url }),
+    testnet: new StacksTestnet({ url: activeNode.url }),
+  })
 );

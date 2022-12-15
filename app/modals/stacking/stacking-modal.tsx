@@ -1,9 +1,8 @@
-import React, { FC, useState, useMemo } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
-import BN from 'bn.js';
 
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
@@ -55,7 +54,7 @@ export const StackingModal: FC<StackingModalProps> = props => {
       contract: poxInfo.contract_id,
       burnBlockHeight: coreNodeInfo.burn_block_height,
     });
-    return { ...stackingTxOptions, fee: new BN(fee.toString()) };
+    return { ...stackingTxOptions, fee: fee.toString() };
   }, [amountToStack, coreNodeInfo, numCycles, poxAddress, poxInfo, stackingClient, fee]);
 
   const stackStx = (signedTx: StacksTransaction) =>

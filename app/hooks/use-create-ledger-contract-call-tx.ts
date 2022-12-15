@@ -6,12 +6,23 @@ import { bytesToHex } from '@stacks/common';
 import { RootState } from '@store/index';
 import {
   ContractCallOptions,
+  createMessageSignature,
+  deserializeTransaction,
   makeUnsignedContractCall,
   makeUnsignedSTXTokenTransfer,
+  SingleSigSpendingCondition,
   TokenTransferOptions,
 } from '@stacks/transactions';
 import { selectPublicKey } from '@store/keys';
 import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
+
+function signTransactionWithSignature(transaction: string, signatureVRS: string) {
+  const deserialzedTx = deserializeTransaction(transaction);
+  const spendingCondition = createMessageSignature(signatureVRS);
+  (deserialzedTx.auth.spendingCondition as SingleSigSpendingCondition).signature =
+    spendingCondition;
+  return deserialzedTx;
+}
 
 function useCreateLedgerTxFactory(
   method: typeof makeUnsignedContractCall | typeof makeUnsignedSTXTokenTransfer
@@ -28,6 +39,8 @@ function useCreateLedgerTxFactory(
 
       if (!poxInfo) throw new Error('`poxInfo` or `stacksApp` is not defined');
 
+      console.log({ publicKey: publicKey.toString('hex') });
+
       const unsignedTx = await method({
         ...options,
         publicKey: publicKey.toString('hex'),
@@ -38,7 +51,11 @@ function useCreateLedgerTxFactory(
       if (resp.returnCode !== LedgerError.NoErrors) {
         throw new Error('Ledger responded with errors');
       }
-      return unsignedTx.createTxWithSignature(resp.signatureVRS);
+      console.log('xxxxxxxxx', resp);
+      return signTransactionWithSignature(
+        bytesToHex(unsignedTx.serialize()),
+        resp.signatureVRS as unknown as string
+      );
     },
     [coreNodeInfo, method, poxInfo, publicKey]
   );

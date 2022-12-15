@@ -1,6 +1,7 @@
 import React, { FC, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Input, Text, Button, Flex } from '@stacks/ui';
+import { getStxAddress } from '@stacks/wallet-sdk';
 
 import { HomeSelectors } from 'app/tests/features/home.selectors';
 import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
@@ -9,6 +10,7 @@ import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
 import { delay } from '@utils/delay';
 import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
+import { TRANSACTION_VERSION } from '@constants/index';
 
 interface RevealStxPasswordFormProps {
   onAddressDerived(address: string): void;
@@ -28,7 +30,8 @@ export const RevealStxPasswordForm: FC<RevealStxPasswordFormProps> = props => {
       blastUndoStackToRemovePasswordFromMemory(passwordRef.current);
 
       try {
-        const { address } = await decryptWallet(values.password);
+        const account = await decryptWallet(values.password);
+        const address = getStxAddress({ account, transactionVersion: TRANSACTION_VERSION });
         onAddressDerived(address);
       } catch (e) {
         form.setErrors({ password: 'Unable to decrypt wallet' });

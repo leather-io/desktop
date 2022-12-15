@@ -211,6 +211,7 @@
     "@popperjs/core": "2.9.1",
     "@reduxjs/toolkit": "1.5.1",
     "@scure/base": "1.1.1",
+    "@scure/bip32": "1.1.1",
     "@segment/analytics-next": "1.30.0",
     "@sentry/electron": "3.0.0",
     "@sentry/react": "6.17.9",

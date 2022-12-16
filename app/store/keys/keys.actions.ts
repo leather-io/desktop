@@ -61,7 +61,7 @@ interface SetPasswordSuccess {
 export const setPasswordSuccess = createAction<SetPasswordSuccess>('keys/set-password-success');
 
 export function onboardingMnemonicGenerationStep({ stepDelayMs }: { stepDelayMs: number }) {
-  return async (dispatch: Dispatch) => {
+  return (dispatch: Dispatch) => {
     const plaintextMnemonic = generateSecretKey(MNEMONIC_ENTROPY);
     dispatch(persistMnemonicSafe(plaintextMnemonic));
     setTimeout(() => dispatch(push(routes.SECRET_KEY)), stepDelayMs);

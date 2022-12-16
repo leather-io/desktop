@@ -73,8 +73,9 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
 
   const [feeEstimateError, setFeeEstimateError] = useState<string | null>(null);
 
-  const [nodeResponseError, setNodeResponseError] =
-    useState<PostCoreNodeTransactionsError | null>(null);
+  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
   const { nonce } = useLatestNonce();
 

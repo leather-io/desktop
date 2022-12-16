@@ -14,14 +14,21 @@ export const InfoCard: FC<FlexProps> = props => (
   />
 );
 
-export const InfoCardGroup: FC<BoxProps> = ({ children, ...props }) => {
+type ChildProps = BoxProps;
+
+type TChild = React.ReactElement<ChildProps>;
+
+interface Props extends BoxProps {
+  children: TChild | TChild[];
+}
+export const InfoCardGroup = ({ children, ...props }: Props) => {
   const parsedChildren = Array.isArray(children) ? children : [children];
   const infoGroup = parsedChildren.flatMap((child, index) => {
     if (!isValidElement(child)) return null;
     return [
       cloneElement(child, {
         key: index,
-        mb: index === parsedChildren.length ? '280px' : null,
+        mb: index === parsedChildren.length ? '280px' : undefined,
       }),
       index !== parsedChildren.length - 1 && <Hr my="loose" key={index.toString() + '-hr'} />,
     ];

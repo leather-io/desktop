@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_POLLING_INTERVAL } from '@constants/index';
 import { selectAddress } from '@store/keys';
 import {
+  fetchAccountBalanceLocked,
   fetchBlockTimeInfo,
   fetchCoreDetails,
   fetchStackerInfo,
@@ -24,12 +25,14 @@ export function useGlobalAppPolling() {
     if (!address) return;
     dispatch(getAddressTransactions(address));
     dispatch(getAddressDetails(address));
+    dispatch(fetchAccountBalanceLocked(address));
   }, [address, dispatch]);
 
   const refreshWalletDetailsWithoutLoader = useCallback(() => {
     if (!address) return;
     dispatch(getAddressTransactions(address, { displayLoading: false }));
     dispatch(getAddressDetails(address));
+    dispatch(fetchAccountBalanceLocked(address));
   }, [address, dispatch]);
 
   useNavigatorOnline({ onReconnect: initAppWithStxAddressInfo });
@@ -43,6 +46,7 @@ export function useGlobalAppPolling() {
       dispatch(fetchCoreDetails());
       dispatch(fetchBlockTimeInfo());
       dispatch(fetchStackerInfo(address));
+      dispatch(fetchAccountBalanceLocked(address));
     }
   }, [address, api, initAppWithStxAddressInfo, dispatch]);
 
@@ -50,6 +54,7 @@ export function useGlobalAppPolling() {
     if (address) {
       dispatch(fetchStackerInfo(address));
       dispatch(fetchStackingInfo());
+      dispatch(fetchAccountBalanceLocked(address));
     }
     dispatch(fetchCoreDetails());
   }, 20_000);

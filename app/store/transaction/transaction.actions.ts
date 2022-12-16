@@ -1,17 +1,15 @@
 import { createAction } from '@reduxjs/toolkit';
 import { safeAwait } from '@stacks/ui';
-import {
-  PostCoreNodeTransactionsError,
-  AddressTransactionWithTransfers,
-} from '@stacks/stacks-blockchain-api-types';
+import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
 
 import urljoin from 'url-join';
-import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
+import { StacksTransaction, TxBroadcastResultRejected } from '@stacks/transactions';
 
 import { Api } from '../../api/api';
 import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { Dispatch, GetState } from '@store/index';
 import { selectActiveNodeApi, selectActiveStacksNetwork } from '@store/stacks-node';
+import { isObject } from 'formik';
 
 export const pendingTransactionSuccessful = createAction<AddressTransactionWithTransfers>(
   'transactions/pending-transaction-successful'
@@ -58,10 +56,16 @@ export const broadcastTxFail = createAction<BroadcastTxFail>(
   'transactions/broadcast-transactions-fail'
 );
 
+function hasMessageProp(arg: unknown): arg is { message: string } {
+  if (!isObject(arg)) return false;
+  if (!Object.hasOwn(arg, 'message')) return false;
+
+  return true;
+}
 export interface BroadcastTransactionArgs {
   transaction: StacksTransaction;
   onBroadcastSuccess(txId: string): void;
-  onBroadcastFail(errorResponse?: PostCoreNodeTransactionsError): void;
+  onBroadcastFail(errorResponse?: TxBroadcastResultRejected): void;
 }
 export function broadcastTransaction(args: BroadcastTransactionArgs) {
   const { transaction, onBroadcastSuccess, onBroadcastFail } = args;
@@ -77,14 +81,21 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
       );
       if (typeof blockchainResponse !== 'string') {
         // setError for ui
-        dispatch(broadcastTxFail(blockchainResponse as any));
+        const reasonData = blockchainResponse.reason_data;
+        const message = hasMessageProp(reasonData) ? reasonData.message : '';
+        dispatch(
+          broadcastTxFail({
+            reason: blockchainResponse.reason,
+            message,
+          })
+        );
         onBroadcastFail(blockchainResponse);
         return;
       }
       onBroadcastSuccess(safelyFormatHexTxid(blockchainResponse));
       return blockchainResponse;
     } catch (e) {
-      dispatch(broadcastTxFail(e));
+      dispatch(broadcastTxFail(e as BroadcastTxFail));
       onBroadcastFail();
       return;
     }
@@ -94,7 +105,7 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
 export async function broadcastRawTransaction(
   rawTx: Uint8Array,
   url: string
-): Promise<TxBroadcastResult> {
+): Promise<TxBroadcastResultRejected | string> {
   const requestHeaders = {
     'Content-Type': 'application/octet-stream',
   };
@@ -106,11 +117,19 @@ export async function broadcastRawTransaction(
   };
 
   const response = await fetch(urljoin(url, '/v2/transactions'), options);
-  const text = await response.text();
 
-  try {
-    return JSON.parse(text) as TxBroadcastResult;
-  } catch (e) {
-    return text;
-  }
+  /**
+   * Variable `text` can either be,
+   * - a string of the transaction id, when the request is successful
+   * - a stringified JSON object when the request is unsuccessful
+   *
+   * source,
+   * https://docs.hiro.so/api#tag/Transactions/operation/post_core_node_transactions
+   *
+   * Note that in the documentation above the mimetype of successful responses
+   * is documented as `text/plain`, yet the responses have have a mimetype of
+   * `application/json`.
+   */
+  const text = await response.text();
+  return JSON.parse(text);
 }

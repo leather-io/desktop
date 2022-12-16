@@ -30,8 +30,9 @@ export const RevokeDelegationModal: FC = () => {
   const calcFee = useCalculateFee();
   const poxInfo = useSelector(selectPoxInfo);
 
-  const [nodeResponseError, setNodeResponseError] =
-    useState<PostCoreNodeTransactionsError | null>(null);
+  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
+    null
+  );
 
   const revocationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');

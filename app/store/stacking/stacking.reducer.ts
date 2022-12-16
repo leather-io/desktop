@@ -18,6 +18,7 @@ import {
   fetchStackerInfo,
   activeStackingTx,
   removeStackingTx,
+  fetchAccountBalanceLocked,
 } from './stacking.actions';
 import { stxToMicroStx } from '@utils/unit-convert';
 import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
@@ -41,10 +42,13 @@ type StackerInfo = StackerInfoFromClient | StackerInfoFail;
 
 export interface StackingState {
   initialRequestsComplete: Record<
-    'poxInfo' | 'coreNodeInfo' | 'blockTimeInfo' | 'stackerInfo',
+    'poxInfo' | 'coreNodeInfo' | 'blockTimeInfo' | 'stackerInfo' | 'accountBalanceLocked',
     boolean
   >;
-  errors: Record<'poxInfo' | 'coreNodeInfo' | 'blockTimeInfo' | 'stackerInfo', boolean>;
+  errors: Record<
+    'poxInfo' | 'coreNodeInfo' | 'blockTimeInfo' | 'stackerInfo' | 'accountBalanceLocked',
+    boolean
+  >;
   contractCallTx: string | null;
   poxInfo: CoreNodePoxResponse | null;
   coreNodeInfo: CoreNodeInfoResponse | null;
@@ -56,11 +60,12 @@ export interface StackingState {
       lock_period: number;
       unlock_height: number;
       pox_address: {
-        version: Buffer;
-        hashbytes: Buffer;
+        version: Uint8Array;
+        hashbytes: Uint8Array;
       };
     };
   } | null;
+  accountBalanceLocked: bigint | null;
 }
 
 const initialState: StackingState = {
@@ -69,18 +74,21 @@ const initialState: StackingState = {
     coreNodeInfo: false,
     blockTimeInfo: false,
     stackerInfo: false,
+    accountBalanceLocked: false,
   },
   errors: {
     poxInfo: false,
     coreNodeInfo: false,
     blockTimeInfo: false,
     stackerInfo: false,
+    accountBalanceLocked: false,
   },
   contractCallTx: null,
   poxInfo: null,
   coreNodeInfo: null,
   blockTimeInfo: null,
   stackerInfo: null,
+  accountBalanceLocked: null,
 };
 
 export const stackingSlice = createSlice({
@@ -88,6 +96,16 @@ export const stackingSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    [fetchAccountBalanceLocked.fulfilled.toString()]: (state, action: PayloadAction<bigint>) => {
+      state.initialRequestsComplete.accountBalanceLocked = true;
+      state.errors.accountBalanceLocked = false;
+      state.accountBalanceLocked = action.payload;
+    },
+    [fetchAccountBalanceLocked.rejected.toString()]: state => {
+      if (!state.initialRequestsComplete.accountBalanceLocked) {
+        state.errors.accountBalanceLocked = true;
+      }
+    },
     [fetchStackingInfo.fulfilled.toString()]: (
       state,
       action: PayloadAction<CoreNodePoxResponse>
@@ -155,6 +173,10 @@ export const stackingActions = stackingSlice.actions;
 
 export const selectStackingState = (state: RootState) => state.stacking;
 export const selectCoreNodeInfo = createSelector(selectStackingState, state => state.coreNodeInfo);
+export const selectAccountBalanceLocked = createSelector(
+  selectStackingState,
+  state => state.accountBalanceLocked
+);
 export const selectBlockTimeInfo = createSelector(
   selectStackingState,
   state => state.blockTimeInfo

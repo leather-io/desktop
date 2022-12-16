@@ -49,8 +49,9 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
     poxInfo: selectPoxInfo(state),
   }));
 
-  const [nodeResponseError, setNodeResponseError] =
-    useState<PostCoreNodeTransactionsError | null>(null);
+  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
+    null
+  );
 
   const delegationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');

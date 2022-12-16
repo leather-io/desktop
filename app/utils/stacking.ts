@@ -16,8 +16,8 @@ const poxKeyToVersionBytesMap: Record<'mainnet' | 'testnet', any> = {
 };
 
 interface ConvertToPoxAddressBtc {
-  version: Buffer;
-  hashbytes: Buffer;
+  version: Uint8Array;
+  hashbytes: Uint8Array;
 }
 export function convertPoxAddressToBtc(network: 'mainnet' | 'testnet') {
   return ({ version, hashbytes }: ConvertToPoxAddressBtc) => {

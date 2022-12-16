@@ -1,10 +1,21 @@
-import React, { cloneElement, FC, isValidElement } from 'react';
+import React, { cloneElement, isValidElement } from 'react';
 import { Box } from '@stacks/ui';
 import { Hr } from '@components/hr';
 
 import { increment } from '@utils/mutate-numbers';
+import { BoxProps } from '@stacks/ui-core';
 
-export const StackingFormContainer: FC = ({ children }) => {
+interface ChildProps extends BoxProps {
+  step: number;
+}
+
+type TChild = React.ReactElement<ChildProps>;
+
+interface Props {
+  children: TChild | TChild[];
+}
+
+export const StackingFormContainer = ({ children }: Props) => {
   const parsedChildren = Array.isArray(children) ? children : [children];
   const parsedFormSteps = parsedChildren.flatMap((child, index) => {
     if (!isValidElement(child)) return null;
@@ -13,7 +24,7 @@ export const StackingFormContainer: FC = ({ children }) => {
       cloneElement(child, {
         key: index,
         step: increment(index),
-        mb: increment(index) === parsedChildren.length ? '280px' : null,
+        mb: increment(index) === parsedChildren.length ? '280px' : undefined,
       }),
     ];
   });

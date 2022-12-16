@@ -48,6 +48,19 @@ export const fetchStackerInfo = createAsyncThunk(
   }
 );
 
+export const fetchAccountBalanceLocked = createAsyncThunk(
+  'stacking/balance-locked',
+  async (address: string, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    const network = selectActiveStacksNetwork(state);
+    const stackingClient = new StackingClient(address, network);
+    const [error, resp] = await safeAwait(stackingClient.getAccountBalanceLocked());
+    if (resp !== undefined) return resp;
+    if (error) return { error };
+    throw new Error();
+  }
+);
+
 export const activeStackingTx = createAction<{ txId: string }>(
   'stacking/call-stacking-contract-tx'
 );

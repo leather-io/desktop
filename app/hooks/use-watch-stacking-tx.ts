@@ -11,6 +11,7 @@ import {
   selectPoxInfo,
   fetchStackerInfo,
   removeStackingTx,
+  fetchAccountBalanceLocked,
 } from '@store/stacking';
 
 export function useWatchStackingTx() {
@@ -28,6 +29,7 @@ export function useWatchStackingTx() {
       if (!activeStackingTx || !address) return;
       await safeAwait(watchContractExecution({ nodeUrl: api.baseUrl, txId: activeStackingTx }));
       dispatch(fetchStackerInfo(address));
+      dispatch(fetchAccountBalanceLocked(address));
       setTimeout(() => dispatch(removeStackingTx()), 2000);
     }
     void run();

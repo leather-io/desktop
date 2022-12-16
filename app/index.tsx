@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
 
 const { store, persistor } = configureStore();
 
-const AppContainer = CONFIG.PLAIN_HMR ? Fragment : ReactHotAppContainer;
+const AppContainer = (CONFIG.PLAIN_HMR ? Fragment : ReactHotAppContainer) as unknown as any;
 
 document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires

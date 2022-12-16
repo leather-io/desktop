@@ -9,10 +9,9 @@ import urljoin from 'url-join';
 import { StacksTransaction, TxBroadcastResult } from '@stacks/transactions';
 
 import { Api } from '../../api/api';
-import { stacksNetwork } from '../../environment';
 import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { Dispatch, GetState } from '@store/index';
-import { selectActiveNodeApi } from '@store/stacks-node';
+import { selectActiveNodeApi, selectActiveStacksNetwork } from '@store/stacks-node';
 
 export const pendingTransactionSuccessful = createAction<AddressTransactionWithTransfers>(
   'transactions/pending-transaction-successful'
@@ -69,13 +68,12 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
   return async (dispatch: Dispatch, getState: GetState) => {
     dispatch(broadcastTx());
 
-    const activeNode = selectActiveNodeApi(getState());
-    stacksNetwork.coreApiUrl = activeNode.url;
+    const activeNode = selectActiveStacksNetwork(getState());
 
     try {
       const blockchainResponse = await broadcastRawTransaction(
         transaction.serialize(),
-        activeNode.url
+        activeNode.coreApiUrl
       );
       if (typeof blockchainResponse !== 'string') {
         // setError for ui
@@ -94,7 +92,7 @@ export function broadcastTransaction(args: BroadcastTransactionArgs) {
 }
 
 export async function broadcastRawTransaction(
-  rawTx: Buffer,
+  rawTx: Uint8Array,
   url: string
 ): Promise<TxBroadcastResult> {
   const requestHeaders = {

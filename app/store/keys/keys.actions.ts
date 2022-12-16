@@ -1,12 +1,14 @@
 import { useHistory } from 'react-router';
 import { push } from 'connected-react-router';
 import { createAction, Dispatch } from '@reduxjs/toolkit';
-import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '@stacks/keychain';
+import { generateSecretKey, DerivationType, getStxAddress } from '@stacks/wallet-sdk';
+import { deriveAccount } from '@stacks/wallet-sdk/dist/derive';
 
 import { RootState } from '..';
+import * as bip39 from '@scure/bip39';
 import routes from '@constants/routes.json';
-import { BIP32Interface } from '@models/bip32';
-import { MNEMONIC_ENTROPY } from '@constants/index';
+
+import { TRANSACTION_VERSION, MNEMONIC_ENTROPY } from '@constants/index';
 import {
   persistSalt,
   persistEncryptedMnemonic,
@@ -15,9 +17,8 @@ import {
   persistPublicKey,
 } from '@utils/disk-store';
 import { generateSalt } from '../../crypto/key-generation';
-import { deriveStxAddressKeychain } from '../../crypto/derive-address-keychain';
 import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
-
+import { HDKey } from '@scure/bip32';
 import { selectMnemonic } from './keys.reducer';
 
 type History = ReturnType<typeof useHistory>;
@@ -61,8 +62,8 @@ export const setPasswordSuccess = createAction<SetPasswordSuccess>('keys/set-pas
 
 export function onboardingMnemonicGenerationStep({ stepDelayMs }: { stepDelayMs: number }) {
   return async (dispatch: Dispatch) => {
-    const key = await generateMnemonicRootKeychain(MNEMONIC_ENTROPY);
-    dispatch(persistMnemonicSafe(key.plaintextMnemonic));
+    const plaintextMnemonic = generateSecretKey(MNEMONIC_ENTROPY);
+    dispatch(persistMnemonicSafe(plaintextMnemonic));
     setTimeout(() => dispatch(push(routes.SECRET_KEY)), stepDelayMs);
   };
 }
@@ -77,13 +78,18 @@ export function setSoftwareWallet({ password, history }: SetSoftwareWallet) {
     const salt = generateSalt();
     const { derivedKeyHash } = await main.deriveKey({ pass: password, salt });
 
-    if (!mnemonic) {
-      return;
-    }
+    if (!mnemonic) return;
 
     const encryptedMnemonic = await encryptMnemonic({ derivedKeyHash, mnemonic });
-    const rootNode = await deriveRootKeychainFromMnemonic(mnemonic);
-    const { address } = deriveStxAddressKeychain(rootNode);
+    const seed = await bip39.mnemonicToSeed(mnemonic);
+    const rootNode = HDKey.fromMasterSeed(seed);
+    const account = deriveAccount({
+      rootNode,
+      index: 0,
+      salt,
+      stxDerivationType: DerivationType.Wallet,
+    });
+    const address = getStxAddress({ account, transactionVersion: TRANSACTION_VERSION });
     await Promise.all([
       persistStxAddress(address),
       persistSalt(salt),
@@ -106,10 +112,12 @@ export async function decryptSoftwareWallet(args: DecryptSoftwareWalletArgs) {
     encryptedMnemonic: ciphertextMnemonic,
     derivedKeyHash,
   });
-  const rootNode = await deriveRootKeychainFromMnemonic(plaintextMnemonic);
-  return deriveStxAddressKeychain(rootNode) as {
-    childKey: BIP32Interface;
-    address: string;
-    privateKey: string;
-  };
+  const seed = await bip39.mnemonicToSeed(plaintextMnemonic);
+  const rootNode = HDKey.fromMasterSeed(seed);
+  return deriveAccount({ rootNode, index: 0, salt, stxDerivationType: DerivationType.Wallet });
+  // as {
+  //   childKey: BIP32Interface;
+  //   address: string;
+  //   privateKey: string;
+  // };
 }

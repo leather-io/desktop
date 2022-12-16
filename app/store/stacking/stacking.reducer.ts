@@ -52,7 +52,6 @@ export interface StackingState {
   stackerInfo: {
     stacked: true;
     details: {
-      amount_microstx: string;
       first_reward_cycle: number;
       lock_period: number;
       unlock_height: number;

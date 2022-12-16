@@ -18,7 +18,8 @@ export function registerIpcContextMenuHandlers(window: BrowserWindow) {
         return newItem.menu;
       });
       const contextMenu = Menu.buildFromTemplate(copyMenu);
-      contextMenu.popup({ window: window.getParentWindow() });
+      const win = window.getParentWindow();
+      if (win) contextMenu.popup({ window: win });
     }
   );
 }

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Modal } from '@stacks/ui';
-import BN from 'bn.js';
 import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 
 import { SignTransaction } from '@components/tx-signing/sign-transaction';
@@ -32,7 +31,7 @@ export const TxSigningModal: FC<TxSigningModalProps> = props => {
           <Header onSelectClose={onClose}>Confirm and {action}</Header>
           <SignTransaction
             action={action}
-            txOptions={{ ...txDetails, nonce: new BN(nonce) }}
+            txOptions={{ ...txDetails, nonce }}
             isBroadcasting={isBroadcasting}
             onClose={onClose}
             onTransactionSigned={onTransactionSigned}

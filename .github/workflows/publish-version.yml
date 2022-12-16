@@ -67,7 +67,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18
       #
       # Windows build breaks when using the package.json script to install `app/` packages
       # using separate run to install those packages separately

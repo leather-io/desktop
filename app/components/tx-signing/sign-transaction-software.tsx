@@ -35,12 +35,12 @@ export const SignTransactionSoftware: React.FC<SignTransactionSoftwareProps> = p
   const { createSoftwareContractCallTx } = useCreateSoftwareContractCallTx();
 
   const createSoftwareWalletTx = useCallback(async () => {
-    const { privateKey } = await decryptWallet(password);
+    const { stxPrivateKey } = await decryptWallet(password);
     blastUndoStackToRemovePasswordFromMemory(inputRef.current);
     if ('recipient' in txOptions) {
-      return createSoftwareWalletTokenTransferTx({ privateKey, txOptions });
+      return createSoftwareWalletTokenTransferTx({ privateKey: stxPrivateKey, txOptions });
     }
-    return createSoftwareContractCallTx({ privateKey, txOptions });
+    return createSoftwareContractCallTx({ privateKey: stxPrivateKey, txOptions });
   }, [decryptWallet, password, createSoftwareContractCallTx, txOptions]);
 
   return (

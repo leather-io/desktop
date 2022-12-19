@@ -56,24 +56,31 @@ export function initSoftwareWallet(page: Page) {
     await repeatAction(1000)(() => page.keyboard.down('Space'));
 
     const button = await onboarding.findAcceptBtn();
+    if (!button) throw new Error('Should be defined.');
     await button.click();
 
     const diagnosticPermissionBtn = await onboarding.findAcceptDiagnosticsBtn();
+    if (!diagnosticPermissionBtn) throw new Error('Should be defined.');
     await diagnosticPermissionBtn.click();
 
     const restoreWalletButton = await onboarding.findResoreWalletBtn();
+    if (!restoreWalletButton) throw new Error('Should be defined.');
     await restoreWalletButton.click();
 
     const input = await onboarding.findSecretKeyInput();
+    if (!input) throw new Error('Should be defined.');
     await input.type(seed);
 
     const continueWithSecretKey = await onboarding.findContinueWithSecretKeyBtn();
+    if (!continueWithSecretKey) throw new Error('Should be defined.');
     await continueWithSecretKey.click();
 
     const passwordInput = await onboarding.findPasswordInput();
+    if (!passwordInput) throw new Error('Should be defined.');
     await passwordInput.type(password);
 
     const continueWithPassword = await onboarding.findContinueWithPasswordBtn();
+    if (!continueWithPassword) throw new Error('Should be defined.');
     await continueWithPassword.click();
   };
 }

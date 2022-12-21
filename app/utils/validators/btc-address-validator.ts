@@ -6,7 +6,7 @@ import { SUPPORTED_BTC_ADDRESS_FORMATS } from '@constants/index';
 export function btcAddressSchema() {
   return yup
     .string()
-    .defined(`Enter the BTC address where you'd like to recieve your rewards`)
+    .defined(`Enter the BTC address where you'd like to receive your rewards`)
     .test({
       name: 'slkdjfslk',
       message: `The BTC address you've entered is not valid`,

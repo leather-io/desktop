@@ -232,7 +232,7 @@
     "axios": "0.21.4",
     "bignumber.js": "9.0.1",
     "bip39": "3.0.3",
-    "bitcoin-address-validation": "2.0.1",
+    "bitcoin-address-validation": "2.2.1",
     "bn.js": "https://github.com/kyranjamie/bn.js",
     "buffer": "6.0.3",
     "c32check": "1.1.2",

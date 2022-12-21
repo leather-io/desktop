@@ -66,7 +66,7 @@ export const STACKING_CONTRACT_CALL_TX_BYTES = 260;
 
 export const POOLED_STACKING_TX_SIZE_BYTES = 216;
 
-export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
+export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2tr'] as const;
 
 export const LATEST_LEDGER_VERSION_MAJOR = 0;
 

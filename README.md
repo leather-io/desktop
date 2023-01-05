@@ -22,3 +22,16 @@ corepack enable yarn
 After [cloning the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository), run `yarn` in the root of the project to install the dependencies.
 
 Finally, run `yarn dev:testnet` to start a development server.
+
+## Environment variables
+
+The environment variables used are listed in [webpack.config.base.js](./configs/webpack.config.base.js).
+
+During development, their value can be set by defining them before running the app,
+
+```bash
+export MY_VAR=value
+yarn dev:testnet
+```
+
+For pipelines that build the app, the environment variables are defined in the pipeline definition file.

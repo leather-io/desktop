@@ -9,6 +9,21 @@
 * webpack cli ([0afd6d2](https://github.com/blockstack/stacks-wallet/commit/0afd6d21df8d975ddb977e6194f3f5b02b2b71bc))
 * webpack serve ([3dbce0a](https://github.com/blockstack/stacks-wallet/commit/3dbce0aebace05aa1295dfef3409792cf0a116be))
 
+# [4.7.0](https://github.com/blockstack/stacks-wallet/compare/v4.6.1...v4.7.0) (2022-12-14)
+
+
+### Bug Fixes
+
+* add missing space ([d212f21](https://github.com/blockstack/stacks-wallet/commit/d212f21586de2439bcdecf83f2c3c61c6d26f9ac))
+* initialize sentry after loading store and checking for diagnosticPermission ([a31309e](https://github.com/blockstack/stacks-wallet/commit/a31309e690a6b839650f71b6231fc520c232f5d0))
+* remove sentry from main process ([57ae218](https://github.com/blockstack/stacks-wallet/commit/57ae218d8ab1b5c0b4ed428ebc3cd67446c43b22))
+* **send-form:** incorrect fee calc in send max button ([7d2002b](https://github.com/blockstack/stacks-wallet/commit/7d2002b382cad002e5f7a39d9e373227dfb9312d))
+
+
+### Features
+
+* add segment integration ([2e72a3c](https://github.com/blockstack/stacks-wallet/commit/2e72a3cf44651ae2a40c9c8d9b71c00b48a8ea6f)), closes [#928](https://github.com/blockstack/stacks-wallet/issues/928)
+
 # [4.7.0-dev.3](https://github.com/blockstack/stacks-wallet/compare/v4.7.0-dev.2...v4.7.0-dev.3) (2022-12-09)
 
 

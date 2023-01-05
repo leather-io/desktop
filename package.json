@@ -274,6 +274,7 @@
     "yup": "0.32.9",
     "zxcvbn": "4.4.2"
   },
+  "packageManager": "yarn@1.22.19",
   "devEngines": {
     "node": ">=7.x",
     "npm": ">=4.x",

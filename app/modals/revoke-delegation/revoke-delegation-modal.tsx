@@ -2,7 +2,6 @@ import React, { FC, useState, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
 import { useHotkeys } from 'react-hotkeys-hook';
-import BN from 'bn.js';
 
 import { selectPoxInfo } from '@store/stacking';
 import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
@@ -31,14 +30,15 @@ export const RevokeDelegationModal: FC = () => {
   const calcFee = useCalculateFee();
   const poxInfo = useSelector(selectPoxInfo);
 
-  const [nodeResponseError, setNodeResponseError] =
-    useState<PostCoreNodeTransactionsError | null>(null);
+  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
+    null
+  );
 
   const revocationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');
     return {
       ...stackingClient.getRevokeDelegateStxOptions(poxInfo.contract_id),
-      fee: new BN(calcFee(REVOKE_DELEGATION_TX_SIZE_BYTES).toString()),
+      fee: calcFee(REVOKE_DELEGATION_TX_SIZE_BYTES).toString(),
     };
   }, [calcFee, poxInfo, stackingClient]);
 

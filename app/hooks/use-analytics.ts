@@ -1,4 +1,4 @@
-import { EventParams } from '@segment/analytics-next/dist/pkg/core/arguments-resolver';
+import { EventParams } from '@segment/analytics-next/dist/types/core/arguments-resolver';
 import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
 import { getAnalytics } from '@utils/init-segment';
 import packageJson from '../../package.json';

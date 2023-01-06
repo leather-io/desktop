@@ -13,21 +13,25 @@ Implementation of the Stacks 2.0 wallet for Desktop
 
 ## Getting started
 
-1. Ensure you have [Yarn](https://yarnpkg.com/) installed.
-1. After [cloning the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository), run `yarn` in the root of the project to install the dependencies.
-1. Run `yarn dev:testnet` to start a development server.
-
-### Ubuntu
-
-Ensure you're using a recent version of Node v14 and yarn 1. This project requires these versions for development.
-
-If you're using `nvm`, you can install and use Node v14 with,
+Ensure you have a recent version of Node.js 16 and Yarn 1 installed. Note that recent versions of Node.js 16 come with [Corepack](https://nodejs.org/api/corepack.html#corepack), which allows using Yarn without any additional installation once enabled,
 
 ```bash
-nvm install 14
-nvm use 14
+corepack enable yarn
 ```
 
-When using Node v14, `yarn` needs to be installed separately. [Follow yarn's installation instructions](https://classic.yarnpkg.com/en/docs/install#debian-stable).
+After [cloning the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository), run `yarn` in the root of the project to install the dependencies.
 
-With Node v14 and yarn installed, run `yarn dev:testnet` to start developing.
+Finally, run `yarn dev:testnet` to start a development server.
+
+## Environment variables
+
+The environment variables used are listed in [webpack.config.base.js](./configs/webpack.config.base.js).
+
+During development, their value can be set by defining them before running the app,
+
+```bash
+export MY_VAR=value
+yarn dev:testnet
+```
+
+For pipelines that build the app, the environment variables are defined in the pipeline definition file.

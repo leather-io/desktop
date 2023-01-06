@@ -1,3 +1,4 @@
+import { TransactionVersion } from '@stacks/transactions';
 import { whenNetwork } from '@utils/network-utils';
 import packageJson from '../../package.json';
 import { stxToMicroStx } from '../utils/unit-convert';
@@ -78,6 +79,11 @@ export const FEE_RATE = 400;
 export const DEFAULT_POLLING_INTERVAL = 10_000;
 
 export const SEND_MANY_CONTACT_ID = 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE.send-many-memo';
+
+export const TRANSACTION_VERSION = whenNetwork({
+  mainnet: TransactionVersion.Mainnet,
+  testnet: TransactionVersion.Testnet,
+});
 
 export const features = {
   stacking: true,

@@ -31,7 +31,7 @@ export function useDecryptWallet() {
       );
       setIsDecrypting(false);
       if (error) throw error;
-      return decryptedSoftwareWallet as NonNullable<typeof decryptedSoftwareWallet>;
+      return decryptedSoftwareWallet;
     },
     [encryptedMnemonic, salt]
   );

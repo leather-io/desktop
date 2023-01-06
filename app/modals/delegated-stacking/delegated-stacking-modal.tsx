@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { BigNumber } from 'bignumber.js';
-import BN from 'bn.js';
 
 import { RootState } from '@store/index';
 import routes from '@constants/routes.json';
@@ -50,20 +49,21 @@ export const DelegatedStackingModal: FC<StackingModalProps> = props => {
     poxInfo: selectPoxInfo(state),
   }));
 
-  const [nodeResponseError, setNodeResponseError] =
-    useState<PostCoreNodeTransactionsError | null>(null);
+  const [nodeResponseError, setNodeResponseError] = useState<PostCoreNodeTransactionsError | null>(
+    null
+  );
 
   const delegationTxOptions = useMemo((): ContractCallOptions => {
     if (!poxInfo) throw new Error('`poxInfo` undefined');
     console.log(amountToStack.toString());
     return {
       ...stackingClient.getDelegateOptions({
-        amountMicroStx: new BN(amountToStack.toString()),
+        amountMicroStx: amountToStack.toString(),
         contract: poxInfo.contract_id,
         delegateTo: delegateeStxAddress,
         untilBurnBlockHeight: burnHeight,
       }),
-      fee: new BN(calcFee(POOLED_STACKING_TX_SIZE_BYTES).toString()),
+      fee: calcFee(POOLED_STACKING_TX_SIZE_BYTES).toString(),
     };
   }, [amountToStack, burnHeight, calcFee, delegateeStxAddress, poxInfo, stackingClient]);
 

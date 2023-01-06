@@ -69,18 +69,23 @@ describeOnlyTestnet('Transaction flow', () => {
     await homeFeature.click('sendStxBtn');
 
     const addressInput = await page.$(homeFeature.select.sendStxFormAddressInput);
+    if (!addressInput) throw new Error('Should be defined.');
     await addressInput.type(TX_RECIPIENT);
 
     const amountInput = await page.$(homeFeature.select.sendStxFormAmountInput);
+    if (!amountInput) throw new Error('Should be defined.');
     await amountInput.type(TX_AMOUNT);
 
     const memoInput = await page.$(homeFeature.select.sendStxFormMemoInput);
+    if (!memoInput) throw new Error('Should be defined.');
     await memoInput.type(TX_MEMO);
 
     const previewTxBtn = await page.$(homeFeature.select.sendStxFormPreviewBtn);
+    if (!previewTxBtn) throw new Error('Should be defined.');
     await previewTxBtn.click();
 
     const memoPreview = await page.$(`text="${TX_MEMO}"`);
+    if (!memoPreview) throw new Error('Should be defined.');
     expect(memoPreview).not.toBeNull();
 
     await takeScreenshot('after-form-complete');
@@ -88,6 +93,7 @@ describeOnlyTestnet('Transaction flow', () => {
     await homeFeature.waitFor('sendStxFormSendBtn');
 
     const stxFormSendBtn = await page.$(homeFeature.select.sendStxFormSendBtn);
+    if (!stxFormSendBtn) throw new Error('Should be defined.');
     await stxFormSendBtn.click();
 
     await homeFeature.waitFor('decryptWalletInput');
@@ -95,9 +101,11 @@ describeOnlyTestnet('Transaction flow', () => {
     await takeScreenshot('decrypt-wallet');
 
     const decryptWalletPasswordInput = await page.$(homeFeature.select.decryptWalletInput);
+    if (!decryptWalletPasswordInput) throw new Error('Should be defined.');
     await decryptWalletPasswordInput.type(PASSWORD);
 
     const broadcastTxBtn = await page.$(homeFeature.select.sendStxFormBroadcastBtn);
+    if (!broadcastTxBtn) throw new Error('Should be defined.');
     await broadcastTxBtn.click();
 
     await takeScreenshot('sent');

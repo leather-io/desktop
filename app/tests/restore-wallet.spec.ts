@@ -1,5 +1,4 @@
 import rimraf from 'rimraf';
-import fs from 'fs-extra';
 import { _electron, ElectronApplication, Page } from 'playwright';
 
 import { whenNetwork } from '../utils/network-utils';
@@ -51,6 +50,7 @@ describe('Restore wallet flow', () => {
 
     await homeFeature.waitFor('stxAddressText');
     const stxAddressLabel = await homeFeature.$('stxAddressText');
+    if (!stxAddressLabel) throw new Error('Should be defined.');
 
     await takeScreenshot('restore-wallet-address');
 

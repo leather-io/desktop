@@ -1,3 +1,14 @@
+# [4.7.0-dev.4](https://github.com/blockstack/stacks-wallet/compare/v4.7.0-dev.3...v4.7.0-dev.4) (2023-01-05)
+
+
+### Bug Fixes
+
+* apple-compatible electron-builder version ([117ba23](https://github.com/blockstack/stacks-wallet/commit/117ba2305a1db5a9322d2fd1e6bb115740dac93b))
+* misc type issues and quirks ([e8544e1](https://github.com/blockstack/stacks-wallet/commit/e8544e1c6a3718e02d17e41571b09819d864e971))
+* types ([2351308](https://github.com/blockstack/stacks-wallet/commit/235130852740188983fa90a649b73ebd21a860ad))
+* webpack cli ([0afd6d2](https://github.com/blockstack/stacks-wallet/commit/0afd6d21df8d975ddb977e6194f3f5b02b2b71bc))
+* webpack serve ([3dbce0a](https://github.com/blockstack/stacks-wallet/commit/3dbce0aebace05aa1295dfef3409792cf0a116be))
+
 # [4.7.0](https://github.com/blockstack/stacks-wallet/compare/v4.6.1...v4.7.0) (2022-12-14)
 
 

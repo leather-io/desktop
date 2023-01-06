@@ -89,17 +89,16 @@ const createWindow = async () => {
       disableBlinkFeatures: 'Auxclick',
       spellcheck: false,
       webSecurity: true,
+      sandbox: false,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       nodeIntegrationInSubFrames: false,
-      enableRemoteModule: false,
-      worldSafeExecuteJavaScript: true,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 28 });
+  if (process.platform === 'darwin') mainWindow.setTrafficLightPosition({ x: 10, y: 14 });
 
   mainWindowState.manage(mainWindow);
 

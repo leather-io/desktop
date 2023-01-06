@@ -1,11 +1,13 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import { StackingClient } from '@stacks/stacking';
 
-import { selectActiveNodeApi } from '@store/stacks-node/stacks-node.reducer';
+import {
+  selectActiveNodeApi,
+  selectActiveStacksNetwork,
+} from '@store/stacks-node/stacks-node.reducer';
 import { RootState } from '@store/index';
 import { Api } from '@api/api';
 import { safeAwait } from '@utils/safe-await';
-import { stacksNetwork } from '../../environment';
 
 export const fetchStackingInfo = createAsyncThunk('stacking/details', async (_arg, thunkApi) => {
   const state = thunkApi.getState() as RootState;
@@ -37,12 +39,23 @@ export const fetchStackerInfo = createAsyncThunk(
   'stacking/stacker-info',
   async (address: string, thunkApi) => {
     const state = thunkApi.getState() as RootState;
-    const node = selectActiveNodeApi(state);
-    const network = stacksNetwork;
-    network.coreApiUrl = node.url;
-    const stackingClient = new StackingClient(address, network as any);
+    const network = selectActiveStacksNetwork(state);
+    const stackingClient = new StackingClient(address, network);
     const [error, resp] = await safeAwait(stackingClient.getStatus());
     if (resp) return resp as any;
+    if (error) return { error };
+    throw new Error();
+  }
+);
+
+export const fetchAccountBalanceLocked = createAsyncThunk(
+  'stacking/balance-locked',
+  async (address: string, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    const network = selectActiveStacksNetwork(state);
+    const stackingClient = new StackingClient(address, network);
+    const [error, resp] = await safeAwait(stackingClient.getAccountBalanceLocked());
+    if (resp !== undefined) return resp;
     if (error) return { error };
     throw new Error();
   }

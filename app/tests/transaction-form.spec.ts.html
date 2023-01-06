@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>0/84</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/66</span>
+                <span class='fraction'>0/74</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line low'></div>
     <pre><table class="coverage">
@@ -175,7 +181,15 @@
 <a name='L116'></a><a href='#L116'>116</a>
 <a name='L117'></a><a href='#L117'>117</a>
 <a name='L118'></a><a href='#L118'>118</a>
-<a name='L119'></a><a href='#L119'>119</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -247,18 +261,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -266,14 +285,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -321,9 +343,9 @@ const TX_MEMO = <span class="cstat-no" title="statement not covered" >'test-memo
 function <span class="fstat-no" title="function not covered" >interceptTransactionBroadcast(</span>page: Page): Promise&lt;Buffer&gt; {
 <span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >resolve </span>=&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    page.on('request', <span class="fstat-no" title="function not covered" >request </span>=&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (request.url().endsWith('/v2/transactions')) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (request.url().endsWith('/v2/transactions')) {</span>
         const requestBody = <span class="cstat-no" title="statement not covered" >request.postDataBuffer();</span>
-<span class="cstat-no" title="statement not covered" >        if (requestBody === null) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (requestBody === null) <span class="cstat-no" title="statement not covered" >return;</span></span>
 <span class="cstat-no" title="statement not covered" >        resolve(requestBody);</span>
       }
     });
@@ -338,7 +360,7 @@ const describeOnlyTestnet = <span class="cstat-no" title="statement not covered"
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  beforeAll(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    rimraf(`${getTestConfigPath()}/config.json`, <span class="fstat-no" title="function not covered" >err </span>=&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (err) <span class="cstat-no" title="statement not covered" >console.log('Issue deleting file');</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (err) <span class="cstat-no" title="statement not covered" >console.log('Issue deleting file');</span></span>
     });
 <span class="cstat-no" title="statement not covered" >    app = await setUpElectronApp();</span>
 <span class="cstat-no" title="statement not covered" >    page = await app.firstWindow();</span>
@@ -364,18 +386,23 @@ const describeOnlyTestnet = <span class="cstat-no" title="statement not covered"
 <span class="cstat-no" title="statement not covered" >    await homeFeature.click('sendStxBtn');</span>
 &nbsp;
     const addressInput = <span class="cstat-no" title="statement not covered" >await page.$(homeFeature.select.sendStxFormAddressInput);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!addressInput) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await addressInput.type(TX_RECIPIENT);</span>
 &nbsp;
     const amountInput = <span class="cstat-no" title="statement not covered" >await page.$(homeFeature.select.sendStxFormAmountInput);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!amountInput) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await amountInput.type(TX_AMOUNT);</span>
 &nbsp;
     const memoInput = <span class="cstat-no" title="statement not covered" >await page.$(homeFeature.select.sendStxFormMemoInput);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!memoInput) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await memoInput.type(TX_MEMO);</span>
 &nbsp;
     const previewTxBtn = <span class="cstat-no" title="statement not covered" >await page.$(homeFeature.select.sendStxFormPreviewBtn);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!previewTxBtn) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await previewTxBtn.click();</span>
 &nbsp;
     const memoPreview = <span class="cstat-no" title="statement not covered" >await page.$(`text="${TX_MEMO}"`);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!memoPreview) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    expect(memoPreview).not.toBeNull();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await takeScreenshot('after-form-complete');</span>
@@ -383,6 +410,7 @@ const describeOnlyTestnet = <span class="cstat-no" title="statement not covered"
 <span class="cstat-no" title="statement not covered" >    await homeFeature.waitFor('sendStxFormSendBtn');</span>
 &nbsp;
     const stxFormSendBtn = <span class="cstat-no" title="statement not covered" >await page.$(homeFeature.select.sendStxFormSendBtn);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!stxFormSendBtn) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await stxFormSendBtn.click();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await homeFeature.waitFor('decryptWalletInput');</span>
@@ -390,9 +418,11 @@ const describeOnlyTestnet = <span class="cstat-no" title="statement not covered"
 <span class="cstat-no" title="statement not covered" >    await takeScreenshot('decrypt-wallet');</span>
 &nbsp;
     const decryptWalletPasswordInput = <span class="cstat-no" title="statement not covered" >await page.$(homeFeature.select.decryptWalletInput);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!decryptWalletPasswordInput) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await decryptWalletPasswordInput.type(PASSWORD);</span>
 &nbsp;
     const broadcastTxBtn = <span class="cstat-no" title="statement not covered" >await page.$(homeFeature.select.sendStxFormBroadcastBtn);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!broadcastTxBtn) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await broadcastTxBtn.click();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await takeScreenshot('sent');</span>
@@ -417,10 +447,9 @@ const describeOnlyTestnet = <span class="cstat-no" title="statement not covered"
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 14 2022 08:40:40 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-06T13:16:02.627Z
             </div>
-        </div>
         <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {

@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line low'></div>
     <pre><table class="coverage">
@@ -177,20 +183,20 @@ const chainIdMap = <span class="cstat-no" title="statement not covered" >{</span
 const STX_DERIVATION_PATH = <span class="cstat-no" title="statement not covered" >`m/44'/5757'/0'/0/0`;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export a</span>sync function <span class="fstat-no" title="function not covered" >ledgerRequestStxAddress(</span>transport: Transport | null) {
-<span class="cstat-no" title="statement not covered" >  if (!transport) <span class="cstat-no" title="statement not covered" >throw new Error('No device transport');</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!transport) <span class="cstat-no" title="statement not covered" >throw new Error('No device transport');</span></span>
   const stacksApp = <span class="cstat-no" title="statement not covered" >new StacksApp(transport);</span>
   const resp = <span class="cstat-no" title="statement not covered" >await stacksApp.showAddressAndPubKey(</span>
     STX_DERIVATION_PATH,
     chainIdMap[process.env.STX_NETWORK as keyof typeof chainIdMap]
   );
-<span class="cstat-no" title="statement not covered" >  if (resp.publicKey) {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (resp.publicKey) {</span>
 <span class="cstat-no" title="statement not covered" >    return { ...resp, publicKey: resp.publicKey.toString('hex') };</span>
   }
 <span class="cstat-no" title="statement not covered" >  return resp as Omit&lt;ResponseAddress, 'publicKey'&gt;;</span>
 }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export a</span>sync function <span class="fstat-no" title="function not covered" >ledgerShowStxAddress(</span>transport: Transport | null) {
-<span class="cstat-no" title="statement not covered" >  if (!transport) <span class="cstat-no" title="statement not covered" >throw new Error('No device transport');</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!transport) <span class="cstat-no" title="statement not covered" >throw new Error('No device transport');</span></span>
   const stacksApp = <span class="cstat-no" title="statement not covered" >new StacksApp(transport);</span>
   const resp = <span class="cstat-no" title="statement not covered" >await stacksApp.getAddressAndPubKey(</span>
     STX_DERIVATION_PATH,
@@ -201,13 +207,13 @@ const STX_DERIVATION_PATH = <span class="cstat-no" title="statement not covered"
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >l</span>edgerRequestSignTx(</span>transport: Transport | null) {
 <span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >async </span>(unsignedTransaction: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!transport) <span class="cstat-no" title="statement not covered" >throw new Error('No device transport');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!transport) <span class="cstat-no" title="statement not covered" >throw new Error('No device transport');</span></span>
 &nbsp;
     const stacksApp = <span class="cstat-no" title="statement not covered" >new StacksApp(transport);</span>
     const txBuffer = <span class="cstat-no" title="statement not covered" >Buffer.from(unsignedTransaction, 'hex');</span>
     const response: ResponseSign = <span class="cstat-no" title="statement not covered" >await stacksApp.sign(STX_DERIVATION_PATH, txBuffer);</span>
 <span class="cstat-no" title="statement not covered" >    await transport.close();</span>
-<span class="cstat-no" title="statement not covered" >    if (response.returnCode !== LedgerError.NoErrors) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (response.returnCode !== LedgerError.NoErrors) {</span>
 <span class="cstat-no" title="statement not covered" >      return response;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return {</span>
@@ -225,10 +231,9 @@ const STX_DERIVATION_PATH = <span class="cstat-no" title="statement not covered"
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 14 2022 08:40:40 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-06T13:16:02.627Z
             </div>
-        </div>
         <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {

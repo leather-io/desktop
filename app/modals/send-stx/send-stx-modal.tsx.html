@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/134</span>
+                <span class='fraction'>0/133</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/33</span>
+                <span class='fraction'>0/27</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/128</span>
+                <span class='fraction'>0/127</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line low'></div>
     <pre><table class="coverage">
@@ -364,16 +370,20 @@
 <a name='L305'></a><a href='#L305'>305</a>
 <a name='L306'></a><a href='#L306'>306</a>
 <a name='L307'></a><a href='#L307'>307</a>
-<a name='L308'></a><a href='#L308'>308</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a>
+<a name='L311'></a><a href='#L311'>311</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -438,8 +448,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -526,6 +537,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -676,11 +688,12 @@
 <span class="cstat-no" title="statement not covered" >import { useQueryClient } from 'react-query';</span>
 <span class="cstat-no" title="statement not covered" >import { useFormik } from 'formik';</span>
 <span class="cstat-no" title="statement not covered" >import * as yup from 'yup';</span>
-<span class="cstat-no" title="statement not covered" >import BN from 'bn.js';</span>
+&nbsp;
 import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 <span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
 <span class="cstat-no" title="statement not covered" >import { Modal } from '@modals/components/base-modal';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
+  AnchorMode,
   MEMO_MAX_LENGTH_BYTES,
   StacksTransaction,
   TokenTransferOptions,
@@ -745,8 +758,9 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
 &nbsp;
   const [feeEstimateError, setFeeEstimateError] = <span class="cstat-no" title="statement not covered" >useState&lt;string | null&gt;(null);</span>
 &nbsp;
-  const [nodeResponseError, setNodeResponseError] =
-<span class="cstat-no" title="statement not covered" >    useState&lt;PostCoreNodeTransactionsError | null&gt;(null);</span>
+  const [nodeResponseError, setNodeResponseError] = <span class="cstat-no" title="statement not covered" >useState&lt;PostCoreNodeTransactionsError | null&gt;(</span>
+    null
+  );
   const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const { nonce } = <span class="cstat-no" title="statement not covered" >useLatestNonce();</span>
 &nbsp;
@@ -793,10 +807,10 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
           'test-address-has-enough-balance',
           'Cannot send more STX than available balance',
 <span class="fstat-no" title="function not covered" >          value </span>=&gt; {
-<span class="cstat-no" title="statement not covered" >            if (value === null || value === undefined) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (value === null || value === undefined) <span class="cstat-no" title="statement not covered" >return false;</span></span>
             // If there's no input, pass this test,
             // otherwise it'll render the error for this test
-<span class="cstat-no" title="statement not covered" >            if (value === undefined) <span class="cstat-no" title="statement not covered" >return true;</span></span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (value === undefined) <span class="cstat-no" title="statement not covered" >return true;</span></span>
             const enteredAmount = <span class="cstat-no" title="statement not covered" >stxToMicroStx(value);</span>
 <span class="cstat-no" title="statement not covered" >            return enteredAmount.isLessThanOrEqualTo(balance);</span>
           }
@@ -811,8 +825,8 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
             name: 'memo-required',
             message: 'Memo is required. If you do not need to set a memo, confirm this below.',
 <span class="fstat-no" title="function not covered" >            test(</span>value: unknown) {
-<span class="cstat-no" title="statement not covered" >              if (typeof value !== 'string') <span class="cstat-no" title="statement not covered" >return false;</span></span>
-<span class="cstat-no" title="statement not covered" >              if (value.trim() === '') <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof value !== 'string') <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >              <span class="missing-if-branch" title="if path not taken" >I</span>if (value.trim() === '') <span class="cstat-no" title="statement not covered" >return false;</span></span>
 <span class="cstat-no" title="statement not covered" >              return true;</span>
             },
           })
@@ -835,10 +849,11 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
 <span class="cstat-no" title="statement not covered" >      setTxDetails({</span>
         recipient: form.values.recipient,
         network: stacksNetwork,
-        amount: new BN(stxToMicroStx(form.values.amount || 0).toString()),
+        amount: stxToMicroStx(form.values.amount || 0).toString(),
         memo: form.values.memo,
-        nonce: new BN(nonce),
-        fee: new BN(fee.toString()),
+        nonce: nonce,
+        fee: fee.toString(),
+        anchorMode: AnchorMode.Any,
       });
 <span class="cstat-no" title="statement not covered" >      setLoading(false);</span>
     },
@@ -870,7 +885,7 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
 <span class="cstat-no" title="statement not covered" >        resetAll();</span>
       },
       onFail: <span class="fstat-no" title="function not covered" >(e</span>rror?: PostCoreNodeTransactionsError) =&gt; {
-<span class="cstat-no" title="statement not covered" >        if (error) <span class="cstat-no" title="statement not covered" >setNodeResponseError(error);</span></span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >setNodeResponseError(error);</span></span>
 <span class="cstat-no" title="statement not covered" >        setStep(TxModalStep.NetworkError);</span>
       },
       tx,
@@ -882,7 +897,7 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
 <span class="cstat-no" title="statement not covered" >    await delay(300);</span>
     const fee = <span class="cstat-no" title="statement not covered" >calcFee(STX_TRANSFER_TX_SIZE_BYTES);</span>
     const balanceLessFee = <span class="cstat-no" title="statement not covered" >new BigNumber(balance).minus(fee.toString());</span>
-<span class="cstat-no" title="statement not covered" >    if (balanceLessFee.isLessThanOrEqualTo(0)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (balanceLessFee.isLessThanOrEqualTo(0)) {</span>
 <span class="cstat-no" title="statement not covered" >      void form.setFieldTouched('amount');</span>
 <span class="cstat-no" title="statement not covered" >      form.setFieldError('amount', 'Your balance is not sufficient to cover the transaction fee');</span>
 <span class="cstat-no" title="statement not covered" >      setCalculatingMaxSpend(false);</span>
@@ -984,10 +999,9 @@ export const <span class="cstat-no" title="statement not covered" >SendStxModal:
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 14 2022 08:40:40 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-06T13:16:02.627Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/38</span>
+                <span class='fraction'>0/52</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/43</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line low'></div>
     <pre><table class="coverage">
@@ -136,7 +142,14 @@
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -195,22 +208,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -264,7 +284,7 @@
     const onboarding = <span class="cstat-no" title="statement not covered" >createOnboardingFeature(page);</span>
 &nbsp;
     const termsOfServicePageTitle = <span class="cstat-no" title="statement not covered" >await onboarding.findTermsOfServiceTitle();</span>
-<span class="cstat-no" title="statement not covered" >    if (!termsOfServicePageTitle) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!termsOfServicePageTitle) {</span>
 <span class="cstat-no" title="statement not covered" >      expect(termsOfServicePageTitle).toBeTruthy();</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Test not started in clean environment, loaded a `config.json`');</span>
     }
@@ -273,24 +293,31 @@
 <span class="cstat-no" title="statement not covered" >    await repeatAction(1000)(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >page.keyboard.down('Space'))</span>;</span>
 &nbsp;
     const button = <span class="cstat-no" title="statement not covered" >await onboarding.findAcceptBtn();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!button) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await button.click();</span>
 &nbsp;
     const diagnosticPermissionBtn = <span class="cstat-no" title="statement not covered" >await onboarding.findAcceptDiagnosticsBtn();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!diagnosticPermissionBtn) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await diagnosticPermissionBtn.click();</span>
 &nbsp;
     const restoreWalletButton = <span class="cstat-no" title="statement not covered" >await onboarding.findResoreWalletBtn();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!restoreWalletButton) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await restoreWalletButton.click();</span>
 &nbsp;
     const input = <span class="cstat-no" title="statement not covered" >await onboarding.findSecretKeyInput();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!input) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await input.type(seed);</span>
 &nbsp;
     const continueWithSecretKey = <span class="cstat-no" title="statement not covered" >await onboarding.findContinueWithSecretKeyBtn();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!continueWithSecretKey) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await continueWithSecretKey.click();</span>
 &nbsp;
     const passwordInput = <span class="cstat-no" title="statement not covered" >await onboarding.findPasswordInput();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!passwordInput) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await passwordInput.type(password);</span>
 &nbsp;
     const continueWithPassword = <span class="cstat-no" title="statement not covered" >await onboarding.findContinueWithPasswordBtn();</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!continueWithPassword) <span class="cstat-no" title="statement not covered" >throw new Error('Should be defined.');</span></span>
 <span class="cstat-no" title="statement not covered" >    await continueWithPassword.click();</span>
   };
 }
@@ -300,10 +327,9 @@
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Dec 14 2022 08:40:40 GMT+0000 (Coordinated Universal Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-06T13:16:02.627Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

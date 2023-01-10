@@ -1,3 +1,26 @@
+# [4.8.0-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.7.0...v4.8.0-dev.1) (2023-01-10)
+
+
+### Bug Fixes
+
+* add missing space ([89345e9](https://github.com/blockstack/stacks-wallet/commit/89345e9a72bf4ac91ccbd09af26fbd52ec11746d))
+* apple-compatible electron-builder version ([117ba23](https://github.com/blockstack/stacks-wallet/commit/117ba2305a1db5a9322d2fd1e6bb115740dac93b))
+* initialize sentry after loading store and checking for diagnosticPermission ([e6e7396](https://github.com/blockstack/stacks-wallet/commit/e6e73966f8f6f9aa11b8486a86170c652aae6ee4))
+* misc type issues and quirks ([e8544e1](https://github.com/blockstack/stacks-wallet/commit/e8544e1c6a3718e02d17e41571b09819d864e971))
+* remove sentry from main process ([8d50414](https://github.com/blockstack/stacks-wallet/commit/8d50414ddb2e9a1a5fd7618d2945de49f579cb22))
+* **send-form:** incorrect fee calc in send max button ([7188bd8](https://github.com/blockstack/stacks-wallet/commit/7188bd8a2f8a28e611d82877261ff547669be275))
+* types ([2351308](https://github.com/blockstack/stacks-wallet/commit/235130852740188983fa90a649b73ebd21a860ad))
+* typo ([a280c13](https://github.com/blockstack/stacks-wallet/commit/a280c1396be904b76e8ea3e128a1169a02b9603a))
+* update ci ([671f3c2](https://github.com/blockstack/stacks-wallet/commit/671f3c2c43d15c4b3136dd40582795d2c0dce0aa))
+* webpack cli ([0afd6d2](https://github.com/blockstack/stacks-wallet/commit/0afd6d21df8d975ddb977e6194f3f5b02b2b71bc))
+* webpack serve ([3dbce0a](https://github.com/blockstack/stacks-wallet/commit/3dbce0aebace05aa1295dfef3409792cf0a116be))
+
+
+### Features
+
+* add segment integration ([5382781](https://github.com/blockstack/stacks-wallet/commit/5382781f35c9da2a1f2f30242c7c3c0d7204e78e)), closes [#928](https://github.com/blockstack/stacks-wallet/issues/928)
+* update supported btc address formats ([0a8fd55](https://github.com/blockstack/stacks-wallet/commit/0a8fd55f9f3ab4f4f35433fb62d5142149b96a13))
+
 # [4.7.0-dev.4](https://github.com/blockstack/stacks-wallet/compare/v4.7.0-dev.3...v4.7.0-dev.4) (2023-01-05)
 
 

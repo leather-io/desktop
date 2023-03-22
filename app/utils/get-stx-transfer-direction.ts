@@ -23,7 +23,7 @@ export const validateStacksAddress = (stacksAddress: string): boolean => {
 
 export const validateStacksPrincipal = (contractId: string): boolean => {
   try {
-    const [stacksAddress] = contractId.split(".")
+    const [stacksAddress] = contractId.split('.');
     c32addressDecode(stacksAddress);
     return true;
   } catch (e) {

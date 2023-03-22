@@ -12,7 +12,7 @@ import { useBackButton } from '@hooks/use-back-url';
 import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';
 import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';
 import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
-import { stxAddressSchema } from '@utils/validators/stx-address-validator';
+import { stxPrincipalSchema } from '@utils/validators/stx-address-validator';
 import {
   UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
   MIN_DELEGATED_STACKING_AMOUNT_USTX,
@@ -83,7 +83,7 @@ export const StackingDelegation: FC = () => {
   );
 
   const validationSchema = yup.object().shape({
-    stxAddress: stxAddressSchema().test({
+    stxAddress: stxPrincipalSchema().test({
       name: 'cannot-pool-to-yourself',
       message: 'Cannot pool to your own STX address',
       test(value: any) {

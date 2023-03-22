@@ -1,9 +1,10 @@
 import * as yup from 'yup';
-import { validateStacksAddress } from '../get-stx-transfer-direction';
+import { validateStacksPrincipal } from '../get-stx-transfer-direction';
 import { validateAddressChain } from '../../crypto/validate-address-net';
 import { NETWORK } from '@constants/index';
 
-export function stxAddressSchema() {
+// accepts standard and contract addresses
+export function stxPrincipalSchema() {
   let timer = 0;
   return yup
     .string()
@@ -15,7 +16,7 @@ export function stxAddressSchema() {
           clearTimeout(timer);
           timer = window.setTimeout(() => {
             if (!value) return resolve(false);
-            const valid = validateStacksAddress(value);
+            const valid = validateStacksPrincipal(value);
 
             if (!valid) {
               return resolve(

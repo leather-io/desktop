@@ -1,3 +1,12 @@
+# [4.8.0-dev.2](https://github.com/blockstack/stacks-wallet/compare/v4.8.0-dev.1...v4.8.0-dev.2) (2023-03-29)
+
+
+### Bug Fixes
+
+* accept contract addresses as pool address ([#1165](https://github.com/blockstack/stacks-wallet/issues/1165)) ([67dcdf1](https://github.com/blockstack/stacks-wallet/commit/67dcdf1b87064f080f5b9410a85ac78346ca1313))
+* ci gpg key import ([6948d92](https://github.com/blockstack/stacks-wallet/commit/6948d9234f104dacf09aa1faaeb0614cc133f498))
+* **sandbox:** prettier ([095bae9](https://github.com/blockstack/stacks-wallet/commit/095bae94ad0b226b9e84321d62241ddd4f9a3e64))
+
 # [4.8.0-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.7.0...v4.8.0-dev.1) (2023-01-10)
 
 

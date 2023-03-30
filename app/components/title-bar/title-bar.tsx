@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { useHistory, useLocation, matchPath } from 'react-router';

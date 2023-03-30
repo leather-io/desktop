@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';

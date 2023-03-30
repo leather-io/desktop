@@ -23,6 +23,7 @@ export function btcAddressSchema() {
           return this.createError({ message: 'Mainnet addresses not supported on Testnet' });
         }
         // https://github.com/blockstack/stacks-blockchain/issues/1902
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         if (!SUPPORTED_BTC_ADDRESS_FORMATS.includes(addressInfo.type as any)) {
           return this.createError({
             message:

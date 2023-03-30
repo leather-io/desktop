@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {

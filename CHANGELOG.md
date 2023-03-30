@@ -1,3 +1,10 @@
+# [4.8.0-dev.3](https://github.com/blockstack/stacks-wallet/compare/v4.8.0-dev.2...v4.8.0-dev.3) (2023-03-30)
+
+
+### Features
+
+* remove outdated messages ([c613724](https://github.com/blockstack/stacks-wallet/commit/c6137240c693881911b3ce5ac868e1bff33e1702))
+
 # [4.8.0-dev.2](https://github.com/blockstack/stacks-wallet/compare/v4.8.0-dev.1...v4.8.0-dev.2) (2023-03-29)
 
 

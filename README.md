@@ -19,6 +19,12 @@ Ensure you have a recent version of Node.js 16 and Yarn 1 installed. Note that r
 corepack enable yarn
 ```
 
+On a Linux machine, you may need a few dependencies before installing packages or building the app. On Debian/Ubuntu, they can be installed with
+
+```bash
+sudo apt install pkg-config libusb-1.0-0-dev libudev-dev
+```
+
 After [cloning the repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository), run `yarn` in the root of the project to install the dependencies.
 
 Finally, run `yarn dev:testnet` to start a development server.

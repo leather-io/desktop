@@ -3,7 +3,7 @@ import { Text, Stack, StackProps } from '@stacks/ui';
 
 import { StackingTermItem } from '../../components/stacking-term';
 import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
-import { IconClock, IconLock } from '@tabler/icons';
+import { IconLock } from '@tabler/icons';
 import { StepsIcon } from '@components/icons/steps';
 
 export const DirectStackingTerms: FC<StackProps> = props => (
@@ -23,12 +23,6 @@ export const DirectStackingTerms: FC<StackProps> = props => (
       <Text>
         Nor will you be able to change the entered BTC address. Ensure it's entered correctly and
         you have control over it.
-      </Text>
-    </StackingTermItem>
-    <StackingTermItem title="Consider the following cooldown cycle" icon={IconClock}>
-      <Text>
-        After your chosen duration is finished, you have to wait one cycle before you can stack from
-        this address again
       </Text>
     </StackingTermItem>
     <StackingTermItem title="Dynamic minimum" icon={StepsIcon}>

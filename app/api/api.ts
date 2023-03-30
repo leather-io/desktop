@@ -137,7 +137,7 @@ export class Api {
 
   async getMempoolTransactions(address: string): Promise<MempoolTransaction[]> {
     const mempoolTxs = await axios.get(
-      urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=200&address=${address}`),
+      urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=50&address=${address}`),
       { params: { unanchored: true } }
     );
     return mempoolTxs.data.results;

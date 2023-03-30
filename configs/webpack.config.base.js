@@ -85,7 +85,7 @@ export default {
     }),
 
     new webpack.EnvironmentPlugin({
-      STX_NETWORK: process.env.STX_NETWORK,
+      STX_NETWORK: process.env.STX_NETWORK || 'mainnet',
       SEGMENT_WRITE_KEY: process.env.SEGMENT_WRITE_KEY || '',
       SENTRY_DSN: process.env.SENTRY_DSN || '',
     }),

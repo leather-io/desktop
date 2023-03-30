@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js';
 
 import { RootState } from '@store/index';
 import { formatPoxAddressToNetwork } from '@utils/stacking';
-import { selectAccountBalanceLocked, selectStackerInfo } from '@store/stacking/stacking.reducer';
+import { selectStackerInfo } from '@store/stacking/stacking.reducer';
 import stackingImg from '@assets/images/abstract-btc-stx-bar-chart.svg';
 import {
   InfoCard,
@@ -19,12 +19,13 @@ import { Hr } from '@components/hr';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { truncateMiddle } from '@utils/tx-utils';
 import { ExternalLink } from '@components/external-link';
+import { useBalance } from '@hooks/use-balance';
 
 export const StackingCard: FC = () => {
   const { stackerInfo } = useSelector((state: RootState) => ({
     stackerInfo: selectStackerInfo(state),
   }));
-  const accountBalanceLocked = useSelector((state: RootState) => selectAccountBalanceLocked(state));
+  const { lockedBalance } = useBalance();
 
   if (!stackerInfo?.isCurrentlyStacking) return null;
 
@@ -42,7 +43,7 @@ export const StackingCard: FC = () => {
           fontFamily="Open Sauce"
           letterSpacing="-0.02em"
         >
-          {accountBalanceLocked !== null && toHumanReadableStx(Number(accountBalanceLocked))}
+          {lockedBalance !== null && toHumanReadableStx(Number(lockedBalance))}
         </Text>
       </Flex>
       <Hr />

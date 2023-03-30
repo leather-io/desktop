@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import BigNumber from 'bignumber.js';
 
 import { useFetchPossibleNextNonce } from '@hooks/use-fetch-account-nonce';

@@ -44,6 +44,7 @@ interface RootReducerArgs {
 
 export function createRootReducer({ history, keys }: RootReducerArgs) {
   return combineReducers({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     router: connectRouter(history),
     keys: createKeysReducer(keys),
     transaction: transactionReducer,

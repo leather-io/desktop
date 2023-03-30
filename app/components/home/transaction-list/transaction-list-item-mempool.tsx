@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { FC, useRef, useEffect, MutableRefObject } from 'react';
 import { useHover, useFocus } from 'use-events';
 import { Box, color, Flex, Stack, Text } from '@stacks/ui';

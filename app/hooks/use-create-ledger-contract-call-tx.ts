@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { LedgerError } from '@zondax/ledger-blockstack';

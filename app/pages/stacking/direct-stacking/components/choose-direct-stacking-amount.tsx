@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { FC, useCallback } from 'react';
 import { BigNumber } from 'bignumber.js';
 import { Box, Button, color, Input, Stack, Text } from '@stacks/ui';

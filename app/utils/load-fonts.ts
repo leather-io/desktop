@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import InterUiMedium from '../assets/fonts/Inter-Medium.woff2';
 import InterUiRegular from '../assets/fonts/Inter-Regular.woff2';
 import InterUiSemiBold from '../assets/fonts/Inter-SemiBold.woff2';

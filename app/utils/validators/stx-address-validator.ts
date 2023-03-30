@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import * as yup from 'yup';
 import { validateStacksPrincipal } from '../get-stx-transfer-direction';
 import { validateAddressChain } from '../../crypto/validate-address-net';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { ipcMain } from 'electron';
 import { BehaviorSubject, Subject, timer, combineLatest, from, of } from 'rxjs';
 import { delay, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';

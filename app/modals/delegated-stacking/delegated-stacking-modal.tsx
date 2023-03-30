@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { FC, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';

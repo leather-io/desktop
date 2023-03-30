@@ -93,6 +93,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
             size="md"
             ml="tight"
             isDisabled={requestingTestnetStx}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             onClick={e => requestTestnetStacks(e)}
             title="Hold alt to request more STX. Use sparingly."
           >

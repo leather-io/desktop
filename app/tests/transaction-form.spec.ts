@@ -114,6 +114,7 @@ describeOnlyTestnet('Transaction flow', () => {
     const deserialisedTx = deserializeTransaction(requestBody);
     const payload = deserialisedTx.payload as any;
     const amount = payload.amount.toString();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const recipient = cvToValue(payload.recipient);
     const memo = payload.memo.content.replace(/\0/g, '');
 

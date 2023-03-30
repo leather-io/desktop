@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useSelector } from 'react-redux';
 import BigNumber from 'bignumber.js';
 import BN from 'bn.js';

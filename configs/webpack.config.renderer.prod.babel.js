@@ -1,17 +1,15 @@
 /**
  * Build config for electron renderer process
  */
-
+import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
+import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
+import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
+import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
-import CopyPlugin from 'copy-webpack-plugin';
-import TerserPlugin from 'terser-webpack-plugin';
-import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
-import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
-
-import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
 
 CheckNodeEnv('production');
 DeleteSourceMaps();

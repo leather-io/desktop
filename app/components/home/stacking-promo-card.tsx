@@ -1,16 +1,15 @@
-import React, { FC, memo, useEffect } from 'react';
-import { Box, Button, color, Flex, Text } from '@stacks/ui';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
+import { AbstractBtcChartSvg } from '@components/svg/abstract-btc-chart';
 import routes from '@constants/routes.json';
 import { useFetchDelegationStatus } from '@hooks/use-fetch-delegation-status';
-import { AbstractBtcChartSvg } from '@components/svg/abstract-btc-chart';
 import { useMempool } from '@hooks/use-mempool';
-import { isDelegateStxTx } from '@utils/tx-utils';
+import { Box, Button, color, Flex, Text } from '@stacks/ui';
 import { selectPoxInfo } from '@store/stacking';
+import { isDelegateStxTx } from '@utils/tx-utils';
+import React, { FC, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-export const StackingPromoCard: FC = memo(() => {
+export const StackingPromoCard: FC = () => {
   const history = useHistory();
   const { outboundMempoolTxs } = useMempool();
   const poxInfo = useSelector(selectPoxInfo);
@@ -54,4 +53,4 @@ export const StackingPromoCard: FC = memo(() => {
       </Flex>
     </Box>
   );
-});
+};

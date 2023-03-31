@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { LedgerError } from '@zondax/ledger-blockstack';
 import { bytesToHex } from '@stacks/common';
-
-import { RootState } from '@store/index';
 import {
   ContractCallOptions,
   createMessageSignature,
@@ -14,8 +9,12 @@ import {
   SingleSigSpendingCondition,
   TokenTransferOptions,
 } from '@stacks/transactions';
+import { RootState } from '@store/index';
 import { selectPublicKey } from '@store/keys';
 import { selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
+import { LedgerError } from '@zondax/ledger-blockstack';
+import { useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 function signTransactionWithSignature(transaction: string, signatureVRS: string) {
   const deserialzedTx = deserializeTransaction(transaction);

@@ -1,11 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { UpsertStacksNodeSettingsModal } from '@modals/upsert-stacks-node-api/upsert-stacks-node-api';
-import { Button } from '@stacks/ui';
-import React, { useState } from 'react';
 import { NodeSelect } from './components/node-select';
 import { NodeSelectItem } from './components/node-select-item';
 import { SettingDescription } from './components/settings-layout';
 import { SettingSection } from './components/settings-section';
+import { UpsertStacksNodeSettingsModal } from '@modals/upsert-stacks-node-api/upsert-stacks-node-api';
+import { Button } from '@stacks/ui';
+import { RootState } from '@store/index';
 import {
   selectStacksNodeApis,
   upsertStacksNodeApi,
@@ -14,7 +13,8 @@ import {
   removeStacksNodeApi,
   defaultNode,
 } from '@store/stacks-node';
-import { RootState } from '@store/index';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const SettingsManageNodes = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ export const SettingsManageNodes = () => {
 
   return (
     <SettingSection title="Node settings">
-      <SettingDescription>Select the node you'd like to use</SettingDescription>
+      <SettingDescription>Select the node you&apos;d like to use</SettingDescription>
       <UpsertStacksNodeSettingsModal
         isOpen={nodeModalOpen}
         selectedNode={operation === 'update' ? selectedNodeApi : undefined}

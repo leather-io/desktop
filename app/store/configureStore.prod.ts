@@ -1,11 +1,10 @@
-import { createStore, applyMiddleware } from '@reduxjs/toolkit';
-import thunk from 'redux-thunk';
-import { createHashHistory } from 'history';
-import { routerMiddleware } from 'connected-react-router';
-import { persistReducer, persistStore } from 'redux-persist';
-
 import { RootState, createRootReducer, persistConfig } from '.';
+import { createStore, applyMiddleware } from '@reduxjs/toolkit';
 import { getInitialStateFromDisk } from '@utils/disk-store';
+import { routerMiddleware } from 'connected-react-router';
+import { createHashHistory } from 'history';
+import { persistReducer, persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
 
 export const history = createHashHistory();
 const rootReducer = createRootReducer({ history, keys: getInitialStateFromDisk() });

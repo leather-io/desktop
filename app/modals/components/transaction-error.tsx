@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
-
+import { ModalHeader } from './modal-header';
 import { TxModalButton, TxModalFooter } from '@modals/send-stx/send-stx-modal-layout';
 import { FailedBroadcastError } from '@modals/send-stx/steps/failed-broadcast-error';
-import { ModalHeader } from './modal-header';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import React, { FC } from 'react';
 
 interface TransactionErrorProps {
   error: PostCoreNodeTransactionsError | null;

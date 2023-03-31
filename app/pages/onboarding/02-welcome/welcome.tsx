@@ -1,15 +1,14 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-
-import routes from '@constants/routes.json';
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
 } from '@components/onboarding';
+import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
 import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 export const Welcome: React.FC = () => {
   const history = useHistory();

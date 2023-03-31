@@ -1,5 +1,5 @@
-import Store from 'electron-store';
 import { ipcMain } from 'electron';
+import Store from 'electron-store';
 import path from 'path';
 
 export function registerIpcStoreHandlers(userDataPath: string) {

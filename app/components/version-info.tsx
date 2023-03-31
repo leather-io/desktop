@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import packageJson from '../../package.json';
+import { NETWORK } from '@constants/index';
 import { color, Stack, Text } from '@stacks/ui';
 import { openExternalLink } from '@utils/external-links';
-import { NETWORK } from '@constants/index';
-import packageJson from '../../package.json';
+import React, { FC } from 'react';
 
 const sha = CONFIG.SHA;
 const shaShort = sha && sha.substr(0, 7);

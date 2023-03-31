@@ -1,7 +1,8 @@
-import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useApi } from './use-api';
+import { useInterval } from './use-interval';
+import { useNavigatorOnline } from './use-navigator-online';
 import { DEFAULT_POLLING_INTERVAL } from '@constants/index';
+import { getAddressDetails } from '@store/address';
 import { selectAddress } from '@store/keys';
 import {
   fetchAccountBalanceLocked,
@@ -11,10 +12,8 @@ import {
   fetchStackingInfo,
 } from '@store/stacking';
 import { getAddressTransactions } from '@store/transaction';
-import { getAddressDetails } from '@store/address';
-import { useNavigatorOnline } from './use-navigator-online';
-import { useInterval } from './use-interval';
-import { useApi } from './use-api';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function useGlobalAppPolling() {
   const dispatch = useDispatch();

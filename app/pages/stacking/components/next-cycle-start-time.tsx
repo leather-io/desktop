@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { color, Flex, FlexProps, Text } from '@stacks/ui';
 import { ClockIcon } from '@components/icons/clock';
+import { color, Flex, FlexProps, Text } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface NextCycleStartTimeProps extends FlexProps {
   nextCycleStartsIn: string;

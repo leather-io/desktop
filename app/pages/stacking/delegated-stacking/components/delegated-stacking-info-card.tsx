@@ -1,20 +1,3 @@
-import React, { FC, useMemo } from 'react';
-
-import { Box, Flex, FlexProps, Text } from '@stacks/ui';
-
-import { DelegationType } from '@models/index';
-import { Hr } from '@components/hr';
-
-import {
-  UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
-  POOLED_STACKING_TX_SIZE_BYTES,
-} from '@constants/index';
-import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
-import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
-import { truncateMiddle } from '@utils/tx-utils';
-import { formatCycles } from '@utils/stacking';
-import { useCalculateFee } from '@hooks/use-calculate-fee';
-import { useWalletType } from '@hooks/use-wallet-type';
 import {
   InfoCard,
   InfoCardLabel as Label,
@@ -23,8 +6,22 @@ import {
   InfoCardValue as Value,
   InfoCardSection as Section,
 } from '../../../../components/info-card';
-import { useSelector } from 'react-redux';
+import { Hr } from '@components/hr';
+import {
+  UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
+  POOLED_STACKING_TX_SIZE_BYTES,
+} from '@constants/index';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useWalletType } from '@hooks/use-wallet-type';
+import { DelegationType } from '@models/index';
+import { Box, Flex, FlexProps, Text } from '@stacks/ui';
 import { selectPoxInfo } from '@store/stacking';
+import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
+import { formatCycles } from '@utils/stacking';
+import { truncateMiddle } from '@utils/tx-utils';
+import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import React, { FC, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 interface PoolingInfoCardProps extends FlexProps {
   amount: string | number | null;
@@ -57,7 +54,7 @@ export const PoolingInfoCard: FC<PoolingInfoCardProps> = props => {
     <InfoCard {...rest}>
       <Box mx={['loose', 'extra-loose']}>
         <Flex flexDirection="column" pt="extra-loose" pb="base-loose">
-          <Text textStyle="body.large.medium">You're pooling</Text>
+          <Text textStyle="body.large.medium">You&apos;re pooling</Text>
           <Text
             fontSize="24px"
             fontFamily="Open Sauce"

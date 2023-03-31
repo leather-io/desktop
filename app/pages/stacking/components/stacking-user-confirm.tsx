@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Box, BoxProps, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface StackingUserConfirmProps extends Omit<BoxProps, 'onChange'> {
   onChange(userConfirmed: boolean): void;

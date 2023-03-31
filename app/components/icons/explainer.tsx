@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { Box, BoxProps } from '@stacks/ui';
+import * as React from 'react';
 
 export const ExplainerIcon = React.forwardRef((props: BoxProps, ref) => (
   <Box ref={ref as any} {...props}>
@@ -11,3 +11,5 @@ export const ExplainerIcon = React.forwardRef((props: BoxProps, ref) => (
     </svg>
   </Box>
 ));
+
+ExplainerIcon.displayName = 'ExplainerIcon';

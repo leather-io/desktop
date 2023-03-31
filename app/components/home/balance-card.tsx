@@ -1,17 +1,15 @@
-import React, { FC, useState } from 'react';
-import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';
-
-import { HomeSelectors } from 'app/tests/features/home.selectors';
-import { features, NETWORK } from '@constants/index';
-import { toHumanReadableStx } from '@utils/unit-convert';
-import { safeAwait } from '@utils/safe-await';
-import { delay } from '@utils/delay';
-
 import { InternalLink } from '@components/internal-link';
+import { Title } from '@components/title';
+import { features, NETWORK } from '@constants/index';
+import { useBalance } from '@hooks/use-balance';
+import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';
+import { delay } from '@utils/delay';
 import { makeExplorerAddressLink } from '@utils/external-links';
 import { isTestnet } from '@utils/network-utils';
-import { useBalance } from '@hooks/use-balance';
-import { Title } from '@components/title';
+import { safeAwait } from '@utils/safe-await';
+import { toHumanReadableStx } from '@utils/unit-convert';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
+import React, { FC, useState } from 'react';
 
 interface BalanceCardProps {
   address: string | null;
@@ -69,7 +67,7 @@ export const BalanceCard: FC<BalanceCardProps> = props => {
             mr="tight"
           />
           <Text>{toHumanReadableStx(lockedBalance.toString())} locked</Text>
-          <Text children="·" mx="base-tight" />
+          <Text mx="base-tight">·</Text>
           <Text>{toHumanReadableStx(availableBalance.toString())} available</Text>
         </Flex>
       )}

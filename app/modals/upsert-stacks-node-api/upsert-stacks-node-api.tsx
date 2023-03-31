@@ -1,20 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useFormik } from 'formik';
-import { ButtonGroup, Button, Box, Text, Input, color } from '@stacks/ui';
-import * as yup from 'yup';
-
-import { Modal } from '@modals/components/base-modal';
-import { StacksNode } from '@store/stacks-node';
+import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
+import { Api } from '@api/api';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { capitalize } from '@utils/capitalize';
-import { Api } from '@api/api';
-import { safeAwait } from '@utils/safe-await';
 import { generateRandomHexString } from '@crypto/key-generation';
-import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
+import { Modal } from '@modals/components/base-modal';
 import { ModalHeader } from '@modals/components/modal-header';
+import { ButtonGroup, Button, Box, Text, Input, color } from '@stacks/ui';
+import { StacksNode } from '@store/stacks-node';
+import { capitalize } from '@utils/capitalize';
+import { safeAwait } from '@utils/safe-await';
+import { useFormik } from 'formik';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import * as yup from 'yup';
 
 interface AddNodeSettingsProps {
   isOpen: boolean;

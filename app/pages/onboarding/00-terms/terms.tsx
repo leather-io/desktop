@@ -1,17 +1,16 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { Flex, Box } from '@stacks/ui';
-
 import { OnboardingSelector } from '../../../tests/features/onboarding.selectors';
-import routes from '@constants/routes.json';
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
 } from '@components/onboarding';
-import { useBackButton } from '@hooks/use-back-url';
 import { ENTITY_NAME, FULL_ENTITY_NAME } from '@constants/index';
+import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url';
+import { Flex, Box } from '@stacks/ui';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 export const Terms: React.FC = () => {
   const history = useHistory();

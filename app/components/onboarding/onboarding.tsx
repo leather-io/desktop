@@ -1,6 +1,6 @@
-import React from 'react';
 import { Flex, FlexProps, Box } from '@stacks/ui';
 import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
+import React from 'react';
 
 export const Onboarding: ForwardRefExoticComponentWithAs<FlexProps, 'div'> = forwardRefWithAs<
   FlexProps,

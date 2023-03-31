@@ -1,6 +1,6 @@
+import { EXPLORER_URL, NETWORK } from '@constants/index';
 import urljoin from 'url-join';
 import { isWebUri } from 'valid-url';
-import { EXPLORER_URL, NETWORK } from '@constants/index';
 
 export async function openExternalLink(url: string) {
   if (!isWebUri(url)) return;

@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
-import { Box, Button, color, Flex, Text, useClipboard } from '@stacks/ui';
 import { ExchangeWithdrawalWarning } from '@components/testnet/exchange-withdrawal-warning';
+import { useAnalytics } from '@hooks/use-analytics';
+import { Box, Button, color, Flex, Text, useClipboard } from '@stacks/ui';
 import { isTestnet } from '@utils/network-utils';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
-import { useAnalytics } from '@hooks/use-analytics';
+import React, { FC } from 'react';
 
 interface AddressDisplayerProps {
   address: string;

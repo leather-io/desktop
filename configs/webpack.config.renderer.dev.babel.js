@@ -4,19 +4,16 @@
  *
  * https://webpack.js.org/concepts/hot-module-replacement/
  */
-
-import path from 'path';
-import fs from 'fs';
-import webpack from 'webpack';
-import chalk from 'chalk';
-import CopyPlugin from 'copy-webpack-plugin';
-import { merge } from 'webpack-merge';
-import { spawn, execSync } from 'child_process';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-
 import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
-
 import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import chalk from 'chalk';
+import { spawn, execSync } from 'child_process';
+import CopyPlugin from 'copy-webpack-plugin';
+import fs from 'fs';
+import path from 'path';
+import webpack from 'webpack';
+import { merge } from 'webpack-merge';
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment

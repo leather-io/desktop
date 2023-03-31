@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Box, color, Flex, FlexProps, Text } from '@stacks/ui';
+import React, { FC } from 'react';
 import { useFocus } from 'use-events';
 
 type DelegationTypes = 'limited' | 'indefinite';

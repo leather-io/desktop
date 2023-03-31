@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
-import { useHistory } from 'react-router';
-
 import routes from '../constants/routes.json';
 import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router';
 
 export function usePromptUserToSetDiagnosticPermissions() {
   const history = useHistory();

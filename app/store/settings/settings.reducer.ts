@@ -1,7 +1,6 @@
-import { createReducer, createSelector } from '@reduxjs/toolkit';
-
 import { RootState } from '..';
 import { grantDiagnosticsPermission, revokeDiagnosticPermission } from './settings.actions';
+import { createReducer, createSelector } from '@reduxjs/toolkit';
 
 export interface SettingsState {
   diagnosticPermission: boolean | undefined;

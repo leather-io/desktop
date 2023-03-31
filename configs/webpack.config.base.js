@@ -1,13 +1,11 @@
 /**
  * Base webpack config used across other specific configs
  */
-
-import path from 'path';
-import webpack from 'webpack';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import ExtendedDefinePlugin from 'extended-define-webpack-plugin';
-
 import { dependencies as externals } from '../app/package.json';
+import ExtendedDefinePlugin from 'extended-define-webpack-plugin';
+import path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import webpack from 'webpack';
 
 export const defaultNodePolyfillsForRenderer = {
   path: require.resolve('path-browserify'),

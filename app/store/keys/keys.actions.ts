@@ -1,14 +1,14 @@
-import { useHistory } from 'react-router';
-import { push } from 'connected-react-router';
+import { RootState } from '..';
+import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
+import { generateSalt } from '../../crypto/key-generation';
+import { selectMnemonic } from './keys.reducer';
+import { TRANSACTION_VERSION, MNEMONIC_ENTROPY } from '@constants/index';
+import routes from '@constants/routes.json';
 import { createAction, Dispatch } from '@reduxjs/toolkit';
+import { HDKey } from '@scure/bip32';
+import * as bip39 from '@scure/bip39';
 import { generateSecretKey, DerivationType, getStxAddress } from '@stacks/wallet-sdk';
 import { deriveAccount } from '@stacks/wallet-sdk/dist/derive';
-
-import { RootState } from '..';
-import * as bip39 from '@scure/bip39';
-import routes from '@constants/routes.json';
-
-import { TRANSACTION_VERSION, MNEMONIC_ENTROPY } from '@constants/index';
 import {
   persistSalt,
   persistEncryptedMnemonic,
@@ -16,10 +16,8 @@ import {
   persistWalletType,
   persistPublicKey,
 } from '@utils/disk-store';
-import { generateSalt } from '../../crypto/key-generation';
-import { encryptMnemonic, decryptMnemonic } from '../../crypto/key-encryption';
-import { HDKey } from '@scure/bip32';
-import { selectMnemonic } from './keys.reducer';
+import { push } from 'connected-react-router';
+import { useHistory } from 'react-router';
 
 type History = ReturnType<typeof useHistory>;
 

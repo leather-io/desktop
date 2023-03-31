@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
-import { Flex, Text, Input, Box, Button, color } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { FormikProps } from 'formik';
+import { useAnalytics } from '@hooks/use-analytics';
+import { Flex, Text, Input, Box, Button, color } from '@stacks/ui';
 import { capitalize } from '@utils/capitalize';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
-import { useAnalytics } from '@hooks/use-analytics';
+import { FormikProps } from 'formik';
+import React, { FC } from 'react';
+
 interface TxModalFormProps {
   balance: string;
   form: FormikProps<{ recipient: string; amount: string; memo: string; noMemoRequired: boolean }>;

@@ -1,9 +1,8 @@
-import React from 'react';
-import { Text, Flex, Box, color } from '@stacks/ui';
-
+import { templateTxBoxProps } from './transaction-list-item-pseudo';
 import { EmptyTxList } from '@components/icons/empty-tx-list';
 import { useNavigatorOnline } from '@hooks/use-navigator-online';
-import { templateTxBoxProps } from './transaction-list-item-pseudo';
+import { Text, Flex, Box, color } from '@stacks/ui';
+import React from 'react';
 
 export const TransactionListEmpty = () => {
   const { isOnline } = useNavigatorOnline();

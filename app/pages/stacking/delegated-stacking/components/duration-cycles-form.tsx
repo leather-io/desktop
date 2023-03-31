@@ -1,18 +1,17 @@
-import React, { FC, useMemo } from 'react';
+import { CircleButton } from '@components/circle-button';
+import { MAX_STACKING_CYCLES, MIN_STACKING_CYCLES } from '@constants/index';
 import { Flex, InputProps, Text, Box, color } from '@stacks/ui';
-import { useSelector } from 'react-redux';
+import { RootState } from '@store/index';
+import { selectNextCycleInfo } from '@store/stacking';
+import { decrement, increment } from '@utils/mutate-numbers';
+import { formatCycles } from '@utils/stacking';
 import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-
-import { MAX_STACKING_CYCLES, MIN_STACKING_CYCLES } from '@constants/index';
-import { selectNextCycleInfo } from '@store/stacking';
-import { RootState } from '@store/index';
-import { CircleButton } from '@components/circle-button';
-import { decrement, increment } from '@utils/mutate-numbers';
-import { formatCycles } from '@utils/stacking';
+import React, { FC, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 dayjs.extend(duration);
 dayjs.extend(updateLocale);

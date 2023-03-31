@@ -1,7 +1,7 @@
-import React, { cloneElement, FC, isValidElement } from 'react';
-import { Box, BoxProps, color, Flex, FlexProps, Stack, StackProps, Text } from '@stacks/ui';
-import { ExplainerTooltip } from '@components/tooltip';
 import { Hr } from '@components/hr';
+import { ExplainerTooltip } from '@components/tooltip';
+import { Box, BoxProps, color, Flex, FlexProps, Stack, StackProps, Text } from '@stacks/ui';
+import React, { cloneElement, FC, isValidElement } from 'react';
 
 export const InfoCard: FC<FlexProps> = props => (
   <Flex
@@ -51,7 +51,7 @@ interface InfoCardLabelProps extends FlexProps {
 }
 export const InfoCardLabel: FC<InfoCardLabelProps> = ({ children, ...props }) => (
   <Flex color={color('text-caption')} alignItems="center" {...props}>
-    <Box mr={!!props.explainer ? 'tight' : undefined}>{children}</Box>
+    <Box mr={props.explainer ? 'tight' : undefined}>{children}</Box>
     {props.explainer && <ExplainerTooltip>{props.explainer}</ExplainerTooltip>}
   </Flex>
 );

@@ -1,13 +1,13 @@
+import { useMempool } from '@hooks/use-mempool';
+import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
+import { RootState } from '@store/index';
+import { selectPendingTransactions } from '@store/pending-transaction';
+import { selectTransactionList } from '@store/transaction';
+import { increment, decrement } from '@utils/mutate-numbers';
+import * as R from 'ramda';
 import { useCallback, useMemo, useRef } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import * as R from 'ramda';
-import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
 import { useSelector } from 'react-redux';
-import { RootState } from '@store/index';
-import { selectTransactionList } from '@store/transaction';
-import { selectPendingTransactions } from '@store/pending-transaction';
-import { useMempool } from '@hooks/use-mempool';
-import { increment, decrement } from '@utils/mutate-numbers';
 
 export function useTransactionList() {
   const { txs, pendingTxs } = useSelector((state: RootState) => ({

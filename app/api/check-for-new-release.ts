@@ -1,7 +1,6 @@
-import axios from 'axios';
-import { Endpoints } from '@octokit/types';
-
 import { GITHUB_ORG, GITHUB_REPO } from '@constants/index';
+import { Endpoints } from '@octokit/types';
+import axios from 'axios';
 
 export type GithubReleases = Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'];
 

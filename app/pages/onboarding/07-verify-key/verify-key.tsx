@@ -1,14 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Input } from '@stacks/ui';
-
-import routes from '@constants/routes.json';
-import { selectMnemonic } from '@store/keys';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { useBackButton } from '@hooks/use-back-url';
 import {
   Onboarding,
   OnboardingTitle,
@@ -17,7 +8,15 @@ import {
   OnboardingFooter,
   OnboardingFooterLink,
 } from '@components/onboarding';
+import routes from '@constants/routes.json';
 import { useAnalytics } from '@hooks/use-analytics';
+import { useBackButton } from '@hooks/use-back-url';
+import { Input } from '@stacks/ui';
+import { selectMnemonic } from '@store/keys';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export const VerifyKey: React.FC = () => {
   const history = useHistory();
@@ -60,7 +59,7 @@ export const VerifyKey: React.FC = () => {
       />
       {!mnemonicCorrect && hasSubmitted && (
         <ErrorLabel>
-          <ErrorText>The Secret Key you've entered doesn't match</ErrorText>
+          <ErrorText>The Secret Key you&apos;ve entered doesn&apos;t match</ErrorText>
         </ErrorLabel>
       )}
       <OnboardingButton mt="loose" type="submit">

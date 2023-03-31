@@ -1,9 +1,8 @@
-import { AddressStxBalanceResponse } from '@stacks/stacks-blockchain-api-types';
-import { createReducer, createSelector } from '@reduxjs/toolkit';
-import BigNumber from 'bignumber.js';
-
 import { RootState } from '..';
 import { fetchAddressDone, updateAddressBalance } from './address.actions';
+import { createReducer, createSelector } from '@reduxjs/toolkit';
+import { AddressStxBalanceResponse } from '@stacks/stacks-blockchain-api-types';
+import BigNumber from 'bignumber.js';
 
 export interface AddressState {
   loading: boolean;

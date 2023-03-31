@@ -1,8 +1,7 @@
-import React from 'react';
-import { color, Flex, Spinner } from '@stacks/ui';
-
 import { Onboarding, OnboardingTitle } from '@components/onboarding';
 import { useBackButton } from '@hooks/use-back-url';
+import { color, Flex, Spinner } from '@stacks/ui';
+import React from 'react';
 
 export const GeneratingSecret: React.FC = () => {
   useBackButton(null);

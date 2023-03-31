@@ -1,18 +1,14 @@
-import React, { FC, useRef } from 'react';
-
-import { useField } from 'formik';
-import { Text } from '@stacks/ui';
-
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
-import { ExternalLink } from '@components/external-link';
-
+import { CryptoAddressInput } from '../../components/crypto-address-form';
 import {
   StackingStep as Step,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
-
-import { CryptoAddressInput } from '../../components/crypto-address-form';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { ExternalLink } from '@components/external-link';
+import { Text } from '@stacks/ui';
+import { useField } from 'formik';
+import React, { FC, useRef } from 'react';
 
 export const ChoosePoolStxAddressField: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);

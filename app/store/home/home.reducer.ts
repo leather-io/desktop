@@ -1,3 +1,4 @@
+import { RootState } from '..';
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { selectAddressBalance as selectAddressDetails } from '@store/address';
 import { selectIsStackingCallPending } from '@store/pending-transaction';
@@ -7,8 +8,6 @@ import {
   selectStackerInfo,
   selectStackingError,
 } from '@store/stacking';
-
-import { RootState } from '..';
 
 type HomeModals = 'txModal' | 'receiveModal' | 'revokeDelegationModal';
 

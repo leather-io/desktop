@@ -1,5 +1,5 @@
-import { useEffect, useContext, useCallback } from 'react';
 import { BackActionContext, BackContext } from '../pages/root';
+import { useEffect, useContext, useCallback } from 'react';
 import { useHistory } from 'react-router';
 
 export function useBackButtonState(): BackContext {

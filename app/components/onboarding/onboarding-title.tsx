@@ -1,5 +1,5 @@
-import React from 'react';
 import { Text, BoxProps } from '@stacks/ui';
+import React from 'react';
 
 export const OnboardingTitle: React.FC<BoxProps> = ({ children, ...props }) => {
   return (

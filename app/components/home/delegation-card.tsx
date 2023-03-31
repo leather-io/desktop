@@ -1,17 +1,5 @@
-import React, { FC, useMemo } from 'react';
-import { Flex, Box, Text, color, Button } from '@stacks/ui';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { useDelegationStatus } from '@hooks/use-delegation-status';
-import { useCalculateFee } from '@hooks/use-calculate-fee';
-import { useBalance } from '@hooks/use-balance';
-import { isRevokingDelegationTx, truncateMiddle } from '@utils/tx-utils';
-import { toHumanReadableStx } from '@utils/unit-convert';
-import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
-import { homeActions } from '@store/home/home.reducer';
-import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
-import { useMempool } from '@hooks/use-mempool';
 import pooledStackingImg from '@assets/images/pooled-stacking-swimming-pool.svg';
+import { Hr } from '@components/hr';
 import {
   InfoCard,
   InfoCardGroup,
@@ -20,9 +8,20 @@ import {
   InfoCardSection as Section,
   InfoCardValue as Value,
 } from '@components/info-card';
-import { Hr } from '@components/hr';
-import { IconBan } from '@tabler/icons';
 import { Title } from '@components/title';
+import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
+import { useBalance } from '@hooks/use-balance';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useDelegationStatus } from '@hooks/use-delegation-status';
+import { useMempool } from '@hooks/use-mempool';
+import { Flex, Box, Text, color, Button } from '@stacks/ui';
+import { homeActions } from '@store/home/home.reducer';
+import { selectPoxInfo, selectStackerInfo } from '@store/stacking';
+import { IconBan } from '@tabler/icons';
+import { isRevokingDelegationTx, truncateMiddle } from '@utils/tx-utils';
+import { toHumanReadableStx } from '@utils/unit-convert';
+import React, { FC, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const DelegationCard: FC = () => {
   const dispatch = useDispatch();
@@ -59,7 +58,7 @@ export const DelegationCard: FC = () => {
       {!delegationStatus.deadDelegation && (
         <>
           <Flex flexDirection="column" mt="base-loose" pb="base-loose">
-            <Text textStyle="body.large.medium">You're pooling</Text>
+            <Text textStyle="body.large.medium">You&apos;re pooling</Text>
             <Text
               fontSize="24px"
               mt="extra-tight"
@@ -133,7 +132,7 @@ export const DelegationCard: FC = () => {
                       lineHeight="18px"
                       display="block"
                     >
-                      You don't have enough unlocked STX to cover the transaction fee needed to
+                      You don&apos;t have enough unlocked STX to cover the transaction fee needed to
                       revoke your delegation. Please deposit a small amount of STX or wait for any
                       locked STX to unlock if you wish to revoke delegation.
                     </Text>

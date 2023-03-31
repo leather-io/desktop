@@ -1,6 +1,6 @@
-import { ChainID } from '@stacks/transactions';
-import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
 import { whenNetwork } from './utils/network-utils';
+import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
+import { ChainID } from '@stacks/transactions';
 
 export { ChainID };
 

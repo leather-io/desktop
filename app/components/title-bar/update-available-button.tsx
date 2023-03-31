@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
-
-import { Flex, Text, FlexProps, color } from '@stacks/ui';
 import { UpdateArrowIcon } from '@components/icons/update-arrow';
 import { WindowActiveState } from '@models';
+import { Flex, Text, FlexProps, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface UpdateAvailableButtonProps extends FlexProps {
   windowState: WindowActiveState;

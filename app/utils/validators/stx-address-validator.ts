@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import * as yup from 'yup';
-import { validateStacksPrincipal } from '../get-stx-transfer-direction';
 import { validateAddressChain } from '../../crypto/validate-address-net';
+import { validateStacksPrincipal } from '../get-stx-transfer-direction';
 import { NETWORK } from '@constants/index';
+import * as yup from 'yup';
 
 // accepts standard and contract addresses
 export function stxPrincipalSchema() {

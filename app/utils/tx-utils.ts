@@ -1,12 +1,12 @@
+import { StxTxDirection } from './get-stx-transfer-direction';
+import { sumStxTxTotal } from './sum-stx-tx-total';
+import { SEND_MANY_CONTACT_ID } from '@constants/index';
 import {
   Transaction,
   MempoolTransaction,
   ContractCallTransaction,
 } from '@stacks/stacks-blockchain-api-types';
-import { SEND_MANY_CONTACT_ID } from '@constants/index';
 import BigNumber from 'bignumber.js';
-import { StxTxDirection } from './get-stx-transfer-direction';
-import { sumStxTxTotal } from './sum-stx-tx-total';
 
 type AnyTx = Transaction | MempoolTransaction;
 

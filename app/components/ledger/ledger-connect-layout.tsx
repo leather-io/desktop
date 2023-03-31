@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { CheckmarkCircleIcon, color, Flex, FlexProps, Text } from '@stacks/ui';
 import { LedgerConnectStep } from '@hooks/use-prepare-ledger';
+import { CheckmarkCircleIcon, color, Flex, FlexProps, Text } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface LedgerStepTextProps {
   step: LedgerConnectStep;

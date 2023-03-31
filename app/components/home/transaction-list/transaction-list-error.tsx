@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
-import { Text, Flex, BoxProps, color } from '@stacks/ui';
-import { Link } from 'react-router-dom';
-
 import { templateTxBoxProps } from './transaction-list-item-pseudo';
+import { Text, Flex, BoxProps, color } from '@stacks/ui';
 import { StacksNode } from '@store/stacks-node';
+import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 const linkProps: BoxProps = {
   color: 'blue',
@@ -35,9 +34,9 @@ export const TransactionListError: FC<TransactionListErrorProps> = ({ node, erro
         {usingPbcHostedNode && <>Unable to connect to the Hiro Systems PBC hosted node.</>}
         {!usingPbcHostedNode && (
           <>
-            Make sure you're connecting to a working Stacks Node
+            Make sure you&apos;re connecting to a working Stacks Node
             <br />
-            You're currently using {node.url}
+            You&apos;re currently using {node.url}
             <br />
             <Link to="/settings">
               <Text {...linkProps}>Check your Stacks Node settings.</Text>

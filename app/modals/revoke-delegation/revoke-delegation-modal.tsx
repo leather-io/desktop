@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { FC, useState, useCallback, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
-import { useHotkeys } from 'react-hotkeys-hook';
-
-import { selectPoxInfo } from '@store/stacking';
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
-
-import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
-import { safeAwait } from '@utils/safe-await';
-import { homeActions } from '@store/home';
-import { useStackingClient } from '@hooks/use-stacking-client';
-import { useApi } from '@hooks/use-api';
 import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
+import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';
+import { useApi } from '@hooks/use-api';
 import { useBroadcastTx } from '@hooks/use-broadcast-tx';
-import { useMempool } from '@hooks/use-mempool';
-import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useMempool } from '@hooks/use-mempool';
+import { useStackingClient } from '@hooks/use-stacking-client';
+import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
+import { homeActions } from '@store/home';
+import { selectPoxInfo } from '@store/stacking';
+import { safeAwait } from '@utils/safe-await';
+import React, { FC, useState, useCallback, useMemo } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useSelector, useDispatch } from 'react-redux';
 
 export const RevokeDelegationModal: FC = () => {
   const dispatch = useDispatch();

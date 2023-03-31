@@ -1,29 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { FC, useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { BigNumber } from 'bignumber.js';
-
-import { RootState } from '@store/index';
-import routes from '@constants/routes.json';
+import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
 import { POOLED_STACKING_TX_SIZE_BYTES } from '@constants/index';
-
+import routes from '@constants/routes.json';
+import { useApi } from '@hooks/use-api';
+import { useBroadcastTx } from '@hooks/use-broadcast-tx';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useMempool } from '@hooks/use-mempool';
+import { useStackingClient } from '@hooks/use-stacking-client';
+import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
+import { RootState } from '@store/index';
 import { selectPoxInfo } from '@store/stacking';
 import { safeAwait } from '@utils/safe-await';
-
-import { useStackingClient } from '@hooks/use-stacking-client';
-
-import { useApi } from '@hooks/use-api';
-import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
-import { useBroadcastTx } from '@hooks/use-broadcast-tx';
-import { ContractCallOptions, StacksTransaction } from '@stacks/transactions';
-import { useMempool } from '@hooks/use-mempool';
-
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
-
-import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
-import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { BigNumber } from 'bignumber.js';
+import React, { FC, useState, useMemo } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 interface StackingModalProps {
   delegateeStxAddress: string;

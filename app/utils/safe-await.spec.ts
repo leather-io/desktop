@@ -27,7 +27,7 @@ describe('safeAwait()', () => {
   });
 
   test('returns error if it is valid response', async () => {
-    const [err, data] = await safeAwait(new Promise(res => res(new Error('test err'))));
+    const [err] = await safeAwait(new Promise(res => res(new Error('test err'))));
     expect(err).toEqual(new Error('test err'));
   });
 

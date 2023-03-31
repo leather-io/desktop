@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
 import { Box, Text, BoxProps, color } from '@stacks/ui';
 import { openExternalLink } from '@utils/external-links';
+import React, { FC } from 'react';
 
 interface InternalLinkProps extends BoxProps {
   href: string;

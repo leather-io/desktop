@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { Title } from '@components/title';
 import {
   Flex,
   FlexProps,
@@ -10,7 +10,7 @@ import {
   color,
   Box,
 } from '@stacks/ui';
-import { Title } from '@components/title';
+import React, { FC } from 'react';
 
 export const StartStackingLayout: FC<FlexProps> = props => (
   <Flex

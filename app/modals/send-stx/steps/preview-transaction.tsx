@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
-
-import { Flex, Text, Box, color } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
+import { Flex, Text, Box, color } from '@stacks/ui';
 import { toHumanReadableStx } from '@utils/unit-convert';
+import React, { FC } from 'react';
 
 export const TxModalPreview: FC = ({ children }) => (
   <Flex flexDirection="column" fontSize="14px" mx="extra-loose" mt="tight">

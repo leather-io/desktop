@@ -1,12 +1,11 @@
-import { useCallback, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import BigNumber from 'bignumber.js';
-
+import { useMempool } from './use-mempool';
+import { selectAvailableBalance, selectLockedBalance, selectTotalBalance } from '@store/address';
 import { selectAddress } from '@store/keys';
 import { sumTxsTotalSpentByAddress } from '@utils/tx-utils';
-import { selectAvailableBalance, selectLockedBalance, selectTotalBalance } from '@store/address';
 import { stxBalanceValidator } from '@utils/validators/stx-balance-validator';
-import { useMempool } from './use-mempool';
+import BigNumber from 'bignumber.js';
+import { useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 export function useBalance() {
   const { outboundMempoolTxs } = useMempool();

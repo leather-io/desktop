@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 /* eslint-disable @typescript-eslint/no-var-requires */
+
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+
 /* eslint global-require: off, no-console: off */
 
 /**
@@ -14,23 +20,21 @@
  * When running `yarn build` or `yarn build-main`, this file is compiled to
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
-import path from 'path';
-import { app, BrowserWindow, ipcMain, session } from 'electron';
-import windowState from 'electron-window-state';
-import contextMenu from 'electron-context-menu';
-import installExtension, { ExtensionReference, REDUX_DEVTOOLS } from 'electron-devtools-installer';
-
-import MenuBuilder from './menu';
 import { deriveKey } from './crypto/key-generation';
-
-import { validateConfig } from './main/validate-config';
 import { getUserDataPath } from './main/get-user-data-path';
+import { registerIpcContextMenuHandlers } from './main/register-context-menus';
 import { registerLedgerListeners } from './main/register-ledger-listeners';
 import { registerIpcStoreHandlers } from './main/register-store-handlers';
-import { registerIpcContextMenuHandlers } from './main/register-context-menus';
 import { registerThemeModeHandlers } from './main/register-theme-mode-handlers';
+import { validateConfig } from './main/validate-config';
+import MenuBuilder from './menu';
+import 'core-js/stable';
+import { app, BrowserWindow, ipcMain, session } from 'electron';
+import contextMenu from 'electron-context-menu';
+import installExtension, { ExtensionReference, REDUX_DEVTOOLS } from 'electron-devtools-installer';
+import windowState from 'electron-window-state';
+import path from 'path';
+import 'regenerator-runtime/runtime';
 
 // CSP enabled in production mode, don't warn in development
 delete process.env.ELECTRON_ENABLE_SECURITY_WARNINGS;

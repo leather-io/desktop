@@ -1,16 +1,14 @@
-import React, { FC } from 'react';
-import { useField } from 'formik';
-
-import { Stepper } from '@components/stepper';
-import { MAX_STACKING_CYCLES, MIN_STACKING_CYCLES } from '@constants/index';
-
+import { OneCycleDescriptor } from '../../components/one-cycle-descriptor';
 import {
   StackingStep as Step,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { OneCycleDescriptor } from '../../components/one-cycle-descriptor';
+import { Stepper } from '@components/stepper';
+import { MAX_STACKING_CYCLES, MIN_STACKING_CYCLES } from '@constants/index';
+import { useField } from 'formik';
+import React, { FC } from 'react';
 
 interface ChooseCycleStepProps {
   cycles: number;

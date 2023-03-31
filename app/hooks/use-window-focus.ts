@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-
 import { WindowActiveState } from '@models';
+import { useState, useEffect, useCallback } from 'react';
 
 export function useWindowFocus() {
   const [windowState, setWindowState] = useState<WindowActiveState>('focused');

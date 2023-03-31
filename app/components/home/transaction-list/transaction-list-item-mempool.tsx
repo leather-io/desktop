@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { FC, useRef, useEffect, MutableRefObject } from 'react';
-import { useHover, useFocus } from 'use-events';
-import { Box, color, Flex, Stack, Text } from '@stacks/ui';
+import { getMempoolTxLabel } from './mempool-tx-label';
+import { TransactionIcon } from './transaction-icon';
+import { TransactionListItemContainer } from './transaction-list-item-container';
 import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
+import { Box, color, Flex, Stack, Text } from '@stacks/ui';
 import { getTxTypeName } from '@stacks/ui-utils';
-
-import { toHumanReadableStx } from '@utils/unit-convert';
+import { selectPoxInfo } from '@store/stacking';
 import { sumStxTxTotal } from '@utils/sum-stx-tx-total';
 import {
   isStackingTx,
@@ -14,12 +14,10 @@ import {
   isDelegateStxTx,
   isRevokingDelegationTx,
 } from '@utils/tx-utils';
-
-import { TransactionIcon } from './transaction-icon';
-import { TransactionListItemContainer } from './transaction-list-item-container';
+import { toHumanReadableStx } from '@utils/unit-convert';
+import React, { FC, useRef, useEffect, MutableRefObject } from 'react';
 import { useSelector } from 'react-redux';
-import { selectPoxInfo } from '@store/stacking';
-import { getMempoolTxLabel } from './mempool-tx-label';
+import { useHover, useFocus } from 'use-events';
 
 const shouldShowMempoolTx = (tx: MempoolTransaction, contractId?: string) =>
   tx.tx_type === 'token_transfer' ||

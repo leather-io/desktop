@@ -1,10 +1,9 @@
-import { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
-
-import { decryptSoftwareWallet, selectEncryptedMnemonic, selectSalt } from '@store/keys';
 import { RootState } from '@store/index';
+import { decryptSoftwareWallet, selectEncryptedMnemonic, selectSalt } from '@store/keys';
 import { delay } from '@utils/delay';
 import { safeAwait } from '@utils/safe-await';
+import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const shortDelayToGiveAnimationsTime = async () => delay(100);
 

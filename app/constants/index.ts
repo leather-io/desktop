@@ -1,7 +1,7 @@
-import { TransactionVersion } from '@stacks/transactions';
-import { whenNetwork } from '@utils/network-utils';
 import packageJson from '../../package.json';
 import { stxToMicroStx } from '../utils/unit-convert';
+import { TransactionVersion } from '@stacks/transactions';
+import { whenNetwork } from '@utils/network-utils';
 
 type Environments = 'development' | 'testing' | 'production';
 

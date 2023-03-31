@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
 import { Text, Box, color } from '@stacks/ui';
-
 import { isMainnet } from '@utils/network-utils';
+import React, { FC } from 'react';
 
 interface NetworkMessageProps {
   textColor?: string;

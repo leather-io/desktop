@@ -1,8 +1,7 @@
-import React, { FC, useState } from 'react';
-import { Flex } from '@stacks/ui';
-
 import { AddressDisplayer } from './address-displayer';
 import { RevealStxPasswordForm } from './reveal-stx-password-form';
+import { Flex } from '@stacks/ui';
+import React, { FC, useState } from 'react';
 
 export const RevealStxAddressSoftware: FC = () => {
   const [address, setAddress] = useState<null | string>(null);

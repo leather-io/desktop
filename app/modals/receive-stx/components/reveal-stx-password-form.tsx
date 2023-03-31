@@ -1,16 +1,15 @@
-import React, { FC, useRef } from 'react';
-import { useFormik } from 'formik';
-import { Input, Text, Button, Flex } from '@stacks/ui';
-import { getStxAddress } from '@stacks/wallet-sdk';
-
-import { HomeSelectors } from 'app/tests/features/home.selectors';
-import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
-import { ExplainerTooltip } from '@components/tooltip';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { delay } from '@utils/delay';
-import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
+import { ExplainerTooltip } from '@components/tooltip';
 import { TRANSACTION_VERSION } from '@constants/index';
+import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
+import { Input, Text, Button, Flex } from '@stacks/ui';
+import { getStxAddress } from '@stacks/wallet-sdk';
+import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
+import { delay } from '@utils/delay';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
+import { useFormik } from 'formik';
+import React, { FC, useRef } from 'react';
 
 interface RevealStxPasswordFormProps {
   onAddressDerived(address: string): void;

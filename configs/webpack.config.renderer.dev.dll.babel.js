@@ -1,13 +1,12 @@
 /**
  * Builds the DLL for development electron renderer process
  */
-
-import webpack from 'webpack';
-import path from 'path';
-import { merge } from 'webpack-merge';
-import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
-import { dependencies } from '../package.json';
 import { CheckNodeEnv } from '../internals/scripts/CheckNodeEnv';
+import { dependencies } from '../package.json';
+import baseConfig, { defaultNodePolyfillsForRenderer } from './webpack.config.base';
+import path from 'path';
+import webpack from 'webpack';
+import { merge } from 'webpack-merge';
 
 CheckNodeEnv('development');
 

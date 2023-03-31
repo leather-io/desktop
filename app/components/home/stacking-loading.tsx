@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { color, Flex, Spinner } from '@stacks/ui';
+import React, { FC } from 'react';
 
 export const StackingLoading: FC = () => (
   <Flex

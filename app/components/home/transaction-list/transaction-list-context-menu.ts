@@ -1,7 +1,6 @@
-import { Transaction } from '@stacks/stacks-blockchain-api-types';
-
-import { hasMemo, getRecipientAddress } from '@utils/tx-utils';
 import { features } from '../../../constants/index';
+import { Transaction } from '@stacks/stacks-blockchain-api-types';
+import { hasMemo, getRecipientAddress } from '@utils/tx-utils';
 
 export function registerHandler(el: HTMLButtonElement | null, handler: (e: Event) => void) {
   if (el === null) return;

@@ -1,8 +1,7 @@
+import { messages$ } from './use-message-events';
+import { useColorMode } from '@stacks/ui';
 import { useEffect } from 'react';
 import { filter } from 'rxjs/operators';
-import { useColorMode } from '@stacks/ui';
-
-import { messages$ } from './use-message-events';
 
 export function useListenSystemThemeChange() {
   const { setColorMode } = useColorMode();

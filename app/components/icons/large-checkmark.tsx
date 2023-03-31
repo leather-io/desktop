@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Box, BoxProps } from '@stacks/ui';
+import React, { FC } from 'react';
 
 type LargeCheckmarkProps = BoxProps;
 

@@ -1,22 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { useCallback, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import {
-  useCreateLedgerContractCallTx,
-  useCreateLedgerTokenTransferTx,
-} from '@hooks/use-create-ledger-contract-call-tx';
-import { SignTxWithLedger } from '@modals/components/sign-tx-with-ledger';
-import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
-import { safeAwait } from '@utils/safe-await';
-import { capitalize } from '@utils/capitalize';
-
 import {
   StackingModalButton as Button,
   StackingModalFooter as Footer,
 } from '../../modals/components/stacking-modal-layout';
 import { SignTransactionProps } from './sign-transaction';
+import {
+  useCreateLedgerContractCallTx,
+  useCreateLedgerTokenTransferTx,
+} from '@hooks/use-create-ledger-contract-call-tx';
+import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
+import { SignTxWithLedger } from '@modals/components/sign-tx-with-ledger';
 import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
+import { capitalize } from '@utils/capitalize';
+import { safeAwait } from '@utils/safe-await';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 type SignTransactionLedgerProps = SignTransactionProps;
 

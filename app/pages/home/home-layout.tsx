@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { Flex, Box } from '@stacks/ui';
 import { Screen } from '@components/screen';
+import { Flex, Box } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface HomeLayoutProps {
   balanceCard: JSX.Element;

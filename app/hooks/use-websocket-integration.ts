@@ -1,16 +1,16 @@
-import { connectWebSocketClient, StacksApiWebSocketClient } from '@stacks/blockchain-api-client';
-import { safeAwait } from '@utils/safe-await';
-import { useEffect } from 'react';
-import urljoin from 'url-join';
-import { isDelegatedStackingTx, isRevokingDelegationTx, isDelegateStxTx } from '@utils/tx-utils';
+import { useApi } from './use-api';
 import { useDelegationStatus } from './use-delegation-status';
 import { useMempool } from './use-mempool';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectAddress } from '@store/keys';
-import { useApi } from './use-api';
+import { connectWebSocketClient, StacksApiWebSocketClient } from '@stacks/blockchain-api-client';
 import { updateAddressBalance } from '@store/address';
 import { RootState } from '@store/index';
+import { selectAddress } from '@store/keys';
 import { selectPoxInfo } from '@store/stacking';
+import { safeAwait } from '@utils/safe-await';
+import { isDelegatedStackingTx, isRevokingDelegationTx, isDelegateStxTx } from '@utils/tx-utils';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import urljoin from 'url-join';
 
 export function useWebSocketIntegration() {
   const delegationStatus = useDelegationStatus();
@@ -50,7 +50,9 @@ export function useWebSocketIntegration() {
           // dispatch(addNewTransaction(newTx.data));
           // dispatch(pendingTransactionSuccessful(newTx.data));
         });
-      } catch {}
+      } catch {
+        // ignore
+      }
     }
     void run();
     return () => {

@@ -1,8 +1,6 @@
-import { useCallback, useState } from 'react';
 import { StacksTransaction } from '@stacks/transactions';
-
 import { broadcastTransaction, BroadcastTransactionArgs } from '@store/transaction';
-
+import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 interface UseBroadcastTxArgs {

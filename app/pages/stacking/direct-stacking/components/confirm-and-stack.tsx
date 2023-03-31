@@ -1,8 +1,7 @@
-import React, { FC, useState } from 'react';
-
 import { StackingStep, StackingStepAction } from '../../components/stacking-form-step';
 import { StackingUserConfirm } from '../../components/stacking-user-confirm';
 import { DirectStackingTerms } from './direct-stacking-terms';
+import React, { FC, useState } from 'react';
 
 interface ConfirmAndLockStepProps {
   timeUntilNextCycle: string;

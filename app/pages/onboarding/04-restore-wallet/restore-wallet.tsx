@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { validateMnemonic } from 'bip39';
-import { Text, Input, Flex, Box, color } from '@stacks/ui';
-
-import routes from '@constants/routes.json';
-import { Hr } from '@components/hr';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { persistMnemonic } from '@store/keys/keys.actions';
-import { useBackButton } from '@hooks/use-back-url';
-
+import { ExternalLink } from '@components/external-link';
+import { Hr } from '@components/hr';
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingButton,
   OnboardingText,
 } from '@components/onboarding';
-import { ExternalLink } from '@components/external-link';
+import routes from '@constants/routes.json';
+import { useAnalytics } from '@hooks/use-analytics';
+import { useBackButton } from '@hooks/use-back-url';
+import { Text, Input, Flex, Box, color } from '@stacks/ui';
+import { persistMnemonic } from '@store/keys/keys.actions';
 import { parseSeedPhraseInput } from '@utils/parse-seed-phrase';
 import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
-import { useAnalytics } from '@hooks/use-analytics';
+import { validateMnemonic } from 'bip39';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
 export const RestoreWallet: React.FC = () => {
   useBackButton(routes.WELCOME);

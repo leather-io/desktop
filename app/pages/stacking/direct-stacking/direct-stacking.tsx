@@ -1,39 +1,36 @@
-import React, { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { BigNumber } from 'bignumber.js';
-import * as yup from 'yup';
-import { Form, Formik } from 'formik';
-
-import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
-import { useBalance } from '@hooks/use-balance';
-import { validateDecimalPrecision } from '@utils/form/validate-decimals';
-import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { StackingFormContainer } from '../components/stacking-form-container';
+import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';
+import { StackingGuideCard } from '../components/stacking-guide-card';
+import { StackingLayout } from '../components/stacking-layout';
+import { ChooseBtcAddressField } from './components/choose-btc-address';
+import { ChooseCycleField } from './components/choose-cycles';
+import { ChooseDirectStackingAmountField } from './components/choose-direct-stacking-amount';
+import { ConfirmAndStackStep } from './components/confirm-and-stack';
+import { DirectStackingInfoCard } from './components/direct-stacking-info-card';
+import { DirectStackingIntro } from './components/direct-stacking-intro';
 import { STACKING_CONTRACT_CALL_TX_BYTES } from '@constants/index';
-import { StackingModal } from '@modals/stacking/stacking-modal';
-import { btcAddressSchema } from '@utils/validators/btc-address-validator';
-import { useBackButton } from '@hooks/use-back-url';
 import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url';
+import { useBalance } from '@hooks/use-balance';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { StackingModal } from '@modals/stacking/stacking-modal';
 import { RootState } from '@store/index';
 import { selectWalletType } from '@store/keys';
-import { selectActiveNodeApi } from '@store/stacks-node';
 import {
   selectEstimatedStackingDuration,
   selectNextCycleInfo,
   selectPoxInfo,
 } from '@store/stacking';
-
-import { StackingLayout } from '../components/stacking-layout';
-import { StackingFormContainer } from '../components/stacking-form-container';
-import { ChooseBtcAddressField } from './components/choose-btc-address';
-
-import { DirectStackingInfoCard } from './components/direct-stacking-info-card';
-import { DirectStackingIntro } from './components/direct-stacking-intro';
-import { ChooseCycleField } from './components/choose-cycles';
-import { ChooseDirectStackingAmountField } from './components/choose-direct-stacking-amount';
-import { ConfirmAndStackStep } from './components/confirm-and-stack';
-import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';
-import { StackingGuideCard } from '../components/stacking-guide-card';
+import { selectActiveNodeApi } from '@store/stacks-node';
+import { validateDecimalPrecision } from '@utils/form/validate-decimals';
+import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { btcAddressSchema } from '@utils/validators/btc-address-validator';
+import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
+import { BigNumber } from 'bignumber.js';
+import { Form, Formik } from 'formik';
+import React, { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
+import * as yup from 'yup';
 
 enum StackingStep {
   ChooseAmount = 'Choose an amount',

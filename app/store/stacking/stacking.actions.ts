@@ -1,12 +1,11 @@
+import { Api } from '@api/api';
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import { StackingClient } from '@stacks/stacking';
-
+import { RootState } from '@store/index';
 import {
   selectActiveNodeApi,
   selectActiveStacksNetwork,
 } from '@store/stacks-node/stacks-node.reducer';
-import { RootState } from '@store/index';
-import { Api } from '@api/api';
 import { safeAwait } from '@utils/safe-await';
 
 export const fetchStackingInfo = createAsyncThunk('stacking/details', async (_arg, thunkApi) => {

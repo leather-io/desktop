@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
-import Tippy from '@tippyjs/react';
-import { Box, BoxProps } from '@stacks/ui';
-
 import { ExplainerIcon } from './icons/explainer';
+import { Box, BoxProps } from '@stacks/ui';
+import Tippy from '@tippyjs/react';
+import React, { FC } from 'react';
 
 interface TooltipProps extends BoxProps {
   text: string;

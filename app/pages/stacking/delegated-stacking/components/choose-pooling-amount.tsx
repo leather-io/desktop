@@ -1,16 +1,14 @@
-import React, { FC, useRef } from 'react';
-import { Box, Button, color, Input } from '@stacks/ui';
-import { useField } from 'formik';
-
-import { useBalance } from '@hooks/use-balance';
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
-import { microStxToStx, toHumanReadableStx } from '@utils/unit-convert';
-
 import {
   StackingStep as Step,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { useBalance } from '@hooks/use-balance';
+import { Box, Button, color, Input } from '@stacks/ui';
+import { microStxToStx, toHumanReadableStx } from '@utils/unit-convert';
+import { useField } from 'formik';
+import React, { FC, useRef } from 'react';
 
 export const ChoosePoolingAmountField: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);

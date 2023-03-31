@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
 import { Screen } from '@components/screen';
 import { Box, Flex } from '@stacks/ui';
+import React, { FC } from 'react';
 
 type StackingComponents = 'intro' | 'stackingInfoPanel' | 'stackingForm';
 

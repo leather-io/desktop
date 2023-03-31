@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import * as yup from 'yup';
 import { stxToMicroStx } from '@utils/unit-convert';
 import BigNumber from 'bignumber.js';
+import * as yup from 'yup';
 
 export function stxBalanceValidator(balance: BigNumber): yup.TestConfig {
   return {

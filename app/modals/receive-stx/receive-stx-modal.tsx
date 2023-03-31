@@ -1,19 +1,17 @@
-import React, { FC, memo } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { Button } from '@stacks/ui';
-import { Modal } from '@modals/components/base-modal';
-
-import { homeActions } from '@store/home';
-import { ModalHeader } from '@modals/components/modal-header';
-import { useWalletType } from '@hooks/use-wallet-type';
-
 import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
 import { RevealStxAddressLedger } from './components/reveal-stx-address-ledger';
 import { RevealStxAddressSoftware } from './components/reveal-stx-address-software';
+import { useWalletType } from '@hooks/use-wallet-type';
+import { Modal } from '@modals/components/base-modal';
+import { ModalHeader } from '@modals/components/modal-header';
+import { Button } from '@stacks/ui';
+import { homeActions } from '@store/home';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
+import React, { FC } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useDispatch } from 'react-redux';
 
-export const ReceiveStxModal: FC<{ isOpen: boolean }> = memo(({ isOpen }) => {
+export const ReceiveStxModal: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const dispatch = useDispatch();
   useHotkeys('esc', () => void dispatch(homeActions.closeReceiveModal()));
   const closeModal = () => dispatch(homeActions.closeReceiveModal());
@@ -39,4 +37,4 @@ export const ReceiveStxModal: FC<{ isOpen: boolean }> = memo(({ isOpen }) => {
       </TxModalFooter>
     </Modal>
   );
-});
+};

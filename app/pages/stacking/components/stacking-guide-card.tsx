@@ -1,13 +1,11 @@
-import React, { FC } from 'react';
-import { useFocus, useHover } from 'use-events';
-import { Box, color, FlexProps, Text } from '@stacks/ui';
-
 import btcIllustration from '@assets/images/abstract-btc-tower.svg';
-import { openExternalLink } from '@utils/external-links';
-import { STACKING_GUIDE_URL } from '@constants/index';
-
 import { InfoCard } from '@components/info-card';
 import { LegalDisclaimerTooltip } from '@components/legal-disclaimer-tooltip';
+import { STACKING_GUIDE_URL } from '@constants/index';
+import { Box, color, FlexProps, Text } from '@stacks/ui';
+import { openExternalLink } from '@utils/external-links';
+import React, { FC } from 'react';
+import { useFocus, useHover } from 'use-events';
 
 const openStackingGuide = () => openExternalLink(STACKING_GUIDE_URL);
 

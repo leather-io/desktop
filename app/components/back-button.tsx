@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { ArrowIcon, ButtonProps, IconButton, color } from '@stacks/ui';
 import { useBack } from '@hooks/use-back-url';
+import { ArrowIcon, ButtonProps, IconButton, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 // Cannot use cursor pointer in top bar area of window
 // https://github.com/electron/electron/issues/5723

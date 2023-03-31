@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, BoxProps, Text, Flex, color } from '@stacks/ui';
+import React from 'react';
 
 interface CardProps extends BoxProps {
   title?: string;

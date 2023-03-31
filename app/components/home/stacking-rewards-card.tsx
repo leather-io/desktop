@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
-import { Box, color, Flex, Text } from '@stacks/ui';
 import { Hr } from '../hr';
 import { MovementArrow } from '../icons/movement-arrow';
 import { features } from '@constants/index';
+import { Box, color, Flex, Text } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface StackingRewardCardProps {
   lifetime: string;

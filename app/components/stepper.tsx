@@ -1,10 +1,9 @@
-import React, { FC } from 'react';
-import { Box, Flex, Text, BoxProps, FlexProps, color } from '@stacks/ui';
-
-import { formatCycles } from '@utils/stacking';
-import { increment, decrement } from '@utils/mutate-numbers';
 import { DecrementIcon } from './icons/decrement';
 import { IncrementIcon } from './icons/increment';
+import { Box, Flex, Text, BoxProps, FlexProps, color } from '@stacks/ui';
+import { increment, decrement } from '@utils/mutate-numbers';
+import { formatCycles } from '@utils/stacking';
+import React, { FC } from 'react';
 
 interface StepperProps extends BoxProps {
   amount: number;

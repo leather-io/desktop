@@ -1,6 +1,5 @@
-import { BigNumber } from 'bignumber.js';
-import { calculateRewardSlots, calculateStackingBuffer } from './calc-stacking-buffer';
 import { stxToMicroStx } from '../../../utils/unit-convert';
+import { calculateRewardSlots, calculateStackingBuffer } from './calc-stacking-buffer';
 
 const minStackingAmount = stxToMicroStx(100_000);
 

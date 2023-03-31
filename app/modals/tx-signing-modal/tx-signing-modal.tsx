@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { Modal } from '@stacks/ui';
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
-
+import { StackingModalHeader as Header, modalStyle } from '../components/stacking-modal-layout';
 import { SignTransaction } from '@components/tx-signing/sign-transaction';
 import { useLatestNonce } from '@hooks/use-latest-nonce';
-import { StackingModalHeader as Header, modalStyle } from '../components/stacking-modal-layout';
-import { ContractCallOptions, StacksTransaction, TokenTransferOptions } from '@stacks/transactions';
 import { TransactionError } from '@modals/components/transaction-error';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import { ContractCallOptions, StacksTransaction, TokenTransferOptions } from '@stacks/transactions';
+import { Modal } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface TxSigningModalProps {
   action: string;

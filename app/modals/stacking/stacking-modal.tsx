@@ -1,23 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { FC, useState, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { BigNumber } from 'bignumber.js';
-
-import { RootState } from '@store/index';
-import routes from '@constants/routes.json';
-import { activeStackingTx, selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
-import { StacksTransaction } from '@stacks/transactions';
-import { useStackingClient } from '@hooks/use-stacking-client';
-import { useApi } from '@hooks/use-api';
-import { safeAwait } from '@utils/safe-await';
-
 import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
+import routes from '@constants/routes.json';
+import { useApi } from '@hooks/use-api';
 import { useBroadcastTx } from '@hooks/use-broadcast-tx';
 import { useMempool } from '@hooks/use-mempool';
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import { useStackingClient } from '@hooks/use-stacking-client';
 import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import { StacksTransaction } from '@stacks/transactions';
+import { RootState } from '@store/index';
+import { activeStackingTx, selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';
+import { safeAwait } from '@utils/safe-await';
+import { BigNumber } from 'bignumber.js';
+import React, { FC, useState, useMemo } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 interface StackingModalProps {
   poxAddress: string;

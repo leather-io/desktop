@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
 import { Box, color, Flex, Text } from '@stacks/ui';
-
 import { StacksNode } from '@store/stacks-node';
+import React, { FC } from 'react';
 
 interface NodeSelectItemProps {
   node: StacksNode;

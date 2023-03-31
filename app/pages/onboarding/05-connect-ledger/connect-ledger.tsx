@@ -1,27 +1,23 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { LedgerError } from '@zondax/ledger-blockstack';
-import { Box, color, Text } from '@stacks/ui';
-
-import routes from '@constants/routes.json';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingText,
   OnboardingButton,
 } from '@components/onboarding';
-import { setLedgerWallet } from '@store/keys';
-
-import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';
+import routes from '@constants/routes.json';
 import { useBackButton } from '@hooks/use-back-url';
-
-import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
-
-import { isMainnet } from '@utils/network-utils';
+import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';
+import { Box, color, Text } from '@stacks/ui';
+import { setLedgerWallet } from '@store/keys';
 import { delay } from '@utils/delay';
+import { isMainnet } from '@utils/network-utils';
+import { LedgerError } from '@zondax/ledger-blockstack';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 export const ConnectLedger: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -90,8 +86,8 @@ export const ConnectLedger: React.FC = () => {
           textAlign="center"
           lineHeight="18px"
         >
-          Press both buttons on your Ledger device simultaneously when it displays "Pending Ledger
-          review"
+          Press both buttons on your Ledger device simultaneously when it displays &quot;Pending
+          Ledger review&quot;
         </Text>
       </Box>
       <LedgerConnectInstructions

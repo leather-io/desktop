@@ -1,8 +1,7 @@
-import React from 'react';
-import { Flex, FlexProps } from '@stacks/ui';
-
 import { EnableBefore, listHoverProps, listFocusedProps } from './transaction-list-item-pseudo';
+import { Flex, FlexProps } from '@stacks/ui';
 import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
+import React from 'react';
 
 interface TransactionListItemContainerProps extends FlexProps {
   focused: boolean;

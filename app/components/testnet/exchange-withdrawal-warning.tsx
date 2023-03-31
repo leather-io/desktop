@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { ExclamationMarkCircleIcon, Flex, Text, FlexProps, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 export const ExchangeWithdrawalWarning: FC<FlexProps> = props => {
   return (

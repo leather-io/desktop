@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Flex, Text, Stack, FlexProps, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 export interface StackingTermItem extends FlexProps {
   title: string;

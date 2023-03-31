@@ -1,5 +1,5 @@
-import { createKeysReducer, KeysState } from './keys.reducer';
 import { persistMnemonicSafe, persistMnemonic } from './keys.actions';
+import { createKeysReducer, KeysState } from './keys.reducer';
 
 jest.mock('electron-store');
 

@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
-import { Flex, Box, Text, color } from '@stacks/ui';
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
-
 import failedCrossSvg from '../../../assets/images/failed-cross.svg';
 import { ExplainerTooltip } from '@components/tooltip';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import { Flex, Box, Text, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface FailedBroadcastErrorProps {
   error: PostCoreNodeTransactionsError | null;
@@ -60,8 +59,8 @@ export const FailedBroadcastError: FC<FailedBroadcastErrorProps> = props => {
             Failed to broadcast transaction
           </Text>
           <Text textStyle="body.small" color={color('text-caption')} mt="tight" display="block">
-            The Stacks Blockchain API you're connected to returned a HTTP error code, preventing
-            this transaction from broadcasting.
+            The Stacks Blockchain API you&apos;re connected to returned a HTTP error code,
+            preventing this transaction from broadcasting.
           </Text>
         </Box>
       );

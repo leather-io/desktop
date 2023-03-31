@@ -1,16 +1,4 @@
-import {
-  CoreNodePoxResponse,
-  CoreNodeInfoResponse,
-  NetworkBlockTimesResponse,
-} from '@stacks/stacks-blockchain-api-types';
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
-
 import { RootState } from '..';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import { NETWORK } from '@constants/index';
-import { selectIsStackingCallPending } from '@store/pending-transaction';
 import {
   fetchStackingInfo,
   fetchCoreDetails,
@@ -20,9 +8,20 @@ import {
   removeStackingTx,
   fetchAccountBalanceLocked,
 } from './stacking.actions';
-import { stxToMicroStx } from '@utils/unit-convert';
+import { NETWORK } from '@constants/index';
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
+import {
+  CoreNodePoxResponse,
+  CoreNodeInfoResponse,
+  NetworkBlockTimesResponse,
+} from '@stacks/stacks-blockchain-api-types';
 import { selectAddressBalance } from '@store/address';
+import { selectIsStackingCallPending } from '@store/pending-transaction';
+import { stxToMicroStx } from '@utils/unit-convert';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);

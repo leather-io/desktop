@@ -1,5 +1,5 @@
-import { _electron } from 'playwright';
 import path from 'path';
+import { _electron } from 'playwright';
 
 jest.setTimeout(15_000);
 

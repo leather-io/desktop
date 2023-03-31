@@ -1,8 +1,7 @@
-import React, { FC } from 'react';
-import { Box, Flex, Text, EncryptionIcon, color } from '@stacks/ui';
-
 import { LedgerConnectStepRow, LedgerStepText } from './ledger-connect-layout';
 import { LedgerConnectStep } from '@hooks/use-prepare-ledger';
+import { Box, Flex, Text, EncryptionIcon, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface LedgerConnectInstructions {
   step: LedgerConnectStep;

@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
 import { Title } from '@components/title';
 import { Box, Flex, FlexProps, Button, ButtonProps, Stack } from '@stacks/ui';
 import { ForwardRefExoticComponentWithAs, forwardRefWithAs } from '@stacks/ui-core';
+import React, { FC } from 'react';
 
 interface StackingFormStepProps extends FlexProps {
   title: string;

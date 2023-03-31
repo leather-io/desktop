@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { BoxProps } from '@stacks/ui';
 import { Tooltip } from './tooltip';
+import { BoxProps } from '@stacks/ui';
+import React, { FC } from 'react';
 
 export const LegalDisclaimerTooltip: FC<BoxProps> = props => (
   <Tooltip

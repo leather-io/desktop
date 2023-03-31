@@ -1,14 +1,3 @@
-import React, { FC } from 'react';
-import { Box, Flex, useMediaQuery } from '@stacks/ui';
-import { useHistory } from 'react-router-dom';
-
-import routes from '@constants/routes.json';
-import { useBackButton } from '@hooks/use-back-url';
-import { useSelector } from 'react-redux';
-import { selectPoxInfo } from '@store/stacking';
-import { toHumanReadableStx } from '@utils/unit-convert';
-import { useBalance } from '@hooks/use-balance';
-import { POOLED_STACKING_TX_SIZE_BYTES, STACKING_CONTRACT_CALL_TX_BYTES } from '@constants/index';
 import {
   StartStackingLayout as Layout,
   StackingOptionsCardContainer as CardContainer,
@@ -20,15 +9,24 @@ import {
   StackingOptionCardBenefitContainer as OptionBenefitContainer,
   InsufficientStackingBalanceWarning,
 } from './components/start-stacking-layout';
-import { ExplainerTooltip } from '@components/tooltip';
-
-import divingBoardIllustration from '@assets/images/stack-in-a-pool.svg';
 import fishBowlIllustration from '@assets/images/stack-by-yourself.svg';
-import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
-import { IconUser, IconChartLine, IconLock, IconUserMinus } from '@tabler/icons';
+import divingBoardIllustration from '@assets/images/stack-in-a-pool.svg';
 import { StepsIcon } from '@components/icons/steps';
-import { useModifierKey } from '@hooks/use-modifier-key';
+import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
+import { ExplainerTooltip } from '@components/tooltip';
+import { POOLED_STACKING_TX_SIZE_BYTES, STACKING_CONTRACT_CALL_TX_BYTES } from '@constants/index';
+import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url';
+import { useBalance } from '@hooks/use-balance';
 import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useModifierKey } from '@hooks/use-modifier-key';
+import { Box, Flex, useMediaQuery } from '@stacks/ui';
+import { selectPoxInfo } from '@store/stacking';
+import { IconUser, IconChartLine, IconLock, IconUserMinus } from '@tabler/icons';
+import { toHumanReadableStx } from '@utils/unit-convert';
+import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 export const ChooseStackingMethod: FC = () => {
   const history = useHistory();

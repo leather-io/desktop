@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Flex, FlexProps } from '@stacks/ui';
+import React, { FC } from 'react';
 
 export const StackingFormInfoPanel: FC<FlexProps> = props => (
   <Flex

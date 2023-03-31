@@ -1,43 +1,4 @@
-import React, { FC } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { Spinner } from '@stacks/ui';
-
-import routes from '@constants/routes.json';
-import { openTxInExplorer } from '@utils/external-links';
-
-import { RootState } from '@store/index';
-import { selectAddress } from '@store/keys';
-import { selectActiveNodeApi } from '@store/stacks-node';
-import { selectRevokeDelegationModalOpen } from '@store/home/home.reducer';
-import { selectTransactionsLoading, selectTransactionListFetchError } from '@store/transaction';
-import { selectLoadingStacking, selectNextCycleInfo, selectStackerInfo } from '@store/stacking';
-import {
-  homeActions,
-  selectTxModalOpen,
-  selectReceiveModalOpen,
-  selectHomeCardState,
-  HomeCardState,
-} from '@store/home';
-
-import { SendStxModal } from '@modals/send-stx/send-stx-modal';
-import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
-import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';
-
-import { useDelegationStatus } from '@hooks/use-delegation-status';
-import { useTransactionList } from '@hooks/use-transaction-list';
-import { useBalance } from '@hooks/use-balance';
-import { useApi } from '@hooks/use-api';
-import { useLatestNonce } from '@hooks/use-latest-nonce';
-import { RequestDiagnosticsModal } from '@modals/request-diagnostics/request-diagnostic-modal';
-import { usePromptUserToSetDiagnosticPermissions } from '@hooks/use-diagnostic-permission-prompt';
-
-import { StackingCard } from '@components/home/stacking-card';
-import { StackingLoading } from '@components/home/stacking-loading';
-import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';
-import { StackingError } from '@components/home/stacking-error-card';
-import { TransactionListItemMempool } from '@components/home/transaction-list/transaction-list-item-mempool';
-import { DelegationCard } from '@components/home/delegation-card';
+import { HomeLayout } from './home-layout';
 import {
   TransactionList,
   StackingPromoCard,
@@ -45,8 +6,42 @@ import {
   TransactionListItem,
   BalanceCard,
 } from '@components/home';
-import { HomeLayout } from './home-layout';
+import { DelegationCard } from '@components/home/delegation-card';
+import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';
+import { StackingCard } from '@components/home/stacking-card';
+import { StackingError } from '@components/home/stacking-error-card';
+import { StackingLoading } from '@components/home/stacking-loading';
+import { TransactionListItemMempool } from '@components/home/transaction-list/transaction-list-item-mempool';
+import routes from '@constants/routes.json';
 import { useAnalytics } from '@hooks/use-analytics';
+import { useApi } from '@hooks/use-api';
+import { useBalance } from '@hooks/use-balance';
+import { useDelegationStatus } from '@hooks/use-delegation-status';
+import { usePromptUserToSetDiagnosticPermissions } from '@hooks/use-diagnostic-permission-prompt';
+import { useLatestNonce } from '@hooks/use-latest-nonce';
+import { useTransactionList } from '@hooks/use-transaction-list';
+import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';
+import { RequestDiagnosticsModal } from '@modals/request-diagnostics/request-diagnostic-modal';
+import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';
+import { SendStxModal } from '@modals/send-stx/send-stx-modal';
+import { Spinner } from '@stacks/ui';
+import {
+  homeActions,
+  selectTxModalOpen,
+  selectReceiveModalOpen,
+  selectHomeCardState,
+  HomeCardState,
+} from '@store/home';
+import { selectRevokeDelegationModalOpen } from '@store/home/home.reducer';
+import { RootState } from '@store/index';
+import { selectAddress } from '@store/keys';
+import { selectLoadingStacking, selectNextCycleInfo, selectStackerInfo } from '@store/stacking';
+import { selectActiveNodeApi } from '@store/stacks-node';
+import { selectTransactionsLoading, selectTransactionListFetchError } from '@store/transaction';
+import { openTxInExplorer } from '@utils/external-links';
+import React, { FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 
 export const Home: FC = () => {
   const dispatch = useDispatch();

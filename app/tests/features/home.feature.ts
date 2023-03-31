@@ -1,8 +1,6 @@
-import { HomeSelectors } from './home.selectors';
-
-import type { Page } from 'playwright';
-
 import { createTestSelector } from '../integration-helpers';
+import { HomeSelectors } from './home.selectors';
+import type { Page } from 'playwright';
 
 const homeSelectors = {
   stxAddressText: createTestSelector(HomeSelectors.TextStxAddress),

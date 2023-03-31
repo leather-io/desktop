@@ -1,7 +1,6 @@
-import type { Page } from 'playwright';
-
 import { createTestSelector, repeatAction } from '../integration-helpers';
 import { OnboardingSelector } from './onboarding.selectors';
+import type { Page } from 'playwright';
 
 export function createOnboardingFeature(page: Page) {
   return {

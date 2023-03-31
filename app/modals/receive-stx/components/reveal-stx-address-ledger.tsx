@@ -1,18 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { FC, useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
-
-import { Box, Button, Flex, Stack, Spinner, Text, color } from '@stacks/ui';
-
-import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
-import { selectAddress } from '@store/keys';
-import { RootState } from '@store/index';
-
 import { AddressDisplayer } from './address-displayer';
-import { SevereWarning } from '@components/severe-warning';
-import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
+import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';
+import { SevereWarning } from '@components/severe-warning';
+import { LedgerConnectStep, usePrepareLedger } from '@hooks/use-prepare-ledger';
+import { Box, Button, Flex, Stack, Spinner, Text, color } from '@stacks/ui';
+import { RootState } from '@store/index';
+import { selectAddress } from '@store/keys';
+import React, { FC, useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export const RevealStxAddressLedger: FC = () => {
   const { step, isLocked, isSupportedAppVersion, appVersionErrorText } = usePrepareLedger();
@@ -41,7 +38,9 @@ export const RevealStxAddressLedger: FC = () => {
       }
       await main.ledger.requestAndConfirmStxAddress();
       setPendingLedgerAction('complete');
-    } catch (e) {}
+    } catch (e) {
+      // ignore
+    }
   }, [persistedAddress]);
 
   return (
@@ -57,8 +56,8 @@ export const RevealStxAddressLedger: FC = () => {
           <Box>
             {ledgerAddress !== persistedAddress && (
               <SevereWarning mt="tight" mb="base" pr="base-loose">
-                The addresses do not match. Make sure you're using the same Ledger device with which
-                you created this wallet.
+                The addresses do not match. Make sure you&apos;re using the same Ledger device with
+                which you created this wallet.
               </SevereWarning>
             )}
           </Box>

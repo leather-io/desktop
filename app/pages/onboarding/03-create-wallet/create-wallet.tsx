@@ -1,9 +1,3 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
-import { onboardingMnemonicGenerationStep } from '@store/keys';
-import routes from '@constants/routes.json';
 import {
   Onboarding,
   OnboardingTitle,
@@ -12,9 +6,14 @@ import {
   OnboardingFooter,
   OnboardingFooterLink,
 } from '@components/onboarding';
-import { useBackButton } from '@hooks/use-back-url';
-import { openExternalLink } from '@utils/external-links';
 import { TREZOR_HELP_URL } from '@constants/index';
+import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url';
+import { onboardingMnemonicGenerationStep } from '@store/keys';
+import { openExternalLink } from '@utils/external-links';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 export const CreateWallet: React.FC = () => {
   const dispatch = useDispatch();

@@ -48,8 +48,8 @@ jobs:
           yarn
           yarn add -ED @actions/core
 
-      - name: Lint eslint
-        run: yarn lint:eslint
+      - name: Lint code
+        run: yarn check:lint
 
       - name: Check exact versions
         uses: ./.github/actions/check-version-lock

@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { useSelector } from 'react-redux';
+import { selectCoreNodeInfo } from '../store/stacking/stacking.reducer';
+import { useFetchDelegationStatus } from './use-fetch-delegation-status';
+import { cvToString, hexToCV, ClarityType, cvToJSON } from '@stacks/transactions';
+import { RootState } from '@store/index';
+import { selectAddress } from '@store/keys';
+import { selectPoxInfo } from '@store/stacking';
 import BigNumber from 'bignumber.js';
 import BN from 'bn.js';
-import { cvToString, hexToCV, ClarityType, cvToJSON } from '@stacks/transactions';
-
-import { selectAddress } from '@store/keys';
-import { RootState } from '@store/index';
-import { selectPoxInfo } from '@store/stacking';
-
-import { useFetchDelegationStatus } from './use-fetch-delegation-status';
-import { selectCoreNodeInfo } from '../store/stacking/stacking.reducer';
+import { useSelector } from 'react-redux';
 
 interface DelegatedTrueStatus {
   delegated: true;

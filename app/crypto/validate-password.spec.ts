@@ -1,5 +1,5 @@
-import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
 import { validatePassword } from './validate-password';
+import zxcvbn from 'zxcvbn';
 
 jest.mock('zxcvbn', () => jest.fn(() => ({ score: 4 })));
 

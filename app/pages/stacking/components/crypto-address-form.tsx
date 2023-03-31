@@ -1,6 +1,6 @@
-import React, { FC, forwardRef } from 'react';
 import { Input, InputProps } from '@stacks/ui';
 import { useField } from 'formik';
+import React, { FC, forwardRef } from 'react';
 
 interface CryptoAddressInputProps extends Omit<InputProps, 'form'> {
   fieldName: string;
@@ -24,3 +24,5 @@ export const CryptoAddressInput: FC<CryptoAddressInputProps> = forwardRef((props
     </>
   );
 });
+
+CryptoAddressInput.displayName = 'CryptoAddressInput';

@@ -1,25 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, {
-  FC,
-  MutableRefObject,
-  useLayoutEffect,
-  useRef,
-  useEffect,
-  useCallback,
-} from 'react';
-import { useSelector } from 'react-redux';
-import { useHover, useFocus } from 'use-events';
-import { Box, color, Stack, Text } from '@stacks/ui';
-
+import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
+import {
+  createTxListContextMenu,
+  registerHandler,
+  deregisterHandler,
+} from './transaction-list-context-menu';
+import { TransactionListItemContainer } from './transaction-list-item-container';
 import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
+import { Box, color, Stack, Text } from '@stacks/ui';
 import { getContractName, getTxTypeName } from '@stacks/ui-utils';
-
 import { RootState } from '@store/index';
 import { selectPoxInfo } from '@store/stacking';
 import { capitalize } from '@utils/capitalize';
-
-import { TransactionIcon, TransactionIconVariants } from './transaction-icon';
-import { toHumanReadableStx } from '@utils/unit-convert';
 import { makeExplorerTxLink } from '@utils/external-links';
 import {
   getRecipientAddress,
@@ -30,13 +22,17 @@ import {
   inferSendManyTransferOperation,
   isSendManyTx,
 } from '@utils/tx-utils';
-
-import {
-  createTxListContextMenu,
-  registerHandler,
-  deregisterHandler,
-} from './transaction-list-context-menu';
-import { TransactionListItemContainer } from './transaction-list-item-container';
+import { toHumanReadableStx } from '@utils/unit-convert';
+import React, {
+  FC,
+  MutableRefObject,
+  useLayoutEffect,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
+import { useSelector } from 'react-redux';
+import { useHover, useFocus } from 'use-events';
 
 interface TransactionListItemProps {
   txWithEvents: AddressTransactionWithTransfers;

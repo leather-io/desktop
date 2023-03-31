@@ -1,7 +1,6 @@
-import type { Page } from 'playwright';
-
 import { createTestSelector } from '../integration-helpers';
 import { SettingsSelectors } from './settings.selectors';
+import type { Page } from 'playwright';
 
 export function createSettingsFeature(page: Page) {
   return {

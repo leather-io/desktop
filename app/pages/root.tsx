@@ -1,15 +1,15 @@
-import React, { useEffect, useState, createContext } from 'react';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import { hot } from 'react-hot-loader/root';
-import { History } from 'history';
-import { PersistGate } from 'redux-persist/integration/react';
+import { Routes } from '../routes';
+import { css, Global } from '@emotion/react';
 import { color, CSSReset } from '@stacks/ui';
 import { Store } from '@store/index';
-import { Routes } from '../routes';
 import { loadFonts } from '@utils/load-fonts';
+import { ConnectedRouter } from 'connected-react-router';
+import { History } from 'history';
+import React, { useEffect, useState, createContext } from 'react';
+import { hot } from 'react-hot-loader/root';
 import { Toaster } from 'react-hot-toast';
-import { css, Global } from '@emotion/react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const GlobalStyle = css`
   html,
@@ -78,5 +78,4 @@ function Root({ store, history, persistor }: RootProps) {
   );
 }
 
-// eslint-disable-next-line import/no-default-export
 export default hot(Root);

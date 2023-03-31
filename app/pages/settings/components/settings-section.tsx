@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Box, Text, BoxProps } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface SettingSectionProps extends BoxProps {
   title: string;

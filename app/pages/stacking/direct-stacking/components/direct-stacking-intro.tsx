@@ -1,11 +1,10 @@
-import React, { FC } from 'react';
-import { Flex } from '@stacks/ui';
-
-import { Title } from '@components/title';
-import { toHumanReadableStx } from '@utils/unit-convert';
-import { StackingDescription } from '../../components/stacking-description';
-import { NextCycleStartTime } from '../../components/next-cycle-start-time';
 import { EstimatedMinimumLabel } from '../../components/estimated-minimum-label';
+import { NextCycleStartTime } from '../../components/next-cycle-start-time';
+import { StackingDescription } from '../../components/stacking-description';
+import { Title } from '@components/title';
+import { Flex } from '@stacks/ui';
+import { toHumanReadableStx } from '@utils/unit-convert';
+import React, { FC } from 'react';
 
 interface StackingIntroProps {
   timeUntilNextCycle: string;

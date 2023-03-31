@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { Flex, Text, FlexProps, color } from '@stacks/ui';
 import { ExternalLink } from './external-link';
+import { Flex, Text, FlexProps, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 export const WalletWarning: FC<FlexProps> = props => {
   return (

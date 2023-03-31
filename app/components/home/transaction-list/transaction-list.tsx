@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import { TransactionListEmpty } from './transaction-list-empty';
+import { TransactionListError } from './transaction-list-error';
+import { TransactionListLoading } from './transaction-list-loading';
+import { TransactionListTitle } from './transaction-list-title';
 import { Flex } from '@stacks/ui';
 import { StacksNode } from '@store/stacks-node';
-import { TransactionListTitle } from './transaction-list-title';
-import { TransactionListEmpty } from './transaction-list-empty';
-import { TransactionListLoading } from './transaction-list-loading';
-import { TransactionListError } from './transaction-list-error';
+import React, { FC } from 'react';
 
 interface TransactionListProps {
   txCount: number;

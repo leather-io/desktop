@@ -1,6 +1,3 @@
-import { createEntityAdapter, EntityState, createReducer, createSelector } from '@reduxjs/toolkit';
-import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
-
 import { RootState } from '..';
 import {
   fetchTransactionsFail,
@@ -10,6 +7,8 @@ import {
   broadcastTx,
   fetchTransactions,
 } from './transaction.actions';
+import { createEntityAdapter, EntityState, createReducer, createSelector } from '@reduxjs/toolkit';
+import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
 
 export interface TransactionState extends EntityState<AddressTransactionWithTransfers> {
   mostRecentBroadcastError: string | null;

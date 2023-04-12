@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-
-import { Button, color, Text } from '@stacks/ui';
-
-import { ResetWalletModal } from '@modals/reset-wallet/reset-wallet-modal';
-import { useWalletType } from '@hooks/use-wallet-type';
-
 import { SettingDescription } from './components/settings-layout';
 import { SettingSection } from './components/settings-section';
+import { useWalletType } from '@hooks/use-wallet-type';
+import { ResetWalletModal } from '@modals/reset-wallet/reset-wallet-modal';
+import { Button, color, Text } from '@stacks/ui';
 import { SettingsSelectors } from 'app/tests/features/settings.selectors';
+import React, { useState } from 'react';
 
 export const SettingsResetWallet = () => {
   const [resetModalOpen, setResetModalOpen] = useState(false);

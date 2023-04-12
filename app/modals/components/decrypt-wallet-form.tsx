@@ -1,8 +1,8 @@
-import React, { forwardRef } from 'react';
-import { Box, color, Input, Text } from '@stacks/ui';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
+import { Box, color, Input, Text } from '@stacks/ui';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
+import React, { forwardRef } from 'react';
 
 interface DecryptWalletFormProps {
   hasSubmitted: boolean;
@@ -52,3 +52,5 @@ export const DecryptWalletForm = forwardRef((props: DecryptWalletFormProps, ref)
     </Box>
   );
 });
+
+DecryptWalletForm.displayName = 'DecryptWalletForm';

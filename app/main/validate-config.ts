@@ -1,6 +1,6 @@
+import { App } from 'electron';
 import fs from 'fs';
 import path from 'path';
-import { App } from 'electron';
 
 export function validateConfig(app: App) {
   const configPath = path.join(app.getPath('userData'), 'config.json');

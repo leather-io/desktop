@@ -1,5 +1,5 @@
-import React from 'react';
 import { Box, BoxProps } from '@stacks/ui';
+import React from 'react';
 
 export function StepsIcon(props: BoxProps) {
   return (

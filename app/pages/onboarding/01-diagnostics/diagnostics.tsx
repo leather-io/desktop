@@ -1,15 +1,14 @@
-import React, { memo } from 'react';
+import { Onboarding, OnboardingTitle } from '@components/onboarding';
+import { AllowDiagnosticsLayout } from '@components/request-diagnostics.layout';
+import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url';
+import { Flex } from '@stacks/ui';
+import { grantDiagnosticsPermission, revokeDiagnosticPermission } from '@store/settings';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Flex } from '@stacks/ui';
 
-import routes from '@constants/routes.json';
-import { Onboarding, OnboardingTitle } from '@components/onboarding';
-import { useBackButton } from '@hooks/use-back-url';
-import { AllowDiagnosticsLayout } from '@components/request-diagnostics.layout';
-import { grantDiagnosticsPermission, revokeDiagnosticPermission } from '@store/settings';
-
-export const Diagnostics: React.FC = memo(() => {
+export function Diagnostics() {
   const history = useHistory();
   const dispatch = useDispatch();
   useBackButton(routes.TERMS);
@@ -40,4 +39,4 @@ export const Diagnostics: React.FC = memo(() => {
       </Flex>
     </Onboarding>
   );
-});
+}

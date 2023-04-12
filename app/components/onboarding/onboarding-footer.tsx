@@ -1,5 +1,5 @@
-import React from 'react';
 import { Flex, FlexProps } from '@stacks/ui';
+import React from 'react';
 
 export const OnboardingFooter: React.FC<FlexProps> = ({ children, ...props }) => {
   return (

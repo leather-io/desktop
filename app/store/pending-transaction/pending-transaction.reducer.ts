@@ -1,3 +1,5 @@
+import { RootState } from '..';
+import { fetchTransactionsDone, pendingTransactionSuccessful } from '../transaction';
 import {
   createEntityAdapter,
   EntityState,
@@ -5,9 +7,6 @@ import {
   createSelector,
   PayloadAction,
 } from '@reduxjs/toolkit';
-
-import { RootState } from '..';
-import { fetchTransactionsDone, pendingTransactionSuccessful } from '../transaction';
 import { MempoolTransaction, Transaction } from '@stacks/stacks-blockchain-api-types';
 
 export type PendingTransactionState = EntityState<MempoolTransaction>;

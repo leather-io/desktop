@@ -1,27 +1,25 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
-
-import { Text, Input, Flex, color } from '@stacks/ui';
-import { setSoftwareWallet } from '@store/keys';
-import { useBackButton } from '@hooks/use-back-url';
-import { FULL_ENTITY_NAME } from '@constants/index';
-
 import {
   Onboarding,
   OnboardingTitle,
   OnboardingText,
   OnboardingButton,
 } from '@components/onboarding';
+import { ExplainerTooltip } from '@components/tooltip';
+import { FULL_ENTITY_NAME } from '@constants/index';
 import {
   validatePassword,
   blankPasswordValidation,
   ValidatedPassword,
 } from '@crypto/validate-password';
-import { ExplainerTooltip } from '@components/tooltip';
+import { useAnalytics } from '@hooks/use-analytics';
+import { useBackButton } from '@hooks/use-back-url';
+import { Text, Input, Flex, color } from '@stacks/ui';
+import { setSoftwareWallet } from '@store/keys';
 import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
 import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
-import { useAnalytics } from '@hooks/use-analytics';
+import React, { useCallback, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
 const weakPasswordWarningMessage = (result: ValidatedPassword) => {
   if (result.isMnemonicPhrase) {

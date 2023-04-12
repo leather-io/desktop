@@ -1,35 +1,33 @@
-import React, { FC, useState, useCallback } from 'react';
-import { Form, Formik } from 'formik';
-import { useSelector } from 'react-redux';
-import { BigNumber } from 'bignumber.js';
-import * as yup from 'yup';
-
-import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
-import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
-import { RootState } from '@store/index';
-import routes from '@constants/routes.json';
-import { useBackButton } from '@hooks/use-back-url';
-import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';
-import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';
-import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
-import { stxAddressSchema } from '@utils/validators/stx-address-validator';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { StackingFormContainer } from '../components/stacking-form-container';
+import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';
+import { StackingGuideCard } from '../components/stacking-guide-card';
+import { StackingLayout } from '../components/stacking-layout';
+import { ChoosePoolStxAddressField } from './components/choose-pool-stx-address';
+import { ChoosePoolingAmountField } from './components/choose-pooling-amount';
+import { ChoosePoolingDurationField } from './components/choose-pooling-duration';
+import { ConfirmAndPoolAction } from './components/confirm-and-pool';
+import { PoolingInfoCard } from './components/delegated-stacking-info-card';
+import { PooledStackingIntro } from './components/pooled-stacking-intro';
 import {
   UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
   MIN_DELEGATED_STACKING_AMOUNT_USTX,
 } from '@constants/index';
-
-import { StackingLayout } from '../components/stacking-layout';
-import { StackingFormContainer } from '../components/stacking-form-container';
-import { StackingGuideCard } from '../components/stacking-guide-card';
-import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';
-
-import { PooledStackingIntro } from './components/pooled-stacking-intro';
-import { PoolingInfoCard } from './components/delegated-stacking-info-card';
-import { ConfirmAndPoolAction } from './components/confirm-and-pool';
-import { ChoosePoolingAmountField } from './components/choose-pooling-amount';
-import { ChoosePoolStxAddressField } from './components/choose-pool-stx-address';
-import { ChoosePoolingDurationField } from './components/choose-pooling-duration';
+import routes from '@constants/routes.json';
+import { useBackButton } from '@hooks/use-back-url';
+import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';
+import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
+import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';
+import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';
+import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { stxPrincipalSchema } from '@utils/validators/stx-address-validator';
+import { stxAmountSchema } from '@utils/validators/stx-amount-validator';
+import { BigNumber } from 'bignumber.js';
+import { Form, Formik } from 'formik';
+import React, { FC, useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import * as yup from 'yup';
 
 type Nullable<T> = { [K in keyof T]: T[K] | null };
 
@@ -83,7 +81,7 @@ export const StackingDelegation: FC = () => {
   );
 
   const validationSchema = yup.object().shape({
-    stxAddress: stxAddressSchema().test({
+    stxAddress: stxPrincipalSchema().test({
       name: 'cannot-pool-to-yourself',
       message: 'Cannot pool to your own STX address',
       test(value: any) {

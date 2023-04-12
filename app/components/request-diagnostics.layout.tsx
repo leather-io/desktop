@@ -1,8 +1,7 @@
+import { Box, Button, Flex, color, Stack, Text, FlexProps } from '@stacks/ui';
+import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
 import React, { FC } from 'react';
 import { FiCheck } from 'react-icons/fi';
-import { Box, Button, Flex, color, Stack, Text, FlexProps } from '@stacks/ui';
-
-import { OnboardingSelector } from 'app/tests/features/onboarding.selectors';
 
 interface ReasonToAllowDiagnosticsProps extends FlexProps {
   text: string;

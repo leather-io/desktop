@@ -1,5 +1,5 @@
-import BN from 'bn.js';
 import BigNumber from 'bignumber.js';
+import BN from 'bn.js';
 
 function parseNumber(num: string | number | BN | BigNumber) {
   if (BigNumber.isBigNumber(num)) return num;

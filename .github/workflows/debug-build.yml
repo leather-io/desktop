@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        if: github.repository == 'hirosystems/stacks-wallet'
+        if: github.repository == 'hirosystems/desktop-wallet'
         with:
           header: '> _Building new release, please wait for the latest_&nbsp; <img src="https://user-images.githubusercontent.com/1618764/97873036-51dfb200-1d17-11eb-89f5-0a922dc3ac92.gif" width="12" />'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -61,9 +61,9 @@ jobs:
 
       - name: Import GPG key
         id: import_gpg_key
-        uses: crazy-max/ghaction-import-gpg@v3
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
       - uses: actions/cache@v2
@@ -151,9 +151,9 @@ jobs:
 
       - name: Import GPG key
         id: import_gpg_key
-        uses: crazy-max/ghaction-import-gpg@v3
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Generate binary shasums
@@ -178,13 +178,13 @@ jobs:
 
     steps:
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        if: (!contains(needs.*.result, 'failure')) && github.repository == 'hirosystems/stacks-wallet'
+        if: (!contains(needs.*.result, 'failure')) && github.repository == 'hirosystems/desktop-wallet'
         with:
           header: '> [Download the latest build](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
-        if: (contains(needs.*.result, 'failure')) && github.repository == 'hirosystems/stacks-wallet'
+        if: (contains(needs.*.result, 'failure')) && github.repository == 'hirosystems/desktop-wallet'
         with:
           header: '> _Build failed, [see here for details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})_'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

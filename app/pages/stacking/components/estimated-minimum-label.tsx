@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { color, Flex, FlexProps, Text } from '@stacks/ui';
 import { StepsIcon } from '@components/icons/steps';
+import { color, Flex, FlexProps, Text } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface EstimatedMinimumLabelProps extends FlexProps {
   estimatedStackingMinimum: string;

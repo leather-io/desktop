@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Flex, Text, CloseIcon, Button, ButtonProps, IconButton, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 export const modalStyle = {
   minWidth: ['100%', '488px'],

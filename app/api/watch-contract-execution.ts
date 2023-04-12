@@ -1,5 +1,5 @@
-import { safeAwait } from '@utils/safe-await';
 import { Api } from '@api/api';
+import { safeAwait } from '@utils/safe-await';
 
 const defaultErrorMsg = 'Stacking contract failed to execute';
 

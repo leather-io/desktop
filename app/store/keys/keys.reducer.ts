@@ -1,13 +1,12 @@
-import { createReducer, createSelector } from '@reduxjs/toolkit';
-
 import { RootState } from '..';
-import { WalletType } from '@models/wallet-type';
 import {
   setPasswordSuccess,
   persistLedgerWallet,
   persistMnemonicSafe,
   persistMnemonic,
 } from './keys.actions';
+import { WalletType } from '@models/wallet-type';
+import { createReducer, createSelector } from '@reduxjs/toolkit';
 
 export interface KeysState {
   walletType: WalletType;

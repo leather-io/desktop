@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { useApi } from '@hooks/use-api';
+import { ApiResource } from '@models';
+import { selectAddress } from '@store/keys';
 import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-
-import { ApiResource } from '@models';
-import { selectAddress } from '@store/keys';
-import { useApi } from '@hooks/use-api';
 
 export function useFetchPossibleNextNonce() {
   const api = useApi();

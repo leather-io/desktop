@@ -1,18 +1,17 @@
-import React, { FC } from 'react';
-import ReactDOM from 'react-dom';
-import { useHistory, useLocation, matchPath } from 'react-router';
-import { Flex, color, Stack } from '@stacks/ui';
-
-import routes from '@constants/routes.json';
-import { useWindowFocus } from '@hooks/use-window-focus';
-import { useCheckForUpdates } from '@hooks/use-check-for-updates';
-import { openExternalLink } from '@utils/external-links';
-
-import { NetworkMessage } from './network-message';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { BackButton } from '../back-button';
+import { NetworkMessage } from './network-message';
 import { SettingsButton } from './settings-button';
 import { UpdateAvailableButton } from './update-available-button';
 import { ColorModeButton } from '@components/color-mode-button';
+import routes from '@constants/routes.json';
+import { useCheckForUpdates } from '@hooks/use-check-for-updates';
+import { useWindowFocus } from '@hooks/use-window-focus';
+import { Flex, color, Stack, Box } from '@stacks/ui';
+import { openExternalLink } from '@utils/external-links';
+import React, { FC } from 'react';
+import ReactDOM from 'react-dom';
+import { useHistory, useLocation, matchPath } from 'react-router';
 
 export const TitleBar: FC = () => {
   const el = document.querySelector('.draggable-bar');
@@ -49,6 +48,7 @@ export const TitleBar: FC = () => {
         right={[null, '130px']}
         height="100%"
       >
+        <Box position="absolute" width="120px" height="44px" className="inner-drag" />
         <Flex>
           {isNewerReleaseAvailable && latestRelease && (
             <UpdateAvailableButton

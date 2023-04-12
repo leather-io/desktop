@@ -1,21 +1,20 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { useHistory } from 'react-router';
-
-import routes from '@constants/routes.json';
-import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
-import { useCreateSoftwareContractCallTx } from '@hooks/use-create-software-contract-call-tx';
 import {
   StackingModalButton as Button,
   StackingModalFooter as Footer,
 } from '../../modals/components/stacking-modal-layout';
-import { safeAwait } from '@utils/safe-await';
-import { isDecryptionError } from '@crypto/key-encryption';
 import { SignTransactionProps } from './sign-transaction';
-import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
+import routes from '@constants/routes.json';
+import { isDecryptionError } from '@crypto/key-encryption';
+import { useCreateSoftwareContractCallTx } from '@hooks/use-create-software-contract-call-tx';
 import { createSoftwareWalletTokenTransferTx } from '@hooks/use-create-token-transfer-tx';
-import { capitalize } from '@utils/capitalize';
+import { useDecryptWallet } from '@hooks/use-decrypt-wallet';
+import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';
 import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';
+import { capitalize } from '@utils/capitalize';
+import { safeAwait } from '@utils/safe-await';
 import { HomeSelectors } from 'app/tests/features/home.selectors';
+import React, { useCallback, useRef, useState } from 'react';
+import { useHistory } from 'react-router';
 
 type SignTransactionSoftwareProps = SignTransactionProps;
 

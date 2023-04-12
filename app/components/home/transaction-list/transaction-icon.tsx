@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { Flex, FlexProps, Box, Spinner, FailedIcon, color } from '@stacks/ui';
-
-import { SentArrow } from '@components/icons/sent-arrow';
-import { ReceivedArrow } from '@components/icons/received-arrow';
-import { LockedIcon } from '@components/icons/locked';
-import { StxTxDirection } from '@utils/get-stx-transfer-direction';
-import { DelegatedIcon } from '@components/icons/delegated-icon';
 import { RevokedDelegationIcon } from '../../icons/revoked-delegation-icon';
+import { DelegatedIcon } from '@components/icons/delegated-icon';
+import { LockedIcon } from '@components/icons/locked';
+import { ReceivedArrow } from '@components/icons/received-arrow';
+import { SentArrow } from '@components/icons/sent-arrow';
+import { Flex, FlexProps, Box, Spinner, FailedIcon, color } from '@stacks/ui';
+import { StxTxDirection } from '@utils/get-stx-transfer-direction';
+import React, { FC } from 'react';
 
 export type TransactionIconVariants =
   | StxTxDirection
@@ -17,17 +16,29 @@ export type TransactionIconVariants =
   | 'failed'
   | 'default';
 
+function Failed() {
+  return <FailedIcon size="16px" />;
+}
+
+function Pending() {
+  return <Spinner size="xs" color={color('brand')} />;
+}
+
+function Default() {
+  return (
+    <Box width="16px" height="16px" borderRadius="50%" backgroundColor={color('text-caption')} />
+  );
+}
+
 const iconMap: Record<TransactionIconVariants, FC> = {
   sent: SentArrow,
   received: ReceivedArrow,
   locked: LockedIcon,
   delegated: DelegatedIcon,
   revoked: RevokedDelegationIcon,
-  failed: () => <FailedIcon size="16px" />,
-  pending: () => <Spinner size="xs" color={color('brand')} />,
-  default: () => (
-    <Box width="16px" height="16px" borderRadius="50%" backgroundColor={color('text-caption')} />
-  ),
+  failed: Failed,
+  pending: Pending,
+  default: Default,
 };
 
 function getTxTypeIcon(direction: TransactionIconVariants) {

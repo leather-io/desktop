@@ -1,12 +1,10 @@
-import 'regenerator-runtime/runtime';
-
-import { contextBridge, ipcRenderer, shell } from 'electron';
-
-import argon2 from 'argon2-browser';
 import type {
   LedgerRequestSignTx,
   LedgerRequestStxAddress,
 } from './main/register-ledger-listeners';
+import argon2 from 'argon2-browser';
+import { contextBridge, ipcRenderer, shell } from 'electron';
+import 'regenerator-runtime/runtime';
 
 const scriptsToLoad = [];
 

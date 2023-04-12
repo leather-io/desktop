@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { mapObjIndexed } from 'ramda';
+import { useState } from 'react';
 
 /**
  * Accepts an object, keyed by form step, where the

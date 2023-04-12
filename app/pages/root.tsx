@@ -1,15 +1,15 @@
-import React, { useEffect, useState, createContext } from 'react';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import { hot } from 'react-hot-loader/root';
-import { History } from 'history';
-import { PersistGate } from 'redux-persist/integration/react';
+import { Routes } from '../routes';
+import { css, Global } from '@emotion/react';
 import { color, CSSReset } from '@stacks/ui';
 import { Store } from '@store/index';
-import { Routes } from '../routes';
 import { loadFonts } from '@utils/load-fonts';
+import { ConnectedRouter } from 'connected-react-router';
+import { History } from 'history';
+import React, { useEffect, useState, createContext } from 'react';
+import { hot } from 'react-hot-loader/root';
 import { Toaster } from 'react-hot-toast';
-import { css, Global } from '@emotion/react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const GlobalStyle = css`
   html,
@@ -33,13 +33,13 @@ const GlobalStyle = css`
     right: 0;
     height: 44px;
     width: 100%;
-    z-index: 9;
     box-shadow: 0px 1px 2px rgba(15, 17, 23, 0.08);
     -webkit-user-select: none;
-    -webkit-app-region: drag;
+    .inner-drag {
+      -webkit-app-region: drag;
+    }
   }
 `;
-
 interface RootProps {
   store: Store;
   history: History;
@@ -78,5 +78,4 @@ function Root({ store, history, persistor }: RootProps) {
   );
 }
 
-// eslint-disable-next-line import/no-default-export
 export default hot(Root);

@@ -1,11 +1,10 @@
-import React, { Fragment } from 'react';
+import { DEFAULT_POLLING_INTERVAL } from './constants';
+import { configureStore, history } from './store/configureStore';
 import { ThemeProvider, ColorModeProvider } from '@stacks/ui';
+import React, { Fragment } from 'react';
 import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 import { DefaultOptions, QueryClient, QueryClientProvider } from 'react-query';
-
-import { configureStore, history } from './store/configureStore';
-import { DEFAULT_POLLING_INTERVAL } from './constants';
 
 const config: DefaultOptions['queries'] = {
   refetchInterval: DEFAULT_POLLING_INTERVAL,

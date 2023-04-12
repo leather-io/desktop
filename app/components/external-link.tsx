@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import { LegalDisclaimerTooltip } from './legal-disclaimer-tooltip';
 import { Box, Text, BoxProps, color } from '@stacks/ui';
 import { openExternalLink } from '@utils/external-links';
-import { LegalDisclaimerTooltip } from './legal-disclaimer-tooltip';
+import React, { FC } from 'react';
 
 interface ExternalLinkProps extends BoxProps {
   href: string;

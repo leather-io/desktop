@@ -1,16 +1,3 @@
-import React, { FC, useMemo } from 'react';
-import { BigNumber } from 'bignumber.js';
-import dayjs from 'dayjs';
-import { useSelector } from 'react-redux';
-import { Box, Flex, FlexProps, Text } from '@stacks/ui';
-
-import { Hr } from '@components/hr';
-
-import { selectPoxInfo } from '@store/stacking';
-import { UI_IMPOSED_MAX_STACKING_AMOUNT_USTX } from '@constants/index';
-import { truncateMiddle } from '@utils/tx-utils';
-import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
-import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 import {
   InfoCard,
   InfoCardLabel as Label,
@@ -20,6 +7,17 @@ import {
   InfoCardSection as Section,
 } from '../../../../components/info-card';
 import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';
+import { Hr } from '@components/hr';
+import { UI_IMPOSED_MAX_STACKING_AMOUNT_USTX } from '@constants/index';
+import { Box, Flex, FlexProps, Text } from '@stacks/ui';
+import { selectPoxInfo } from '@store/stacking';
+import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';
+import { truncateMiddle } from '@utils/tx-utils';
+import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { BigNumber } from 'bignumber.js';
+import dayjs from 'dayjs';
+import React, { FC, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -63,7 +61,7 @@ export const DirectStackingInfoCard: FC<StackingInfoCardProps> = props => {
     <InfoCard minHeight="84px" {...rest}>
       <Box mx={['loose', 'extra-loose']}>
         <Flex flexDirection="column" pt="extra-loose" pb="base-loose">
-          <Text textStyle="body.large.medium">You'll lock</Text>
+          <Text textStyle="body.large.medium">You&apos;ll lock</Text>
           <Text
             fontSize="24px"
             mt="extra-tight"

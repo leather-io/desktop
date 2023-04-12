@@ -1,49 +1,41 @@
-import React, { FC, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useQueryClient } from 'react-query';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
-import { BigNumber } from 'bignumber.js';
+import { stacksNetwork } from '../../environment';
+import { TxModalFooter, TxModalButton, modalStyle } from './send-stx-modal-layout';
+import { PreviewTransaction } from './steps/preview-transaction';
+import { TxModalForm } from './steps/transaction-form';
+import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
+import { SignTransaction } from '@components/tx-signing/sign-transaction';
+import { STX_DECIMAL_PRECISION, STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
+import { validateAddressChain } from '@crypto/validate-address-net';
+import { useAnalytics } from '@hooks/use-analytics';
+import { useApi } from '@hooks/use-api';
+import { useBalance } from '@hooks/use-balance';
+import { useBroadcastTx } from '@hooks/use-broadcast-tx';
+import { useCalculateFee } from '@hooks/use-calculate-fee';
+import { useLatestNonce } from '@hooks/use-latest-nonce';
 import { Modal } from '@modals/components/base-modal';
+import { ModalHeader } from '@modals/components/modal-header';
+import { TransactionError } from '@modals/components/transaction-error';
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
 import {
   AnchorMode,
   MEMO_MAX_LENGTH_BYTES,
   StacksTransaction,
   TokenTransferOptions,
 } from '@stacks/transactions';
-
-import { useHotkeys } from 'react-hotkeys-hook';
-
-import { validateDecimalPrecision } from '@utils/form/validate-decimals';
-
-import { useLatestNonce } from '@hooks/use-latest-nonce';
-import { safeAwait } from '@utils/safe-await';
-import { STX_DECIMAL_PRECISION, STX_TRANSFER_TX_SIZE_BYTES } from '@constants/index';
-
-import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
-
 import { homeActions } from '@store/home';
-
-import { validateAddressChain } from '@crypto/validate-address-net';
-import { stxToMicroStx, microStxToStx } from '@utils/unit-convert';
-
-import { stacksNetwork } from '../../environment';
-import { TxModalFooter, TxModalButton, modalStyle } from './send-stx-modal-layout';
-import { TxModalForm } from './steps/transaction-form';
-import { PreviewTransaction } from './steps/preview-transaction';
-import { useBalance } from '@hooks/use-balance';
-import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';
-import { useApi } from '@hooks/use-api';
-import { SignTransaction } from '@components/tx-signing/sign-transaction';
-import { useBroadcastTx } from '@hooks/use-broadcast-tx';
-import { TransactionError } from '@modals/components/transaction-error';
-import { ModalHeader } from '@modals/components/modal-header';
-import { HomeSelectors } from 'app/tests/features/home.selectors';
-import { useCalculateFee } from '@hooks/use-calculate-fee';
-import { useAnalytics } from '@hooks/use-analytics';
 import { delay } from '@utils/delay';
+import { validateDecimalPrecision } from '@utils/form/validate-decimals';
+import { validateStacksAddress } from '@utils/get-stx-transfer-direction';
+import { safeAwait } from '@utils/safe-await';
+import { stxToMicroStx, microStxToStx } from '@utils/unit-convert';
+import { HomeSelectors } from 'app/tests/features/home.selectors';
+import { BigNumber } from 'bignumber.js';
+import { useFormik } from 'formik';
+import React, { FC, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useQueryClient } from 'react-query';
+import { useDispatch } from 'react-redux';
+import * as yup from 'yup';
 
 interface TxModalProps {
   balance: string;
@@ -225,8 +217,8 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
     setCalculatingMaxSpend(false);
   };
 
-  const txFormStepMap: Record<TxModalStep, () => JSX.Element> = {
-    [TxModalStep.DescribeTx]: () => (
+  function DescribeTxComponent() {
+    return (
       <>
         <ModalHeader onSelectClose={closeModal}>Send STX</ModalHeader>
         <TxModalForm
@@ -250,8 +242,11 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
           </TxModalButton>
         </TxModalFooter>
       </>
-    ),
-    [TxModalStep.PreviewTx]: () => (
+    );
+  }
+
+  function PreviewTxComponent() {
+    return (
       <>
         <ModalHeader onSelectClose={closeModal}>Preview transaction</ModalHeader>
         <PreviewTransaction
@@ -278,8 +273,11 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
           </TxModalButton>
         </TxModalFooter>
       </>
-    ),
-    [TxModalStep.SignTransaction]: () => (
+    );
+  }
+
+  function SignTransactionComponent() {
+    return (
       <>
         <ModalHeader onSelectClose={closeModal}>Confirm and send</ModalHeader>
         {txDetails !== null && (
@@ -292,14 +290,24 @@ export const SendStxModal: FC<TxModalProps> = ({ address, isOpen }) => {
           />
         )}
       </>
-    ),
-    [TxModalStep.NetworkError]: () => (
+    );
+  }
+
+  function NetworkErrorComponent() {
+    return (
       <TransactionError
         error={nodeResponseError}
         onClose={closeModal}
         onGoBack={() => setStep(TxModalStep.DescribeTx)}
       />
-    ),
+    );
+  }
+
+  const txFormStepMap: Record<TxModalStep, () => JSX.Element> = {
+    [TxModalStep.DescribeTx]: DescribeTxComponent,
+    [TxModalStep.PreviewTx]: PreviewTxComponent,
+    [TxModalStep.SignTransaction]: SignTransactionComponent,
+    [TxModalStep.NetworkError]: NetworkErrorComponent,
   };
 
   return (

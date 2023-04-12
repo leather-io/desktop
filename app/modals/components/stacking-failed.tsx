@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
-import { Flex, Box, Text, color } from '@stacks/ui';
-
 import failedCrossSvg from '@assets/images/failed-cross.svg';
 import { WalletType } from '@models/wallet-type';
+import { Flex, Box, Text, color } from '@stacks/ui';
+import React, { FC } from 'react';
+
 interface StackingFailedProps {
   walletType: WalletType;
 }
@@ -28,7 +28,7 @@ export const StackingFailed: FC<StackingFailedProps> = ({ children, walletType }
     )}
     {walletType === 'ledger' && (
       <Text textStyle="caption" color={color('text-caption')} maxWidth="300px" mt="base">
-        Make sure you're using the same Ledger device you used to create this wallet
+        Make sure you&apos;re using the same Ledger device you used to create this wallet
       </Text>
     )}
   </Flex>

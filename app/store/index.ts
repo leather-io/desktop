@@ -1,18 +1,17 @@
-import { Store as ReduxStore, Action } from 'redux';
+import { addressReducer, AddressState } from './address';
+import { configureStore } from './configureStore';
+import { HomeState, homeSlice } from './home';
+import { KeysState, createKeysReducer } from './keys';
+import { pendingTransactionReducer, PendingTransactionState } from './pending-transaction';
+import { reduxPersistElectronStore } from './persist-middleware';
+import { settingsReducer, SettingsState } from './settings';
+import { StackingState, stackingSlice } from './stacking';
+import { stacksNodeReducer, StacksNodeState } from './stacks-node';
+import { TransactionState, transactionReducer } from './transaction';
 import { combineReducers } from '@reduxjs/toolkit';
 import { connectRouter } from 'connected-react-router';
+import { Store as ReduxStore, Action } from 'redux';
 import { PersistConfig } from 'redux-persist';
-
-import { KeysState, createKeysReducer } from './keys';
-import { TransactionState, transactionReducer } from './transaction';
-import { addressReducer, AddressState } from './address';
-import { settingsReducer, SettingsState } from './settings';
-import { HomeState, homeSlice } from './home';
-import { pendingTransactionReducer, PendingTransactionState } from './pending-transaction';
-import { stacksNodeReducer, StacksNodeState } from './stacks-node';
-import { StackingState, stackingSlice } from './stacking';
-import { reduxPersistElectronStore } from './persist-middleware';
-import { configureStore } from './configureStore';
 
 export interface RootState {
   router: any;
@@ -44,6 +43,7 @@ interface RootReducerArgs {
 
 export function createRootReducer({ history, keys }: RootReducerArgs) {
   return combineReducers({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     router: connectRouter(history),
     keys: createKeysReducer(keys),
     transaction: transactionReducer,

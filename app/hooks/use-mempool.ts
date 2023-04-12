@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { useQuery } from 'react-query';
-
-import { selectAddress } from '@store/keys';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { useApi } from './use-api';
 import { ApiResource } from '@models';
 import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
-import { useApi } from './use-api';
+import { selectAddress } from '@store/keys';
+import { useCallback } from 'react';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
 
 interface UseMempool {
   mempoolTxs: MempoolTransaction[];

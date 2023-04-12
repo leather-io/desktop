@@ -1,17 +1,16 @@
-import React, { memo } from 'react';
-import toast from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
-import { Box, Flex, Text } from '@stacks/ui';
-
 import { SettingDescription } from './components/settings-layout';
 import { SettingSection } from './components/settings-section';
+import { Box, Flex, Text } from '@stacks/ui';
 import {
   grantDiagnosticsPermission,
   revokeDiagnosticPermission,
   useHasUserGivenDiagnosticPermissions,
 } from '@store/settings';
+import React from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 
-export const SettingsDiagnostics = memo(() => {
+export const SettingsDiagnostics = () => {
   const dispatch = useDispatch();
   const hasGivenPermission = useHasUserGivenDiagnosticPermissions();
 
@@ -45,4 +44,4 @@ export const SettingsDiagnostics = memo(() => {
       </SettingDescription>
     </SettingSection>
   );
-});
+};

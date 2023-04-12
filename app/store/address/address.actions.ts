@@ -1,10 +1,9 @@
+import { Api } from '../../api/api';
 import { Dispatch, GetState } from '../index';
+import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';
 import { createAction } from '@reduxjs/toolkit';
 import { AddressStxBalanceResponse } from '@stacks/stacks-blockchain-api-types';
 import { safeAwait } from '@stacks/ui';
-
-import { Api } from '../../api/api';
-import { selectActiveNodeApi } from '../stacks-node/stacks-node.reducer';
 
 export const fetchAddress = createAction('address/fetch-address');
 export const fetchAddressDone = createAction<AddressStxBalanceResponse>(
@@ -29,6 +28,5 @@ export function getAddressDetails(address: string) {
   };
 }
 
-export const updateAddressBalance = createAction<{ address: string; balance: string }>(
-  'address/update-balance'
-);
+export const updateAddressBalance =
+  createAction<{ address: string; balance: string }>('address/update-balance');

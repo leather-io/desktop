@@ -1,10 +1,8 @@
-import React from 'react';
-import { ContractCallOptions, StacksTransaction, TokenTransferOptions } from '@stacks/transactions';
-
-import { useWalletType } from '@hooks/use-wallet-type';
-
-import { SignTransactionSoftware } from './sign-transaction-software';
 import { SignTransactionLedger } from './sign-transaction-ledger';
+import { SignTransactionSoftware } from './sign-transaction-software';
+import { useWalletType } from '@hooks/use-wallet-type';
+import { ContractCallOptions, StacksTransaction, TokenTransferOptions } from '@stacks/transactions';
+import React from 'react';
 
 export interface SignTransactionProps {
   action: string;

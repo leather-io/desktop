@@ -1,5 +1,5 @@
-import React from 'react';
 import { color } from '@stacks/ui';
+import React from 'react';
 
 export const AbstractBtcChartSvg: React.FC = () => {
   return (

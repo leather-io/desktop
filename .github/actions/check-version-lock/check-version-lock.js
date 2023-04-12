@@ -15,8 +15,8 @@ function containsIllegalChar(input) {
     const allPackages = [...Object.entries(dependencies), ...Object.entries(devDependencies)];
 
     const illegalPackages = allPackages
-      .filter(([package, version]) => containsIllegalChar(version))
-      .map(([package, version]) => ({ package, version }));
+      .filter(([name, version]) => containsIllegalChar(version))
+      .map(([name, version]) => ({ name, version }));
 
     if (illegalPackages.length > 0) {
       core.setFailed(`

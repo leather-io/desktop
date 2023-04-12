@@ -1,8 +1,7 @@
-import { useQuery } from 'react-query';
-import { cvToHex, standardPrincipalCV, tupleCV } from '@stacks/transactions';
-
 import { useApi } from './use-api';
 import { ApiResource } from '@models';
+import { cvToHex, standardPrincipalCV, tupleCV } from '@stacks/transactions';
+import { useQuery } from 'react-query';
 
 export function useFetchDelegationStatus(contractId?: string, address?: string) {
   const api = useApi();

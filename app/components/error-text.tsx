@@ -1,6 +1,6 @@
-import React from 'react';
 import { Text, color } from '@stacks/ui';
 import type { BoxProps } from '@stacks/ui';
+import React from 'react';
 
 export const ErrorText: React.FC<BoxProps> = ({ children, ...rest }) => (
   <Text

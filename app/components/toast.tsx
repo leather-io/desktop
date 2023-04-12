@@ -1,6 +1,6 @@
-import React from 'react';
-import { Flex, Box, Text, color } from '@stacks/ui';
 import { SuccessCheckmark } from './icons/success-checkmark';
+import { Flex, Box, Text, color } from '@stacks/ui';
+import React from 'react';
 
 interface ToastProps {
   show?: boolean;

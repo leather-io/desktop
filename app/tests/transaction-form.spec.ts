@@ -1,19 +1,12 @@
-import path from 'path';
-import rimraf from 'rimraf';
-
-import { _electron, ElectronApplication, Page } from 'playwright';
-
-import { deserializeTransaction, cvToValue } from '@stacks/transactions';
-import { getUserDataPath } from '../main/get-user-data-path';
-
-import { delay } from '../utils/delay';
 import { stxToMicroStx } from '../utils/unit-convert';
-
+import { setUpElectronApp } from './_setup-tests';
 import { createGlobalFeature } from './features/global.feature';
 import { HomeFeature } from './features/home.feature';
 import { initSoftwareWallet } from './features/onboarding.feature';
-import { setUpElectronApp } from './_setup-tests';
 import { getTestConfigPath } from './get-test-config-path';
+import { deserializeTransaction, cvToValue } from '@stacks/transactions';
+import { ElectronApplication, Page } from 'playwright';
+import rimraf from 'rimraf';
 
 const PASSWORD = 'hello9*&^*^*dkfskjdfskljdfsj';
 // ST71MG1BZ1QDSHXT4GZ5H2FGFX24XKM2ND5GXPV6
@@ -114,6 +107,7 @@ describeOnlyTestnet('Transaction flow', () => {
     const deserialisedTx = deserializeTransaction(requestBody);
     const payload = deserialisedTx.payload as any;
     const amount = payload.amount.toString();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const recipient = cvToValue(payload.recipient);
     const memo = payload.memo.content.replace(/\0/g, '');
 

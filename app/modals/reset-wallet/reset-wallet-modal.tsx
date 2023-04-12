@@ -1,11 +1,11 @@
-import React, { FC, useState, useRef, useCallback } from 'react';
-import { ButtonGroup, Button, Box, color } from '@stacks/ui';
-import { Modal } from '@modals/components/base-modal';
 import { TxModalFooter } from '../send-stx/send-stx-modal-layout';
-import { clearDiskStorage } from '@utils/disk-store';
-import { ModalHeader } from '@modals/components/modal-header';
-import { SettingsSelectors } from 'app/tests/features/settings.selectors';
 import { useAnalytics } from '@hooks/use-analytics';
+import { Modal } from '@modals/components/base-modal';
+import { ModalHeader } from '@modals/components/modal-header';
+import { ButtonGroup, Button, Box, color } from '@stacks/ui';
+import { clearDiskStorage } from '@utils/disk-store';
+import { SettingsSelectors } from 'app/tests/features/settings.selectors';
+import React, { FC, useState, useRef, useCallback } from 'react';
 
 interface ResetWalletModalProps {
   isOpen: boolean;

@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
-import { LedgerError } from '@zondax/ledger-blockstack';
-import compareVersions from 'compare-versions';
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
-
-import { EARLIEST_SUPPORTED_LEDGER_VERSION } from '@constants/index';
-import { isTestnet } from '@utils/network-utils';
 import type { LedgerMessageEvents } from '../main/register-ledger-listeners';
+import { useCheckForUpdates } from './use-check-for-updates';
 import { useListenLedgerEffect } from './use-listen-ledger-effect';
 import { messages$ } from './use-message-events';
-import { useCheckForUpdates } from './use-check-for-updates';
+import { EARLIEST_SUPPORTED_LEDGER_VERSION } from '@constants/index';
+import { isTestnet } from '@utils/network-utils';
+import { LedgerError } from '@zondax/ledger-blockstack';
+import compareVersions from 'compare-versions';
+import { useEffect, useMemo, useState } from 'react';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 const publicKeysDoNotMatchError = `Public key mismatch. Make sure you're using the same Ledger you created the wallet with.`;
 

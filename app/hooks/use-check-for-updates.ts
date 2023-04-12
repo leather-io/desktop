@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
-import compareVersions from 'compare-versions';
-
+import { useInterval } from './use-interval';
 import { checkForNewRelease, GithubReleases } from '@api/check-for-new-release';
 import { WALLET_VERSION } from '@constants/index';
-import { safeAwait } from '@utils/safe-await';
 import { whenNetwork } from '@utils/network-utils';
-import { useInterval } from './use-interval';
+import { safeAwait } from '@utils/safe-await';
+import compareVersions from 'compare-versions';
+import { useCallback, useEffect, useState } from 'react';
 
 const UPDATE_CHECK_INTERVAL = 300_000;
 const NEW_WALLET_STARTING_MAJOR_VERSION = whenNetwork<string>({

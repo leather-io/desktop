@@ -1,15 +1,16 @@
-import { ipcMain } from 'electron';
-import { BehaviorSubject, Subject, timer, combineLatest, from, of } from 'rxjs';
-import { delay, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
-import type Transport from '@ledgerhq/hw-transport';
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
-import { safeAwait } from '@stacks/ui';
-import StacksApp, { LedgerError, ResponseVersion } from '@zondax/ledger-blockstack';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import {
   ledgerRequestSignTx,
   ledgerRequestStxAddress,
   ledgerShowStxAddress,
 } from './ledger-actions';
+import type Transport from '@ledgerhq/hw-transport';
+import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
+import { safeAwait } from '@stacks/ui';
+import StacksApp, { LedgerError, ResponseVersion } from '@zondax/ledger-blockstack';
+import { ipcMain } from 'electron';
+import { BehaviorSubject, Subject, timer, combineLatest, from, of } from 'rxjs';
+import { delay, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 type LedgerEvents =
   | 'create-listener'

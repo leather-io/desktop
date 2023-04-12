@@ -1,7 +1,7 @@
-import { TransactionVersion } from '@stacks/transactions';
-import { whenNetwork } from '@utils/network-utils';
 import packageJson from '../../package.json';
 import { stxToMicroStx } from '../utils/unit-convert';
+import { TransactionVersion } from '@stacks/transactions';
+import { whenNetwork } from '@utils/network-utils';
 
 type Environments = 'development' | 'testing' | 'production';
 
@@ -26,12 +26,11 @@ export const BUY_STX_URL = 'https://coinmarketcap.com/currencies/stacks/markets'
 export const STATUS_PAGE_URL = 'http://status.test-blockstack.com';
 
 export const DEFAULT_STACKS_NODE_URL = whenNetwork<string>({
-  mainnet: 'https://stacks-node-api.mainnet.stacks.co',
-  testnet:
-    process.env.DEFAULT_TESTNET_STACKS_NODE_URL ?? 'https://stacks-node-api.testnet.stacks.co',
+  mainnet: 'https://api.hiro.so',
+  testnet: process.env.DEFAULT_TESTNET_STACKS_NODE_URL ?? 'https://api.testnet.hiro.so',
 });
 
-export const EXPLORER_URL = 'https://explorer.stacks.co';
+export const EXPLORER_URL = 'https://explorer.hiro.so';
 
 export const GITHUB_ORG = 'blockstack';
 
@@ -66,7 +65,7 @@ export const STACKING_CONTRACT_CALL_TX_BYTES = 260;
 
 export const POOLED_STACKING_TX_SIZE_BYTES = 216;
 
-export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh'] as const;
+export const SUPPORTED_BTC_ADDRESS_FORMATS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2tr'] as const;
 
 export const LATEST_LEDGER_VERSION_MAJOR = 0;
 

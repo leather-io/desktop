@@ -1,8 +1,8 @@
+import { NETWORK } from '@constants/index';
+import { sha256 } from '@noble/hashes/sha256';
+import { base58check } from '@scure/base';
 import { AddressHashMode } from '@stacks/transactions';
 import BN from 'bn.js';
-import { base58check } from '@scure/base';
-import { sha256 } from '@noble/hashes/sha256';
-import { NETWORK } from '@constants/index';
 
 const poxKeyToVersionBytesMap: Record<'mainnet' | 'testnet', any> = {
   mainnet: {

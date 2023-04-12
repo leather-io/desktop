@@ -1,14 +1,12 @@
-import rimraf from 'rimraf';
-import { _electron, ElectronApplication, Page } from 'playwright';
-
-import { whenNetwork } from '../utils/network-utils';
 import { delay } from '../utils/delay';
-
+import { whenNetwork } from '../utils/network-utils';
 import { setUpElectronApp } from './_setup-tests';
-import { getTestConfigPath } from './get-test-config-path';
 import { createGlobalFeature, resetWallet } from './features/global.feature';
 import { HomeFeature } from './features/home.feature';
 import { initSoftwareWallet } from './features/onboarding.feature';
+import { getTestConfigPath } from './get-test-config-path';
+import { _electron, ElectronApplication, Page } from 'playwright';
+import rimraf from 'rimraf';
 
 const PASSWORD = 'hello9*&^*^*dkfskjdfskljdfsj';
 const SEED_PHRASE =

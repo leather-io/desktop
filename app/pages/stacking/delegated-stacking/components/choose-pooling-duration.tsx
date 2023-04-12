@@ -1,19 +1,17 @@
-import React, { FC } from 'react';
-import { useField } from 'formik';
-import { Stack } from '@stacks/ui';
-
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
-
+import { OneCycleDescriptor } from '../../components/one-cycle-descriptor';
 import {
   StackingStep as Step,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
-import { DurationSelectItem } from './duration-select-item';
 import { DurationCyclesForm } from './duration-cycles-form';
-import { LimitedStackingIcon } from './limited-stacking-icon';
+import { DurationSelectItem } from './duration-select-item';
 import { IndefiniteStackingIcon } from './indefinite-stacking-icon';
-import { OneCycleDescriptor } from '../../components/one-cycle-descriptor';
+import { LimitedStackingIcon } from './limited-stacking-icon';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { Stack } from '@stacks/ui';
+import { useField } from 'formik';
+import React, { FC } from 'react';
 
 export const ChoosePoolingDurationField: FC = () => {
   const [durationTypeField, durationMeta, durationTypeHelpers] = useField('delegationType');

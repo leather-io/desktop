@@ -1,11 +1,7 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { RootState } from '@store/index';
-import { watchContractExecution } from '@api/watch-contract-execution';
-import { selectAddress } from '@store/keys';
-import { safeAwait } from '@utils/safe-await';
 import { useApi } from './use-api';
+import { watchContractExecution } from '@api/watch-contract-execution';
+import { RootState } from '@store/index';
+import { selectAddress } from '@store/keys';
 import {
   selectActiveStackingTxId,
   selectPoxInfo,
@@ -13,6 +9,9 @@ import {
   removeStackingTx,
   fetchAccountBalanceLocked,
 } from '@store/stacking';
+import { safeAwait } from '@utils/safe-await';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function useWatchStackingTx() {
   const api = useApi();

@@ -1,15 +1,14 @@
-import React, { FC, memo } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory, useLocation } from 'react-router';
-import { useHotkeys } from 'react-hotkeys-hook';
-
-import { grantDiagnosticsPermission, revokeDiagnosticPermission } from '@store/settings';
-import { Modal } from '@modals/components/base-modal';
 import { AllowDiagnosticsLayout } from '../../components/request-diagnostics.layout';
+import { Modal } from '@modals/components/base-modal';
 import { ModalHeader } from '@modals/components/modal-header';
 import { Box } from '@stacks/ui';
+import { grantDiagnosticsPermission, revokeDiagnosticPermission } from '@store/settings';
+import React, { FC } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useDispatch } from 'react-redux';
+import { useHistory, useLocation } from 'react-router';
 
-export const RequestDiagnosticsModal: FC = memo(() => {
+export const RequestDiagnosticsModal: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -42,4 +41,4 @@ export const RequestDiagnosticsModal: FC = memo(() => {
       </Box>
     </Modal>
   );
-});
+};

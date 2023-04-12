@@ -1,3 +1,5 @@
+import { RootState } from '..';
+import { DEFAULT_STACKS_NODE_URL } from '@constants/index';
 import {
   createEntityAdapter,
   EntityState,
@@ -5,11 +7,8 @@ import {
   createSelector,
   PayloadAction,
 } from '@reduxjs/toolkit';
-
-import { DEFAULT_STACKS_NODE_URL } from '@constants/index';
-import { RootState } from '..';
-import { whenNetwork } from '@utils/network-utils';
 import { StacksMainnet, StacksNetwork, StacksTestnet } from '@stacks/network';
+import { whenNetwork } from '@utils/network-utils';
 
 export interface StacksNode {
   url: string;

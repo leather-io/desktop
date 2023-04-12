@@ -1,6 +1,7 @@
-import { safeAwait } from '@stacks/ui';
 import { Api } from '@api/api';
+import { safeAwait } from '@stacks/ui';
 import { delay } from '@utils/delay';
+
 interface WatchForNewTxAppearArgs {
   nodeUrl: string;
   txId: string;

@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { Text, color, Flex, IconButton, CloseIcon, FlexProps } from '@stacks/ui';
+import React, { FC } from 'react';
 
 interface TxModalHeaderProps extends FlexProps {
   onSelectClose: () => void;

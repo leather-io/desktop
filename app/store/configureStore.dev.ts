@@ -1,13 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-var-requires */
-import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
-import thunk from 'redux-thunk';
-import { persistStore, persistReducer } from 'redux-persist';
-import { createHashHistory } from 'history';
-import { routerMiddleware, routerActions } from 'connected-react-router';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { RootState, createRootReducer, persistConfig } from '.';
+import { createStore, applyMiddleware, compose } from '@reduxjs/toolkit';
 import { getInitialStateFromDisk } from '@utils/disk-store';
+import { routerMiddleware, routerActions } from 'connected-react-router';
+import { createHashHistory } from 'history';
+import { persistStore, persistReducer } from 'redux-persist';
+import thunk from 'redux-thunk';
 
 declare global {
   interface Window {

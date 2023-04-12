@@ -1,5 +1,5 @@
-import axios from 'axios';
-import urljoin from 'url-join';
+import packageJson from '../../package.json';
+import { features } from '@constants/index';
 import {
   AccountsApi,
   TransactionsApi,
@@ -19,9 +19,8 @@ import {
   NetworkBlockTimesResponse,
   AddressTransactionsWithTransfersListResponse,
 } from '@stacks/stacks-blockchain-api-types';
-
-import packageJson from '../../package.json';
-import { features } from '@constants/index';
+import axios from 'axios';
+import urljoin from 'url-join';
 
 const defaultHeaders = [
   { name: 'x-hiro-product', value: 'stacks-wallet-desktop' },
@@ -137,7 +136,7 @@ export class Api {
 
   async getMempoolTransactions(address: string): Promise<MempoolTransaction[]> {
     const mempoolTxs = await axios.get(
-      urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=200&address=${address}`),
+      urljoin(this.baseUrl, `/extended/v1/tx/mempool?limit=50&address=${address}`),
       { params: { unanchored: true } }
     );
     return mempoolTxs.data.results;

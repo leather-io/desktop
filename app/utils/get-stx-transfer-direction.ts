@@ -20,3 +20,13 @@ export const validateStacksAddress = (stacksAddress: string): boolean => {
     return false;
   }
 };
+
+export const validateStacksPrincipal = (contractId: string): boolean => {
+  try {
+    const [stacksAddress] = contractId.split('.');
+    c32addressDecode(stacksAddress);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};

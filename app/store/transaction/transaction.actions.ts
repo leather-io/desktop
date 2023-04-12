@@ -1,15 +1,13 @@
-import { createAction } from '@reduxjs/toolkit';
-import { safeAwait } from '@stacks/ui';
-import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
-
-import urljoin from 'url-join';
-import { StacksTransaction, TxBroadcastResultRejected } from '@stacks/transactions';
-
 import { Api } from '../../api/api';
-import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
+import { createAction } from '@reduxjs/toolkit';
+import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
+import { StacksTransaction, TxBroadcastResultRejected } from '@stacks/transactions';
+import { safeAwait } from '@stacks/ui';
 import { Dispatch, GetState } from '@store/index';
 import { selectActiveNodeApi, selectActiveStacksNetwork } from '@store/stacks-node';
+import { safelyFormatHexTxid } from '@utils/safe-handle-txid';
 import { isObject } from 'formik';
+import urljoin from 'url-join';
 
 export const pendingTransactionSuccessful = createAction<AddressTransactionWithTransfers>(
   'transactions/pending-transaction-successful'

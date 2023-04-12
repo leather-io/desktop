@@ -1,29 +1,27 @@
-import React, { FC, useCallback } from 'react';
-import { BigNumber } from 'bignumber.js';
-import { Box, Button, color, Input, Stack, Text } from '@stacks/ui';
-import { useField } from 'formik';
-import { useSelector } from 'react-redux';
-import { selectPoxInfo } from '@store/stacking';
-
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import {
+  StackingStep as Step,
+  StackingStepDescription as Description,
+} from '../../components/stacking-form-step';
+import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
+import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';
 import { ErrorLabel } from '@components/error-label';
 import { ErrorText } from '@components/error-text';
-import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
 import { ExternalLink } from '@components/external-link';
-
-import { useBalance } from '@hooks/use-balance';
+import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
 import {
   STACKING_CONTRACT_CALL_TX_BYTES,
   STACKING_LEARN_MORE_URL,
   STACKING_MINIMIUM_FOR_NEXT_CYCLE_URL,
 } from '@constants/index';
-
-import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
-import {
-  StackingStep as Step,
-  StackingStepDescription as Description,
-} from '../../components/stacking-form-step';
-import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';
-import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';
+import { useBalance } from '@hooks/use-balance';
+import { Box, Button, color, Input, Stack, Text } from '@stacks/ui';
+import { selectPoxInfo } from '@store/stacking';
+import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';
+import { BigNumber } from 'bignumber.js';
+import { useField } from 'formik';
+import React, { FC, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 interface ChooseAmountFieldProps extends StackingStepBaseProps {
   minimumAmountToStack: number;
@@ -67,7 +65,7 @@ export const ChooseDirectStackingAmountField: FC<ChooseAmountFieldProps> = props
       <Description>
         <Stack alignItems="flex-start" spacing="base">
           <Text>
-            You’ll be eligible for one reward slot for every multiple of the minimum you stack.
+            You&apos;ll be eligible for one reward slot for every multiple of the minimum you stack.
           </Text>
           <Text>
             The estimated minimum per slot can change by multiples of 10,000 every cycle, so you may
@@ -129,9 +127,9 @@ export const ChooseDirectStackingAmountField: FC<ChooseAmountFieldProps> = props
               borderColor={color('border')}
               {...pseudoBorderLeft('feedback-alert')}
             >
-              Add a buffer for a higher chance (though no guarantee) of keeping the same number of
-              reward slots should the minimum increase. If you can’t add a buffer, consider Stacking
-              in a pool instead.
+              Add a buffer for a higher chance (though no guarantee) of keeping the same number of
+              reward slots should the minimum increase. If you can&apos;t add a buffer, consider
+              Stacking in a pool instead.
               <Button
                 variant="link"
                 type="button"

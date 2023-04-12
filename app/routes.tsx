@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { useStore } from 'react-redux';
-import * as Sentry from '@sentry/react';
-
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import routes from './constants/routes.json';
+import { App } from './pages/app';
 import { Home } from './pages/home/home';
-import { selectAddress } from './store/keys/keys.reducer';
-
 import {
   Terms,
   Welcome,
@@ -18,15 +13,18 @@ import {
   VerifyKey,
   SetPassword,
 } from './pages/onboarding';
-
-import { App } from './pages/app';
+import { Diagnostics } from './pages/onboarding/01-diagnostics/diagnostics';
 import { Settings } from './pages/settings/settings';
+import { StackingDelegation } from './pages/stacking/delegated-stacking/pooled-stacking';
 import { DirectStacking } from './pages/stacking/direct-stacking/direct-stacking';
 import { ChooseStackingMethod } from './pages/start-stacking/start-stacking';
-import { StackingDelegation } from './pages/stacking/delegated-stacking/pooled-stacking';
+import { selectAddress } from './store/keys/keys.reducer';
+import * as Sentry from '@sentry/react';
 import { useHasUserGivenDiagnosticPermissions } from '@store/settings';
-import { Diagnostics } from './pages/onboarding/01-diagnostics/diagnostics';
 import { initSegment } from '@utils/init-segment';
+import React, { useEffect, useState } from 'react';
+import { useStore } from 'react-redux';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 initSegment();
 
@@ -103,7 +101,7 @@ export const routerConfig = [
   },
 ];
 
-const getAppStartingRoute = (address?: string) => (!!address ? routes.HOME : routes.TERMS);
+const getAppStartingRoute = (address?: string) => (address ? routes.HOME : routes.TERMS);
 
 export function Routes() {
   // `useStore` required as we only want the value on initial render

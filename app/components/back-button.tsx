@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { ArrowIcon, ButtonProps, IconButton, color } from '@stacks/ui';
 import { useBack } from '@hooks/use-back-url';
+import { ArrowIcon, ButtonProps, IconButton, color } from '@stacks/ui';
+import React, { FC } from 'react';
 
 // Cannot use cursor pointer in top bar area of window
 // https://github.com/electron/electron/issues/5723
@@ -12,6 +12,7 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
     <IconButton
       height="32px"
       width="32px"
+      position="relative"
       style={{
         cursor: 'default',
         minHeight: 'unset',

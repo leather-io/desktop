@@ -1,9 +1,8 @@
-import type { Page } from 'playwright';
-
 import { delay } from '../../utils/delay';
 import { createTestSelector } from '../integration-helpers';
 import { createOnboardingFeature } from './onboarding.feature';
 import { createSettingsFeature } from './settings.feature';
+import type { Page } from 'playwright';
 
 export function createGlobalFeature(page: Page) {
   return {

@@ -1,33 +1,35 @@
-import React, { FC, memo } from 'react';
-import { useField } from 'formik';
-
-import { ErrorLabel } from '@components/error-label';
-import { ErrorText } from '@components/error-text';
-import { STACKING_ADDRESS_FORMAT_HELP_URL } from '@constants/index';
-import { ExternalLink } from '@components/external-link';
-
+import { CryptoAddressInput } from '../../components/crypto-address-form';
 import {
   StackingStep as Step,
   StackingStepDescription as Description,
 } from '../../components/stacking-form-step';
-import { CryptoAddressInput } from '../../components/crypto-address-form';
+import { ErrorLabel } from '@components/error-label';
+import { ErrorText } from '@components/error-text';
+import { ExternalLink } from '@components/external-link';
 import { ExplainerLabel } from '@components/tooltip';
+import { STACKING_ADDRESS_FORMAT_HELP_URL } from '@constants/index';
+import { useField } from 'formik';
+import React, { FC } from 'react';
 
-const StackingAddressErrorExplainer = memo(() => (
+const StackingAddressErrorExplainer = () => (
   <>
     Please use a
     <ExplainerLabel text="Legacy, or P2PKH, Bitcoin addresses begin with the number 1">
       Legacy
     </ExplainerLabel>
-    or
+    ,
     <ExplainerLabel text="SegWit (Segregated Witness), or P2SH, Bitcoin addresses begin with the number 3">
       SegWit
     </ExplainerLabel>
-    address.
-    <ExplainerLabel text="Native SegWit addresses begin with the letters bc">
+    ,
+    <ExplainerLabel text='Native SegWit, or P2WPKH, Bitcoin addresses begin with "bc1q"'>
       Native SegWit
     </ExplainerLabel>
-    addresses are not supported.
+    or
+    <ExplainerLabel text='Taproot, or P2TR, Bitcoin addresses begin with "bc1p"'>
+      Taproot
+    </ExplainerLabel>
+    address.
     <ExternalLink
       href={STACKING_ADDRESS_FORMAT_HELP_URL}
       textDecoration="underline"
@@ -37,7 +39,7 @@ const StackingAddressErrorExplainer = memo(() => (
       Learn more
     </ExternalLink>
   </>
-));
+);
 
 export const ChooseBtcAddressField: FC = () => {
   const [field, meta] = useField('btcAddress');
@@ -52,8 +54,14 @@ export const ChooseBtcAddressField: FC = () => {
 
   return (
     <Step title="Bitcoin address">
-      <Description>Choose the address where you’d like to receive bitcoin.</Description>
-      <CryptoAddressInput fieldName="btcAddress" placeholder="Bitcoin address" {...field}>
+      <Description>
+        Enter the Bitcoin address where you&apos;d like to receive your rewards.
+      </Description>
+      <CryptoAddressInput
+        fieldName="btcAddress"
+        placeholder="Bitcoin address (Legacy, Native SegWit or Taproot)"
+        {...field}
+      >
         {meta.touched && errors}
       </CryptoAddressInput>
     </Step>

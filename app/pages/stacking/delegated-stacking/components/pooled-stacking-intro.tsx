@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { Title } from '@components/title';
 import { NextCycleStartTime } from '../../components/next-cycle-start-time';
+import { Title } from '@components/title';
+import React, { FC } from 'react';
 
 interface PooledIntroProps {
   timeUntilNextCycle: string;

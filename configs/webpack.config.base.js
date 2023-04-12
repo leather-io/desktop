@@ -1,13 +1,11 @@
 /**
  * Base webpack config used across other specific configs
  */
-
-import path from 'path';
-import webpack from 'webpack';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import ExtendedDefinePlugin from 'extended-define-webpack-plugin';
-
 import { dependencies as externals } from '../app/package.json';
+import ExtendedDefinePlugin from 'extended-define-webpack-plugin';
+import path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import webpack from 'webpack';
 
 export const defaultNodePolyfillsForRenderer = {
   path: require.resolve('path-browserify'),
@@ -85,7 +83,7 @@ export default {
     }),
 
     new webpack.EnvironmentPlugin({
-      STX_NETWORK: process.env.STX_NETWORK,
+      STX_NETWORK: process.env.STX_NETWORK || 'mainnet',
       SEGMENT_WRITE_KEY: process.env.SEGMENT_WRITE_KEY || '',
       SENTRY_DSN: process.env.SENTRY_DSN || '',
     }),

@@ -86,8 +86,7 @@ export const ConnectLedger: React.FC = () => {
           textAlign="center"
           lineHeight="18px"
         >
-          Press both buttons on your Ledger device simultaneously when it displays &quot;Pending
-          Ledger review&quot;
+          Press both buttons on your Ledger device simultaneously
         </Text>
       </Box>
       <LedgerConnectInstructions

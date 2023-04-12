@@ -12,6 +12,7 @@ export const BackButton: FC<Omit<ButtonProps, 'children'>> = ({ onClick, ...prop
     <IconButton
       height="32px"
       width="32px"
+      position="relative"
       style={{
         cursor: 'default',
         minHeight: 'unset',

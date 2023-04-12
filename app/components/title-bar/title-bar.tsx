@@ -7,7 +7,7 @@ import { ColorModeButton } from '@components/color-mode-button';
 import routes from '@constants/routes.json';
 import { useCheckForUpdates } from '@hooks/use-check-for-updates';
 import { useWindowFocus } from '@hooks/use-window-focus';
-import { Flex, color, Stack } from '@stacks/ui';
+import { Flex, color, Stack, Box } from '@stacks/ui';
 import { openExternalLink } from '@utils/external-links';
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
@@ -48,6 +48,7 @@ export const TitleBar: FC = () => {
         right={[null, '130px']}
         height="100%"
       >
+        <Box position="absolute" width="120px" height="44px" className="inner-drag" />
         <Flex>
           {isNewerReleaseAvailable && latestRelease && (
             <UpdateAvailableButton

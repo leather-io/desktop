@@ -377,23 +377,18 @@
 <a name='L312'></a><a href='#L312'>312</a>
 <a name='L313'></a><a href='#L313'>313</a>
 <a name='L314'></a><a href='#L314'>314</a>
-<a name='L315'></a><a href='#L315'>315</a>
-<a name='L316'></a><a href='#L316'>316</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L315'></a><a href='#L315'>315</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -401,7 +396,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -693,19 +691,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
-  CoreNodePoxResponse,
-  CoreNodeInfoResponse,
-  NetworkBlockTimesResponse,
-} from '@stacks/stacks-blockchain-api-types';
-<span class="cstat-no" title="statement not covered" >import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';</span>
-&nbsp;
-import { RootState } from '..';
-<span class="cstat-no" title="statement not covered" >import dayjs from 'dayjs';</span>
-<span class="cstat-no" title="statement not covered" >import duration from 'dayjs/plugin/duration';</span>
-<span class="cstat-no" title="statement not covered" >import relativeTime from 'dayjs/plugin/relativeTime';</span>
-<span class="cstat-no" title="statement not covered" >import { NETWORK } from '@constants/index';</span>
-<span class="cstat-no" title="statement not covered" >import { selectIsStackingCallPending } from '@store/pending-transaction';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RootState } from '..';
 <span class="cstat-no" title="statement not covered" >import {</span>
   fetchStackingInfo,
   fetchCoreDetails,
@@ -715,9 +701,20 @@ import { RootState } from '..';
   removeStackingTx,
   fetchAccountBalanceLocked,
 } from './stacking.actions';
-<span class="cstat-no" title="statement not covered" >import { stxToMicroStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { NETWORK } from '@constants/index';</span>
+<span class="cstat-no" title="statement not covered" >import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';</span>
 import { StackerInfo as StackerInfoFromClient } from '@stacks/stacking';
+import {
+  CoreNodePoxResponse,
+  CoreNodeInfoResponse,
+  NetworkBlockTimesResponse,
+} from '@stacks/stacks-blockchain-api-types';
 <span class="cstat-no" title="statement not covered" >import { selectAddressBalance } from '@store/address';</span>
+<span class="cstat-no" title="statement not covered" >import { selectIsStackingCallPending } from '@store/pending-transaction';</span>
+<span class="cstat-no" title="statement not covered" >import { stxToMicroStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import dayjs from 'dayjs';</span>
+<span class="cstat-no" title="statement not covered" >import duration from 'dayjs/plugin/duration';</span>
+<span class="cstat-no" title="statement not covered" >import relativeTime from 'dayjs/plugin/relativeTime';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >dayjs.extend(duration);</span>
 <span class="cstat-no" title="statement not covered" >dayjs.extend(relativeTime);</span>
@@ -1015,7 +1012,7 @@ export const <span class="cstat-no" title="statement not covered" >selectEstimat
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

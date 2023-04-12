@@ -225,25 +225,7 @@
 <a name='L160'></a><a href='#L160'>160</a>
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a>
-<a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L163'></a><a href='#L163'>163</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -251,11 +233,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -263,7 +240,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -277,6 +259,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -397,46 +387,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Route, Switch } from 'react-router-dom';</span>
-<span class="cstat-no" title="statement not covered" >import { useSelector, useDispatch } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { Spinner } from '@stacks/ui';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
-<span class="cstat-no" title="statement not covered" >import { openTxInExplorer } from '@utils/external-links';</span>
-&nbsp;
-import { RootState } from '@store/index';
-<span class="cstat-no" title="statement not covered" >import { selectAddress } from '@store/keys';</span>
-<span class="cstat-no" title="statement not covered" >import { selectActiveNodeApi } from '@store/stacks-node';</span>
-<span class="cstat-no" title="statement not covered" >import { selectRevokeDelegationModalOpen } from '@store/home/home.reducer';</span>
-<span class="cstat-no" title="statement not covered" >import { selectTransactionsLoading, selectTransactionListFetchError } from '@store/transaction';</span>
-<span class="cstat-no" title="statement not covered" >import { selectLoadingStacking, selectNextCycleInfo, selectStackerInfo } from '@store/stacking';</span>
-<span class="cstat-no" title="statement not covered" >import {</span>
-  homeActions,
-  selectTxModalOpen,
-  selectReceiveModalOpen,
-  selectHomeCardState,
-  HomeCardState,
-} from '@store/home';
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { SendStxModal } from '@modals/send-stx/send-stx-modal';</span>
-<span class="cstat-no" title="statement not covered" >import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';</span>
-<span class="cstat-no" title="statement not covered" >import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { useDelegationStatus } from '@hooks/use-delegation-status';</span>
-<span class="cstat-no" title="statement not covered" >import { useTransactionList } from '@hooks/use-transaction-list';</span>
-<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
-<span class="cstat-no" title="statement not covered" >import { useApi } from '@hooks/use-api';</span>
-<span class="cstat-no" title="statement not covered" >import { useLatestNonce } from '@hooks/use-latest-nonce';</span>
-<span class="cstat-no" title="statement not covered" >import { RequestDiagnosticsModal } from '@modals/request-diagnostics/request-diagnostic-modal';</span>
-<span class="cstat-no" title="statement not covered" >import { usePromptUserToSetDiagnosticPermissions } from '@hooks/use-diagnostic-permission-prompt';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { StackingCard } from '@components/home/stacking-card';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingLoading } from '@components/home/stacking-loading';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingError } from '@components/home/stacking-error-card';</span>
-<span class="cstat-no" title="statement not covered" >import { TransactionListItemMempool } from '@components/home/transaction-list/transaction-list-item-mempool';</span>
-<span class="cstat-no" title="statement not covered" >import { DelegationCard } from '@components/home/delegation-card';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { HomeLayout } from './home-layout';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   TransactionList,
   StackingPromoCard,
@@ -444,8 +395,42 @@ import { RootState } from '@store/index';
   TransactionListItem,
   BalanceCard,
 } from '@components/home';
-<span class="cstat-no" title="statement not covered" >import { HomeLayout } from './home-layout';</span>
+<span class="cstat-no" title="statement not covered" >import { DelegationCard } from '@components/home/delegation-card';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingBeginsSoonCard } from '@components/home/stacking-begins-soon-card';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingCard } from '@components/home/stacking-card';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingError } from '@components/home/stacking-error-card';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingLoading } from '@components/home/stacking-loading';</span>
+<span class="cstat-no" title="statement not covered" >import { TransactionListItemMempool } from '@components/home/transaction-list/transaction-list-item-mempool';</span>
+<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
 <span class="cstat-no" title="statement not covered" >import { useAnalytics } from '@hooks/use-analytics';</span>
+<span class="cstat-no" title="statement not covered" >import { useApi } from '@hooks/use-api';</span>
+<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
+<span class="cstat-no" title="statement not covered" >import { useDelegationStatus } from '@hooks/use-delegation-status';</span>
+<span class="cstat-no" title="statement not covered" >import { usePromptUserToSetDiagnosticPermissions } from '@hooks/use-diagnostic-permission-prompt';</span>
+<span class="cstat-no" title="statement not covered" >import { useLatestNonce } from '@hooks/use-latest-nonce';</span>
+<span class="cstat-no" title="statement not covered" >import { useTransactionList } from '@hooks/use-transaction-list';</span>
+<span class="cstat-no" title="statement not covered" >import { ReceiveStxModal } from '@modals/receive-stx/receive-stx-modal';</span>
+<span class="cstat-no" title="statement not covered" >import { RequestDiagnosticsModal } from '@modals/request-diagnostics/request-diagnostic-modal';</span>
+<span class="cstat-no" title="statement not covered" >import { RevokeDelegationModal } from '@modals/revoke-delegation/revoke-delegation-modal';</span>
+<span class="cstat-no" title="statement not covered" >import { SendStxModal } from '@modals/send-stx/send-stx-modal';</span>
+<span class="cstat-no" title="statement not covered" >import { Spinner } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
+  homeActions,
+  selectTxModalOpen,
+  selectReceiveModalOpen,
+  selectHomeCardState,
+  HomeCardState,
+} from '@store/home';
+<span class="cstat-no" title="statement not covered" >import { selectRevokeDelegationModalOpen } from '@store/home/home.reducer';</span>
+import { RootState } from '@store/index';
+<span class="cstat-no" title="statement not covered" >import { selectAddress } from '@store/keys';</span>
+<span class="cstat-no" title="statement not covered" >import { selectLoadingStacking, selectNextCycleInfo, selectStackerInfo } from '@store/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { selectActiveNodeApi } from '@store/stacks-node';</span>
+<span class="cstat-no" title="statement not covered" >import { selectTransactionsLoading, selectTransactionListFetchError } from '@store/transaction';</span>
+<span class="cstat-no" title="statement not covered" >import { openTxInExplorer } from '@utils/external-links';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector, useDispatch } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import { Route, Switch } from 'react-router-dom';</span>
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >Home: FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
   const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
@@ -571,7 +556,7 @@ export const <span class="cstat-no" title="statement not covered" >Home: FC = <s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

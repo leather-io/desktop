@@ -256,24 +256,14 @@
 <a name='L191'></a><a href='#L191'>191</a>
 <a name='L192'></a><a href='#L192'>192</a>
 <a name='L193'></a><a href='#L193'>193</a>
-<a name='L194'></a><a href='#L194'>194</a>
-<a name='L195'></a><a href='#L195'>195</a>
-<a name='L196'></a><a href='#L196'>196</a>
-<a name='L197'></a><a href='#L197'>197</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L194'></a><a href='#L194'>194</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -282,7 +272,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -292,10 +281,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -455,27 +449,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, {</span>
-  FC,
-  MutableRefObject,
-  useLayoutEffect,
-  useRef,
-  useEffect,
-  useCallback,
-} from 'react';
-<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { useHover, useFocus } from 'use-events';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, color, Stack, Text } from '@stacks/ui';</span>
-&nbsp;
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable @typescript-eslint/no-unsafe-argument */
+<span class="cstat-no" title="statement not covered" >import { TransactionIcon, TransactionIconVariants } from './transaction-icon';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
+  createTxListContextMenu,
+  registerHandler,
+  deregisterHandler,
+} from './transaction-list-context-menu';
+<span class="cstat-no" title="statement not covered" >import { TransactionListItemContainer } from './transaction-list-item-container';</span>
 import { AddressTransactionWithTransfers } from '@stacks/stacks-blockchain-api-types';
+<span class="cstat-no" title="statement not covered" >import { Box, color, Stack, Text } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { getContractName, getTxTypeName } from '@stacks/ui-utils';</span>
-&nbsp;
 import { RootState } from '@store/index';
 <span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
 <span class="cstat-no" title="statement not covered" >import { capitalize } from '@utils/capitalize';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { TransactionIcon, TransactionIconVariants } from './transaction-icon';</span>
-<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
 <span class="cstat-no" title="statement not covered" >import { makeExplorerTxLink } from '@utils/external-links';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   getRecipientAddress,
@@ -486,13 +473,17 @@ import { RootState } from '@store/index';
   inferSendManyTransferOperation,
   isSendManyTx,
 } from '@utils/tx-utils';
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import {</span>
-  createTxListContextMenu,
-  registerHandler,
-  deregisterHandler,
-} from './transaction-list-context-menu';
-<span class="cstat-no" title="statement not covered" >import { TransactionListItemContainer } from './transaction-list-item-container';</span>
+<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import React, {</span>
+  FC,
+  MutableRefObject,
+  useLayoutEffect,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import { useHover, useFocus } from 'use-events';</span>
 &nbsp;
 interface TransactionListItemProps {
   txWithEvents: AddressTransactionWithTransfers;
@@ -658,7 +649,7 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

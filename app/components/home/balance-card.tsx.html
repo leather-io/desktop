@@ -176,16 +176,13 @@
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
 <a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -272,6 +269,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -291,20 +289,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { HomeSelectors } from 'app/tests/features/home.selectors';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { InternalLink } from '@components/internal-link';</span>
+<span class="cstat-no" title="statement not covered" >import { Title } from '@components/title';</span>
 <span class="cstat-no" title="statement not covered" >import { features, NETWORK } from '@constants/index';</span>
-<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
-<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
+<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, Button, Text, ArrowIcon, EncryptionIcon, Flex, color } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { delay } from '@utils/delay';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { InternalLink } from '@components/internal-link';</span>
 <span class="cstat-no" title="statement not covered" >import { makeExplorerAddressLink } from '@utils/external-links';</span>
 <span class="cstat-no" title="statement not covered" >import { isTestnet } from '@utils/network-utils';</span>
-<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
-<span class="cstat-no" title="statement not covered" >import { Title } from '@components/title';</span>
+<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
+<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { HomeSelectors } from 'app/tests/features/home.selectors';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useState } from 'react';</span>
 &nbsp;
 interface BalanceCardProps {
   address: string | null;
@@ -362,7 +358,7 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
             mr="tight"
           /&gt;
           &lt;Text&gt;{toHumanReadableStx(lockedBalance.toString())} locked&lt;/Text&gt;
-          &lt;Text children="·" mx="base-tight" /&gt;
+          &lt;Text mx="base-tight"&gt;·&lt;/Text&gt;
           &lt;Text&gt;{toHumanReadableStx(availableBalance.toString())} available&lt;/Text&gt;
         &lt;/Flex&gt;
       )}
@@ -386,6 +382,7 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
             size="md"
             ml="tight"
             isDisabled={requestingTestnetStx}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             onClick={<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >requestTestnetStacks(e)}</span>
             title="Hold alt to request more STX. Use sparingly."
           &gt;
@@ -412,7 +409,7 @@ export const <span class="cstat-no" title="statement not covered" >BalanceCard: 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

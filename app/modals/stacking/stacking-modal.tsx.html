@@ -148,25 +148,23 @@
 <a name='L83'></a><a href='#L83'>83</a>
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
-<a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L86'></a><a href='#L86'>86</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -235,25 +233,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState, useMemo } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { useSelector, useDispatch } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router-dom';</span>
-<span class="cstat-no" title="statement not covered" >import { useHotkeys } from 'react-hotkeys-hook';</span>
-import { BigNumber } from 'bignumber.js';
-&nbsp;
-import { RootState } from '@store/index';
-<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
-<span class="cstat-no" title="statement not covered" >import { activeStackingTx, selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';</span>
-import { StacksTransaction } from '@stacks/transactions';
-<span class="cstat-no" title="statement not covered" >import { useStackingClient } from '@hooks/use-stacking-client';</span>
-<span class="cstat-no" title="statement not covered" >import { useApi } from '@hooks/use-api';</span>
-<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
-&nbsp;
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable @typescript-eslint/no-unsafe-argument */
 <span class="cstat-no" title="statement not covered" >import { watchForNewTxToAppear } from '@api/watch-tx-to-appear-in-api';</span>
+<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
+<span class="cstat-no" title="statement not covered" >import { useApi } from '@hooks/use-api';</span>
 <span class="cstat-no" title="statement not covered" >import { useBroadcastTx } from '@hooks/use-broadcast-tx';</span>
 <span class="cstat-no" title="statement not covered" >import { useMempool } from '@hooks/use-mempool';</span>
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+<span class="cstat-no" title="statement not covered" >import { useStackingClient } from '@hooks/use-stacking-client';</span>
 <span class="cstat-no" title="statement not covered" >import { TxSigningModal } from '@modals/tx-signing-modal/tx-signing-modal';</span>
+import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+import { StacksTransaction } from '@stacks/transactions';
+import { RootState } from '@store/index';
+<span class="cstat-no" title="statement not covered" >import { activeStackingTx, selectCoreNodeInfo, selectPoxInfo } from '@store/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
+import { BigNumber } from 'bignumber.js';
+<span class="cstat-no" title="statement not covered" >import React, { FC, useState, useMemo } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useHotkeys } from 'react-hotkeys-hook';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector, useDispatch } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router-dom';</span>
 &nbsp;
 interface StackingModalProps {
   poxAddress: string;
@@ -328,7 +325,7 @@ export const <span class="cstat-no" title="statement not covered" >StackingModal
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

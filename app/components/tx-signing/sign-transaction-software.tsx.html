@@ -144,20 +144,18 @@
 <a name='L79'></a><a href='#L79'>79</a>
 <a name='L80'></a><a href='#L80'>80</a>
 <a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -227,24 +225,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useCallback, useRef, useState } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
-<span class="cstat-no" title="statement not covered" >import { useDecryptWallet } from '@hooks/use-decrypt-wallet';</span>
-<span class="cstat-no" title="statement not covered" >import { useCreateSoftwareContractCallTx } from '@hooks/use-create-software-contract-call-tx';</span>
-<span class="cstat-no" title="statement not covered" >import {</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import {</span>
   StackingModalButton as Button,
   StackingModalFooter as Footer,
 } from '../../modals/components/stacking-modal-layout';
-<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
-<span class="cstat-no" title="statement not covered" >import { isDecryptionError } from '@crypto/key-encryption';</span>
 import { SignTransactionProps } from './sign-transaction';
-<span class="cstat-no" title="statement not covered" >import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';</span>
+<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
+<span class="cstat-no" title="statement not covered" >import { isDecryptionError } from '@crypto/key-encryption';</span>
+<span class="cstat-no" title="statement not covered" >import { useCreateSoftwareContractCallTx } from '@hooks/use-create-software-contract-call-tx';</span>
 <span class="cstat-no" title="statement not covered" >import { createSoftwareWalletTokenTransferTx } from '@hooks/use-create-token-transfer-tx';</span>
-<span class="cstat-no" title="statement not covered" >import { capitalize } from '@utils/capitalize';</span>
+<span class="cstat-no" title="statement not covered" >import { useDecryptWallet } from '@hooks/use-decrypt-wallet';</span>
+<span class="cstat-no" title="statement not covered" >import { DecryptWalletForm } from '@modals/components/decrypt-wallet-form';</span>
 <span class="cstat-no" title="statement not covered" >import { blastUndoStackToRemovePasswordFromMemory } from '@utils/blast-undo-stack';</span>
+<span class="cstat-no" title="statement not covered" >import { capitalize } from '@utils/capitalize';</span>
+<span class="cstat-no" title="statement not covered" >import { safeAwait } from '@utils/safe-await';</span>
 <span class="cstat-no" title="statement not covered" >import { HomeSelectors } from 'app/tests/features/home.selectors';</span>
+<span class="cstat-no" title="statement not covered" >import React, { useCallback, useRef, useState } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router';</span>
 &nbsp;
 type SignTransactionSoftwareProps = SignTransactionProps;
 &nbsp;
@@ -316,7 +313,7 @@ export const <span class="cstat-no" title="statement not covered" >SignTransacti
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

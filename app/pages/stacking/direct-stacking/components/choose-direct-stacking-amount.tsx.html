@@ -211,32 +211,28 @@
 <a name='L146'></a><a href='#L146'>146</a>
 <a name='L147'></a><a href='#L147'>147</a>
 <a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a>
-<a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L149'></a><a href='#L149'>149</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -363,32 +359,30 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useCallback } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, Button, color, Input, Stack, Text } from '@stacks/ui';</span>
-<span class="cstat-no" title="statement not covered" >import { useField } from 'formik';</span>
-<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
-&nbsp;
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable @typescript-eslint/no-unsafe-argument */
+<span class="cstat-no" title="statement not covered" >import {</span>
+  StackingStep as Step,
+  StackingStepDescription as Description,
+} from '../../components/stacking-form-step';
+import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
+<span class="cstat-no" title="statement not covered" >import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';</span>
 <span class="cstat-no" title="statement not covered" >import { ErrorLabel } from '@components/error-label';</span>
 <span class="cstat-no" title="statement not covered" >import { ErrorText } from '@components/error-text';</span>
-<span class="cstat-no" title="statement not covered" >import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
 <span class="cstat-no" title="statement not covered" >import { ExternalLink } from '@components/external-link';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
+<span class="cstat-no" title="statement not covered" >import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   STACKING_CONTRACT_CALL_TX_BYTES,
   STACKING_LEARN_MORE_URL,
   STACKING_MINIMIUM_FOR_NEXT_CYCLE_URL,
 } from '@constants/index';
-&nbsp;
-import { StackingStepBaseProps } from '../../utils/abstract-stacking-step';
-<span class="cstat-no" title="statement not covered" >import {</span>
-  StackingStep as Step,
-  StackingStepDescription as Description,
-} from '../../components/stacking-form-step';
-<span class="cstat-no" title="statement not covered" >import { pseudoBorderLeft } from '@components/styles/pseudo-border-left';</span>
-<span class="cstat-no" title="statement not covered" >import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';</span>
+<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, Button, color, Input, Stack, Text } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { microStxToStx, stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
+<span class="cstat-no" title="statement not covered" >import { useField } from 'formik';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
 &nbsp;
 interface ChooseAmountFieldProps extends StackingStepBaseProps {
   minimumAmountToStack: number;
@@ -432,7 +426,7 @@ export const <span class="cstat-no" title="statement not covered" >ChooseDirectS
       &lt;Description&gt;
         &lt;Stack alignItems="flex-start" spacing="base"&gt;
           &lt;Text&gt;
-            You’ll be eligible for one reward slot for every multiple of the minimum you stack.
+            You&amp;apos;ll be eligible for one reward slot for every multiple of the minimum you stack.
           &lt;/Text&gt;
           &lt;Text&gt;
             The estimated minimum per slot can change by multiples of 10,000 every cycle, so you may
@@ -494,9 +488,9 @@ export const <span class="cstat-no" title="statement not covered" >ChooseDirectS
               borderColor={color('border')}
               {...pseudoBorderLeft('feedback-alert')}
             &gt;
-              Add a buffer for a higher chance (though no guarantee) of keeping the same number of
-              reward slots should the minimum increase. If you can’t add a buffer, consider Stacking
-              in a pool instead.
+              Add a buffer for a higher chance (though no guarantee) of keeping the same number of
+              reward slots should the minimum increase. If you can&amp;apos;t add a buffer, consider
+              Stacking in a pool instead.
               &lt;Button
                 variant="link"
                 type="button"
@@ -520,7 +514,7 @@ export const <span class="cstat-no" title="statement not covered" >ChooseDirectS
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

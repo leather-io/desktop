@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
@@ -96,7 +96,10 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -116,47 +119,53 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import * as yup from 'yup';</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { SUPPORTED_BTC_ADDRESS_FORMATS } from '@constants/index';</span>
 <span class="cstat-no" title="statement not covered" >import { isMainnet, isTestnet } from '@utils/network-utils';</span>
-<span class="cstat-no" title="statement not covered" >import validate, { getAddressInfo } from 'bitcoin-address-validation';</span>
-<span class="cstat-no" title="statement not covered" >import { SUPPORTED_BTC_ADDRESS_FORMATS } from '@constants/index';</span>
+<span class="cstat-no" title="statement not covered" >import { validate, getAddressInfo } from 'bitcoin-address-validation';</span>
+<span class="cstat-no" title="statement not covered" >import * as yup from 'yup';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >b</span>tcAddressSchema(</span>) {
 <span class="cstat-no" title="statement not covered" >  return yup</span>
     .string()
-    .defined(`Enter the BTC address where you'd like to recieve your rewards`)
+    .defined(`Enter the BTC address where you'd like to receive your rewards`)
     .test({
-      name: 'slkdjfslk',
+      name: 'valid address',
       message: `The BTC address you've entered is not valid`,
 <span class="fstat-no" title="function not covered" >      test(</span>value: unknown) {
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (value === null || value === undefined) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof value !== 'string') <span class="cstat-no" title="statement not covered" >return false;</span></span>
         const isValid = <span class="cstat-no" title="statement not covered" >validate(value);</span>
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!isValid) <span class="cstat-no" title="statement not covered" >return this.createError({ message: 'Invalid BTC address' });</span></span>
-        const validationReport = <span class="cstat-no" title="statement not covered" >getAddressInfo(value);</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!validationReport) <span class="cstat-no" title="statement not covered" >return this.createError({ message: 'Invalid BTC address' });</span></span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (isMainnet() &amp;&amp; validationReport.network === 'testnet') {</span>
+        const addressInfo = <span class="cstat-no" title="statement not covered" >getAddressInfo(value);</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!addressInfo) <span class="cstat-no" title="statement not covered" >return this.createError({ message: 'Invalid BTC address' });</span></span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (isMainnet() &amp;&amp; addressInfo.network === 'testnet') {</span>
 <span class="cstat-no" title="statement not covered" >          return this.createError({ message: 'Testnet addresses not supported on Mainnet' });</span>
         }
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (isTestnet() &amp;&amp; validationReport.network !== 'testnet') {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (isTestnet() &amp;&amp; addressInfo.network !== 'testnet') {</span>
 <span class="cstat-no" title="statement not covered" >          return this.createError({ message: 'Mainnet addresses not supported on Testnet' });</span>
         }
         // https://github.com/blockstack/stacks-blockchain/issues/1902
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!SUPPORTED_BTC_ADDRESS_FORMATS.includes(validationReport.type as any)) {</span>
-<span class="cstat-no" title="statement not covered" >          return this.createError({ message: 'is-bech32' });</span>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!SUPPORTED_BTC_ADDRESS_FORMATS.includes(addressInfo.type as any)) {</span>
+<span class="cstat-no" title="statement not covered" >          return this.createError({</span>
+            message:
+              'Unsupported address type. Please use a legacy (P2PKH), pay to script hash (P2SH), native segwit (P2WPKH) or taproot (P2TR) address',
+          });
         }
 <span class="cstat-no" title="statement not covered" >        return true;</span>
       },
@@ -169,7 +178,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

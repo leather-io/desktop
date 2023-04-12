@@ -242,15 +242,12 @@
 <a name='L177'></a><a href='#L177'>177</a>
 <a name='L178'></a><a href='#L178'>178</a>
 <a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a>
-<a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a>
-<a name='L183'></a><a href='#L183'>183</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L180'></a><a href='#L180'>180</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -264,8 +261,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -273,7 +268,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -427,42 +421,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
-<span class="cstat-no" title="statement not covered" >import * as yup from 'yup';</span>
-<span class="cstat-no" title="statement not covered" >import { Form, Formik } from 'formik';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { stxAmountSchema } from '@utils/validators/stx-amount-validator';</span>
-<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
-<span class="cstat-no" title="statement not covered" >import { validateDecimalPrecision } from '@utils/form/validate-decimals';</span>
-<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { StackingFormContainer } from '../components/stacking-form-container';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingGuideCard } from '../components/stacking-guide-card';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingLayout } from '../components/stacking-layout';</span>
+<span class="cstat-no" title="statement not covered" >import { ChooseBtcAddressField } from './components/choose-btc-address';</span>
+<span class="cstat-no" title="statement not covered" >import { ChooseCycleField } from './components/choose-cycles';</span>
+<span class="cstat-no" title="statement not covered" >import { ChooseDirectStackingAmountField } from './components/choose-direct-stacking-amount';</span>
+<span class="cstat-no" title="statement not covered" >import { ConfirmAndStackStep } from './components/confirm-and-stack';</span>
+<span class="cstat-no" title="statement not covered" >import { DirectStackingInfoCard } from './components/direct-stacking-info-card';</span>
+<span class="cstat-no" title="statement not covered" >import { DirectStackingIntro } from './components/direct-stacking-intro';</span>
 <span class="cstat-no" title="statement not covered" >import { STACKING_CONTRACT_CALL_TX_BYTES } from '@constants/index';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingModal } from '@modals/stacking/stacking-modal';</span>
-<span class="cstat-no" title="statement not covered" >import { btcAddressSchema } from '@utils/validators/btc-address-validator';</span>
-<span class="cstat-no" title="statement not covered" >import { useBackButton } from '@hooks/use-back-url';</span>
 <span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
+<span class="cstat-no" title="statement not covered" >import { useBackButton } from '@hooks/use-back-url';</span>
+<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
 <span class="cstat-no" title="statement not covered" >import { useCalculateFee } from '@hooks/use-calculate-fee';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingModal } from '@modals/stacking/stacking-modal';</span>
 import { RootState } from '@store/index';
 <span class="cstat-no" title="statement not covered" >import { selectWalletType } from '@store/keys';</span>
-<span class="cstat-no" title="statement not covered" >import { selectActiveNodeApi } from '@store/stacks-node';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   selectEstimatedStackingDuration,
   selectNextCycleInfo,
   selectPoxInfo,
 } from '@store/stacking';
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { StackingLayout } from '../components/stacking-layout';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingFormContainer } from '../components/stacking-form-container';</span>
-<span class="cstat-no" title="statement not covered" >import { ChooseBtcAddressField } from './components/choose-btc-address';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { DirectStackingInfoCard } from './components/direct-stacking-info-card';</span>
-<span class="cstat-no" title="statement not covered" >import { DirectStackingIntro } from './components/direct-stacking-intro';</span>
-<span class="cstat-no" title="statement not covered" >import { ChooseCycleField } from './components/choose-cycles';</span>
-<span class="cstat-no" title="statement not covered" >import { ChooseDirectStackingAmountField } from './components/choose-direct-stacking-amount';</span>
-<span class="cstat-no" title="statement not covered" >import { ConfirmAndStackStep } from './components/confirm-and-stack';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingGuideCard } from '../components/stacking-guide-card';</span>
+<span class="cstat-no" title="statement not covered" >import { selectActiveNodeApi } from '@store/stacks-node';</span>
+<span class="cstat-no" title="statement not covered" >import { validateDecimalPrecision } from '@utils/form/validate-decimals';</span>
+<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { btcAddressSchema } from '@utils/validators/btc-address-validator';</span>
+<span class="cstat-no" title="statement not covered" >import { stxAmountSchema } from '@utils/validators/stx-amount-validator';</span>
+<span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
+<span class="cstat-no" title="statement not covered" >import { Form, Formik } from 'formik';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useState } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import * as yup from 'yup';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >enum S</span>tackingStep {</span>
 <span class="cstat-no" title="statement not covered" >  ChooseAmount = 'Choose an amount',</span>
@@ -616,7 +607,7 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

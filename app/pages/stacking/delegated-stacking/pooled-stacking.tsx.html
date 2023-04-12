@@ -243,17 +243,11 @@
 <a name='L178'></a><a href='#L178'>178</a>
 <a name='L179'></a><a href='#L179'>179</a>
 <a name='L180'></a><a href='#L180'>180</a>
-<a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a>
-<a name='L183'></a><a href='#L183'>183</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L181'></a><a href='#L181'>181</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -264,15 +258,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -427,38 +423,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useState, useCallback } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Form, Formik } from 'formik';</span>
-<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-import { BigNumber } from 'bignumber.js';
-<span class="cstat-no" title="statement not covered" >import * as yup from 'yup';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { stxAmountSchema } from '@utils/validators/stx-amount-validator';</span>
-<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
-import { RootState } from '@store/index';
-<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
-<span class="cstat-no" title="statement not covered" >import { useBackButton } from '@hooks/use-back-url';</span>
-<span class="cstat-no" title="statement not covered" >import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';</span>
-<span class="cstat-no" title="statement not covered" >import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';</span>
-<span class="cstat-no" title="statement not covered" >import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';</span>
-<span class="cstat-no" title="statement not covered" >import { stxAddressSchema } from '@utils/validators/stx-address-validator';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable @typescript-eslint/no-unsafe-argument */
+<span class="cstat-no" title="statement not covered" >import { StackingFormContainer } from '../components/stacking-form-container';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingGuideCard } from '../components/stacking-guide-card';</span>
+<span class="cstat-no" title="statement not covered" >import { StackingLayout } from '../components/stacking-layout';</span>
+<span class="cstat-no" title="statement not covered" >import { ChoosePoolStxAddressField } from './components/choose-pool-stx-address';</span>
+<span class="cstat-no" title="statement not covered" >import { ChoosePoolingAmountField } from './components/choose-pooling-amount';</span>
+<span class="cstat-no" title="statement not covered" >import { ChoosePoolingDurationField } from './components/choose-pooling-duration';</span>
+<span class="cstat-no" title="statement not covered" >import { ConfirmAndPoolAction } from './components/confirm-and-pool';</span>
+<span class="cstat-no" title="statement not covered" >import { PoolingInfoCard } from './components/delegated-stacking-info-card';</span>
+<span class="cstat-no" title="statement not covered" >import { PooledStackingIntro } from './components/pooled-stacking-intro';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
   MIN_DELEGATED_STACKING_AMOUNT_USTX,
 } from '@constants/index';
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { StackingLayout } from '../components/stacking-layout';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingFormContainer } from '../components/stacking-form-container';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingGuideCard } from '../components/stacking-guide-card';</span>
-<span class="cstat-no" title="statement not covered" >import { StackingFormInfoPanel } from '../components/stacking-form-info-panel';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { PooledStackingIntro } from './components/pooled-stacking-intro';</span>
-<span class="cstat-no" title="statement not covered" >import { PoolingInfoCard } from './components/delegated-stacking-info-card';</span>
-<span class="cstat-no" title="statement not covered" >import { ConfirmAndPoolAction } from './components/confirm-and-pool';</span>
-<span class="cstat-no" title="statement not covered" >import { ChoosePoolingAmountField } from './components/choose-pooling-amount';</span>
-<span class="cstat-no" title="statement not covered" >import { ChoosePoolStxAddressField } from './components/choose-pool-stx-address';</span>
-<span class="cstat-no" title="statement not covered" >import { ChoosePoolingDurationField } from './components/choose-pooling-duration';</span>
+<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
+<span class="cstat-no" title="statement not covered" >import { useBackButton } from '@hooks/use-back-url';</span>
+<span class="cstat-no" title="statement not covered" >import { DelegatedStackingModal } from '@modals/delegated-stacking/delegated-stacking-modal';</span>
+import { RootState } from '@store/index';
 <span class="cstat-no" title="statement not covered" >import { selectAddress } from '@store/keys';</span>
+<span class="cstat-no" title="statement not covered" >import { selectNextCycleInfo, selectPoxInfo } from '@store/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { calculateUntilBurnHeightBlockFromCycles } from '@utils/calculate-burn-height';</span>
+<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { stxPrincipalSchema } from '@utils/validators/stx-address-validator';</span>
+<span class="cstat-no" title="statement not covered" >import { stxAmountSchema } from '@utils/validators/stx-amount-validator';</span>
+import { BigNumber } from 'bignumber.js';
+<span class="cstat-no" title="statement not covered" >import { Form, Formik } from 'formik';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useState, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import * as yup from 'yup';</span>
 &nbsp;
 type Nullable&lt;T&gt; = { [K in keyof T]: T[K] | null };
 &nbsp;
@@ -512,7 +506,7 @@ export const <span class="cstat-no" title="statement not covered" >StackingDeleg
   );
 &nbsp;
   const validationSchema = <span class="cstat-no" title="statement not covered" >yup.object().shape({</span>
-    stxAddress: stxAddressSchema().test({
+    stxAddress: stxPrincipalSchema().test({
       name: 'cannot-pool-to-yourself',
       message: 'Cannot pool to your own STX address',
 <span class="fstat-no" title="function not covered" >      test(</span>value: any) {
@@ -616,7 +610,7 @@ export const <span class="cstat-no" title="statement not covered" >StackingDeleg
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

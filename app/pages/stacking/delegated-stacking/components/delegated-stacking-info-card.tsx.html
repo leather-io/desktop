@@ -192,34 +192,28 @@
 <a name='L127'></a><a href='#L127'>127</a>
 <a name='L128'></a><a href='#L128'>128</a>
 <a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a>
-<a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L130'></a><a href='#L130'>130</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,24 +321,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useMemo } from 'react';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { Box, Flex, FlexProps, Text } from '@stacks/ui';</span>
-&nbsp;
-import { DelegationType } from '@models/index';
-<span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import {</span>
-  UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
-  POOLED_STACKING_TX_SIZE_BYTES,
-} from '@constants/index';
-<span class="cstat-no" title="statement not covered" >import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';</span>
-<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
-<span class="cstat-no" title="statement not covered" >import { truncateMiddle } from '@utils/tx-utils';</span>
-<span class="cstat-no" title="statement not covered" >import { formatCycles } from '@utils/stacking';</span>
-<span class="cstat-no" title="statement not covered" >import { useCalculateFee } from '@hooks/use-calculate-fee';</span>
-<span class="cstat-no" title="statement not covered" >import { useWalletType } from '@hooks/use-wallet-type';</span>
-<span class="cstat-no" title="statement not covered" >import {</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import {</span>
   InfoCard,
   InfoCardLabel as Label,
   InfoCardRow as Row,
@@ -352,8 +329,22 @@ import { DelegationType } from '@models/index';
   InfoCardValue as Value,
   InfoCardSection as Section,
 } from '../../../../components/info-card';
-<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
+  UI_IMPOSED_MAX_STACKING_AMOUNT_USTX,
+  POOLED_STACKING_TX_SIZE_BYTES,
+} from '@constants/index';
+<span class="cstat-no" title="statement not covered" >import { useCalculateFee } from '@hooks/use-calculate-fee';</span>
+<span class="cstat-no" title="statement not covered" >import { useWalletType } from '@hooks/use-wallet-type';</span>
+import { DelegationType } from '@models/index';
+<span class="cstat-no" title="statement not covered" >import { Box, Flex, FlexProps, Text } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';</span>
+<span class="cstat-no" title="statement not covered" >import { formatCycles } from '@utils/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { truncateMiddle } from '@utils/tx-utils';</span>
+<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useMemo } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
 &nbsp;
 interface PoolingInfoCardProps extends FlexProps {
   amount: string | number | null;
@@ -386,7 +377,7 @@ export const <span class="cstat-no" title="statement not covered" >PoolingInfoCa
     &lt;InfoCard {...rest}&gt;
       &lt;Box mx={['loose', 'extra-loose']}&gt;
         &lt;Flex flexDirection="column" pt="extra-loose" pb="base-loose"&gt;
-          &lt;Text textStyle="body.large.medium"&gt;You're pooling&lt;/Text&gt;
+          &lt;Text textStyle="body.large.medium"&gt;You&amp;apos;re pooling&lt;/Text&gt;
           &lt;Text
             fontSize="24px"
             fontFamily="Open Sauce"
@@ -466,7 +457,7 @@ export const <span class="cstat-no" title="statement not covered" >PoolingInfoCa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

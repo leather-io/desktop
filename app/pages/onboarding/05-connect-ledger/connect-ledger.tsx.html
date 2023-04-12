@@ -190,17 +190,8 @@
 <a name='L125'></a><a href='#L125'>125</a>
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
-<a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a>
-<a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L128'></a><a href='#L128'>128</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -209,14 +200,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -326,31 +317,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router-dom';</span>
-<span class="cstat-no" title="statement not covered" >import { useDispatch } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { LedgerError } from '@zondax/ledger-blockstack';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, color, Text } from '@stacks/ui';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { ErrorLabel } from '@components/error-label';</span>
+<span class="cstat-no" title="statement not covered" >import { ErrorText } from '@components/error-text';</span>
+<span class="cstat-no" title="statement not covered" >import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   Onboarding,
   OnboardingTitle,
   OnboardingText,
   OnboardingButton,
 } from '@components/onboarding';
-<span class="cstat-no" title="statement not covered" >import { setLedgerWallet } from '@store/keys';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';</span>
+<span class="cstat-no" title="statement not covered" >import routes from '@constants/routes.json';</span>
 <span class="cstat-no" title="statement not covered" >import { useBackButton } from '@hooks/use-back-url';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { LedgerConnectInstructions } from '@components/ledger/ledger-connect-instructions';</span>
-<span class="cstat-no" title="statement not covered" >import { ErrorLabel } from '@components/error-label';</span>
-<span class="cstat-no" title="statement not covered" >import { ErrorText } from '@components/error-text';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { isMainnet } from '@utils/network-utils';</span>
+<span class="cstat-no" title="statement not covered" >import { usePrepareLedger, LedgerConnectStep } from '@hooks/use-prepare-ledger';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, color, Text } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { setLedgerWallet } from '@store/keys';</span>
 <span class="cstat-no" title="statement not covered" >import { delay } from '@utils/delay';</span>
+<span class="cstat-no" title="statement not covered" >import { isMainnet } from '@utils/network-utils';</span>
+<span class="cstat-no" title="statement not covered" >import { LedgerError } from '@zondax/ledger-blockstack';</span>
+<span class="cstat-no" title="statement not covered" >import React, { useState } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useDispatch } from 'react-redux';</span>
+<span class="cstat-no" title="statement not covered" >import { useHistory } from 'react-router-dom';</span>
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >ConnectLedger: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
   const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
@@ -419,8 +405,7 @@ export const <span class="cstat-no" title="statement not covered" >ConnectLedger
           textAlign="center"
           lineHeight="18px"
         &gt;
-          Press both buttons on your Ledger device simultaneously when it displays "Pending Ledger
-          review"
+          Press both buttons on your Ledger device simultaneously
         &lt;/Text&gt;
       &lt;/Box&gt;
       &lt;LedgerConnectInstructions
@@ -466,7 +451,7 @@ export const <span class="cstat-no" title="statement not covered" >ConnectLedger
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

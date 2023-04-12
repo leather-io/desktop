@@ -180,24 +180,22 @@
 <a name='L115'></a><a href='#L115'>115</a>
 <a name='L116'></a><a href='#L116'>116</a>
 <a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a>
-<a name='L119'></a><a href='#L119'>119</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -299,13 +297,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useRef, useEffect, MutableRefObject } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { useHover, useFocus } from 'use-events';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, color, Flex, Stack, Text } from '@stacks/ui';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable @typescript-eslint/no-unsafe-argument */
+<span class="cstat-no" title="statement not covered" >import { getMempoolTxLabel } from './mempool-tx-label';</span>
+<span class="cstat-no" title="statement not covered" >import { TransactionIcon } from './transaction-icon';</span>
+<span class="cstat-no" title="statement not covered" >import { TransactionListItemContainer } from './transaction-list-item-container';</span>
 import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
+<span class="cstat-no" title="statement not covered" >import { Box, color, Flex, Stack, Text } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import { getTxTypeName } from '@stacks/ui-utils';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
 <span class="cstat-no" title="statement not covered" >import { sumStxTxTotal } from '@utils/sum-stx-tx-total';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   isStackingTx,
@@ -314,12 +313,10 @@ import { MempoolTransaction } from '@stacks/stacks-blockchain-api-types';
   isDelegateStxTx,
   isRevokingDelegationTx,
 } from '@utils/tx-utils';
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { TransactionIcon } from './transaction-icon';</span>
-<span class="cstat-no" title="statement not covered" >import { TransactionListItemContainer } from './transaction-list-item-container';</span>
+<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useRef, useEffect, MutableRefObject } from 'react';</span>
 <span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
-<span class="cstat-no" title="statement not covered" >import { getMempoolTxLabel } from './mempool-tx-label';</span>
+<span class="cstat-no" title="statement not covered" >import { useHover, useFocus } from 'use-events';</span>
 &nbsp;
 const shouldShowMempoolTx = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>x: MempoolTransaction, contractId?: string) =&gt;</span>
 <span class="cstat-no" title="statement not covered" >  tx.tx_type === 'token_transfer' ||</span>
@@ -424,7 +421,7 @@ export const <span class="cstat-no" title="statement not covered" >TransactionLi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

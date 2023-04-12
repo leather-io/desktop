@@ -229,20 +229,7 @@
 <a name='L164'></a><a href='#L164'>164</a>
 <a name='L165'></a><a href='#L165'>165</a>
 <a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L167'></a><a href='#L167'>167</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -252,6 +239,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -397,20 +395,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useMemo } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { Flex, Box, Text, color, Button } from '@stacks/ui';</span>
-<span class="cstat-no" title="statement not covered" >import { useDispatch, useSelector } from 'react-redux';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { useDelegationStatus } from '@hooks/use-delegation-status';</span>
-<span class="cstat-no" title="statement not covered" >import { useCalculateFee } from '@hooks/use-calculate-fee';</span>
-<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
-<span class="cstat-no" title="statement not covered" >import { isRevokingDelegationTx, truncateMiddle } from '@utils/tx-utils';</span>
-<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
-<span class="cstat-no" title="statement not covered" >import { selectPoxInfo, selectStackerInfo } from '@store/stacking';</span>
-<span class="cstat-no" title="statement not covered" >import { homeActions } from '@store/home/home.reducer';</span>
-<span class="cstat-no" title="statement not covered" >import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';</span>
-<span class="cstat-no" title="statement not covered" >import { useMempool } from '@hooks/use-mempool';</span>
-<span class="cstat-no" title="statement not covered" >import pooledStackingImg from '@assets/images/pooled-stacking-swimming-pool.svg';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import pooledStackingImg from '@assets/images/pooled-stacking-swimming-pool.svg';</span>
+<span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   InfoCard,
   InfoCardGroup,
@@ -419,9 +405,20 @@
   InfoCardSection as Section,
   InfoCardValue as Value,
 } from '@components/info-card';
-<span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
-<span class="cstat-no" title="statement not covered" >import { IconBan } from '@tabler/icons';</span>
 <span class="cstat-no" title="statement not covered" >import { Title } from '@components/title';</span>
+<span class="cstat-no" title="statement not covered" >import { REVOKE_DELEGATION_TX_SIZE_BYTES } from '@constants/index';</span>
+<span class="cstat-no" title="statement not covered" >import { useBalance } from '@hooks/use-balance';</span>
+<span class="cstat-no" title="statement not covered" >import { useCalculateFee } from '@hooks/use-calculate-fee';</span>
+<span class="cstat-no" title="statement not covered" >import { useDelegationStatus } from '@hooks/use-delegation-status';</span>
+<span class="cstat-no" title="statement not covered" >import { useMempool } from '@hooks/use-mempool';</span>
+<span class="cstat-no" title="statement not covered" >import { Flex, Box, Text, color, Button } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { homeActions } from '@store/home/home.reducer';</span>
+<span class="cstat-no" title="statement not covered" >import { selectPoxInfo, selectStackerInfo } from '@store/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { IconBan } from '@tabler/icons';</span>
+<span class="cstat-no" title="statement not covered" >import { isRevokingDelegationTx, truncateMiddle } from '@utils/tx-utils';</span>
+<span class="cstat-no" title="statement not covered" >import { toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useMemo } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useDispatch, useSelector } from 'react-redux';</span>
 &nbsp;
 export const <span class="cstat-no" title="statement not covered" >DelegationCard: FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
   const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
@@ -458,7 +455,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegationCar
       {!delegationStatus.deadDelegation &amp;&amp; (
         &lt;&gt;
           &lt;Flex flexDirection="column" mt="base-loose" pb="base-loose"&gt;
-            &lt;Text textStyle="body.large.medium"&gt;You're pooling&lt;/Text&gt;
+            &lt;Text textStyle="body.large.medium"&gt;You&amp;apos;re pooling&lt;/Text&gt;
             &lt;Text
               fontSize="24px"
               mt="extra-tight"
@@ -532,7 +529,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegationCar
                       lineHeight="18px"
                       display="block"
                     &gt;
-                      You don't have enough unlocked STX to cover the transaction fee needed to
+                      You don&amp;apos;t have enough unlocked STX to cover the transaction fee needed to
                       revoke your delegation. Please deposit a small amount of STX or wait for any
                       locked STX to unlock if you wish to revoke delegation.
                     &lt;/Text&gt;
@@ -571,7 +568,7 @@ export const <span class="cstat-no" title="statement not covered" >DelegationCar
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -194,22 +194,7 @@
 <a name='L129'></a><a href='#L129'>129</a>
 <a name='L130'></a><a href='#L130'>130</a>
 <a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L132'></a><a href='#L132'>132</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,6 +202,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -329,20 +325,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { FC, useMemo } from 'react';</span>
-<span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
-<span class="cstat-no" title="statement not covered" >import dayjs from 'dayjs';</span>
-<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
-<span class="cstat-no" title="statement not covered" >import { Box, Flex, FlexProps, Text } from '@stacks/ui';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
-<span class="cstat-no" title="statement not covered" >import { UI_IMPOSED_MAX_STACKING_AMOUNT_USTX } from '@constants/index';</span>
-<span class="cstat-no" title="statement not covered" >import { truncateMiddle } from '@utils/tx-utils';</span>
-<span class="cstat-no" title="statement not covered" >import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';</span>
-<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
-<span class="cstat-no" title="statement not covered" >import {</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import {</span>
   InfoCard,
   InfoCardLabel as Label,
   InfoCardRow as Row,
@@ -351,6 +334,17 @@
   InfoCardSection as Section,
 } from '../../../../components/info-card';
 <span class="cstat-no" title="statement not covered" >import { calculateRewardSlots, calculateStackingBuffer } from '../../utils/calc-stacking-buffer';</span>
+<span class="cstat-no" title="statement not covered" >import { Hr } from '@components/hr';</span>
+<span class="cstat-no" title="statement not covered" >import { UI_IMPOSED_MAX_STACKING_AMOUNT_USTX } from '@constants/index';</span>
+<span class="cstat-no" title="statement not covered" >import { Box, Flex, FlexProps, Text } from '@stacks/ui';</span>
+<span class="cstat-no" title="statement not covered" >import { selectPoxInfo } from '@store/stacking';</span>
+<span class="cstat-no" title="statement not covered" >import { parseNumericalFormInput } from '@utils/form/parse-numerical-form-input';</span>
+<span class="cstat-no" title="statement not covered" >import { truncateMiddle } from '@utils/tx-utils';</span>
+<span class="cstat-no" title="statement not covered" >import { stxToMicroStx, toHumanReadableStx } from '@utils/unit-convert';</span>
+<span class="cstat-no" title="statement not covered" >import { BigNumber } from 'bignumber.js';</span>
+<span class="cstat-no" title="statement not covered" >import dayjs from 'dayjs';</span>
+<span class="cstat-no" title="statement not covered" >import React, { FC, useMemo } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { useSelector } from 'react-redux';</span>
 &nbsp;
 interface StackingInfoCardProps extends FlexProps {
   cycles: number;
@@ -394,7 +388,7 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
     &lt;InfoCard minHeight="84px" {...rest}&gt;
       &lt;Box mx={['loose', 'extra-loose']}&gt;
         &lt;Flex flexDirection="column" pt="extra-loose" pb="base-loose"&gt;
-          &lt;Text textStyle="body.large.medium"&gt;You'll lock&lt;/Text&gt;
+          &lt;Text textStyle="body.large.medium"&gt;You&amp;apos;ll lock&lt;/Text&gt;
           &lt;Text
             fontSize="24px"
             mt="extra-tight"
@@ -469,7 +463,7 @@ export const <span class="cstat-no" title="statement not covered" >DirectStackin
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-06T13:19:27.883Z
+                at 2023-04-12T16:09:18.533Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

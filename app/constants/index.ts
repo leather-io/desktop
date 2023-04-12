@@ -26,12 +26,11 @@ export const BUY_STX_URL = 'https://coinmarketcap.com/currencies/stacks/markets'
 export const STATUS_PAGE_URL = 'http://status.test-blockstack.com';
 
 export const DEFAULT_STACKS_NODE_URL = whenNetwork<string>({
-  mainnet: 'https://stacks-node-api.mainnet.stacks.co',
-  testnet:
-    process.env.DEFAULT_TESTNET_STACKS_NODE_URL ?? 'https://stacks-node-api.testnet.stacks.co',
+  mainnet: 'https://api.hiro.so',
+  testnet: process.env.DEFAULT_TESTNET_STACKS_NODE_URL ?? 'https://api.testnet.hiro.so',
 });
 
-export const EXPLORER_URL = 'https://explorer.stacks.co';
+export const EXPLORER_URL = 'https://explorer.hiro.so';
 
 export const GITHUB_ORG = 'blockstack';
 

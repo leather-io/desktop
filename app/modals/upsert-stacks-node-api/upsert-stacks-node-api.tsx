@@ -90,7 +90,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
         {header}
         <Box p="extra-loose">
           <Text color={color('text-body')} textStyle="body.small" lineHeight="20px">
-            Enter an address from the Stacks Blockchain API that proxies a node. Before using a
+            Enter an address for a Stacks Blockchain API that proxies a Stacks node. Before using a
             node, make sure you review and trust the host before configuring a new API.
           </Text>
           <Box mt="loose">
@@ -116,7 +116,7 @@ export const UpsertStacksNodeSettingsModal: FC<AddNodeSettingsProps> = props => 
               URL
             </Text>
             <Input
-              placeholder="https://stacks-node-api.stacks.co"
+              placeholder="https://api.hiro.so"
               mt="base-tight"
               id="url"
               onChange={form.handleChange}

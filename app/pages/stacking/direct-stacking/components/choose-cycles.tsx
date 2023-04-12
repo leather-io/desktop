@@ -21,8 +21,7 @@ export const ChooseCycleField: FC<ChooseCycleStepProps> = props => {
   return (
     <Step title="Duration">
       <Description>
-        Every cycle, each of your reward slots will be eligible for rewards. After your chosen
-        duration, you’ll need to wait one cycle before you can stack from this address again.
+        Every cycle, each of your reward slots will be eligible for rewards.
       </Description>
 
       <Stepper

@@ -6,7 +6,6 @@ import { RootState } from '@store/index';
 import { selectAddress } from '@store/keys';
 import { selectPoxInfo } from '@store/stacking';
 import BigNumber from 'bignumber.js';
-import BN from 'bn.js';
 import { useSelector } from 'react-redux';
 
 interface DelegatedTrueStatus {
@@ -39,9 +38,9 @@ export function useDelegationStatus(): DelegatedStatus {
   if (resp.type === ClarityType.OptionalSome && resp.value.type === ClarityType.Tuple) {
     const data = resp.value.data;
 
-    const amountMicroStx = BN.isBN((data['amount-ustx'] as any).value)
-      ? new BigNumber((data['amount-ustx'] as any).value.toString())
-      : new BigNumber(0);
+    const ustxAmount = (data['amount-ustx'] as any).value;
+
+    const amountMicroStx = ustxAmount ? new BigNumber(ustxAmount) : new BigNumber(0);
 
     const untilBurnHeight =
       data['until-burn-ht'].type === ClarityType.OptionalSome

@@ -1,9 +1,21 @@
-# [4.9.0-dev.2](https://github.com/blockstack/stacks-wallet/compare/v4.9.0-dev.1...v4.9.0-dev.2) (2023-04-17)
+# [4.9.0](https://github.com/blockstack/stacks-wallet/compare/v4.8.0...v4.9.0) (2023-04-12)
 
 
 ### Bug Fixes
 
-* pooling card amount, closes [#1150](https://github.com/blockstack/stacks-wallet/issues/1150) ([068c898](https://github.com/blockstack/stacks-wallet/commit/068c89834814d20525d6f13e83d829e1f73d379f))
+* accept contract addresses as pool address ([#1165](https://github.com/blockstack/stacks-wallet/issues/1165)) ([67dcdf1](https://github.com/blockstack/stacks-wallet/commit/67dcdf1b87064f080f5b9410a85ac78346ca1313))
+* ci gpg key import ([6948d92](https://github.com/blockstack/stacks-wallet/commit/6948d9234f104dacf09aa1faaeb0614cc133f498))
+* **sandbox:** prettier ([095bae9](https://github.com/blockstack/stacks-wallet/commit/095bae94ad0b226b9e84321d62241ddd4f9a3e64))
+* typo ([a280c13](https://github.com/blockstack/stacks-wallet/commit/a280c1396be904b76e8ea3e128a1169a02b9603a))
+* update ci ([671f3c2](https://github.com/blockstack/stacks-wallet/commit/671f3c2c43d15c4b3136dd40582795d2c0dce0aa))
+* zero locked balance ([528b5bc](https://github.com/blockstack/stacks-wallet/commit/528b5bcc234da3ab15f1d47e3607ab4bf946dcb2))
+
+
+### Features
+
+* make our lives easier ([43fa4bd](https://github.com/blockstack/stacks-wallet/commit/43fa4bd4d1b9945892df08219b5c25b3d746043a))
+* remove outdated messages ([c613724](https://github.com/blockstack/stacks-wallet/commit/c6137240c693881911b3ce5ac868e1bff33e1702))
+* update supported btc address formats ([0a8fd55](https://github.com/blockstack/stacks-wallet/commit/0a8fd55f9f3ab4f4f35433fb62d5142149b96a13))
 
 # [4.9.0-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.8.0...v4.9.0-dev.1) (2023-04-03)
 

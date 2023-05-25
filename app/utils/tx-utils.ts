@@ -1,6 +1,6 @@
 import { StxTxDirection } from './get-stx-transfer-direction';
 import { sumStxTxTotal } from './sum-stx-tx-total';
-import { SEND_MANY_CONTACT_ID } from '@constants/index';
+import { SEND_MANY_CONTRACT_ID } from '@constants/index';
 import {
   Transaction,
   MempoolTransaction,
@@ -61,7 +61,7 @@ export function isMempoolTx(tx: AnyTx): tx is MempoolTransaction {
 }
 
 export function isSendManyTx(tx: AnyTx) {
-  return tx.tx_type === 'contract_call' && tx.contract_call.contract_id === SEND_MANY_CONTACT_ID;
+  return tx.tx_type === 'contract_call' && tx.contract_call.contract_id === SEND_MANY_CONTRACT_ID;
 }
 
 export function sumTxsTotalSpentByAddress(txs: AnyTx[], address: string) {

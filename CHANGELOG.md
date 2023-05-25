@@ -1,3 +1,10 @@
+## [4.9.1](https://github.com/blockstack/stacks-wallet/compare/v4.9.0...v4.9.1) (2023-04-17)
+
+
+### Bug Fixes
+
+* pooling card amount, closes [#1150](https://github.com/blockstack/stacks-wallet/issues/1150) ([068c898](https://github.com/blockstack/stacks-wallet/commit/068c89834814d20525d6f13e83d829e1f73d379f))
+
 # [4.9.0](https://github.com/blockstack/stacks-wallet/compare/v4.8.0...v4.9.0) (2023-04-12)
 
 

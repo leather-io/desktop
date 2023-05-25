@@ -1,3 +1,15 @@
+# [4.10.0](https://github.com/blockstack/stacks-wallet/compare/v4.9.1...v4.10.0) (2023-05-25)
+
+
+### Bug Fixes
+
+* display all types of btc pox addresses ([d16a023](https://github.com/blockstack/stacks-wallet/commit/d16a023feedaab26e5036c37917fa077dbbff7f6))
+
+
+### Features
+
+* update stacks.js ([bfc60ec](https://github.com/blockstack/stacks-wallet/commit/bfc60ec7a45ae87f539c8141f5c58b6a5da472ed))
+
 # [4.10.0-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.9.1...v4.10.0-dev.1) (2023-05-25)
 
 

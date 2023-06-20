@@ -21,6 +21,7 @@ import {
   isDelegatedStackingTx,
   inferSendManyTransferOperation,
   isSendManyTx,
+  getMemoForTx,
 } from '@utils/tx-utils';
 import { toHumanReadableStx } from '@utils/unit-convert';
 import React, {
@@ -106,12 +107,8 @@ export const TransactionListItem: FC<TransactionListItemProps> = props => {
   }, [direction, poxInfo?.contract_id, tx]);
 
   const sumPrefix = direction === 'sent' && !isStackingTx(tx, poxInfo?.contract_id) ? '−' : '';
-  const memo =
-    tx.tx_type === 'token_transfer' &&
-    Buffer.from(
-      tx.token_transfer.memo.replace('0x', '').replace(/^(0{2})+|(0{2})+$/g, ''),
-      'hex'
-    ).toString('utf8');
+  const memo = getMemoForTx(tx, direction);
+
   const txDate = new Date(tx.burn_block_time_iso || (tx as any).parent_burn_block_time_iso);
   const txDateShort = txDate.toLocaleString();
 

@@ -112,3 +112,16 @@ export const truncateMiddle = (input: string, offset = 5): string => {
     return `${start}…${end}`;
   }
 };
+
+export const getMemoForTx = (tx: Transaction, direction: StxTxDirection) => {
+  if (tx.tx_type !== 'token_transfer' || direction !== 'sent') {
+    return undefined;
+  }
+
+  const utf8Memo = Buffer.from(
+    tx.token_transfer.memo.replace('0x', '').replace(/^(0{2})+|(0{2})+$/g, ''),
+    'hex'
+  ).toString('utf8');
+
+  return utf8Memo;
+};

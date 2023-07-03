@@ -1,3 +1,10 @@
+## [4.10.1](https://github.com/blockstack/stacks-wallet/compare/v4.10.0...v4.10.1) (2023-07-03)
+
+
+### Bug Fixes
+
+* only show memo for sent transactions ([bbfeb04](https://github.com/blockstack/stacks-wallet/commit/bbfeb0498f63da50a3ff7141d225f8f13e694071))
+
 ## [4.10.1-dev.1](https://github.com/blockstack/stacks-wallet/compare/v4.10.0...v4.10.1-dev.1) (2023-06-22)
 
 

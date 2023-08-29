@@ -1,10 +1,10 @@
 {
   "name": "stacks-wallet-inner-package",
-  "description": "Hiro Wallet v4 — Participate in Stacking to earn bitcoin rewards",
+  "description": "Leather v4 — Participate in Stacking to earn bitcoin rewards",
   "main": "./main.prod.js",
   "author": {
     "email": "info@blockstack.com",
-    "name": "Hiro Systems PBC"
+    "name": "Leather Wallet, LLC"
   },
   "scripts": {
     "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",

@@ -163,7 +163,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.extract_version.outputs.version }}
-          release_name: Hiro Wallet v${{ steps.extract_version.outputs.version }}
+          release_name: Leather v${{ steps.extract_version.outputs.version }}
           draft: false
           prerelease: ${{ contains(steps.extract_version.outputs.version, 'dev') }}
           body_path: release-body.txt
@@ -222,11 +222,11 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            🔔 New Hiro Wallet released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})
+            🔔 New Leather released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})
 
       - name: Discord Dev Release Notification
         if: contains(needs.create-release.outputs.new_version, 'dev') == true
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            New Hiro Wallet Preview released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})
+            New Leather Preview released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})

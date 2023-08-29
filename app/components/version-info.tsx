@@ -23,7 +23,7 @@ const issueBody = `
 
 -->
 
-Bug found testing Hiro Wallet build ${String(shaShort)}, ${String(version)}.
+Bug found testing Leather build ${String(shaShort)}, ${String(version)}.
 
 `;
 

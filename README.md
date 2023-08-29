@@ -1,13 +1,11 @@
-# Hiro Wallet—Desktop
+# Leather—Desktop
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/blockstack/stacks-wallet/Build)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/blockstack/stacks-wallet)](https://github.com/blockstack/stacks-wallet/releases/latest)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/hirosystems/wallet-desktop/Build)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/hirosystems/wallet-desktop)](https://github.com/hirosystems/wallet-desktop/releases/latest)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![coverage](https://raw.githubusercontent.com/blockstack/stacks-wallet/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet/)
+[![coverage](https://raw.githubusercontent.com/hirosystems/wallet-desktop/gh-pages/badge.svg)](https://blockstack.github.io/stacks-wallet/)
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/blockstack/stacks-wallet)
-
-![Hiro Wallet Hero](/resources/readme.png)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/hirosystems/wallet-desktop)
 
 Implementation of the Stacks 2.0 wallet for Desktop
 

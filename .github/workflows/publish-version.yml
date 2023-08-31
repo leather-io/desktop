@@ -101,7 +101,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         name: ${{ matrix.os }} upload
         with:
-          name: stacks-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
+          name: leather-wallet-${{ matrix.stx_network }}-${{ matrix.NPM_COMMAND }}
           path: ${{ matrix.UPLOAD_ASSETS }}
 
   create-release:
@@ -128,7 +128,7 @@ jobs:
           path: release
 
       - name: Move binaries to root directory
-        run: mv release/*/stacks-wallet* .
+        run: mv release/*/leather-wallet* .
 
       - name: Download release-notes.txt from create-version workflow
         uses: dawidd6/action-download-artifact@v2
@@ -147,7 +147,7 @@ jobs:
         run: |
           sed -i '1d' release-notes.txt
           echo "\`\`\`" >> release-notes.txt
-          shasum -a 256 stacks-wallet* >> shasums.txt
+          shasum -a 256 leather-wallet* >> shasums.txt
           gpg --armor --output shasums.txt.asc --clearsign --digest-algo SHA256 shasums.txt
           cat release-notes.txt shasums.txt.asc > release-body.txt
           echo "\`\`\`" >> release-body.txt
@@ -203,8 +203,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.release_upload_url }}
-          asset_path: release/stacks-wallet-${{ matrix.stx_network }}-${{ matrix.os }}/stacks-wallet.${{ matrix.stx_network }}.${{ matrix.ext }}
-          asset_name: stacks-wallet.${{ matrix.stx_network }}.v${{ needs.create-release.outputs.new_version }}.${{ matrix.ext }}
+          asset_path: release/leather-wallet-${{ matrix.stx_network }}-${{ matrix.os }}/leather-wallet.${{ matrix.stx_network }}.${{ matrix.ext }}
+          asset_name: leather-wallet.${{ matrix.stx_network }}.v${{ needs.create-release.outputs.new_version }}.${{ matrix.ext }}
           asset_content_type: application/octet-stream
 
   announce-release:

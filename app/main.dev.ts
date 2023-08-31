@@ -89,7 +89,7 @@ const createWindow = async () => {
     frame: process.platform !== 'darwin',
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     icon: iconPath,
-    title: `Hiro Wallet` + (process.env.STX_NETWORK === 'testnet' ? ' Testnet' : ''),
+    title: `Leather` + (process.env.STX_NETWORK === 'testnet' ? ' Testnet' : ''),
     webPreferences: {
       disableBlinkFeatures: 'Auxclick',
       spellcheck: false,

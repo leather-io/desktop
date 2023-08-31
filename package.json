@@ -78,11 +78,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:blockstack/stacks-wallet.git"
+    "url": "git@github.com:leather-wallet/desktop.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/blockstack/stacks-wallet/issues"
+    "url": "https://github.com/leather-wallet/desktop"
   },
   "devDependencies": {
     "@actions/core": "1.2.6",

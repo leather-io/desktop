@@ -1,7 +1,7 @@
 {
   "name": "stacks-wallet",
   "version": "4.10.1",
-  "description": "Hiro Wallet 2.0 — Stacking",
+  "description": "Leather 2.0 — Stacking",
   "prettier": "@stacks/prettier-config",
   "homepage": "https://hiro.so/wallet",
   "author": {
@@ -78,11 +78,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:blockstack/stacks-wallet.git"
+    "url": "git@github.com:leather-wallet/desktop.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/blockstack/stacks-wallet/issues"
+    "url": "https://github.com/leather-wallet/desktop"
   },
   "devDependencies": {
     "@actions/core": "1.2.6",
@@ -259,6 +259,7 @@
     "react-hot-toast": "2.1.1",
     "react-hotkeys-hook": "3.3.0",
     "react-icons": "4.2.0",
+    "react-markdown": "8.0.7",
     "react-popper": "2.2.5",
     "react-query": "3.13.4",
     "react-redux": "7.2.9",
@@ -267,6 +268,7 @@
     "redux": "4.2.0",
     "redux-persist": "6.0.0",
     "redux-thunk": "2.4.2",
+    "remark-gfm": "3.0.1",
     "rpc-websocket-client": "1.1.4",
     "rxjs": "6.6.7",
     "source-map-support": "0.5.19",

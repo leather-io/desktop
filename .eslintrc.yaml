@@ -24,6 +24,8 @@ rules:
   react/prop-types: off
   react/jsx-uses-react: off
   react/jsx-uses-vars: error
+  react/no-children-prop: off
+  react/no-unescaped-entities: off
   '@typescript-eslint/explicit-module-boundary-types': off
   '@typescript-eslint/no-unused-vars':
     - error

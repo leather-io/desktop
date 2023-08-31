@@ -30,7 +30,7 @@ export const SettingsDiagnostics = () => {
   return (
     <SettingSection title="Diagnostics">
       <SettingDescription>
-        Anonymous diagnostic information helps us improve the Hiro Wallet
+        Anonymous diagnostic information helps us improve the Leather
         <Flex as="label" textStyle="body.small" mt="base">
           <Box mr="tight" mt="1px">
             <input

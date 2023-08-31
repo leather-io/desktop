@@ -80,7 +80,7 @@ const baseConfig = {
 
 const networkConfigs = {
   testnet: {
-    productName: 'Hiro Wallet Testnet',
+    productName: 'Leather Testnet',
     appId: 'so.hiro.StacksWalletTestnet',
     artifactName: 'stacks-wallet.testnet.${ext}',
     mac: {
@@ -95,11 +95,11 @@ const networkConfigs = {
     // macos `Application Support` dir name
     extraMetadata: {
       name: 'stacks-wallet-testnet',
-      productName: 'Hiro Wallet Testnet',
+      productName: 'Leather Testnet',
     },
   },
   mainnet: {
-    productName: 'Hiro Wallet',
+    productName: 'Leather',
     appId: 'so.hiro.StacksWallet',
     icon: 'icon-512x512.png',
     artifactName: 'stacks-wallet.mainnet.${ext}',
@@ -114,7 +114,7 @@ const networkConfigs = {
     },
     extraMetadata: {
       name: 'stacks-wallet',
-      productName: 'Hiro Wallet',
+      productName: 'Leather',
     },
   },
 };

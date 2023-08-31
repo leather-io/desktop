@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+
+/* eslint-disable no-irregular-whitespace */
 import { OnboardingSelector } from '../../../tests/features/onboarding.selectors';
 import {
   Onboarding,

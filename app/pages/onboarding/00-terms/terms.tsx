@@ -32,7 +32,7 @@ Leather is a Bitcoin wallet for tapping into the emerging Bitcoin economy. It al
 
 2. ## **Using Our Services**
 
-**Eligibility**. To be eligible to use the Services you must be of the legal age in the jurisdiction you are resident in at the time of using the Services. If you are below the legal age in your jurisdiction, you are prohibited from using the Services. 
+**Eligibility**. To be eligible to use the Services you must be of the legal age in the jurisdiction you are resident in at the time of using the Services. If you are below the legal age in your jurisdiction, you are prohibited from using the Services.
 
 **Updates to Terms of Use**. Your use of the Services is subject to your agreement to these Terms, which may be updated by us at any time with or without notice to you. The Effective Date of the most up to date Terms will be provided at the top of each version of these Terms, respectively. Any such updates will be effective upon our publishing such updated Terms. If you do not agree with these Terms, you may not use the Services.
 

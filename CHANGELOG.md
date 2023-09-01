@@ -1,3 +1,10 @@
+# [4.13.0](https://github.com/leather-wallet/desktop/compare/v4.12.0...v4.13.0) (2023-09-01)
+
+
+### Features
+
+* trigger release ([cc6ca22](https://github.com/leather-wallet/desktop/commit/cc6ca2206c92d11af6a4c8342383837048a94bac))
+
 # [4.12.0](https://github.com/leather-wallet/desktop/compare/v4.11.0...v4.12.0) (2023-09-01)
 
 

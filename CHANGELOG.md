@@ -1,3 +1,20 @@
+# [4.11.0](https://github.com/leather-wallet/desktop/compare/v4.10.1...v4.11.0) (2023-09-01)
+
+
+### Bug Fixes
+
+* add privacy policy link ([945cf2a](https://github.com/leather-wallet/desktop/commit/945cf2a3707281edf9d29cf43a463d8e7bf8e7eb))
+* update ci with new git repo ([6079da4](https://github.com/leather-wallet/desktop/commit/6079da4e98dc63d5460d320a96e3516b9900a747))
+* update package.json files ([c362a66](https://github.com/leather-wallet/desktop/commit/c362a6675e25e701bfc80fdab84fe8c2354ec1a0))
+* use leather naming ([5361fcd](https://github.com/leather-wallet/desktop/commit/5361fcd32461ba95c8d719b30045d2dd6e8d91a4))
+
+
+### Features
+
+* rebrand ([765b14e](https://github.com/leather-wallet/desktop/commit/765b14e2790cb6edc2c54b1b4bd41c0447c7d4ad))
+* trigger release ([5535d01](https://github.com/leather-wallet/desktop/commit/5535d012581ca014b582fa0fead7e7dc3c3f96da))
+* trigger release ([35de689](https://github.com/leather-wallet/desktop/commit/35de68935148ff408fff7087ef1d5aec167c5c59))
+
 ## [4.10.1](https://github.com/blockstack/stacks-wallet/compare/v4.10.0...v4.10.1) (2023-07-03)
 
 

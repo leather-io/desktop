@@ -82,7 +82,7 @@ const networkConfigs = {
   testnet: {
     productName: 'Leather Testnet',
     appId: 'so.hiro.StacksWalletTestnet',
-    artifactName: 'stacks-wallet.testnet.${ext}',
+    artifactName: 'leather-wallet.testnet.${ext}',
     mac: {
       icon: 'icon.testnet.icns',
     },
@@ -94,7 +94,7 @@ const networkConfigs = {
     },
     // macos `Application Support` dir name
     extraMetadata: {
-      name: 'stacks-wallet-testnet',
+      name: 'leather-wallet-testnet',
       productName: 'Leather Testnet',
     },
   },
@@ -102,7 +102,7 @@ const networkConfigs = {
     productName: 'Leather',
     appId: 'so.hiro.StacksWallet',
     icon: 'icon-512x512.png',
-    artifactName: 'stacks-wallet.mainnet.${ext}',
+    artifactName: 'leather-wallet.mainnet.${ext}',
     mac: {
       icon: 'icon.icns',
     },
@@ -113,7 +113,7 @@ const networkConfigs = {
       icon: 'icons-mainnet',
     },
     extraMetadata: {
-      name: 'stacks-wallet',
+      name: 'leather-wallet',
       productName: 'Leather',
     },
   },

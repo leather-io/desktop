@@ -32,9 +32,9 @@ export const DEFAULT_STACKS_NODE_URL = whenNetwork<string>({
 
 export const EXPLORER_URL = 'https://explorer.hiro.so';
 
-export const GITHUB_ORG = 'blockstack';
+export const GITHUB_ORG = 'leather-walet';
 
-export const GITHUB_REPO = 'stacks-wallet';
+export const GITHUB_REPO = 'desktop';
 
 export const TREZOR_HELP_URL =
   'https://www.hiro.so/questions/how-can-i-use-my-trezor-device-with-the-stacks-wallet';

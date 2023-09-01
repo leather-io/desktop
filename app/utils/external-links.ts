@@ -8,7 +8,7 @@ export async function openExternalLink(url: string) {
 }
 
 export function makeExplorerLink(path: string) {
-  return urljoin(EXPLORER_URL, `${path}?utm_source=stacks-wallet&chain=${NETWORK}`);
+  return urljoin(EXPLORER_URL, `${path}?utm_source=leather-wallet&chain=${NETWORK}`);
 }
 
 export function makeExplorerTxLink(txId: string) {

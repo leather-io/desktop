@@ -206,27 +206,3 @@ jobs:
           asset_path: release/leather-wallet-${{ matrix.stx_network }}-${{ matrix.os }}/leather-wallet.${{ matrix.stx_network }}.${{ matrix.ext }}
           asset_name: leather-wallet.${{ matrix.stx_network }}.v${{ needs.create-release.outputs.new_version }}.${{ matrix.ext }}
           asset_content_type: application/octet-stream
-
-  announce-release:
-    runs-on: ubuntu-20.04
-    env:
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_UX_NOTIFS_WEBHOOK }}
-
-    needs:
-      - create-release
-      - upload-release-assets
-
-    steps:
-      - name: Discord Stable Release Notification
-        if: contains(needs.create-release.outputs.new_version, 'dev') == false
-        uses: Ilshidur/action-discord@master
-        with:
-          args: |
-            🔔 New Leather released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})
-
-      - name: Discord Dev Release Notification
-        if: contains(needs.create-release.outputs.new_version, 'dev') == true
-        uses: Ilshidur/action-discord@master
-        with:
-          args: |
-            New Leather Preview released: [Download `v${{ needs.create-release.outputs.new_version }}` here](https://github.com/${{ github.repository }}/releases/tag/v${{ needs.create-release.outputs.new_version }})

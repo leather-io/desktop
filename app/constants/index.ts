@@ -32,7 +32,7 @@ export const DEFAULT_STACKS_NODE_URL = whenNetwork<string>({
 
 export const EXPLORER_URL = 'https://explorer.hiro.so';
 
-export const GITHUB_ORG = 'leather-walet';
+export const GITHUB_ORG = 'leather-wallet';
 
 export const GITHUB_REPO = 'desktop';
 

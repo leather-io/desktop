@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/modals/components/transaction-error.tsx</title>
+    <title>Code coverage report for app/modals/components/stacking-failed.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">app/modals/components</a> transaction-error.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">app/modals/components</a> stacking-failed.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -90,19 +90,16 @@
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -110,6 +107,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -117,33 +116,58 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { ModalHeader } from './modal-header';</span>
-<span class="cstat-no" title="statement not covered" >import { TxModalButton, TxModalFooter } from '@modals/send-stx/send-stx-modal-layout';</span>
-<span class="cstat-no" title="statement not covered" >import { FailedBroadcastError } from '@modals/send-stx/steps/failed-broadcast-error';</span>
-import { PostCoreNodeTransactionsError } from '@stacks/stacks-blockchain-api-types';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import failedCrossSvg from '@assets/images/failed-cross.svg';</span>
+import { WalletType } from '@models/wallet-type';
+<span class="cstat-no" title="statement not covered" >import { Flex, Box, Text, color } from '@stacks/ui';</span>
 <span class="cstat-no" title="statement not covered" >import React, { FC } from 'react';</span>
 &nbsp;
-interface TransactionErrorProps {
-  error: PostCoreNodeTransactionsError | null;
-  onClose(): void;
-  onGoBack(): void;
+interface StackingFailedProps {
+  walletType: WalletType;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >TransactionError: FC&lt;TransactionErrorProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >p</span>rops </span>=&gt; {</span>
-  const { error, onClose, onGoBack } = <span class="cstat-no" title="statement not covered" >props;</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;&gt;
-      &lt;ModalHeader onSelectClose={onClose} /&gt;
-      &lt;FailedBroadcastError error={error} /&gt;
-      &lt;TxModalFooter&gt;
-        &lt;TxModalButton mode="tertiary" onClick={onClose}&gt;
-          Close
-        &lt;/TxModalButton&gt;
-        &lt;TxModalButton onClick={onGoBack}&gt;Try again&lt;/TxModalButton&gt;
-      &lt;/TxModalFooter&gt;
-    &lt;/&gt;
-  );
-};
+export const <span class="cstat-no" title="statement not covered" >StackingFailed: FC&lt;StackingFailedProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> children, walletType }) =&gt; (</span>
+<span class="cstat-no" title="statement not covered" >  &lt;Flex</span>
+    flexDirection="column"
+    alignItems="center"
+    textAlign="center"
+    px="extra-loose"
+    mb="extra-loose"
+  &gt;
+    &lt;Box mx="auto" my="extra-loose"&gt;
+      &lt;img src={failedCrossSvg} alt="" /&gt;
+    &lt;/Box&gt;
+    &lt;Text as="h1" textStyle="display.small" display="block"&gt;
+      Unable to verify transaction
+    &lt;/Text&gt;
+    {children &amp;&amp; (
+      &lt;Text as="p" mt="base" mx="loose" display="block" textStyle="body.large"&gt;
+        {children}
+      &lt;/Text&gt;
+    )}
+    {walletType === 'ledger' &amp;&amp; (
+      &lt;Text textStyle="caption" color={color('text-caption')} maxWidth="300px" mt="base"&gt;
+        Make sure you&amp;apos;re using the same Ledger device you used to create this wallet
+      &lt;/Text&gt;
+    )}
+  &lt;/Flex&gt;
+);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

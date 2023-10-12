@@ -20,7 +20,7 @@ export const DelegatedStackingTerms: FC<StackProps> = props => (
     </StackingTermItem>
     <StackingTermItem title="Research your pool" icon={StepsIcon}>
       Paying out rewards is at the discretion of the pool. Make sure you&apos;ve researched and
-      trust the pool you’re using. All pools are unaffiliated with Hiro PBC.
+      trust the pool you’re using. All pools are unaffiliated with Leather.
     </StackingTermItem>
   </Stack>
 );

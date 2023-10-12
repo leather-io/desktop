@@ -27,8 +27,8 @@ export const AllowDiagnosticsLayout: FC<AllowDiagnosticsLayoutProps> = props => 
   return (
     <>
       <Text maxWidth="520px">
-        We would like to gather de-identified usage data to help improve your experience with Hiro
-        Wallet.
+        We would like to gather de-identified usage data to help improve your experience with
+        Leather.
       </Text>
       <Stack mt="loose" mb="extra-loose" spacing="base-tight" textAlign="left" maxWidth="520px">
         <ReasonToAllowDiagnostics text="Send anonymous data about page views and clicks" />

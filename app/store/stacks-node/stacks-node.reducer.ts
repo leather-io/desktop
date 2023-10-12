@@ -49,7 +49,7 @@ export const setActiveStacksNode = stacksNodeSlice.actions.setActiveStacksNode;
 
 export const defaultNode: StacksNode = Object.freeze({
   url: DEFAULT_STACKS_NODE_URL,
-  name: 'Hiro Systems PBC node',
+  name: 'Hiro Systems node',
   id: 'default',
 });
 

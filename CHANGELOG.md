@@ -1,3 +1,10 @@
+## [4.14.1-dev.2](https://github.com/leather-wallet/desktop/compare/v4.14.1-dev.1...v4.14.1-dev.2) (2023-10-16)
+
+
+### Bug Fixes
+
+* upgrade v22 electron ([f0b1e65](https://github.com/leather-wallet/desktop/commit/f0b1e65a7af93a4afed3d331b3344821662d27b5))
+
 ## [4.14.1-dev.1](https://github.com/leather-wallet/desktop/compare/v4.14.0...v4.14.1-dev.1) (2023-09-19)
 
 

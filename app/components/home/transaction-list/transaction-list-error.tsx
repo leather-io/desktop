@@ -31,7 +31,7 @@ export const TransactionListError: FC<TransactionListErrorProps> = ({ node, erro
         mx="base"
         lineHeight="20px"
       >
-        {usingPbcHostedNode && <>Unable to connect to the Hiro Systems PBC hosted node.</>}
+        {usingPbcHostedNode && <>Unable to connect to the Hiro Systems hosted node.</>}
         {!usingPbcHostedNode && (
           <>
             Make sure you&apos;re connecting to a working Stacks Node

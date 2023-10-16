@@ -56,7 +56,7 @@ const baseConfig = {
         to: '.',
       },
     ],
-    publisherName: 'Hiro Systems PBC',
+    publisherName: 'Leather Wallet, LLC',
   },
   mac: {
     hardenedRuntime: true,

@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-Hiro Systems operates a bug bounty programme on [HackerOne](https://hackerone.com/hiro)
+Trust Machines operates a bug bounty programme on [HackerOne](https://hackerone.com/trustmachines)

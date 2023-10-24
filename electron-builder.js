@@ -43,6 +43,7 @@ const baseConfig = {
     ],
   },
   win: {
+    verifyUpdateCodeSignature: false,
     // Don't use `msi` installer issues
     target: [
       {

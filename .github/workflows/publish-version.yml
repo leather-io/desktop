@@ -32,8 +32,6 @@ jobs:
           - os: windows-latest
             NPM_COMMAND: win
             UPLOAD_ASSETS: release/**/*.exe
-            CSC_LINK_SECRET_NAME: CODE_SIGNING_CERTIFICATE_WINDOWS
-            CSC_KEY_PASSWORD_SECRET_NAME: CODE_SIGNING_PASSWORD_WINDOWS
 
     steps:
       - name: Cancel Previous Runs
@@ -87,6 +85,7 @@ jobs:
         if: matrix.os == 'windows-latest'
 
       - name: Build releases
+        if: matrix.os == 'macos-11'
         run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,6 +96,15 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets[matrix.CSC_KEY_PASSWORD_SECRET_NAME] }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+
+      - name: Build releases
+        if: matrix.os != 'macos-11'
+        run: ./node_modules/.bin/cross-env yarn package-${{ matrix.NPM_COMMAND }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_ENV: production
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          SEGMENT_WRITE_KEY: ${{ secrets.SEGMENT_WRITE_KEY }}
 
       - uses: actions/upload-artifact@v2
         name: ${{ matrix.os }} upload

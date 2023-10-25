@@ -4,8 +4,6 @@ on:
   push:
     tags-ignore:
       - 'v*dev*'
-    tags:
-      - 'v*'
 
 jobs:
   build:

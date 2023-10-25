@@ -152,7 +152,7 @@ export const Terms: React.FC = () => {
         Terms of Service
       </OnboardingTitle>
       <OnboardingText mb="extra-loose">
-        You must first accept the terms of service before using Leathers
+        You must first accept the terms of service before using Leather
       </OnboardingText>
       {/* Converted from https://gdoc2md.com/ */}
       <ReactMarkdown

@@ -80,10 +80,6 @@ export const routerConfig = [
     component: SetPassword,
   },
   {
-    path: routes.SET_PASSWORD,
-    component: SetPassword,
-  },
-  {
     path: routes.SETTINGS,
     component: Settings,
   },

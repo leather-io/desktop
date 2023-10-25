@@ -1,10 +1,16 @@
-## [4.14.1](https://github.com/leather-wallet/desktop/compare/v4.14.0...v4.14.1) (2023-09-20)
+## [4.14.2-dev.1](https://github.com/leather-wallet/desktop/compare/v4.14.1...v4.14.2-dev.1) (2023-10-25)
 
 
 ### Bug Fixes
 
-* fix typo in leather-wallet, closes [#1221](https://github.com/leather-wallet/desktop/issues/1221) ([66b8efa](https://github.com/leather-wallet/desktop/commit/66b8efa222ac2edbba00b2fd755d3b828c217356))
-* update link to leather-wallet desktop download, closes [#1220](https://github.com/leather-wallet/desktop/issues/1220) ([4cd64ac](https://github.com/leather-wallet/desktop/commit/4cd64ac9a8149a3648e2b80dfebfb92156a3379b))
+* upgrade v22 electron ([f0b1e65](https://github.com/leather-wallet/desktop/commit/f0b1e65a7af93a4afed3d331b3344821662d27b5))
+
+## [4.14.1-dev.2](https://github.com/leather-wallet/desktop/compare/v4.14.1-dev.1...v4.14.1-dev.2) (2023-10-16)
+
+
+### Bug Fixes
+
+* upgrade v22 electron ([f0b1e65](https://github.com/leather-wallet/desktop/commit/f0b1e65a7af93a4afed3d331b3344821662d27b5))
 
 ## [4.14.1-dev.1](https://github.com/leather-wallet/desktop/compare/v4.14.0...v4.14.1-dev.1) (2023-09-19)
 

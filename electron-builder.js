@@ -43,6 +43,7 @@ const baseConfig = {
     ],
   },
   win: {
+    verifyUpdateCodeSignature: false,
     // Don't use `msi` installer issues
     target: [
       {
@@ -56,7 +57,7 @@ const baseConfig = {
         to: '.',
       },
     ],
-    publisherName: 'Hiro Systems PBC',
+    publisherName: 'Leather Wallet, LLC',
   },
   mac: {
     hardenedRuntime: true,

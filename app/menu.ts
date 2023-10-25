@@ -14,7 +14,7 @@ export default class MenuBuilder {
       {
         label: 'Learn More',
         click() {
-          void shell.openExternal('https://hiro.so');
+          void shell.openExternal('https://leather.io');
         },
       },
       {
@@ -26,7 +26,7 @@ export default class MenuBuilder {
       {
         label: 'Search Issues',
         click() {
-          void shell.openExternal('https://github.com/blockstack/stacks-wallet/issues');
+          void shell.openExternal('https://github.com/leather-wallet/desktop/issues');
         },
       },
     ],

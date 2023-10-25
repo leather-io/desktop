@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 export const LegalDisclaimerTooltip: FC<BoxProps> = props => (
   <Tooltip
     display="inherit"
-    text="This link will take you to an external third-party website that is not affiliated with Hiro Systems PBC."
+    text="This link will take you to an external third-party website that is not affiliated with Leather."
     {...props}
   />
 );

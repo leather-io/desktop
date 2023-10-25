@@ -2,6 +2,7 @@ import { App } from 'electron';
 import path from 'path';
 
 export function getUserDataPath(app: App) {
+  // DO NOT CHANGE THIS TO LEATHER, WILL CAUSE BREAKING CHANGES
   const appId = 'so.hiro.StacksWallet';
   const appData = app.getPath('appData');
   const network = process.env.STX_NETWORK === 'mainnet' ? '' : 'Testnet';

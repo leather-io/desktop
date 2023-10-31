@@ -20,9 +20,9 @@ import remarkGfm from 'remark-gfm';
 const terms = `
 ##### LAST REVISED ON: August 31, 2023
 
-Hello, and welcome to Leather’s Terms of Use (these “Terms”). These Terms are important because they describe your rights and obligations when using the Services and Products (defined below) offered by us or our affiliates. 
+Hello, and welcome to Leather’s Terms of Use (these “Terms”). These Terms are important because they describe your rights and obligations when using the Services and Products (defined below) offered by us or our affiliates.
 
-Please note that these Terms contain **Indemnification**, **Governing Law and Venue, Dispute Resolution**, **Assumption of Risk** and **Disclaimer of Warranties and Limitation of Liability** sections that affect your rights, including your ability to bring legal claims against us. Please read these Terms, our Privacy Policy (the “Privacy Policy”) and any other terms referenced in this document carefully.  If you do not agree to be bound by these Terms of Use, you are not permitted to use our Services.
+Please note that these Terms contain **Indemnification**, **Governing Law and Venue, Dispute Resolution**, **Assumption of Risk** and **Disclaimer of Warranties and Limitation of Liability** sections that affect your rights, including your ability to bring legal claims against us. Please read these Terms, our Privacy Policy (the “Privacy Policy”) and any other terms referenced in this document carefully. If you do not agree to be bound by these Terms of Use, you are not permitted to use our Services.
 
 1. ## **Introduction**
 

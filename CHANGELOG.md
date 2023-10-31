@@ -1,3 +1,10 @@
+## [4.14.3-dev.1](https://github.com/leather-wallet/desktop/compare/v4.14.2...v4.14.3-dev.1) (2023-10-31)
+
+
+### Bug Fixes
+
+* remove extra space ([595e11a](https://github.com/leather-wallet/desktop/commit/595e11a204d16b779e6b8ef86a7ef7d62c11e5ea))
+
 ## [4.14.2](https://github.com/leather-wallet/desktop/compare/v4.14.1...v4.14.2) (2023-10-25)
 
 

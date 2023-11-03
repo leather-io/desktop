@@ -1,13 +1,10 @@
-const defaultConfig = require('@stacks/prettier-config');
+const defaultConfig = require('@leather-wallet/prettier-config');
 
 module.exports = {
   ...defaultConfig,
   importOrder: [
-    '^react',
-    '<THIRD_PARTY_MODULES>',
+    ...defaultConfig.importOrder,
     '^@(api|assets|components|constants|crypto|hooks|modals|models|models|store|utils)/(.*)$',
     '^[./]',
   ],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
 };

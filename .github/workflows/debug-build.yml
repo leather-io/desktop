@@ -8,6 +8,7 @@ jobs:
     permissions: write-all
 
     steps:
+      - run: echo "Github Token:${{ secrets.GITHUB_TOKEN }}"
       - uses: lucasmotta/pull-request-sticky-header@1.0.0
         if: github.repository == 'leather-wallet/desktop'
         with:

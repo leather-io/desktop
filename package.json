@@ -1,6 +1,6 @@
 {
   "name": "stacks-wallet",
-  "version": "4.14.3-dev.1",
+  "version": "4.14.3",
   "description": "Leather 2.0 — Stacking",
   "prettier": "@stacks/prettier-config",
   "homepage": "https://leather.io",

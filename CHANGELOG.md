@@ -1,4 +1,4 @@
-## [4.14.3-dev.1](https://github.com/leather-wallet/desktop/compare/v4.14.2...v4.14.3-dev.1) (2023-10-31)
+## [4.14.3](https://github.com/leather-wallet/desktop/compare/v4.14.2...v4.14.3) (2023-10-31)
 
 
 ### Bug Fixes

@@ -41,6 +41,11 @@ export const StackingPromoCard: FC = () => {
         <Text textStyle="display.large" mt="tight">
           Have a chance to earn BTC by locking your STX temporarily
         </Text>
+
+        <Text textStyle="caption" color={color('text-caption')} lineHeight={1.6} mt="tight">
+          Stacking already? Stacking info is now found on lockstacks.com
+        </Text>
+
         <Button
           mt="base"
           alignSelf="flex-start"
@@ -48,7 +53,7 @@ export const StackingPromoCard: FC = () => {
           isDisabled={hasPendingDelegateStxCall}
           onClick={() => history.push(routes.CHOOSE_STACKING_METHOD)}
         >
-          {hasPendingDelegateStxCall ? 'Delegation pending' : 'Get started →'}
+          {'Get stacking on Lockstacks →'}
         </Button>
       </Flex>
     </Box>

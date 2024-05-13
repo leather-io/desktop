@@ -46,6 +46,11 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}-${{ secrets.CACHE_BUSTER }}
 
+      - uses: actions/setup-python@v5
+        if: matrix.os == 'macos-11'
+        with:
+          python-version: '3.10'
+
       - name: Add required Linux dependencies
         uses: ./.github/actions/linux-deps
         if: matrix.os == 'ubuntu-20.04'
@@ -96,6 +101,7 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets[matrix.CSC_KEY_PASSWORD_SECRET_NAME] }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PASS: ${{ secrets.APPLE_ID_PASS }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
       - name: Build releases
         if: matrix.os != 'macos-11'

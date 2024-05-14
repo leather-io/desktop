@@ -1,3 +1,10 @@
+## [4.15.1](https://github.com/leather-wallet/desktop/compare/v4.15.0...v4.15.1) (2024-05-14)
+
+
+### Bug Fixes
+
+* direct to lockstacks ([ae6cf46](https://github.com/leather-wallet/desktop/commit/ae6cf4642756310c3bffd713251f030a1509c69f))
+
 # [4.15.0-dev.2](https://github.com/leather-wallet/desktop/compare/v4.15.0-dev.1...v4.15.0-dev.2) (2024-05-14)
 
 

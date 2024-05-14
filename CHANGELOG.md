@@ -1,3 +1,10 @@
+# [4.15.0-dev.1](https://github.com/leather-wallet/desktop/compare/v4.14.3...v4.15.0-dev.1) (2024-05-13)
+
+
+### Features
+
+* stacking card copy + notarize tool fix ([688fd3a](https://github.com/leather-wallet/desktop/commit/688fd3a6047688208d47e210418bfe35ab9120fa))
+
 ## [4.14.3](https://github.com/leather-wallet/desktop/compare/v4.14.2...v4.14.3) (2023-10-31)
 
 

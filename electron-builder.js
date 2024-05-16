@@ -59,6 +59,17 @@ const baseConfig = {
     ],
     publisherName: 'Leather Wallet, LLC',
   },
+  deb: {
+    depends: [
+      'gconf2',
+      'gconf-service',
+      'libnotify4',
+      'libappindicator1',
+      'libxtst6',
+      'libnss3',
+      'libstdc++6',
+    ],
+  },
   mac: {
     hardenedRuntime: true,
     category: 'public.app-category.finance',

@@ -1,7 +1,7 @@
-# Leather—Desktop
-
 > [!WARNING]  
 > As of October 1st 2025 Leather's desktop wallet is discontinued. Wallet users should migrate to either our Web Extension or mobile app. [Read our annoucement →](https://app.leather.io/changelog/deprecation-desktop-wallet)
+
+# Leather—Desktop
 
 Implementation of the Stacks 2.0 wallet for Desktop
 

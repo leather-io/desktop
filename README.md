@@ -1,5 +1,5 @@
 > [!WARNING]  
-> As of October 1st 2025 Leather's desktop wallet is discontinued. Wallet users should migrate to either our Web Extension or mobile app. [Read our annoucement →](https://app.leather.io/changelog/deprecation-desktop-wallet)
+> As of October 1st 2025 Leather's desktop wallet is discontinued. Wallet users should migrate to either our [Web Extension](https://chromewebstore.google.com/detail/leather/ldinpeekobnhjjdofggfgjlcehhmanlj?hl=en) or mobile app on [Android](https://play.google.com/store/apps/details?id=io.leather.mobilewallet) and [iOS](https://apps.apple.com/us/app/leather-bitcoin-defi-wallet/id6499127775). [Read our annoucement →](https://app.leather.io/changelog/deprecation-desktop-wallet)
 
 # Leather—Desktop
 
